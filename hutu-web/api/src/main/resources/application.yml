@@ -1,0 +1,44 @@
+server:
+  port: 10001
+
+spring:
+  application:
+    name: hutu-order
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    url: jdbc:mysql://localhost:3306/hutu-order?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
+    username: root
+    password: pass
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 0
+      maximum-pool-size: 20
+      idle-timeout: 10000
+      connection-test-query: select 1
+
+logging:
+  config: classpath:logback-dev.xml
+  level:
+    org.nott.mapper: debug
+
+alipay:
+  appId:
+  privateKey:
+  publicKey:
+  signType: RSA2
+  notifyUrl:
+
+weixinpay:
+  mchId:
+  appId:
+  apiV3Key:
+  notifyUrl:
+  privateKeyPath:
+  merchantSerialNumber:
+
+payment:
+  package:
+    name: org.nott.payment
