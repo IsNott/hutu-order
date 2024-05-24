@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.nott.web.mapper.BizMenuMapper">
+
+    <select id="getMenuItemListByCatalogId" resultType="org.nott.vo.MenuItemVo">
+        SELECT
+            t2.*,t1.item_id as itemId
+        FROM
+            biz_menu t1
+                LEFT JOIN biz_item t2 ON t1.item_id = t2.id
+        WHERE
+            menu_catalog_id = #{catalogId}
+    </select>
+</mapper>
