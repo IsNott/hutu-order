@@ -8,4 +8,5 @@
 ├─hutu-model # 实体
 ├─hutu-external # 外部系统api
 ├─hutu-common # 通用模块
+├─uniapp-hutu-user # 用户小程序端
 ```
