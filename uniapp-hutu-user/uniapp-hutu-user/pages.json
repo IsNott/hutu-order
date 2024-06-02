@@ -8,6 +8,13 @@
 		}
 	},
 	{
+		"path" : "pages/home/index",
+		"style" : 
+		{
+			"navigationBarTitleText" : "首页"
+		}
+	},
+	{
 		"path" : "pages/search/index",
 		"style" : 
 		{
@@ -30,15 +37,15 @@
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
-			"pagePath": "pages/order/index",
+			"pagePath": "pages/home/index",
 			"iconPath": "static/image/home.png",
 			"text": "首页"
 		}, {
 			"pagePath": "pages/order/index",
-			"iconPath": "static/coffee.png",
+			"iconPath": "static/image/coffee.png",
 			"text": "点单"
 		}, {
-			"pagePath": "pages/order/index",
+			"pagePath": "pages/shop/index",
 			"iconPath": "static/image/shop.png",
 			"text": "商店"
 		}, {
