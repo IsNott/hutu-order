@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,36 +15,20 @@ import lombok.Setter;
  * </p>
  *
  * @author nott
- * @since 2024-05-24
+ * @since 2024-06-03
  */
 @Getter
 @Setter
-@TableName("biz_menu_catalog")
-public class BizMenuCatalog implements Serializable {
+@TableName("biz_sku_item")
+public class BizSkuItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
-    /**
-     * 分类名称
-     */
-    private String catalogName;
+    private Long skuCatalogId;
 
-    /**
-     * 分类描述
-     */
-    private String catalogDesc;
-
-    /**
-     * 备注
-     */
-    private String mark;
-
-    /**
-     * 预览图
-     */
-    private String imgUrl;
+    private String skuItemContent;
 
     /**
      * 删除标识
@@ -56,13 +40,13 @@ public class BizMenuCatalog implements Serializable {
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @TableField(fill = FieldFill.UPDATE)
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
 
 }

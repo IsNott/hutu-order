@@ -22,7 +22,7 @@ spring:
 logging:
   config: classpath:logback-dev.xml
   level:
-    org.nott.mapper: debug
+    org.nott.web.mapper: debug
 
 alipay:
   appId:
