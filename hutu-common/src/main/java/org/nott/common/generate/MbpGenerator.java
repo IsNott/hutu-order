@@ -2,10 +2,7 @@ package org.nott.common.generate;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.fill.Column;
-
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +21,7 @@ public class MbpGenerator {
                 // 包配置
                 .packageConfig((scanner, builder) -> builder.parent("org.nott"))
                 // 策略配置
-                .strategyConfig((scanner, builder) -> builder.addInclude(getTables( "all"))
+                .strategyConfig((scanner, builder) -> builder.addInclude(getTables("biz_user_package"))
                         .entityBuilder()
                         .enableLombok()
                         .addTableFills(

@@ -24,7 +24,6 @@ public class BizMenuCatalogController {
     @GetMapping("/list")
     public ResponseEntity<?> menuList(){
         return ResponseEntity.successData(bizMenuCatalogService.list());
-
     }
 
 }

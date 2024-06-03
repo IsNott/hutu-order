@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.nott.web.mapper.BizUserPackageMapper">
+
+    <select id="selectUserPackageByUserId" resultType="org.nott.vo.UserPackageVo">
+        select t1.*, t2.actually_amount as singleActuallyAmount, t2.item_name
+        from biz_user_package t1
+                 LEFT JOIN biz_item t2
+                           on t1.item_id = t2.id
+        where t1.user_id = #{userId}
+    </select>
+
+</mapper>

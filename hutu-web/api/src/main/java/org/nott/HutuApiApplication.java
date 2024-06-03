@@ -10,6 +10,6 @@ public class HutuApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(HutuApiApplication.class,args);
-        log.info("hutu-order on load");
+        log.info("hutu-order-api on load");
     }
 }
