@@ -15,6 +15,7 @@
         <module>hutu-web/api</module>
         <module>hutu-web/admin</module>
         <module>hutu-external</module>
+        <module>hutu-security</module>
     </modules>
 
     <properties>

@@ -1,10 +1,12 @@
 package org.nott;
 
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication(scanBasePackages = "org.nott")
+@MapperScan("org.nott.admin.mapper")
+@SpringBootApplication(scanBasePackages = {"org.nott.admin","org.nott.security"})
 public class HutuAdminApplication {
     public static void main(String[] args) {
-
+        SpringApplication.run(HutuAdminApplication.class,args);
     }
 }

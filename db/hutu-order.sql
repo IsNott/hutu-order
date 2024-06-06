@@ -1,18 +1,4 @@
-/*
- Navicat Premium Data Transfer
 
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 50735 (5.7.35)
- Source Host           : localhost:3306
- Source Schema         : hutu-order
-
- Target Server Type    : MySQL
- Target Server Version : 50735 (5.7.35)
- File Encoding         : 65001
-
- Date: 03/06/2024 14:42:46
-*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -289,6 +275,25 @@ CREATE TABLE `biz_user`  (
 -- ----------------------------
 -- Records of biz_user
 -- ----------------------------
+INSERT INTO `biz_user` VALUES (585384223465017355, 'isnott', '17570887791', NULL, 0, '2024-06-03 16:28:31');
+
+-- ----------------------------
+-- Table structure for biz_user_package
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_user_package`;
+CREATE TABLE `biz_user_package`  (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id',
+  `item_id` bigint(20) NULL DEFAULT NULL COMMENT '产品id',
+  `item_piece` int(11) NULL DEFAULT NULL COMMENT '选购件数',
+  `sku_item_contents` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '选购规格，以逗号分隔',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_user_package
+-- ----------------------------
+INSERT INTO `biz_user_package` VALUES (585384179567427584, 585384223465017355, 11, 1, '三分糖');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -310,5 +315,6 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
+INSERT INTO `sys_user` VALUES (586394601263202304, '周图', 'zhoutu', '$2a$10$SjRLO8CFdFJQx7qLujkSf.twPMBZl9CWfWqJBU3rRzxpHw/ljh0WK', '14511357607', NULL, 0, '2024-06-06 11:23:18', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
