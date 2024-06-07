@@ -30,6 +30,12 @@ public class AdminLoginController {
         return ResponseEntity.successData(StpUtil.getTokenInfo());
     }
 
+    @PostMapping("logout")
+    public ResponseEntity<?> logout(){
+        StpUtil.logout();
+        return ResponseEntity.success();
+    }
+
     @PostMapping("test")
     public ResponseEntity<?> testToken(){
         StpUtil.checkLogin();

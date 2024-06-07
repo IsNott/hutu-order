@@ -51,6 +51,9 @@ public class SysUser implements Serializable {
      */
     private String avatarUrl;
 
+
+    private Integer isLock;
+
     /**
      * 删除标识
      */

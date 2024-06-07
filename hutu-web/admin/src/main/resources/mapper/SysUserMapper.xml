@@ -3,7 +3,7 @@
 <mapper namespace="org.nott.admin.mapper.SysUserMapper">
 
     <select id="getUserByUsername" resultType="org.nott.model.SysUser">
-        select * from sys_user where username = #{username}
+        select * from sys_user where username = #{username} and ( is_lock is null or is_lock = 0)
     </select>
 
 </mapper>

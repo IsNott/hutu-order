@@ -59,10 +59,4 @@ public class ExceptionAdviceController {
         return ResponseEntity.failure("系统错误", 500);
     }
 
-    @ExceptionHandler(ConnectException.class)
-    public ResponseEntity<Void> handleRuntimeException(ConnectException e) {
-        log.error("捕获到连接异常：{}", e.getMessage(), e);
-        return ResponseEntity.failure("系统错误", 500);
-    }
-
 }

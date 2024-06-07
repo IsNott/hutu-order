@@ -24,9 +24,9 @@ import java.util.List;
 @Slf4j
 public class AuthenticInterceptor implements HandlerInterceptor {
 
-    private static List<String> permittedUrl = Arrays.asList("/sys/admin/login", "/sys/admin/logout", "/error");
+    private final static List<String> permittedUrl = Arrays.asList("/sys/admin/login", "/sys/admin/logout", "/error");
 
-    private static String errorUrl = "/error";
+    private final static String errorUrl = "/error";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
