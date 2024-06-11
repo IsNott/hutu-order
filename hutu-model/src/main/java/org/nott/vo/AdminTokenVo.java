@@ -10,5 +10,9 @@ import lombok.Data;
 @Data
 public class AdminTokenVo {
 
-    private String token;
+    private String tokenValue;
+
+    private String tokenName;
+
+    private Object loginId;
 }

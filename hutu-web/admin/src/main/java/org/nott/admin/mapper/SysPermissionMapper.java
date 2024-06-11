@@ -3,6 +3,8 @@ package org.nott.admin.mapper;
 import org.nott.model.SysPermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
+    List<SysPermission> getPermissionByUserId(Object loginId);
 }

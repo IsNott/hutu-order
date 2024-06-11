@@ -1,6 +1,7 @@
 package interceptor;
 
 import cn.dev33.satoken.stp.StpUtil;
+import constant.SecurityConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.nott.common.ResponseEntity;
 import org.nott.common.handler.HttpHandler;
@@ -10,8 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.List;
+
 
 /**
  * 基于SpringMvc的拦截器
@@ -22,22 +22,18 @@ import java.util.List;
 @Order(1)
 @Component
 @Slf4j
-public class AuthenticInterceptor implements HandlerInterceptor {
-
-    private final static List<String> permittedUrl = Arrays.asList("/sys/admin/login", "/sys/admin/logout", "/error");
-
-    private final static String errorUrl = "/error";
+public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         log.info("Request Url: [{}]", requestURI);
-        if (errorUrl.equals(requestURI)) {
+        if (SecurityConstants.ERROR_URL.equals(requestURI)) {
             HttpHandler.writeResponse(ResponseEntity.failure("系统异常", 500), response);
             return false;
         }
 
-        for (String url : permittedUrl) {
+        for (String url : SecurityConstants.PERMITTED_URL) {
             if (url.equals(requestURI)) {
                 return true;
             }

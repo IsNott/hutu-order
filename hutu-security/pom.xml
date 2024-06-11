@@ -34,8 +34,6 @@
             <version>1.9.0</version>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.nott</groupId>
             <artifactId>hutu-common</artifactId>
