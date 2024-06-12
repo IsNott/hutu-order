@@ -1,8 +1,8 @@
 package org.nott.web.controller;
 
 import org.nott.common.ResponseEntity;
-import org.nott.web.service.IBizMenuCatalogService;
-import org.nott.web.service.IBizMenuService;
+import org.nott.service.service.IBizMenuCatalogService;
+import org.nott.service.service.IBizMenuService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

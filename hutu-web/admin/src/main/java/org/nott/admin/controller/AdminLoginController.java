@@ -2,11 +2,15 @@ package org.nott.admin.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import org.nott.admin.service.SysUserService;
+import org.nott.common.exception.PasswordNotMatchesException;
+import org.nott.common.exception.UserNotFoundException;
+import org.nott.model.SysUser;
+import org.nott.service.service.SysUserService;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.AdminLoginDTO;
 import org.nott.vo.AdminTokenVo;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +31,21 @@ public class AdminLoginController {
     @Resource
     private SysUserService sysUserService;
 
+    @Resource
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody @Valid AdminLoginDTO dto) {
-        sysUserService.adminLogin(dto);
+        String username = dto.getUsername();
+        SysUser userByName = sysUserService.findUserByName(username);
+        if(userByName == null){
+            throw new UserNotFoundException("找不到对应用户");
+        }
+        boolean matches = passwordEncoder.matches(dto.getPassword(), userByName.getPassword());
+        if(!matches){
+            throw new PasswordNotMatchesException("密码错误");
+        }
+        StpUtil.setLoginId(userByName.getId());
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         AdminTokenVo vo = new AdminTokenVo();
         BeanUtils.copyProperties(tokenInfo, vo);

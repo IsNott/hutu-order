@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.nott.common.config.JedisPoolYmlConfig;
 import org.nott.common.config.RedisConfig;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -24,6 +25,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * @author Nott
  * @date 2024-6-6
  */
+@ConditionalOnProperty(prefix = "spring",name = "redis")
 @Configuration
 @RequiredArgsConstructor
 public class RedisConfiguration{

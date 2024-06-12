@@ -4,9 +4,9 @@ import org.nott.common.ResponseEntity;
 import org.nott.dto.UserPackageAddDTO;
 import org.nott.dto.UserPackageQueryDTO;
 import org.nott.vo.UserPackageVo;
-import org.nott.web.service.IBizItemService;
-import org.nott.web.service.IBizUserPackageService;
-import org.nott.web.service.IBizUserService;
+import org.nott.service.service.IBizItemService;
+import org.nott.service.service.IBizUserPackageService;
+import org.nott.service.service.IBizUserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
