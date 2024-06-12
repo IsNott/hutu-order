@@ -1,9 +1,10 @@
 package org.nott.common.advice;
 
 import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
 import lombok.extern.slf4j.Slf4j;
 import org.nott.common.ResponseEntity;
-import org.nott.common.configuration.HutuBizException;
+import org.nott.common.exception.HutuBizException;
 import org.nott.common.exception.PasswordNotMatchesException;
 import org.nott.common.exception.UserNotFoundException;
 import org.springframework.validation.BindingResult;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.net.ConnectException;
 import java.util.List;
 
 /**
@@ -53,10 +53,16 @@ public class ExceptionAdviceController {
         return ResponseEntity.failure("还未登录", 401);
     }
 
+    @ExceptionHandler(NotPermissionException.class)
+    public ResponseEntity<Void> handleNotPermissionException(NotPermissionException e) {
+        return ResponseEntity.failure("暂无权限", 403);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Void> handleRuntimeException(RuntimeException e) {
         log.error("捕获到运行时异常：{}", e.getMessage(), e);
         return ResponseEntity.failure("系统错误", 500);
     }
+
 
 }

@@ -1,7 +1,8 @@
 package org.nott.admin.controller;
 
+import org.nott.common.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -11,8 +12,13 @@ import org.springframework.stereotype.Controller;
  * @author nott
  * @since 2024-06-07
  */
-@Controller
+@RestController
 @RequestMapping("/sys/bizItem")
 public class SysBizItemController {
+
+    @RequestMapping("/test")
+    public ResponseEntity<?> test(){
+        return ResponseEntity.success();
+    }
 
 }

@@ -2,7 +2,9 @@ package org.nott.admin.service.impl;
 
 import cn.dev33.satoken.stp.StpInterface;
 import org.nott.admin.mapper.SysPermissionMapper;
+import org.nott.admin.mapper.SysRoleMapper;
 import org.nott.model.SysPermission;
+import org.nott.model.SysRole;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +21,9 @@ public class StpInterfaceImpl implements StpInterface {
     @Resource
     private SysPermissionMapper sysPermissionMapper;
 
+    @Resource
+    private SysRoleMapper sysRoleMapper;
+
     @Override
     public List<String> getPermissionList(Object loginId, String loginKey) {
         List<SysPermission> permission = sysPermissionMapper.getPermissionByUserId(loginId);
@@ -27,6 +32,7 @@ public class StpInterfaceImpl implements StpInterface {
 
     @Override
     public List<String> getRoleList(Object loginId, String loginKey) {
-        return null;
+        List<SysRole> roles = sysRoleMapper.getRoleByUserId(loginId);
+        return roles.stream().map(SysRole::getRoleName).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package org.nott.security.configuration;
 
+import interceptor.AuthorizationInterceptor;
 import interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ public class InterceptorConfiguration {
         return new WebMvcConfigurer() {
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(new LoginInterceptor());
+                registry.addInterceptor(new AuthorizationInterceptor());
             }
         };
     }

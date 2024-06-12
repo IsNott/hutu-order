@@ -7,6 +7,7 @@ import org.nott.common.ResponseEntity;
 import org.nott.common.handler.HttpHandler;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,17 +25,19 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class LoginInterceptor implements HandlerInterceptor {
 
+    private final AntPathMatcher matcher = new AntPathMatcher();
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         log.info("Request Url: [{}]", requestURI);
-        if (SecurityConstants.ERROR_URL.equals(requestURI)) {
+        if (matcher.match(SecurityConstants.ERROR_URL,requestURI)) {
             HttpHandler.writeResponse(ResponseEntity.failure("系统异常", 500), response);
             return false;
         }
 
         for (String url : SecurityConstants.PERMITTED_URL) {
-            if (url.equals(requestURI)) {
+            if(matcher.match(url,requestURI)){
                 return true;
             }
         }

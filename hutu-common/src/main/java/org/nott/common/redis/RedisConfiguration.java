@@ -4,12 +4,20 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.nott.common.config.JedisPoolYmlConfig;
+import org.nott.common.config.RedisConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * redis配置类
@@ -20,14 +28,41 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @RequiredArgsConstructor
 public class RedisConfiguration{
 
-    private final RedisConnectionFactory redisConnectionFactory;
+    private final RedisConfig redisConfig;
+
+    private final JedisPoolYmlConfig jedisPoolYmlConfig;
+
 
     @Bean
-    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public JedisPoolConfig jedisPoolConfig(){
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(jedisPoolYmlConfig.getMaxActive());
+        config.setMinIdle(jedisPoolYmlConfig.getMinIdle());
+        config.setMaxIdle(jedisPoolYmlConfig.getMaxIdle());
+        return config;
+    }
+
+    @Bean
+    @DependsOn("jedisPoolConfig")
+    public RedisConnectionFactory getRedisConnectionFactory(){
+        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+        configuration.setHostName(redisConfig.getHost());
+        configuration.setPort(redisConfig.getPort());
+        configuration.setDatabase(redisConfig.getDatabase());
+        if(StringUtils.isNotEmpty(redisConfig.getPassword())){
+            configuration.setPassword(redisConfig.getPassword());
+        }
+        JedisClientConfiguration.JedisPoolingClientConfigurationBuilder jpcf = (JedisClientConfiguration.JedisPoolingClientConfigurationBuilder) JedisClientConfiguration.builder();
+        JedisClientConfiguration jedisClientConfiguration = jpcf.build();
+        return new JedisConnectionFactory(configuration, jedisClientConfiguration);
+    }
+
+    @Bean
+    public RedisTemplate<Object, Object> redisTemplate() {
         //1.创建redisTemplate模板
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         //2.关联redisConnectionFactory
-        template.setConnectionFactory(redisConnectionFactory);
+        template.setConnectionFactory(getRedisConnectionFactory());
         //3.创建序列化类
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -43,5 +78,9 @@ public class RedisConfiguration{
         template.afterPropertiesSet();
         return template;
     }
+
+
+
+
 
 }

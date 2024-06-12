@@ -1,4 +1,4 @@
-package org.nott.common.configuration;
+package org.nott.common.exception;
 
 /**
  * @author Nott
