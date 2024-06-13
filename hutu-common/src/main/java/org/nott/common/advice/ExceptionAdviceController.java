@@ -7,11 +7,15 @@ import org.nott.common.ResponseEntity;
 import org.nott.common.exception.HutuBizException;
 import org.nott.common.exception.PasswordNotMatchesException;
 import org.nott.common.exception.UserNotFoundException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
 
@@ -21,7 +25,16 @@ import java.util.List;
  */
 @Slf4j
 @RestControllerAdvice
-public class ExceptionAdviceController {
+public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
+
+    @Override
+    protected org.springframework.http.ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error(ex.getMessage(),ex);
+        if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
+            request.setAttribute("javax.servlet.error.exception", ex, 0);
+        }
+        return new org.springframework.http.ResponseEntity<>(ResponseEntity.failure(ex.getMessage(), status.value()), headers, status);
+    }
 
     @ExceptionHandler(HutuBizException.class)
     public ResponseEntity<Void> handleHutuBizException(HutuBizException hutuBizException) {
@@ -29,14 +42,14 @@ public class ExceptionAdviceController {
         return ResponseEntity.failure("系统异常");
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        log.error("捕获到方法参数检测异常：{}", e.getMessage());
-        BindingResult result = e.getBindingResult();
-        List<ObjectError> allErrors = result.getAllErrors();
-        String defaultMessage = allErrors.get(0).getDefaultMessage();
-        return ResponseEntity.failure(defaultMessage);
-    }
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+//        log.error("捕获到方法参数检测异常：{}", e.getMessage());
+//        BindingResult result = e.getBindingResult();
+//        List<ObjectError> allErrors = result.getAllErrors();
+//        String defaultMessage = allErrors.get(0).getDefaultMessage();
+//        return ResponseEntity.failure(defaultMessage);
+//    }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Void> handleUserNotFoundException(UserNotFoundException e) {
@@ -44,12 +57,12 @@ public class ExceptionAdviceController {
     }
 
     @ExceptionHandler(PasswordNotMatchesException.class)
-    public ResponseEntity<Void> handleMethodArgumentNotValidException(PasswordNotMatchesException e) {
+    public ResponseEntity<Void> handlePasswordNotMatchesException(PasswordNotMatchesException e) {
         return ResponseEntity.failure("密码不正确", 402);
     }
 
     @ExceptionHandler(NotLoginException.class)
-    public ResponseEntity<Void> handleMethodArgumentNotValidException(NotLoginException e) {
+    public ResponseEntity<Void> handleNotLoginException(NotLoginException e) {
         return ResponseEntity.failure("还未登录", 401);
     }
 

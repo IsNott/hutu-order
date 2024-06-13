@@ -14,5 +14,12 @@ log
 .iml
 .idea
 
+.github
+
+.env.*
+
+node_modules
+
+package-lock.json
 
 application-dev.yml

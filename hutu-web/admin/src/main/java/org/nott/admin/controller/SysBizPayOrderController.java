@@ -1,7 +1,12 @@
 package org.nott.admin.controller;
 
+import org.nott.common.ResponseEntity;
+import org.nott.service.service.IBizPayOrderService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * <p>
@@ -14,5 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/sys/bizPayOrder")
 public class SysBizPayOrderController {
+
+    @Resource
+    private IBizPayOrderService bizPayOrderService;
+
+    @GetMapping("/count")
+    public ResponseEntity<?> countOrder(){
+        return ResponseEntity.successData(bizPayOrderService.count());
+    }
+
+    @GetMapping("/countPurchases")
+    public ResponseEntity<?> countPurchases(){
+        String count = bizPayOrderService.countPurchases();
+        return ResponseEntity.successData(count);
+    }
+
+
 
 }

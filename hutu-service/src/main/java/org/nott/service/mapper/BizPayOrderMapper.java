@@ -3,6 +3,8 @@ package org.nott.service.mapper;
 import org.nott.model.BizPayOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface BizPayOrderMapper extends BaseMapper<BizPayOrder> {
 
+    List<String> selectOrderMoney();
 }

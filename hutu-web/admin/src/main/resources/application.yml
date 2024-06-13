@@ -2,6 +2,10 @@ server:
   port: 10002
 
 spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
   application:
     name: hutu-order-admin
   jackson:
@@ -47,4 +51,4 @@ spring:
 logging:
   config: classpath:logback-dev.xml
   level:
-    org.nott.web.mapper: debug
+    org.nott.admin.mapper: debug

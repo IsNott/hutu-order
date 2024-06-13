@@ -1,6 +1,6 @@
 package org.nott.service.service;
 
-import org.nott.model.BizPayOrder;
+import org.nott.model.BizComment;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,9 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author nott
- * @since 2024-05-24
+ * @since 2024-06-13
  */
-public interface IBizPayOrderService extends IService<BizPayOrder> {
+public interface IBizCommentService extends IService<BizComment> {
 
-    String countPurchases();
 }

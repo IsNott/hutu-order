@@ -2,6 +2,10 @@ server:
   port: 10001
 
 spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
   application:
     name: hutu-order
   jackson:
