@@ -4,6 +4,23 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
+-- Table structure for biz_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_comment`;
+CREATE TABLE `biz_comment`  (
+  `id` bigint(20) NOT NULL,
+  `comment_rate` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '评价打分',
+  `comment_context` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '评价正文',
+  `comment_urls` json NULL COMMENT '评价图片',
+  `comment_user_id` bigint(20) NULL DEFAULT NULL COMMENT '评价用户id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_comment
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for biz_item
 -- ----------------------------
 DROP TABLE IF EXISTS `biz_item`;
@@ -181,6 +198,9 @@ CREATE TABLE `biz_pay_order`  (
 -- ----------------------------
 -- Records of biz_pay_order
 -- ----------------------------
+INSERT INTO `biz_pay_order` VALUES (588903466085122048, 1, 1, '13.99', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `biz_pay_order` VALUES (588903466085122051, 1, 1, '19.99', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `biz_pay_order` VALUES (588903466085122099, 1, 1, '21.99', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for biz_pay_way
@@ -385,5 +405,6 @@ CREATE TABLE `sys_user_role`  (
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
+INSERT INTO `sys_user_role` VALUES (588553637135912965, 586394601263202304, 586717827931574273);
 
 SET FOREIGN_KEY_CHECKS = 1;
