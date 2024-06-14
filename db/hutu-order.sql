@@ -286,16 +286,19 @@ CREATE TABLE `biz_user`  (
   `id` bigint(20) NOT NULL,
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户名',
   `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号',
+  `gender` tinyint(4) NULL DEFAULT NULL COMMENT '性别',
+  `avatar_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像地址',
   `open_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信/支付宝 openid',
   `login_count` int(11) NULL DEFAULT NULL COMMENT '登录次数',
   `regist_time` datetime NULL DEFAULT NULL COMMENT '注册时间',
+  `last_log_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_user
 -- ----------------------------
-INSERT INTO `biz_user` VALUES (585384223465017355, 'isnott', '17570887791', NULL, 0, '2024-06-03 16:28:31');
+INSERT INTO `biz_user` VALUES (585384223465017355, 'isnott', '17570887791', NULL, NULL, NULL, 0, '2024-06-03 16:28:31', NULL);
 
 -- ----------------------------
 -- Table structure for biz_user_package

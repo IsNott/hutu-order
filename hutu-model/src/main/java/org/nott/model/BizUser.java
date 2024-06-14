@@ -38,6 +38,10 @@ public class BizUser implements Serializable {
      */
     private String openId;
 
+    private String avatarUrl;
+
+    private Integer gender;
+
     /**
      * 登录次数
      */
@@ -47,6 +51,8 @@ public class BizUser implements Serializable {
      * 注册时间
      */
     private Date registTime;
+
+    private Date lastLogTime;
 
 
 }
