@@ -73,6 +73,11 @@
             <artifactId>jedis</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
 
         <!-- sa-token 权限认证, 在线文档：https://sa-token.cc/ -->
         <dependency>

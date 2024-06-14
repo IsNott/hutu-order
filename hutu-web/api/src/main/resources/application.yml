@@ -35,6 +35,11 @@ alipay:
   signType: RSA2
   notifyUrl:
 
+wechat:
+  app:
+    appId:
+    appSecret:
+
 weixinpay:
   mchId:
   appId:
