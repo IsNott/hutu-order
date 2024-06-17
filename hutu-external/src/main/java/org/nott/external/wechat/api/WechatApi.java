@@ -29,9 +29,6 @@ import java.util.Objects;
 public class WechatApi {
 
     @Resource
-    private WechatAppConfig wechatAppConfig;
-
-    @Resource
     private RedisTemplate<String,String> redisTemplate;
 
     @Resource

@@ -1,4 +1,4 @@
-package constant;
+package org.nott.security.constant;
 
 import java.util.Arrays;
 import java.util.List;

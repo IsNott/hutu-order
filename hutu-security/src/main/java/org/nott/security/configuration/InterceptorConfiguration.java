@@ -1,7 +1,7 @@
 package org.nott.security.configuration;
 
-import interceptor.AuthorizationInterceptor;
-import interceptor.LoginInterceptor;
+import org.nott.security.interceptor.AuthorizationInterceptor;
+import org.nott.security.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

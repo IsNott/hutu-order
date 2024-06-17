@@ -1,7 +1,7 @@
-package interceptor;
+package org.nott.security.interceptor;
 
 import cn.dev33.satoken.stp.StpUtil;
-import constant.SecurityConstants;
+import org.nott.security.constant.SecurityConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.nott.common.ResponseEntity;
 import org.nott.common.handler.HttpHandler;

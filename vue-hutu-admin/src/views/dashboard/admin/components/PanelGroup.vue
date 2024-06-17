@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Total User
+            用户数
           </div>
           <count-to :start-val="0" :end-val="userCount" :duration="2600" class="card-panel-num" />
         </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Comments
+            评价数
           </div>
           <count-to :start-val="0" :end-val="commentCount" :duration="3000" class="card-panel-num" />
         </div>
@@ -33,7 +33,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Purchases
+            营业额
           </div>
           <count-to :start-val="0" :end-val="orderPurchasesCount" :duration="3200" class="card-panel-num" />
         </div>
@@ -46,7 +46,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Order
+            订单数
           </div>
           <count-to :start-val="0" :end-val="orderCount" :duration="3600" class="card-panel-num" />
         </div>
