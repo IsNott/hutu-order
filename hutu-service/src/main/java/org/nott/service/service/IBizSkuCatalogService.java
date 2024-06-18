@@ -1,7 +1,10 @@
 package org.nott.service.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.nott.dto.SkuCatalogSearchDTO;
 import org.nott.model.BizSkuCatalog;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.nott.vo.SkuCatalogItemVo;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IBizSkuCatalogService extends IService<BizSkuCatalog> {
 
+    Page<SkuCatalogItemVo> pageSkuCatalog(SkuCatalogSearchDTO skuCatalogSearchDTO, Integer page, Integer size);
 }

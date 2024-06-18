@@ -46,7 +46,7 @@ public class HutuUtils {
         copyProperties(source,target,true);
     }
 
-    public static boolean checkEmpty(Object o){
+    public static boolean isEmpty(Object o){
         if(o instanceof String){
             return StringUtils.isEmpty((String) o);
         } else if (o instanceof Collection) {
@@ -58,8 +58,12 @@ public class HutuUtils {
         }
     }
 
-    public static boolean checkNotEmpty(Object o){
-        return !checkEmpty(o);
+    public static boolean isNotEmpty(Object o){
+        return !isEmpty(o);
+    }
+
+    public static int pageOffset(Integer page,Integer size){
+        return ((page - 1) * size);
     }
 
     public static void copyProperties(Object source,Object target,boolean skipNullProp){
@@ -89,7 +93,7 @@ public class HutuUtils {
                             }
 
                             if(skipNullProp){
-                                if(checkNotEmpty(value)){
+                                if(isNotEmpty(value)){
                                     writeMethod.invoke(target, value);
                                 }
                             }

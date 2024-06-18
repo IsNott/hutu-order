@@ -1,7 +1,13 @@
 package org.nott.admin.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.nott.common.ResponseEntity;
+import org.nott.dto.SkuCatalogSearchDTO;
+import org.nott.service.service.IBizSkuCatalogService;
+import org.nott.vo.SkuCatalogItemVo;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * <p>
@@ -14,5 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/sys/bizSkuCatalog")
 public class SysBizSkuCatalogController {
+
+    @Resource
+    private IBizSkuCatalogService bizSkuCatalogService;
+
+    @PostMapping("page/{page}/{size}")
+    public ResponseEntity<?> page(@RequestBody SkuCatalogSearchDTO skuCatalogSearchDTO, @PathVariable Integer page, @PathVariable Integer size){
+        Page<SkuCatalogItemVo> skuCatalogItemVoPage = bizSkuCatalogService.pageSkuCatalog(skuCatalogSearchDTO, page, size);
+        return ResponseEntity.successData(skuCatalogItemVoPage);
+    }
 
 }
