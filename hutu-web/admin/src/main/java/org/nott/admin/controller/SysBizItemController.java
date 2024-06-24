@@ -16,9 +16,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sys/bizItem")
 public class SysBizItemController {
 
-    @RequestMapping("/test")
-    public ResponseEntity<?> test(){
-        return ResponseEntity.success();
-    }
-
 }

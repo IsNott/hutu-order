@@ -67,6 +67,5 @@ public class BizSkuCatalogServiceImpl extends ServiceImpl<BizSkuCatalogMapper, B
         List<Long> relationIds = skuRelations.stream().map(BizItemSkuRelation::getId).collect(Collectors.toList());
         List<Long> itemIds = skuRelations.stream().map(BizItemSkuRelation::getItemId).collect(Collectors.toList());
 
-
     }
 }

@@ -18,8 +18,8 @@ import javax.annotation.Resource;
  * @since 2024-06-07
  */
 @RestController
-@RequestMapping("/sys/bizSkuCatalog")
-public class SysBizSkuCatalogController {
+@RequestMapping("/sys/sku")
+public class SysBizSkuController {
 
     @Resource
     private IBizSkuCatalogService bizSkuCatalogService;
