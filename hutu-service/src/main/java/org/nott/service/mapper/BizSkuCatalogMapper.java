@@ -1,5 +1,7 @@
 package org.nott.service.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import org.nott.dto.SkuCatalogSearchDTO;
 import org.nott.model.BizSkuCatalog;
@@ -18,5 +20,5 @@ import java.util.List;
  */
 public interface BizSkuCatalogMapper extends BaseMapper<BizSkuCatalog> {
 
-    List<SkuCatalogItemVo> selectCatalogItemByPage(@Param("skuCatalogSearchDTO") SkuCatalogSearchDTO skuCatalogSearchDTO,@Param("offset") int offset, @Param("size") Integer size);
+    Page<SkuCatalogItemVo> selectCatalogItemByPage(IPage<SkuCatalogItemVo> page, @Param("skuCatalogSearchDTO") SkuCatalogSearchDTO skuCatalogSearchDTO, @Param("offset") int offset, @Param("size") Integer size);
 }

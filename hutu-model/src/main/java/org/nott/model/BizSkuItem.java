@@ -26,7 +26,7 @@ public class BizSkuItem implements Serializable {
 
     private Long id;
 
-    private Long skuCatalogId;
+//    private Long skuCatalogId;
 
     private String skuItemContent;
 

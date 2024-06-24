@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author nott
@@ -24,10 +24,16 @@ public class SysBizSkuCatalogController {
     @Resource
     private IBizSkuCatalogService bizSkuCatalogService;
 
-    @PostMapping("page/{page}/{size}")
-    public ResponseEntity<?> page(@RequestBody SkuCatalogSearchDTO skuCatalogSearchDTO, @PathVariable Integer page, @PathVariable Integer size){
+    @PostMapping("queryBizItemRelByPage/{page}/{size}")
+    public ResponseEntity<?> page(@RequestBody SkuCatalogSearchDTO skuCatalogSearchDTO, @PathVariable Integer page, @PathVariable Integer size) {
         Page<SkuCatalogItemVo> skuCatalogItemVoPage = bizSkuCatalogService.pageSkuCatalog(skuCatalogSearchDTO, page, size);
         return ResponseEntity.successData(skuCatalogItemVoPage);
+    }
+
+    @PostMapping("delete/{id}")
+    public ResponseEntity<?> deleteSkuCatalog(@PathVariable Long id) {
+        bizSkuCatalogService.deleteSkuCatalog(id);
+        return ResponseEntity.success();
     }
 
 }

@@ -17,4 +17,6 @@ import org.nott.vo.SkuCatalogItemVo;
 public interface IBizSkuCatalogService extends IService<BizSkuCatalog> {
 
     Page<SkuCatalogItemVo> pageSkuCatalog(SkuCatalogSearchDTO skuCatalogSearchDTO, Integer page, Integer size);
+
+    void deleteSkuCatalog(Long id);
 }

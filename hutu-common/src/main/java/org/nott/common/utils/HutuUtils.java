@@ -66,6 +66,13 @@ public class HutuUtils {
         return ((page - 1) * size);
     }
 
+    public static <T> void collectAddNotExcept(Collection<T> collection, T element) {
+        if (collection == null || element == null) {
+            return;
+        }
+        collection.add(element);
+    }
+
     public static void copyProperties(Object source,Object target,boolean skipNullProp){
         Assert.notNull(source, "Source must not be null");
         Assert.notNull(target, "Target must not be null");

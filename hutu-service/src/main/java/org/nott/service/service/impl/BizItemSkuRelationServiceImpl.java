@@ -3,7 +3,9 @@ package org.nott.service.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.nott.model.BizItemSkuRelation;
 import org.nott.model.BizSkuCatalog;
+import org.nott.model.BizSkuCatalogRelation;
 import org.nott.model.BizSkuItem;
+import org.nott.service.service.IBizSkuCatalogRelationService;
 import org.nott.vo.ItemSkuVo;
 import org.nott.service.mapper.BizItemSkuRelationMapper;
 import org.nott.service.service.IBizItemSkuRelationService;
@@ -35,6 +37,9 @@ public class BizItemSkuRelationServiceImpl extends ServiceImpl<BizItemSkuRelatio
     @Resource
     private IBizSkuItemService bizSkuItemService;
 
+    @Resource
+    private IBizSkuCatalogRelationService bizSkuCatalogRelationService;
+
     @Override
     public List<ItemSkuVo> selectItemSkuList(Long itemId) {
         List<ItemSkuVo> itemSkuVos = new ArrayList<>();
@@ -50,14 +55,19 @@ public class BizItemSkuRelationServiceImpl extends ServiceImpl<BizItemSkuRelatio
             return itemSkuVos;
         }
         Map<Long, BizSkuCatalog> bizSkuCatalogMap = skuCatalogs.stream().collect(Collectors.toMap(BizSkuCatalog::getId, element -> element, (key1, key2) -> key1));
-        LambdaQueryWrapper<BizSkuItem> queryWrapper = new LambdaQueryWrapper<BizSkuItem>()
-                .in(BizSkuItem::getSkuCatalogId, catalogIds);
-        List<BizSkuItem> bizSkuItems = bizSkuItemService.list(queryWrapper);
-        for (Long catalogId : catalogIds) {
+        LambdaQueryWrapper<BizSkuCatalogRelation> queryWrapper = new LambdaQueryWrapper<BizSkuCatalogRelation>()
+                .in(BizSkuCatalogRelation::getSkuCatalogId, catalogIds);
+        List<BizSkuCatalogRelation> bizSkuCatalogRelations = bizSkuCatalogRelationService.list(queryWrapper);
+
+        List<Long> skuItemIds = bizSkuCatalogRelations.stream().map(BizSkuCatalogRelation::getSkuItemId).collect(Collectors.toList());
+        List<BizSkuItem> bizSkuItems = bizSkuItemService.listByIds(skuItemIds);
+        for (BizSkuCatalogRelation relation : bizSkuCatalogRelations) {
+            Long catalogId = relation.getSkuCatalogId();
             if (bizSkuCatalogMap.containsKey(catalogId)) {
+                Long skuItemId = relation.getSkuItemId();
                 ItemSkuVo vo = new ItemSkuVo();
                 BizSkuCatalog catalog = bizSkuCatalogMap.get(catalogId);
-                List<BizSkuItem> skuItemList = bizSkuItems.stream().filter(r -> catalogId.equals(r.getSkuCatalogId())).collect(Collectors.toList());
+                List<BizSkuItem> skuItemList = bizSkuItems.stream().filter(r -> skuItemId.equals(r.getId())).collect(Collectors.toList());
                 vo.setSkuCatalogName(catalog.getSkuCatalogName());
                 vo.setSkuItems(skuItemList);
                 vo.setDisplayOrder(catalogOrderMap.get(catalogId));

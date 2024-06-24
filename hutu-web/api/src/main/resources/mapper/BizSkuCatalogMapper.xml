@@ -4,7 +4,7 @@
 
     <select id="selectCatalogItemByPage" resultType="org.nott.vo.SkuCatalogItemVo">
         SELECT
-            t1.id AS id,
+            t1.id AS skuCatalogId,
             t1.sku_catalog_name AS skuCatalogName,
             t2.display_order AS displayOrder,
             t3.id AS itemId,
@@ -21,7 +21,6 @@
                 AND t1.sku_catalog_name like %#{skuCatalogSearchDTO.itemName.catalogName}%
             </if>
         </where>
-        limit #{offset},#{size}
     </select>
 
 </mapper>
