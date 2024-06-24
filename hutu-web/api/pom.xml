@@ -23,5 +23,11 @@
             <artifactId>hutu-service</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.nott</groupId>
+            <artifactId>hutu-security</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>
