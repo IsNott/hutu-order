@@ -1,6 +1,7 @@
 package org.nott.common.http;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.util.URLEncoder;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
@@ -34,6 +35,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2024-6-14
  */
 
+@Slf4j
 public class HttpClientUtil {
 
     private static final int DEFAULT_POOL_MAX_TOTAL = 200;
@@ -127,15 +129,19 @@ public class HttpClientUtil {
         }
         CloseableHttpResponse response = null;
         try {
+            log.info("HttpGet Url ========> : [{}]",httpGet.getURI());
             response = HttpClientUtil.build().httpClient.execute(httpGet);
             if (response == null || response.getStatusLine() == null) {
                 return null;
             }
             int statusCode = response.getStatusLine().getStatusCode();
+            log.info("HttpGet Response code ========> : [{}]",statusCode);
             if ( statusCode == HttpStatus.SC_OK ) {
                 HttpEntity entityRes = response.getEntity();
                 if (entityRes != null) {
-                    return EntityUtils.toString(entityRes, "UTF-8");
+                    String respStr = EntityUtils.toString(entityRes, "UTF-8");
+                    log.info("HttpGet Response String ========> : [{}]",respStr);
+                    return respStr;
                 }
             }
             return null;

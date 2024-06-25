@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface IBizUserPackageService extends IService<BizUserPackage> {
 
-    List<UserPackageVo> queryPackageInfoByUserId(UserPackageQueryDTO dto);
+    List<UserPackageVo> queryPackageInfoByUserId();
 
     void packageAddItem(UserPackageAddDTO dto);
 }

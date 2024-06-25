@@ -1,5 +1,6 @@
 package org.nott.service.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import org.nott.dto.UserPackageAddDTO;
 import org.nott.dto.UserPackageQueryDTO;
 import org.nott.model.BizUserPackage;
@@ -27,15 +28,15 @@ public class BizUserPackageServiceImpl extends ServiceImpl<BizUserPackageMapper,
     private BizUserPackageMapper bizUserPackageMapper;
 
     @Override
-    public List<UserPackageVo> queryPackageInfoByUserId(UserPackageQueryDTO dto) {
-        Long userId = dto.getUserId();
+    public List<UserPackageVo> queryPackageInfoByUserId() {
+        Long userId = (Long) StpUtil.getLoginId();
         List<UserPackageVo> userPackageVos = bizUserPackageMapper.selectUserPackageByUserId(userId);
         return userPackageVos;
     }
 
     @Override
     public void packageAddItem(UserPackageAddDTO dto) {
-        Long userId = dto.getUserId();
+        Long userId = (Long) StpUtil.getLoginId();
         Long itemId = dto.getItemId();
         Integer itemPiece = dto.getItemPiece();
         String skuItemContents = dto.getSkuItemContents();

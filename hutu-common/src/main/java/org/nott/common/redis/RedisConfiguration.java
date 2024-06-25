@@ -25,7 +25,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * @author Nott
  * @date 2024-6-6
  */
-@ConditionalOnProperty(prefix = "spring",name = "redis")
+@ConditionalOnProperty(prefix = "spring.redis",name = "host")
 @Configuration
 @RequiredArgsConstructor
 public class RedisConfiguration{
@@ -59,10 +59,10 @@ public class RedisConfiguration{
         return new JedisConnectionFactory(configuration, jedisClientConfiguration);
     }
 
-    @Bean
-    public RedisTemplate<Object, Object> redisTemplate() {
+    @Bean("redisTemplate")
+    public RedisTemplate<String, Object> redisTemplate() {
         //1.创建redisTemplate模板
-        RedisTemplate<Object, Object> template = new RedisTemplate<>();
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
         //2.关联redisConnectionFactory
         template.setConnectionFactory(getRedisConnectionFactory());
         //3.创建序列化类

@@ -38,7 +38,7 @@ public class AlipayApi {
         AlipayUserInfo alipayUserInfo = alipayService.fetchUserInfoByAcToken(accessToken);
         BizUser bizUser = bizUserService.getUserByOpenId(alipayUserInfo.getOpenId());
         UserLoginInfoVo vo = Objects.isNull(bizUser) ? bizUserService.registerUser(alipayUserInfo) : bizUserService.loginUser(alipayUserInfo);
-        redisTemplate.opsForHash().put("AlipayLogInfo",vo.getLoginId() + "", accessToken);
+//        redisTemplate.opsForHash().put("AlipayLogInfo",vo.getLoginId() + "", accessToken);
         return ResponseEntity.successData(vo);
     }
 }

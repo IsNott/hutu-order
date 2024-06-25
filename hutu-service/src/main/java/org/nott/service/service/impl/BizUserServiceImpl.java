@@ -2,13 +2,19 @@ package org.nott.service.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.nott.common.redis.RedisUtils;
+import org.nott.common.utils.HutuUtils;
+import org.nott.dto.UserRegisterDTO;
 import org.nott.model.BizUser;
 import org.nott.service.mapper.BizUserMapper;
 import org.nott.service.service.IBizUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.vo.ExternalUserInfo;
 import org.nott.vo.UserLoginInfoVo;
+import org.nott.vo.WechatUserInfoVo;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -22,12 +28,16 @@ import java.util.Date;
 @Service
 public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> implements IBizUserService {
 
+    @Resource
+    private RedisUtils redisUtils;
+
     @Override
     public BizUser getUserByOpenId(String openId) {
         LambdaQueryWrapper<BizUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(BizUser::getOpenId, openId);
         return this.getOne(wrapper);
     }
+
 
     @Override
     public UserLoginInfoVo registerUser(ExternalUserInfo userInfo) {
@@ -38,6 +48,7 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         user.setLastLogTime(new Date());
         user.setUsername(userInfo.getNickName());
         user.setAvatarUrl(userInfo.getAvatarUrl());
+        this.save(user);
         return this.login(user);
     }
 
@@ -56,13 +67,32 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         return this.login(user);
     }
 
+    @Override
+    public UserLoginInfoVo register(UserRegisterDTO dto) {
+        String code = dto.getCode();
+        String openId = redisUtils.get(code, String.class);
+        ExternalUserInfo info = new WechatUserInfoVo();
+        info.setAvatarUrl(dto.getAvatarUrl());
+        info.setOpenId(openId);
+        info.setNickName(dto.getNickName());
+
+        return registerUser(info);
+    }
+
+    @Override
+    public String login(String openId, BizUser user) {
+        this.login(user);
+        return StpUtil.getTokenValue();
+    }
+
     private UserLoginInfoVo login(BizUser user){
         Long userId = user.getId();
         user.setLastLogTime(new Date());
         this.updateById(user);
         StpUtil.setLoginId(userId);
         UserLoginInfoVo userLoginInfoVo = new UserLoginInfoVo();
-        userLoginInfoVo.setLoginId(userId);
+        HutuUtils.copyProperties(user,userLoginInfoVo);
+        userLoginInfoVo.setAlreadyRegister(true);
         userLoginInfoVo.setToken(StpUtil.getTokenValue());
         return userLoginInfoVo;
     }

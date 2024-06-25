@@ -1,5 +1,6 @@
 package org.nott.web.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.UserPackageAddDTO;
 import org.nott.dto.UserPackageQueryDTO;
@@ -30,21 +31,17 @@ public class BizUserPackageController {
     private IBizUserPackageService bizUserPackageService;
 
     @Resource
-    private IBizUserService bizUserService;
-
-    @Resource
     private IBizItemService bizItemService;
 
     @PostMapping("/query")
-    public ResponseEntity<?> queryPackage(@RequestBody @Valid UserPackageQueryDTO dto){
-        List<UserPackageVo> userPackageVos = bizUserPackageService.queryPackageInfoByUserId(dto);
+    public ResponseEntity<?> queryPackage(){
+        List<UserPackageVo> userPackageVos = bizUserPackageService.queryPackageInfoByUserId();
         return ResponseEntity.successData(userPackageVos);
     }
 
     @PostMapping("addItem")
     public ResponseEntity<?> addItem(@RequestBody @Valid UserPackageAddDTO dto){
         Objects.requireNonNull(bizItemService.getById(dto.getItemId()),"itemId有误");
-        Objects.requireNonNull(bizUserService.getById(dto.getUserId()),"用户id有误");
         bizUserPackageService.packageAddItem(dto);
         return ResponseEntity.success();
     }

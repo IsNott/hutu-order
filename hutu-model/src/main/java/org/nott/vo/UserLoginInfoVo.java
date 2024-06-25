@@ -10,7 +10,13 @@ import lombok.Data;
 @Data
 public class UserLoginInfoVo {
 
+    private boolean alreadyRegister;
+
     private String token;
 
-    private Long loginId;
+    private String username;
+
+    private String avatarUrl;
+
+    private Integer gender;
 }
