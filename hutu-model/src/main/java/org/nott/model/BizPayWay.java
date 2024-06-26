@@ -42,5 +42,13 @@ public class BizPayWay implements Serializable {
      */
     private String paymentName;
 
+    private Integer order;
+
+    private String icon;
+
+    private Integer packUp;
+
+    private Integer isUsable;
+
 
 }

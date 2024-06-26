@@ -1,9 +1,11 @@
 package org.nott.common.http;
 
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.util.URLEncoder;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -17,6 +19,7 @@ import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -205,6 +208,28 @@ public class HttpClientUtil {
         }
         return null;
 
+    }
+
+    public static JSONObject doPost(String url, JSONObject json){
+        HttpPost post = new HttpPost(url);
+        JSONObject response = null;
+        try {
+            StringEntity s = new StringEntity(json.toString());
+            s.setContentEncoding("UTF-8");
+            //发送json数据需要设置contentType
+            s.setContentType("application/json");
+            post.setEntity(s);
+            HttpResponse res = HttpClientUtil.build().httpClient.execute(post);
+            if(res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                HttpEntity entity = res.getEntity();
+                // 返回json格式：
+                String result = EntityUtils.toString(entity);
+                response = JSONObject.parseObject(result);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return response;
     }
 
     private static HttpEntity getUrlEncodedFormEntity(Map<String, Object> params) {
