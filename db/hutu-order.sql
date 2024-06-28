@@ -179,6 +179,7 @@ CREATE TABLE `biz_package`  (
 DROP TABLE IF EXISTS `biz_pay_order`;
 CREATE TABLE `biz_pay_order`  (
   `id` bigint(20) NOT NULL,
+  `shop_id` bigint(20) NULL DEFAULT NULL COMMENT '所属门店',
   `order_type` tinyint(4) NULL DEFAULT NULL COMMENT '0-单点 1-套餐',
   `pick_type` tinyint(4) NULL DEFAULT NULL COMMENT '0-堂食 1-打包 2-外送',
   `total_amount` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '总金额',
@@ -198,9 +199,9 @@ CREATE TABLE `biz_pay_order`  (
 -- ----------------------------
 -- Records of biz_pay_order
 -- ----------------------------
-INSERT INTO `biz_pay_order` VALUES (588903466085122048, 1, 1, '13.99', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
-INSERT INTO `biz_pay_order` VALUES (588903466085122051, 1, 1, '19.99', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
-INSERT INTO `biz_pay_order` VALUES (588903466085122099, 1, 1, '21.99', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `biz_pay_order` VALUES (588903466085122048, NULL, 1, 1, '13.99', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `biz_pay_order` VALUES (588903466085122051, NULL, 1, 1, '19.99', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
+INSERT INTO `biz_pay_order` VALUES (588903466085122099, NULL, 1, 1, '21.99', NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for biz_pay_way
@@ -212,12 +213,39 @@ CREATE TABLE `biz_pay_way`  (
   `refund_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '退款地址',
   `query_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '查询地址',
   `payment_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '交易系统名称',
+  `order` tinyint(4) NULL DEFAULT NULL COMMENT '排序',
+  `pack_up` tinyint(4) NULL DEFAULT 0 COMMENT '展示收起 0-不收起 1-收起',
+  `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标地址',
+  `is_usable` tinyint(4) NULL DEFAULT NULL COMMENT '是否在用',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_pay_way
 -- ----------------------------
+INSERT INTO `biz_pay_way` VALUES (593698122811576324, 'http://test.com', 'http://test.com', 'http://test.com', '北京工商银行分行', 1, 0, 'icon.tex', 1);
+
+-- ----------------------------
+-- Table structure for biz_shop_info
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_shop_info`;
+CREATE TABLE `biz_shop_info`  (
+  `id` bigint(20) NOT NULL,
+  `shop_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
+  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址',
+  `phone` varchar(13) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `start_business_time` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '营业时间',
+  `end_business_time` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '打烊时间',
+  `close_now` tinyint(4) NULL DEFAULT 0 COMMENT '是否店休',
+  `longitude` decimal(10, 10) NULL DEFAULT NULL COMMENT '经度',
+  `latitude` decimal(10, 10) NULL DEFAULT NULL COMMENT '纬度',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_shop_info
+-- ----------------------------
+INSERT INTO `biz_shop_info` VALUES (593630146225766400, '糊涂餐馆（齐河路店）', '上海市齐河路28弄31号303室', '13092621512', '10:00', '18:00', 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for biz_sku_catalog
@@ -237,12 +265,27 @@ INSERT INTO `biz_sku_catalog` VALUES (585315952858497025, '就餐');
 INSERT INTO `biz_sku_catalog` VALUES (585315952858497026, '温度');
 
 -- ----------------------------
+-- Table structure for biz_sku_catalog_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_sku_catalog_relation`;
+CREATE TABLE `biz_sku_catalog_relation`  (
+  `id` bigint(20) NOT NULL,
+  `sku_catalog_id` bigint(20) NULL DEFAULT NULL,
+  `sku_item_id` bigint(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_sku_catalog_relation
+-- ----------------------------
+INSERT INTO `biz_sku_catalog_relation` VALUES (585317148230942999, 585315952858497024, 585316296787234817);
+
+-- ----------------------------
 -- Table structure for biz_sku_item
 -- ----------------------------
 DROP TABLE IF EXISTS `biz_sku_item`;
 CREATE TABLE `biz_sku_item`  (
   `id` bigint(20) NOT NULL,
-  `sku_catalog_id` bigint(20) NOT NULL,
   `sku_item_content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
@@ -253,16 +296,16 @@ CREATE TABLE `biz_sku_item`  (
 -- ----------------------------
 -- Records of biz_sku_item
 -- ----------------------------
-INSERT INTO `biz_sku_item` VALUES (585316296787234817, 585315952858497024, '全糖', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234818, 585315952858497024, '少糖', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234819, 585315952858497024, '五分糖', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234820, 585315952858497024, '三分糖', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234821, 585315952858497024, '无糖', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234822, 585315952858497025, '堂食', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234823, 585315952858497025, '打包', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234824, 585315952858497026, '常温', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234825, 585315952858497026, '热', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234826, 585315952858497026, '冰', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234817, '全糖', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234818, '少糖', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234819, '五分糖', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234820, '三分糖', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234821, '无糖', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234822, '堂食', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234823, '打包', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234824, '常温', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234825, '热', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234826, '冰', 0, '2024-06-03 11:58:21', NULL);
 
 -- ----------------------------
 -- Table structure for biz_table_info
@@ -299,6 +342,7 @@ CREATE TABLE `biz_user`  (
 -- Records of biz_user
 -- ----------------------------
 INSERT INTO `biz_user` VALUES (585384223465017355, 'isnott', '17570887791', NULL, NULL, NULL, 0, '2024-06-03 16:28:31', NULL);
+INSERT INTO `biz_user` VALUES (1255209581999554560, 'nott', NULL, NULL, 'test', 'oL18J6ekWsOAVXM2bt4QQh_TV3tQ', 1, '2024-06-25 17:14:45', '2024-06-25 17:15:19');
 
 -- ----------------------------
 -- Table structure for biz_user_package
@@ -392,7 +436,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (586394601263202304, '周图', 'zhoutu', '$2a$10$SjRLO8CFdFJQx7qLujkSf.twPMBZl9CWfWqJBU3rRzxpHw/ljh0WK', '14511357607', NULL, NULL, 0, '2024-06-06 11:23:18', NULL);
+INSERT INTO `sys_user` VALUES (586394601263202304, '周图', 'zhoututu', '$2a$10$JLvCWMPh9VPM6qHY1llwcOBOmzaWxdHiI/wd07RII7z2LKyDYNqUK', '14511357607', '123', NULL, 0, '2024-06-06 11:23:18', '2024-06-17 16:37:28');
 
 -- ----------------------------
 -- Table structure for sys_user_role
