@@ -68,15 +68,15 @@
 					icon: 'search',
 					buttonColor: '#EEEEE'
 				},
-				currentMerchantName: '咖啡店（小庙街）',
-				currentDistance: '距离 >1Km',
+				currentMerchantName: '',
+				currentDistance: '',
 				menuCatalog: [],
 				menuCataActiveId: '',
 				currentItemList: []
 			};
 		},
 		onLoad() {
-			this.queryMenuCatalog();
+			this.queryCurrentMerchant();
 		},
 		methods: {
 			queryMenuCatalog() {
@@ -102,6 +102,18 @@
 			},
 			handlerItemSku(id){
 				console.log('itemClick',id);
+			},
+			queryCurrentMerchant(){
+				const val = uni.getStorageSync('current_shop');
+				if(val){
+					this.currentMerchantName = val.shopName;
+					this.currentDistance = val.distance;
+					this.queryMenuCatalog();
+				}else{
+					uni.navigateTo({
+						url: '/pages/shop/index'
+					})
+				}
 			}
 
 		},
@@ -118,7 +130,7 @@
 		computed: {
 			currentMenu() {
 				return this.menuCatalog.find(val => val.id === this.menuCataActiveId)
-			}
+			},
 		}
 	}
 </script>
