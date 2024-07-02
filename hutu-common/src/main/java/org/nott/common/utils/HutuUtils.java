@@ -10,6 +10,10 @@ import org.springframework.util.CollectionUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.springframework.beans.BeanUtils.getPropertyDescriptor;
@@ -111,6 +115,23 @@ public class HutuUtils {
                 }
             }
         }
+    }
+
+    public static boolean checkWeekDayAndTimeForNow(String startTimeToCheck, String endTimeToCheck, Integer startDayOfWeek, Integer endDayOfWeek) {
+        LocalTime start = LocalTime.parse(startTimeToCheck, DateTimeFormatter.ofPattern("HH:mm:ss"));
+        LocalTime end = LocalTime.parse(endTimeToCheck, DateTimeFormatter.ofPattern("HH:mm:ss"));
+        return checkWeekDayAndTimeForNow(start,end,DayOfWeek.of(startDayOfWeek),DayOfWeek.of(endDayOfWeek));
+    }
+
+    public static boolean checkWeekDayAndTimeForNow(LocalTime startTimeToCheck, LocalTime endTimeToCheck, DayOfWeek startDayOfWeek, DayOfWeek endDayOfWeek) {
+        LocalDate today = LocalDate.now();
+
+        DayOfWeek dayOfWeek = today.getDayOfWeek();
+
+        LocalTime now = LocalTime.now();
+
+        return startDayOfWeek.ordinal() <= dayOfWeek.ordinal() && endDayOfWeek.ordinal() >= dayOfWeek.ordinal() &&
+                startTimeToCheck.isBefore(now) && endTimeToCheck.isAfter(now);
     }
 
 }

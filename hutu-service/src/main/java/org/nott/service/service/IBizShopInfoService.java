@@ -2,6 +2,9 @@ package org.nott.service.service;
 
 import org.nott.model.BizShopInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.nott.vo.ShopInfoVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IBizShopInfoService extends IService<BizShopInfo> {
 
+    List<ShopInfoVo> listShopInfo();
 }

@@ -64,8 +64,7 @@
 		}
 	}
 </script>
-
-<style>
+<style scoped>
 .header{
 	padding: 20px;
 	text-align: center;

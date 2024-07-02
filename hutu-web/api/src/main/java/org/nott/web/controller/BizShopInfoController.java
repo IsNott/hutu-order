@@ -1,8 +1,8 @@
 package org.nott.web.controller;
 
 import org.nott.common.ResponseEntity;
-import org.nott.model.BizShopInfo;
 import org.nott.service.service.IBizShopInfoService;
+import org.nott.vo.ShopInfoVo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +27,7 @@ public class BizShopInfoController {
 
     @GetMapping("list")
     public ResponseEntity<?> shopList(){
-        List<BizShopInfo> shopInfos = bizShopInfoService.list();
+        List<ShopInfoVo> shopInfos = bizShopInfoService.listShopInfo();
         return ResponseEntity.successData(shopInfos);
     }
 

@@ -75,7 +75,7 @@
 				currentItemList: []
 			};
 		},
-		onLoad() {
+		onShow() {
 			this.queryCurrentMerchant();
 		},
 		methods: {
@@ -88,7 +88,9 @@
 				})
 			},
 			handlerSearchMerchant() {
-				console.log('click search');
+				uni.switchTab({
+					url: '/pages/shop/index'
+				})
 			},
 			handlerCatalogClick(id) {
 				this.menuCataActiveId = id;
@@ -110,7 +112,7 @@
 					this.currentDistance = val.distance;
 					this.queryMenuCatalog();
 				}else{
-					uni.navigateTo({
+					uni.switchTab({
 						url: '/pages/shop/index'
 					})
 				}

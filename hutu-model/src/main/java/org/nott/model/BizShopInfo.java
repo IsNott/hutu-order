@@ -3,7 +3,6 @@ package org.nott.model;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -63,6 +62,16 @@ public class BizShopInfo implements Serializable {
      * 纬度
      */
     private BigDecimal latitude;
+
+    /**
+     * 每周营业开始日
+     */
+    private Integer weekStartDate;
+
+    /**
+     * 每周营业结束日
+     */
+    private Integer weekEndDate;
 
 
 }

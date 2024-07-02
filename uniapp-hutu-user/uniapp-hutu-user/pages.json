@@ -8,6 +8,12 @@
 		}
 	},
 	{
+		"path": "pages/shop/index",
+		"style": {
+			"navigationBarTitleText": "门店列表"
+		}
+	},
+	{
 		"path" : "pages/home/index",
 		"style" : 
 		{
@@ -49,7 +55,7 @@
 			"iconPath": "static/image/shop.png",
 			"text": "商店"
 		}, {
-			"pagePath": "pages/order/index",
+			// "pagePath": "pages/order/index",
 			"iconPath": "static/image/my.png",
 			"text": "我的"
 		}
