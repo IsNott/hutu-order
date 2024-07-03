@@ -50,6 +50,20 @@ public class HutuUtils {
         copyProperties(source,target,true);
     }
 
+    public static <T, S> List<S> transToVos(List<T> objs, Class<S> sClazz) {
+        List<S> sList = new ArrayList<>();
+        try {
+            for (T obj : objs) {
+                S s = sClazz.newInstance();
+                copyProperties(obj, s);
+                sList.add(s);
+            }
+        } catch (Exception e) {
+            throw new HutuBizException("Trans obj to vo failed");
+        }
+        return sList;
+    }
+
     public static boolean isEmpty(Object o){
         if(o instanceof String){
             return StringUtils.isEmpty((String) o);

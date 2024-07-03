@@ -29,4 +29,10 @@ public class BizMenuServiceImpl extends ServiceImpl<BizMenuMapper, BizMenu> impl
         List<MenuItemVo> itemVoList = bizMenuMapper.getMenuItemListByCatalogId(catalogId);
         return itemVoList;
     }
+
+    @Override
+    public List<MenuItemVo> getByShopCatalogId(Long shopId,String catalogId) {
+        List<MenuItemVo> itemVoList = bizMenuMapper.getMenuItemListByShopCatalogId(shopId,catalogId);
+        return itemVoList;
+    }
 }

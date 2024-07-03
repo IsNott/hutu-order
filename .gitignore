@@ -26,12 +26,15 @@ application-dev.yml
 .DS_Store
 node_modules/
 dist/
+**/dist
 
 /unpackage/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 **/*.log
+
+**/**/unpackage/
 
 tests/**/coverage/
 tests/e2e/reports

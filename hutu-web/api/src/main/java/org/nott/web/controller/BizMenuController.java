@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * 菜单控制层
+ *
  * @author nott
  * @since 2024-05-24
  */
@@ -24,8 +25,14 @@ public class BizMenuController {
     private IBizMenuService bizMenuService;
 
     @GetMapping("listByCatalogId/{catalogId}")
-    public ResponseEntity<?> listByCatalogId(@PathVariable("catalogId") String catalogId){
+    public ResponseEntity<?> listByCatalogId(@PathVariable("catalogId") String catalogId) {
         List<MenuItemVo> menuList = bizMenuService.getByCatalogId(catalogId);
+        return ResponseEntity.successData(menuList);
+    }
+
+    @GetMapping("listByShopCatalogId/{shopId}/{catalogId}")
+    public ResponseEntity<?> listByCatalogId(@PathVariable("shopId") Long shopId, @PathVariable("catalogId") String catalogId) {
+        List<MenuItemVo> menuList = bizMenuService.getByShopCatalogId(shopId,catalogId);
         return ResponseEntity.successData(menuList);
     }
 

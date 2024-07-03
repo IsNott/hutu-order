@@ -26,6 +26,12 @@
 		{
 			"navigationBarTitleText" : "搜索"
 		}
+	},{
+		"path" : "pages/my/index",
+		"style" : 
+		{
+			"navigationBarTitleText" : "我的"
+		}
 	}
 	],
 	"globalStyle": {
@@ -54,8 +60,9 @@
 			"pagePath": "pages/shop/index",
 			"iconPath": "static/image/shop.png",
 			"text": "商店"
-		}, {
-			// "pagePath": "pages/order/index",
+		}, 
+		{
+			"pagePath": "pages/my/index",
 			"iconPath": "static/image/my.png",
 			"text": "我的"
 		}

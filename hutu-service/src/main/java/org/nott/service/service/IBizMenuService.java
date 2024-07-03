@@ -18,4 +18,5 @@ public interface IBizMenuService extends IService<BizMenu> {
 
     List<MenuItemVo> getByCatalogId(String catalogId);
 
+    List<MenuItemVo> getByShopCatalogId(Long shopId,String catalogId);
 }

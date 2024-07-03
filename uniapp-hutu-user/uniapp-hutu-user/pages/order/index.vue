@@ -2,8 +2,8 @@
 	<view class="main">
 		<view class="header" @click="handlerSearchMerchant">
 			<view class="header-left">
-				<h4>{{ currentMerchantName }}</h4>
-				<view style="font-size: 5px;">{{ currentDistance }}</view>
+				<h4>{{ currentMerchant.shopName }}</h4>
+				<view style="font-size: 5px;">{{ currentMerchant.address }}</view>
 			</view>
 			<view class="header-reight">
 				<uni-icons type="right" size="16"></uni-icons>
@@ -53,13 +53,7 @@
 </template>
 
 <script>
-	import {
-		getMenuCatalog,
-		listByCatalogId
-	} from '@/api/order.js'
-	import {
-		request
-	} from "@/request/request.js";
+	import { listByShopCatalogId,listByShop } from '@/api/order.js'
 	export default {
 		data() {
 			return {
@@ -68,8 +62,7 @@
 					icon: 'search',
 					buttonColor: '#EEEEE'
 				},
-				currentMerchantName: '',
-				currentDistance: '',
+				currentMerchant: '',
 				menuCatalog: [],
 				menuCataActiveId: '',
 				currentItemList: []
@@ -80,11 +73,8 @@
 		},
 		methods: {
 			queryMenuCatalog() {
-				request('/bizMenuCatalog/list', 'GET').then(res => {
+				listByShop(this.currentMerchant.id).then(res=>{
 					this.menuCatalog = res.data
-					if(!this.menuCataActiveId && this.menuCatalog.length > 0){
-						this.handlerCatalogClick(this.menuCatalog[0].id)
-					}
 				})
 			},
 			handlerSearchMerchant() {
@@ -97,7 +87,8 @@
 				this.searchItemByMenuCatalogId(id)
 			},
 			searchItemByMenuCatalogId(id) {
-				listByCatalogId(id).then(res => {
+				const shopId = this.currentMerchant.id
+				listByShopCatalogId(shopId,id).then(res => {
 					this.currentItemList = res.data
 					console.log(this.currentItemList);
 				})
@@ -108,8 +99,7 @@
 			queryCurrentMerchant(){
 				const val = uni.getStorageSync('current_shop');
 				if(val){
-					this.currentMerchantName = val.shopName;
-					this.currentDistance = val.distance;
+					this.currentMerchant = val;
 					this.queryMenuCatalog();
 				}else{
 					uni.switchTab({
@@ -137,7 +127,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style  scoped>
 	.main {
 		display: flex;
 		flex-direction: column;

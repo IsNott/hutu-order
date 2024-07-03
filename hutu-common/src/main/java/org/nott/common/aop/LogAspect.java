@@ -31,7 +31,7 @@ public class LogAspect {
      * @throws Throwable
      */
     @Around("privilege()")
-    public Object arount(ProceedingJoinPoint pjd) throws Throwable {
+    public Object around(ProceedingJoinPoint pjd) throws Throwable {
         long startTime = System.currentTimeMillis();
         String className = pjd.getTarget().getClass().getName();
         String methodName = pjd.getSignature().getName();

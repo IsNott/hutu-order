@@ -27,6 +27,11 @@ public class BizMenuCatalog implements Serializable {
     private Long id;
 
     /**
+     * 门店id
+     */
+    private Long shopId;
+
+    /**
      * 分类名称
      */
     private String catalogName;

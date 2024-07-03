@@ -40,6 +40,11 @@ public class BizMenu implements Serializable {
     private String itemId;
 
     /**
+     * 门店id
+     */
+    private Long shopId;
+
+    /**
      * 删除标识
      */
     @TableLogic(delval = "1",value = "0")

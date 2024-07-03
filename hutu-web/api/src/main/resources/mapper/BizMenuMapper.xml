@@ -11,4 +11,16 @@
         WHERE
             menu_catalog_id = #{catalogId}
     </select>
+
+    <select id="getMenuItemListByShopCatalogId" resultType="org.nott.vo.MenuItemVo">
+        SELECT
+            t2.*,t1.item_id as itemId
+        FROM
+            biz_menu t1
+                LEFT JOIN biz_item t2 ON t1.item_id = t2.id
+        WHERE
+            menu_catalog_id = #{catalogId}
+        AND
+            t1.shop_id = #{shopId}
+    </select>
 </mapper>
