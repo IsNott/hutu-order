@@ -30,7 +30,7 @@
 		"path" : "pages/my/index",
 		"style" : 
 		{
-			"navigationBarTitleText" : "我的"
+			"navigationBarTitleText" : "会员中心"
 		}
 	}
 	],
@@ -64,7 +64,7 @@
 		{
 			"pagePath": "pages/my/index",
 			"iconPath": "static/image/my.png",
-			"text": "我的"
+			"text": "会员中心"
 		}
 		]
 	}
