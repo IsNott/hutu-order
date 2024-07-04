@@ -102,6 +102,7 @@ CREATE TABLE `biz_menu`  (
   `id` bigint(20) NOT NULL COMMENT 'id',
   `menu_catalog_id` bigint(20) NULL DEFAULT NULL COMMENT '菜单分类id',
   `item_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜品名称',
+  `shop_id` bigint(20) NULL DEFAULT NULL COMMENT '门店id',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
@@ -111,16 +112,16 @@ CREATE TABLE `biz_menu`  (
 -- ----------------------------
 -- Records of biz_menu
 -- ----------------------------
-INSERT INTO `biz_menu` VALUES (1, 1, '1', 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
-INSERT INTO `biz_menu` VALUES (2, 1, '2', 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
-INSERT INTO `biz_menu` VALUES (3, 2, '3', 0, '2024-05-24 12:30:00', '2024-05-24 12:30:00');
-INSERT INTO `biz_menu` VALUES (4, 2, '4', 0, '2024-05-24 12:45:00', '2024-05-24 12:45:00');
-INSERT INTO `biz_menu` VALUES (5, 3, '5', 0, '2024-05-24 13:00:00', '2024-05-24 13:00:00');
-INSERT INTO `biz_menu` VALUES (6, 3, '6', 0, '2024-05-24 13:15:00', '2024-05-24 13:15:00');
-INSERT INTO `biz_menu` VALUES (7, 4, '7', 0, '2024-05-24 13:30:00', '2024-05-24 13:30:00');
-INSERT INTO `biz_menu` VALUES (8, 4, '8', 0, '2024-05-24 13:45:00', '2024-05-24 13:45:00');
-INSERT INTO `biz_menu` VALUES (9, 5, '9', 0, '2024-05-24 14:00:00', '2024-05-24 14:00:00');
-INSERT INTO `biz_menu` VALUES (10, 5, '10', 0, '2024-05-24 14:15:00', '2024-05-24 14:15:00');
+INSERT INTO `biz_menu` VALUES (1, 1, '1', 593630146225766400, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
+INSERT INTO `biz_menu` VALUES (2, 1, '2', 593630146225766400, 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
+INSERT INTO `biz_menu` VALUES (3, 2, '3', 593630146225766400, 0, '2024-05-24 12:30:00', '2024-05-24 12:30:00');
+INSERT INTO `biz_menu` VALUES (4, 2, '4', 593630146225766400, 0, '2024-05-24 12:45:00', '2024-05-24 12:45:00');
+INSERT INTO `biz_menu` VALUES (5, 3, '5', 593630146225766400, 0, '2024-05-24 13:00:00', '2024-05-24 13:00:00');
+INSERT INTO `biz_menu` VALUES (6, 3, '6', 593630146225766400, 0, '2024-05-24 13:15:00', '2024-05-24 13:15:00');
+INSERT INTO `biz_menu` VALUES (7, 4, '7', 593630146225766400, 0, '2024-05-24 13:30:00', '2024-05-24 13:30:00');
+INSERT INTO `biz_menu` VALUES (8, 4, '8', 593630146225766400, 0, '2024-05-24 13:45:00', '2024-05-24 13:45:00');
+INSERT INTO `biz_menu` VALUES (9, 5, '9', 593630146225766400, 0, '2024-05-24 14:00:00', '2024-05-24 14:00:00');
+INSERT INTO `biz_menu` VALUES (10, 5, '10', 593630146225766400, 0, '2024-05-24 14:15:00', '2024-05-24 14:15:00');
 
 -- ----------------------------
 -- Table structure for biz_menu_catalog
@@ -128,6 +129,7 @@ INSERT INTO `biz_menu` VALUES (10, 5, '10', 0, '2024-05-24 14:15:00', '2024-05-2
 DROP TABLE IF EXISTS `biz_menu_catalog`;
 CREATE TABLE `biz_menu_catalog`  (
   `id` bigint(20) NOT NULL,
+  `shop_id` bigint(20) NULL DEFAULT NULL COMMENT '门店id',
   `img_url` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预览图',
   `catalog_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分类名称',
   `catalog_desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '分类描述',
@@ -141,16 +143,16 @@ CREATE TABLE `biz_menu_catalog`  (
 -- ----------------------------
 -- Records of biz_menu_catalog
 -- ----------------------------
-INSERT INTO `biz_menu_catalog` VALUES (1, NULL, '咖啡', '各种口味的咖啡', '无', 0, '2024-05-24 09:00:00', '2024-05-24 09:00:00');
-INSERT INTO `biz_menu_catalog` VALUES (2, NULL, '茶', '各种茶类饮品', '无', 0, '2024-05-24 09:15:00', '2024-05-24 09:15:00');
-INSERT INTO `biz_menu_catalog` VALUES (3, NULL, '甜点', '各种甜品', '无', 0, '2024-05-24 09:30:00', '2024-05-24 09:30:00');
-INSERT INTO `biz_menu_catalog` VALUES (4, NULL, '冰淇淋', '各种口味的冰淇淋', '无', 0, '2024-05-24 09:45:00', '2024-05-24 09:45:00');
-INSERT INTO `biz_menu_catalog` VALUES (5, NULL, '果汁', '新鲜榨取的果汁', '无', 0, '2024-05-24 10:00:00', '2024-05-24 10:00:00');
-INSERT INTO `biz_menu_catalog` VALUES (6, NULL, '饮料', '其他饮品', '无', 0, '2024-05-24 10:15:00', '2024-05-24 10:15:00');
-INSERT INTO `biz_menu_catalog` VALUES (7, NULL, '特色饮品', '店内特色饮品', '无', 0, '2024-05-24 10:30:00', '2024-05-24 10:30:00');
-INSERT INTO `biz_menu_catalog` VALUES (8, NULL, '热饮', '各种热饮', '无', 0, '2024-05-24 10:45:00', '2024-05-24 10:45:00');
-INSERT INTO `biz_menu_catalog` VALUES (9, NULL, '冷饮', '各种冷饮', '无', 0, '2024-05-24 11:00:00', '2024-05-24 11:00:00');
-INSERT INTO `biz_menu_catalog` VALUES (10, NULL, '小吃', '各种小吃', '无', 0, '2024-05-24 11:15:00', '2024-05-24 11:15:00');
+INSERT INTO `biz_menu_catalog` VALUES (1, 593630146225766400, NULL, '咖啡', '各种口味的咖啡', '无', 0, '2024-05-24 09:00:00', '2024-05-24 09:00:00');
+INSERT INTO `biz_menu_catalog` VALUES (2, 593630146225766400, NULL, '茶', '各种茶类饮品', '无', 0, '2024-05-24 09:15:00', '2024-05-24 09:15:00');
+INSERT INTO `biz_menu_catalog` VALUES (3, 593630146225766400, NULL, '甜点', '各种甜品', '无', 0, '2024-05-24 09:30:00', '2024-05-24 09:30:00');
+INSERT INTO `biz_menu_catalog` VALUES (4, 593630146225766400, NULL, '冰淇淋', '各种口味的冰淇淋', '无', 0, '2024-05-24 09:45:00', '2024-05-24 09:45:00');
+INSERT INTO `biz_menu_catalog` VALUES (5, 593630146225766400, NULL, '果汁', '新鲜榨取的果汁', '无', 0, '2024-05-24 10:00:00', '2024-05-24 10:00:00');
+INSERT INTO `biz_menu_catalog` VALUES (6, 593630146225766400, NULL, '饮料', '其他饮品', '无', 0, '2024-05-24 10:15:00', '2024-05-24 10:15:00');
+INSERT INTO `biz_menu_catalog` VALUES (7, 593630146225766400, NULL, '特色饮品', '店内特色饮品', '无', 0, '2024-05-24 10:30:00', '2024-05-24 10:30:00');
+INSERT INTO `biz_menu_catalog` VALUES (8, 593630146225766400, NULL, '热饮', '各种热饮', '无', 0, '2024-05-24 10:45:00', '2024-05-24 10:45:00');
+INSERT INTO `biz_menu_catalog` VALUES (9, 593630146225766400, NULL, '冷饮', '各种冷饮', '无', 0, '2024-05-24 11:00:00', '2024-05-24 11:00:00');
+INSERT INTO `biz_menu_catalog` VALUES (10, 593630146225766400, NULL, '小吃', '各种小吃', '无', 0, '2024-05-24 11:15:00', '2024-05-24 11:15:00');
 
 -- ----------------------------
 -- Table structure for biz_package
@@ -239,13 +241,21 @@ CREATE TABLE `biz_shop_info`  (
   `close_now` tinyint(4) NULL DEFAULT 0 COMMENT '是否店休',
   `longitude` decimal(10, 10) NULL DEFAULT NULL COMMENT '经度',
   `latitude` decimal(10, 10) NULL DEFAULT NULL COMMENT '纬度',
+  `week_start_date` tinyint(4) NULL DEFAULT NULL COMMENT '每周营业开始日',
+  `week_end_date` tinyint(4) NULL DEFAULT NULL COMMENT '每周营业结束日',
+  `main_shop` tinyint(4) NULL DEFAULT NULL COMMENT '是否主店',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_shop_info
 -- ----------------------------
-INSERT INTO `biz_shop_info` VALUES (593630146225766400, '糊涂餐馆（齐河路店）', '上海市齐河路28弄31号303室', '13092621512', '10:00', '18:00', 0, NULL, NULL);
+INSERT INTO `biz_shop_info` VALUES (593630146225766400, '糊涂餐馆（齐河路店）', '上海市齐河路28弄31号303室', '13092621512', '10:00', '18:00', 0, NULL, NULL, 1, 5, 1);
+INSERT INTO `biz_shop_info` VALUES (593630146225766401, '糊涂餐馆（杨铭园店）', '赤岗冲红花坡杨铭园C栋', '13063855026', '09:00', '17:00', 0, NULL, NULL, 1, 5, NULL);
+INSERT INTO `biz_shop_info` VALUES (593630146225766402, '糊涂餐馆（村水云居店）', '余家湖村水云居A栋2单元404室', '13013802811', '11:00', '20:00', 0, NULL, NULL, 1, 5, NULL);
+INSERT INTO `biz_shop_info` VALUES (593630146225766403, '糊涂餐馆（中胜街店）', '中胜街54-2号392', '13092626359', '08:00', '16:00', 0, NULL, NULL, 1, 7, NULL);
+INSERT INTO `biz_shop_info` VALUES (593630146225766404, '糊涂餐馆（秋景怡园店）', '秋景怡园5-3-6040', '13063726873', '09:30', '17:30', 0, NULL, NULL, 1, 7, NULL);
+INSERT INTO `biz_shop_info` VALUES (593630146225766405, '糊涂餐馆（霄云路店）', '霄云路霄云里7号楼', '13092626359', '10:30', '19:30', 0, NULL, NULL, 1, 7, NULL);
 
 -- ----------------------------
 -- Table structure for biz_sku_catalog
@@ -341,8 +351,7 @@ CREATE TABLE `biz_user`  (
 -- ----------------------------
 -- Records of biz_user
 -- ----------------------------
-INSERT INTO `biz_user` VALUES (585384223465017355, 'isnott', '17570887791', NULL, NULL, NULL, 0, '2024-06-03 16:28:31', NULL);
-INSERT INTO `biz_user` VALUES (1255209581999554560, 'nott', NULL, NULL, 'test', 'oL18J6ekWsOAVXM2bt4QQh_TV3tQ', 1, '2024-06-25 17:14:45', '2024-06-25 17:15:19');
+INSERT INTO `biz_user` VALUES (1258018376433795072, '微信用户', NULL, NULL, 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132', 'oL18J6ekWsOAVXM2bt4QQh_TV3tQ', 1, '2024-07-03 11:15:54', '2024-07-03 11:16:23');
 
 -- ----------------------------
 -- Table structure for biz_user_package

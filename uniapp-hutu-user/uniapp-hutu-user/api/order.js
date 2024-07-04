@@ -16,3 +16,7 @@ export function listByShopCatalogId(shopId,catalogId){
 export function listByCatalogId(catalogId){
 	return request(`/bizMenu/listByCatalogId/${catalogId}`,'GET')
 }
+
+export function defaultShop(){
+	return request(`/bizShopInfo/default`,'GET')
+}

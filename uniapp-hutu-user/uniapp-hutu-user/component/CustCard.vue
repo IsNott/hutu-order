@@ -1,12 +1,12 @@
 <template>
-	<uni-card :margin='margin' :is-shadow='isShadow' shadow="3px" 
-	class="card">
+	<uni-card :margin='margin' :is-shadow='isShadow' shadow="3px"  :style="backGroundImage"
+	class="cust-card">
 		<view class="title">
 			<text class="main">{{mainTitle}}</text>
 			<text class="sub">{{subTitle}}</text>
 		</view>
 		<view>
-			<slot></slot>
+			<slot class="cust-info"></slot>
 		</view>
 	</uni-card>
 </template>
@@ -29,11 +29,27 @@
 			},
 			mainTitle:{
 				type: String,
-				default: '主标题'
+				default: ''
 			},
 			subTitle:{
 				type: String,
-				default: '副标题'
+				default: ''
+			},
+			backGroudImg:{
+				type: String,
+				default: ''
+			}
+		},
+		computed:{
+			backGroundImage(){
+				var styleValue = '';
+				if(this.backGroudImg){
+					styleValue = {
+						'background-image' : `url(${this.backGroudImg})`,
+						'background-repeat': 'no-repeat'
+					}
+				}
+				return styleValue;
 			}
 		}
 	}
@@ -41,7 +57,7 @@
 
 <style scoped>
 	.title{
-		padding: 4px;
+		padding: 0px;
 		display: flex;
 		margin: 10px 0px;
 		justify-content: space-between;
@@ -55,5 +71,9 @@
 	.sub{
 		font-size: 100%;
 		
+	}
+	
+	.cust-info{
+		padding: 4px;
 	}
 </style>

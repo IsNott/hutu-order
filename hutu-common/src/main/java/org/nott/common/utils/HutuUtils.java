@@ -64,6 +64,17 @@ public class HutuUtils {
         return sList;
     }
 
+    public static <T, S> S transToVo(T obj, Class<S> sClazz) {
+        S s;
+        try {
+            s = sClazz.newInstance();
+            copyProperties(obj, s);
+        } catch (Exception e) {
+            throw new HutuBizException("Trans obj to vo failed");
+        }
+        return s;
+    }
+
     public static boolean isEmpty(Object o){
         if(o instanceof String){
             return StringUtils.isEmpty((String) o);

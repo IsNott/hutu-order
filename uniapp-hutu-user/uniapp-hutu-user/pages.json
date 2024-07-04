@@ -32,6 +32,12 @@
 		{
 			"navigationBarTitleText" : "会员中心"
 		}
+	},{
+		"path" : "pages/new-order/index",
+		"style" : 
+		{
+			"navigationBarTitleText" : "点单中心"
+		}
 	}
 	],
 	"globalStyle": {

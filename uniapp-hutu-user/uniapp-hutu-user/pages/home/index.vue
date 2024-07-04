@@ -20,37 +20,19 @@
 					<text>我的</text>
 				</view>
 			</view>
-			<view class="card">
-				营销卡片1
-			</view>
-			<view class="card">
-				营销卡片2
-			</view>
-			<view class="card">
-				营销卡片2
-			</view>
-			<view class="card">
-				营销卡片2
-			</view>
-			<view class="card">
-				营销卡片2
-			</view>
-			<view class="card">
-				营销卡片2
-			</view><view class="card">
-				营销卡片2
-			</view><view class="card">
-				营销卡片2
-			</view><view class="card">
-				营销卡片2
-			</view>
+			<cust-card main-title="营销卡片"></cust-card>
+			<cust-card main-title="营销卡片"></cust-card>
+			<cust-card main-title="营销卡片"></cust-card>
+			<cust-card main-title="营销卡片"></cust-card>
 		</view>
 	</scroll-view>
 </template>
 
 <script>
+	import CustCard from '../../component/CustCard.vue';
 	export default {
 		name: 'home',
+		components: {CustCard},
 		data(){
 			return{}
 		},

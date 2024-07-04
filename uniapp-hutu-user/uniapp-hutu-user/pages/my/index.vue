@@ -1,85 +1,60 @@
 <template>
 	<scroll-view>
-		<view class="login-card">
-			<image
-			src="@/static/image/avatar/default.jpg" 
-			mode="aspectFit" 
-			></image>
-			<view class="info">
-				<view>
-					<text class="nick-name">
-						{{hasUserInfo ? userInfo.nickName : '点击授权登录' }}
-					</text>
-				</view>
-				<!-- <text class="phone">
-					{{hasUserInfo ? userInfo.phone : '点击绑定手机号' }}
-				</text> -->
-			</view>
+		<login-card/>
+		<setting-card />
+		<cust-card class="sell-card" main-title="营销卡片" sub-title="副标题">
+			<text>故飘风不终朝，骤雨不终日。孰为此者？天地。天地尚不能久，而况于人乎？</text>
+		</cust-card>
+		<cust-card class="sell-card" main-title="营销卡片" sub-title="副标题">
+			<text>故飘风不终朝，骤雨不终日。孰为此者？天地。天地尚不能久，而况于人乎？</text>
+		</cust-card>
+		<cust-card class="sell-card" main-title="营销卡片" sub-title="副标题">
+			<text>故飘风不终朝，骤雨不终日。孰为此者？天地。天地尚不能久，而况于人乎？</text>
+		</cust-card>
+		<cust-card class="sell-card" main-title="营销卡片" sub-title="副标题">
+			<text>故飘风不终朝，骤雨不终日。孰为此者？天地。天地尚不能久，而况于人乎？</text>
+		</cust-card>
+		<view class="footer">
+			<text>Power by </text>
+			<text style="font-weight: bold;">{{name}}</text>
 		</view>
-		<setting-card/>
 	</scroll-view>
 </template>
 
 <script>
 	import SettingCard from './component/SettingCard.vue';
 	import CustCard from '../../component/CustCard.vue';
-	export default{
-		name:'my',
-		components: {SettingCard,CustCard},
-		data(){
-			return{
-				userInfo: '',
+	import LoginCard from './component/LoginCard.vue';
+	export default {
+		name: 'my',
+		components: {
+			SettingCard,
+			CustCard,
+			LoginCard
+		},
+		data() {
+			return {
+				name: '\xa0Hutu-Order',
 				loginAuth: false,
 				phoneAuth: false
 			}
 		},
-		created() {
-			this.userInfo = uni.getAccountInfoSync('user_info');
+		methods: {
+			
 		},
-		computed:{
-			hasUserInfo(){
-				if(this.userInfo){
-					return true;
-				} else{
-					return false;
-				}
-			}
+		created() {
+			
+		},
+		computed: {
 		}
 	}
 </script>
 
 <style scoped>
-	.login-card{
-		display: flex;
-		padding: 20px;
+	.footer{
+		margin-top: 26px;
+		margin-bottom: 8px;
 		width: 100%;
-		box-sizing: border-box;
+		text-align: center;
 	}
-	
-	.info{
-		margin-left: 16px;
-		padding-top: 6px;
-		display: block;
-	}
-	
-	.nick-name{
-		font-size: 18px;
-		font-weight: bold;
-	}
-	
-	.login-card image{
-		width: 70px;
-		height: 70px;
-		border: 0px;
-		border-radius: 50%;
-	}
-	
-	/* .card{
-		background-color: white;
-		border-radius: 6%;
-		margin: 6px;
-		box-shadow: 0px 0px 3px -1px #000000;
-	} */
-	
-
 </style>

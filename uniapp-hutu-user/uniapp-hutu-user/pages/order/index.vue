@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<scroll-view class="main">
 		<view class="header" @click="handlerSearchMerchant">
 			<view class="header-left">
 				<h4>{{ currentMerchant.shopName }}</h4>
@@ -49,11 +49,11 @@
 			</scroll-view>
 		</view>
 		<uni-fab ref="fab" :pattern="pattern" :horizontal="'right'" :vertical="'bottom'" />
-	</view>
+	</scroll-view>
 </template>
 
 <script>
-	import { listByShopCatalogId,listByShop } from '@/api/order.js'
+	import { listByShopCatalogId,listByShop,defaultShop } from '@/api/order.js'
 	export default {
 		data() {
 			return {
@@ -79,7 +79,7 @@
 			},
 			handlerSearchMerchant() {
 				uni.switchTab({
-					url: '/pages/shop/index'
+					url:'/pages/shop/index'
 				})
 			},
 			handlerCatalogClick(id) {
@@ -100,10 +100,23 @@
 				const val = uni.getStorageSync('current_shop');
 				if(val){
 					this.currentMerchant = val;
-					this.queryMenuCatalog();
 				}else{
-					uni.switchTab({
-						url: '/pages/shop/index'
+					uni.showModal({
+						title:'提示',
+						content:'当前还未选择门店，是否跳转门店列表?',
+						cancelText:'否',
+						confirmText:'是',
+						success:(res)=>{
+							if(res.success){
+								uni.switchTab({
+									url:'/pages/shop/index'
+								})
+							}else{
+								defaultShop().then(res=>{
+									this.currentMerchant = res.data
+								})
+							}
+						}
 					})
 				}
 			}
@@ -117,6 +130,9 @@
 					}
 				},
 				immediate:true
+			},
+			currentMerchant(o,n){
+				this.queryMenuCatalog();
 			}
 		},
 		computed: {

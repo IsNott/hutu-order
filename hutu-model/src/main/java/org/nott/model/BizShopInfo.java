@@ -73,5 +73,10 @@ public class BizShopInfo implements Serializable {
      */
     private Integer weekEndDate;
 
+    /**
+     * 是否主店
+     */
+    private Integer mainShop;
+
 
 }

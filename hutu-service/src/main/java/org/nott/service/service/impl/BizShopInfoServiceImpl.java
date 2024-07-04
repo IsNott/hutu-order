@@ -1,5 +1,7 @@
 package org.nott.service.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import org.nott.common.utils.HutuUtils;
 import org.nott.model.BizShopInfo;
 import org.nott.service.mapper.BizShopInfoMapper;
@@ -35,5 +37,14 @@ public class BizShopInfoServiceImpl extends ServiceImpl<BizShopInfoMapper, BizSh
             vos.add(vo);
         }
         return vos;
+    }
+
+    @Override
+    public ShopInfoVo getDefaultShop() {
+        LambdaQueryWrapper<BizShopInfo> wrapper = new LambdaQueryWrapper<BizShopInfo>()
+                .eq(BizShopInfo::getMainShop, 1);
+        BizShopInfo mainShop = this.getOne(wrapper);
+        ShopInfoVo shopInfoVo = HutuUtils.transToVo(mainShop, ShopInfoVo.class);
+        return shopInfoVo;
     }
 }

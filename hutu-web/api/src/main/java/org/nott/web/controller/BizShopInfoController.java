@@ -31,4 +31,10 @@ public class BizShopInfoController {
         return ResponseEntity.successData(shopInfos);
     }
 
+    @GetMapping("default")
+    public ResponseEntity<?> defaultShop(){
+        ShopInfoVo vo = bizShopInfoService.getDefaultShop();
+        return ResponseEntity.successData(vo);
+    }
+
 }
