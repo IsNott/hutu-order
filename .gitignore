@@ -30,13 +30,11 @@ dist/
 uniapp-hutu-user/unpackage/
 uniapp-hutu-user/unpackage/dist
 uniapp-hutu-user/node_modules/
-vue-hutu-admin/tests
+vue-hutu-admin/tests/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 **/*.log
-
-**/**/unpackage/*
 
 tests/**/coverage/
 tests/e2e/reports
