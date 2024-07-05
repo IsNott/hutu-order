@@ -10,6 +10,7 @@ import org.springframework.util.CollectionUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,6 +26,12 @@ import static org.springframework.beans.BeanUtils.getPropertyDescriptors;
  */
 
 public class HutuUtils {
+
+    public static class FORMAT{
+        public static final SimpleDateFormat MD = new SimpleDateFormat("MMdd");
+        public static final SimpleDateFormat YEAR = new SimpleDateFormat("yyyy");
+        public static final SimpleDateFormat DATETIME = new SimpleDateFormat("yyyyMMddHHmmss");
+    }
 
     public static void requireNotNull(Object o) throws HutuBizException {
         requireNotNull(o, null);
