@@ -27,7 +27,8 @@ application-dev.yml
 node_modules/
 dist/
 
-/unpackage/*
+uniapp-hutu-user/unpackage/*
+uniapp-hutu-user/node_modules/*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
