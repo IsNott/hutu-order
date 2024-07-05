@@ -41,7 +41,7 @@
 <style scoped>
 	.catalog-name{
 		font-size: 12px;
-		font-weight: 700;
+		font-weight: 650;
 	}
 	.catalog-img{
 		margin: auto;
