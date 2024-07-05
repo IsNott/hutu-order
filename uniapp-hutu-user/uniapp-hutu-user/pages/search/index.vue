@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<uni-search-bar placeholder="æœç´¢å•†å“"
+		<uni-search-bar placeholder="ÇëÊäÈëÄÚÈÝ"
 		 cancelButton="false"
 			radius=20
 			v-model="searchText"

@@ -1,4 +1,10 @@
 
+ Target Server Type    : MySQL
+ Target Server Version : 50735 (5.7.35)
+ File Encoding         : 65001
+
+ Date: 05/07/2024 17:54:32
+*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -29,9 +35,10 @@ CREATE TABLE `biz_item`  (
   `origin_amount` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '原始价格',
   `actually_amount` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '现价',
   `item_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品名称',
+  `special` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '特殊tag',
   `item_desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商品描述',
-  `item_tag` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商品标签，html代码块',
-  `item_imge_urls` json NULL COMMENT '图片地址',
+  `item_tag` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商品标签',
+  `item_imge_urls` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '图片地址',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
@@ -41,24 +48,24 @@ CREATE TABLE `biz_item`  (
 -- ----------------------------
 -- Records of biz_item
 -- ----------------------------
-INSERT INTO `biz_item` VALUES (1, '15.00', '12.00', '拿铁', '优质咖啡豆搭配顶级牛奶', '<span class=\"tag\">热销</span>', '[\"http://example.com/images/latte.jpg\"]', 0, '2024-05-24 09:00:00', '2024-05-24 09:00:00');
-INSERT INTO `biz_item` VALUES (2, '18.00', '15.00', '卡布奇诺', '意式浓缩咖啡与丝滑牛奶的完美结合', '<span class=\"tag\">推荐</span>', '[\"http://example.com/images/cappuccino.jpg\"]', 0, '2024-05-24 09:15:00', '2024-05-24 09:15:00');
-INSERT INTO `biz_item` VALUES (3, '20.00', '18.00', '摩卡', '香浓巧克力、浓郁咖啡与奶泡的完美融合', '<span class=\"tag\">新品</span>', '[\"http://example.com/images/mocha.jpg\"]', 0, '2024-05-24 09:30:00', '2024-05-24 09:30:00');
-INSERT INTO `biz_item` VALUES (4, '25.00', '22.00', '美式咖啡', '纯粹的咖啡香味', '', '[\"http://example.com/images/americano.jpg\"]', 0, '2024-05-24 09:45:00', '2024-05-24 09:45:00');
-INSERT INTO `biz_item` VALUES (5, '22.00', '20.00', '浓缩咖啡', '浓郁的咖啡香味', '', '[\"http://example.com/images/espresso.jpg\"]', 0, '2024-05-24 10:00:00', '2024-05-24 10:00:00');
-INSERT INTO `biz_item` VALUES (6, '28.00', '25.00', '拿铁玛奇朵', '拿铁与玛奇朵的完美结合', '', '[\"http://example.com/images/latte_macchiato.jpg\"]', 0, '2024-05-24 10:15:00', '2024-05-24 10:15:00');
-INSERT INTO `biz_item` VALUES (7, '30.00', '28.00', '焦糖玛奇朵', '香甜焦糖与浓郁咖啡的美妙组合', '', '[\"http://example.com/images/caramel_macchiato.jpg\"]', 0, '2024-05-24 10:30:00', '2024-05-24 10:30:00');
-INSERT INTO `biz_item` VALUES (8, '20.00', '18.00', '香草拿铁', '香草风味与顶级牛奶的完美搭配', '', '[\"http://example.com/images/vanilla_latte.jpg\"]', 0, '2024-05-24 10:45:00', '2024-05-24 10:45:00');
-INSERT INTO `biz_item` VALUES (9, '22.00', '20.00', '焦糖拿铁', '浓郁咖啡与香甜焦糖的绝妙组合', '', '[\"http://example.com/images/caramel_latte.jpg\"]', 0, '2024-05-24 11:00:00', '2024-05-24 11:00:00');
-INSERT INTO `biz_item` VALUES (10, '25.00', '22.00', '冰美式', '清凉解渴的美式咖啡', '', '[\"http://example.com/images/iced_americano.jpg\"]', 0, '2024-05-24 11:15:00', '2024-05-24 11:15:00');
-INSERT INTO `biz_item` VALUES (11, '30.00', '28.00', '冰摩卡', '浓郁巧克力与冰冻咖啡的美妙组合', '', '[\"http://example.com/images/iced_mocha.jpg\"]', 0, '2024-05-24 11:30:00', '2024-05-24 11:30:00');
-INSERT INTO `biz_item` VALUES (12, '28.00', '25.00', '冰拿铁', '清凉爽口的拿铁咖啡', '', '[\"http://example.com/images/iced_latte.jpg\"]', 0, '2024-05-24 11:45:00', '2024-05-24 11:45:00');
-INSERT INTO `biz_item` VALUES (13, '18.00', '15.00', '冰卡布奇诺', '冰冻的卡布奇诺咖啡', '', '[\"http://example.com/images/iced_cappuccino.jpg\"]', 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
-INSERT INTO `biz_item` VALUES (14, '20.00', '18.00', '香草冰拿铁', '清凉解渴的香草拿铁', '', '[\"http://example.com/images/iced_vanilla_latte.jpg\"]', 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
-INSERT INTO `biz_item` VALUES (15, '22.00', '20.00', '香草冰卡布奇诺', '清凉解渴的香草卡布奇诺', '', '[\"http://example.com/images/iced_vanilla_cappuccino.jpg\"]', 0, '2024-05-24 12:30:00', '2024-05-24 12:30:00');
-INSERT INTO `biz_item` VALUES (1243600983305486336, NULL, NULL, 'cs', NULL, NULL, NULL, NULL, '2024-05-24 16:26:19', NULL);
-INSERT INTO `biz_item` VALUES (1243601159365591040, NULL, NULL, 'cs', NULL, NULL, NULL, NULL, '2024-05-24 16:27:01', NULL);
-INSERT INTO `biz_item` VALUES (1243602284198232064, NULL, NULL, 'cs', NULL, NULL, NULL, NULL, '2024-05-24 16:31:30', NULL);
+INSERT INTO `biz_item` VALUES (1, '15.00', '12.00', '拿铁', '热', '优质咖啡豆搭配顶级牛奶', '热销,新品,新品,新品', '[\"http://example.com/images/latte.jpg\"]', 0, '2024-05-24 09:00:00', '2024-05-24 09:00:00');
+INSERT INTO `biz_item` VALUES (2, '18.00', '15.00', '卡布奇诺', '无糖', '意式浓缩咖啡与丝滑牛奶的完美结合', '推荐', '[\"http://example.com/images/cappuccino.jpg\"]', 0, '2024-05-24 09:15:00', '2024-05-24 09:15:00');
+INSERT INTO `biz_item` VALUES (3, '20.00', '18.00', '摩卡', NULL, '香浓巧克力、浓郁咖啡与奶泡的完美融合', '新品', '[\"http://example.com/images/mocha.jpg\"]', 0, '2024-05-24 09:30:00', '2024-05-24 09:30:00');
+INSERT INTO `biz_item` VALUES (4, '25.00', '22.00', '美式咖啡', NULL, '纯粹的咖啡香味', '', '[\"http://example.com/images/americano.jpg\"]', 0, '2024-05-24 09:45:00', '2024-05-24 09:45:00');
+INSERT INTO `biz_item` VALUES (5, '22.00', '20.00', '浓缩咖啡', NULL, '浓郁的咖啡香味', '', '[\"http://example.com/images/espresso.jpg\"]', 0, '2024-05-24 10:00:00', '2024-05-24 10:00:00');
+INSERT INTO `biz_item` VALUES (6, '28.00', '25.00', '拿铁玛奇朵', NULL, '拿铁与玛奇朵的完美结合', '', '[\"http://example.com/images/latte_macchiato.jpg\"]', 0, '2024-05-24 10:15:00', '2024-05-24 10:15:00');
+INSERT INTO `biz_item` VALUES (7, '30.00', '28.00', '焦糖玛奇朵', NULL, '香甜焦糖与浓郁咖啡的美妙组合', '', '[\"http://example.com/images/caramel_macchiato.jpg\"]', 0, '2024-05-24 10:30:00', '2024-05-24 10:30:00');
+INSERT INTO `biz_item` VALUES (8, '20.00', '18.00', '香草拿铁', NULL, '香草风味与顶级牛奶的完美搭配', '', '[\"http://example.com/images/vanilla_latte.jpg\"]', 0, '2024-05-24 10:45:00', '2024-05-24 10:45:00');
+INSERT INTO `biz_item` VALUES (9, '22.00', '20.00', '焦糖拿铁', NULL, '浓郁咖啡与香甜焦糖的绝妙组合', '', '[\"http://example.com/images/caramel_latte.jpg\"]', 0, '2024-05-24 11:00:00', '2024-05-24 11:00:00');
+INSERT INTO `biz_item` VALUES (10, '25.00', '22.00', '冰美式', NULL, '清凉解渴的美式咖啡', '', '[\"http://example.com/images/iced_americano.jpg\"]', 0, '2024-05-24 11:15:00', '2024-05-24 11:15:00');
+INSERT INTO `biz_item` VALUES (11, '30.00', '28.00', '冰摩卡', NULL, '浓郁巧克力与冰冻咖啡的美妙组合', '', '[\"http://example.com/images/iced_mocha.jpg\"]', 0, '2024-05-24 11:30:00', '2024-05-24 11:30:00');
+INSERT INTO `biz_item` VALUES (12, '28.00', '25.00', '冰拿铁', NULL, '清凉爽口的拿铁咖啡', '', '[\"http://example.com/images/iced_latte.jpg\"]', 0, '2024-05-24 11:45:00', '2024-05-24 11:45:00');
+INSERT INTO `biz_item` VALUES (13, '18.00', '15.00', '冰卡布奇诺', NULL, '冰冻的卡布奇诺咖啡', '', '[\"http://example.com/images/iced_cappuccino.jpg\"]', 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
+INSERT INTO `biz_item` VALUES (14, '20.00', '18.00', '香草冰拿铁', NULL, '清凉解渴的香草拿铁', '', '[\"http://example.com/images/iced_vanilla_latte.jpg\"]', 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
+INSERT INTO `biz_item` VALUES (15, '22.00', '20.00', '香草冰卡布奇诺', NULL, '清凉解渴的香草卡布奇诺', '', '[\"http://example.com/images/iced_vanilla_cappuccino.jpg\"]', 0, '2024-05-24 12:30:00', '2024-05-24 12:30:00');
+INSERT INTO `biz_item` VALUES (1243600983305486336, NULL, NULL, 'cs', NULL, NULL, NULL, NULL, NULL, '2024-05-24 16:26:19', NULL);
+INSERT INTO `biz_item` VALUES (1243601159365591040, NULL, NULL, 'cs', NULL, NULL, NULL, NULL, NULL, '2024-05-24 16:27:01', NULL);
+INSERT INTO `biz_item` VALUES (1243602284198232064, NULL, NULL, 'cs', NULL, NULL, NULL, NULL, NULL, '2024-05-24 16:31:30', NULL);
 
 -- ----------------------------
 -- Table structure for biz_item_sku_relation

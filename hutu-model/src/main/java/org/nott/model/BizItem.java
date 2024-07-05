@@ -48,9 +48,14 @@ public class BizItem implements Serializable {
     private String itemDesc;
 
     /**
-     * 商品标签，html代码块
+     * 商品标签
      */
     private String itemTag;
+
+    /**
+     * 特殊tag
+     */
+    private String special;
 
     /**
      * 图片地址

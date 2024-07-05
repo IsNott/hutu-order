@@ -8,15 +8,15 @@
 				<view @click="handlerRoute('/pages/order/index')" class="colum">
 					<text>点餐</text>
 					</view>
-				<view class="colum">
+				<view @click="showDevMsg" class="colum">
 					<text>商城</text>
 				</view>
 			</view>
 			<view class="row">
-				<view class="colum">
+				<view  @click="showDevMsg" class="colum">
 					<text>积分</text>
 				</view>
-				<view class="colum">
+				<view @click="handlerRoute('/pages/my/index')" class="colum">
 					<text>我的</text>
 				</view>
 			</view>
@@ -42,6 +42,13 @@
 				uni.switchTab({
 					url: path
 				});
+			},
+			showDevMsg(){
+				uni.showModal({
+					title: '提示',
+					content: '功能建设中...',
+					showCancel: false
+				})
 			}
 		}
 	}

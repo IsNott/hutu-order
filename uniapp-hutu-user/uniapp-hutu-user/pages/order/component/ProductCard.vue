@@ -7,22 +7,22 @@
 					/>
 					<view class="catalog-item-info">
 						<view class="catalog-colum">
-							<text class="item-name">{{item.name}}</text>
-							<text class="item-desc">{{item.desc}}</text>
+							<text class="item-name">{{item.itemName}}</text>
+							<text class="item-desc">{{item.itemDesc}}</text>
 						</view>
 						<view class="item-tag">
-							<text v-for="tag in item.tags" 
-							v-if="item.tags">
+							<text v-for="(tag,index) in splitTag(item.itemTag)" 
+							v-if="item.itemTag" :key="index">
 								{{tag}}
 							</text>
-							<text class="item-special" v-for="s in item.special" v-if="item.special">
+							<text class="item-special" v-for="(s,index) in splitTag(item.special)" :key="index + key" v-if="item.special">
 								{{s}}
 							</text>
 						</view>
 						
 						<view class="bottom">
-							<text class="item-amout">${{item.amount}}</text>
-							<uni-icons type="plusempty" size="10"></uni-icons>
+							<text class="item-amout">${{item.actuallyAmount}}</text>
+							<uni-icons @click="handlerClick" type="plusempty" size="10"></uni-icons>
 						</view>
 					</view>	
 				</view>
@@ -33,12 +33,15 @@
 
 <script>
 	const empty = {
-		name: '',
-		desc: '',
-		tags: [],
+		itemId: '',
+		itemName: '',
+		itemDesc: '',
+		itemTag: '',
 		special: [],
-		amount: 0
+		itemImgeUrls: [],
+		actuallyAmount: 0
 	}
+	import { getDateStr } from '../../../utils/CommonUtils'
 	export default {
 		name: 'ProductCard',
 		components: {},
@@ -50,9 +53,17 @@
 		},
 		data() {
 			return {
-
+				key: new Date().getTime().toString()
 			}
 		},
+		methods:{
+			splitTag(str){
+				return str.split(',')
+			},
+			handlerClick(){
+				this.$emit('selectItem',this.item.itemId)
+			}
+		}
 	}
 </script>
 
@@ -66,9 +77,10 @@
 		display: flex;
 		flex-direction: column;
 	}
+
 	
 	.catalog-item image{
-		width: 100%;
+		width: 76px;
 		height: 76px;
 		border-radius: 6%;
 		margin-left: 10px;
@@ -77,11 +89,12 @@
 	
 	.catalog-item-info{
 		margin: 0px 8px;
+		width: 60%;
 	}
 	
 	.item-tag {
 		display: inline;
-		font-size: 6px;
+		font-size: 10px;
 	}
 	
 	.item-tag text{

@@ -13,3 +13,11 @@ export default function getWeekName(day){
 		case 7: return '周日';
 	}
 }
+
+export function getStoreUserInfo(){
+	return uni.getAccountInfoSync('user_info')
+}
+
+export function getDateStr(){
+	return new Date().getTime().toString();
+}

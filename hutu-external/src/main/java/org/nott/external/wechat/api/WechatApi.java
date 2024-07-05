@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Nott
@@ -45,7 +46,7 @@ public class WechatApi {
             String token = bizUserService.login(openId, bizUser);
             info.setToken(token);
         }
-        redisUtils.set(code,openId);
+        redisUtils.set(code,openId, TimeUnit.SECONDS.toSeconds(300L));
         return ResponseEntity.successData(info);
     }
 

@@ -121,6 +121,11 @@ function handleRequest(api, method, data, resolve, reject) {
 		},
 		fail: (err) => {
 			console.log('error', err)
+			uni.showToast({
+				icon: 'error',
+				position: 'top',
+				title: '网络异常'
+			})
 			return reject(err);
 		},
 		complete() {

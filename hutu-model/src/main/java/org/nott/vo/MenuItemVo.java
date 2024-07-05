@@ -26,4 +26,6 @@ public class MenuItemVo {
 
     private String itemImgeUrls;
 
+    private String special;
+
 }
