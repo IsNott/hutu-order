@@ -32,11 +32,12 @@
 		{
 			"navigationBarTitleText" : "会员中心"
 		}
-	},{
-		"path" : "pages/new-order/index",
-		"style" : 
+	},
+	{
+		"path" : "pages/authority/index",
+		"style":
 		{
-			"navigationBarTitleText" : "点单中心"
+			"navigationBarTitleText" : "授权页"
 		}
 	}
 	],
@@ -65,7 +66,7 @@
 		}, {
 			"pagePath": "pages/shop/index",
 			"iconPath": "static/image/shop.png",
-			"text": "商店"
+			"text": "门店"
 		}, 
 		{
 			"pagePath": "pages/my/index",

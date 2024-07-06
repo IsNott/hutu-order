@@ -1,6 +1,7 @@
 package org.nott.web.controller;
 
 import org.nott.common.ResponseEntity;
+import org.nott.dto.UserLoginDTO;
 import org.nott.dto.UserRegisterDTO;
 import org.nott.service.service.IBizUserService;
 import org.nott.vo.UserLoginInfoVo;
@@ -29,6 +30,12 @@ public class BizUserController {
     @PostMapping("register")
     public ResponseEntity<?> register(@RequestBody UserRegisterDTO dto){
         UserLoginInfoVo vo = bizUserService.register(dto);
+        return ResponseEntity.successData(vo);
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<?> login(@RequestBody UserLoginDTO dto){
+        UserLoginInfoVo vo = bizUserService.loginByPhone(dto);
         return ResponseEntity.successData(vo);
     }
 

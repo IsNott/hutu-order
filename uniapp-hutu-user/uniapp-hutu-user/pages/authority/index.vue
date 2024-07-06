@@ -3,14 +3,24 @@
 		<view class="context">
 			<image src="@/static/image/coffee.png" mode="aspectFit"/>
 			<view class="auth-button">
-				<button size="default" type="primary">点击授权使用手机号登录</button>
+				<button size="default" 
+				:disabled="bottonDisable" 
+				open-type="getPhoneNumber"
+				@getphonenumber="handleUserInfo"
+				type="primary">
+					点击授权登录</button>
 			</view>
 			<radio-group>
-				<radio :value="select"/>阅读并已同意</radio><text style="color:#d37959;">《隐私协议》、《用户协议》</text>的内容
+				<radio value="1" @click="handleChange" :checked="select"/>
+				我已阅读并同意
+				<text class="private">《隐私协议》、
+				</text>
+				<text class="private">《用户协议》</text>
+				的内容
 			</radio-group>
 		</view>
 		<view class="footer">
-			<text>免登录点单</text>
+			<text @click="handlerClick">免登录点单</text>
 		</view>
 	</view>
 </template>
@@ -23,6 +33,22 @@
 				select: false
 			}
 		},
+		methods:{
+			handleChange(){
+				var select = this.select
+				this.select = !select
+			},
+			handlerClick(){
+				uni.switchTab({
+					url: '/pages/order/index'
+				})
+			}
+		},
+		computed:{
+			bottonDisable(){
+				return !this.select;
+			}
+		}
 	}
 </script>
 
@@ -78,6 +104,10 @@
 	radio{
 		font-size: 8px;
 		transform: scale(0.77);
+	}
+	
+	.private{
+		color:#d37959;
 	}
 	
 	

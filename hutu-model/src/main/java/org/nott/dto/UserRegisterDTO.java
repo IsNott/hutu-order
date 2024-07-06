@@ -15,4 +15,6 @@ public class UserRegisterDTO {
     private String avatarUrl;
 
     private String nickName;
+
+    private String phone;
 }

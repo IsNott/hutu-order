@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.nott.common.redis.RedisUtils;
 import org.nott.common.utils.HutuUtils;
+import org.nott.dto.UserLoginDTO;
 import org.nott.dto.UserRegisterDTO;
 import org.nott.model.BizUser;
 import org.nott.service.mapper.BizUserMapper;
@@ -48,6 +49,7 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         user.setLastLogTime(new Date());
         user.setUsername(userInfo.getNickName());
         user.setAvatarUrl(userInfo.getAvatarUrl());
+        user.setPhone(userInfo.getPhone());
         this.save(user);
         return this.login(user);
     }
@@ -72,11 +74,21 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         String code = dto.getCode();
         String openId = redisUtils.get(code, String.class);
         ExternalUserInfo info = new WechatUserInfoVo();
-        info.setAvatarUrl(dto.getAvatarUrl());
+        HutuUtils.copyProperties(dto,info);
         info.setOpenId(openId);
-        info.setNickName(dto.getNickName());
 
         return registerUser(info);
+    }
+
+    @Override
+    public UserLoginInfoVo loginByPhone(UserLoginDTO dto) {
+        LambdaQueryWrapper<BizUser> wrapper = new LambdaQueryWrapper<BizUser>().eq(BizUser::getPhone,dto.getPhoneNumber());
+        BizUser bizUser = this.getOne(wrapper);
+        if(HutuUtils.isEmpty(bizUser)){
+            WechatUserInfoVo userRegisterDTO = HutuUtils.transToVo(dto, WechatUserInfoVo.class);
+            return this.registerUser(userRegisterDTO);
+        }
+        return login(bizUser);
     }
 
     @Override
