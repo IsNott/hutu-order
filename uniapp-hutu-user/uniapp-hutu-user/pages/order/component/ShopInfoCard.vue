@@ -1,5 +1,5 @@
 <template>
-	<uni-card margin="0px" :border='false'>
+	<uni-card margin="0px" :border='false' @click="handleClick">
 		<view class="shop-info-card">
 			<view class="header-card">
 				<text class="shop-name">
@@ -27,6 +27,11 @@
 			currentMerchant:{
 				type: Object,
 				default: empty
+			}
+		},
+		methods:{
+			handleClick(){
+				this.$emit('shopCardClick')
 			}
 		}
 	}

@@ -4,7 +4,7 @@
 		<view class="info">
 			<view>
 				<text class="nick-name">
-					{{userInfo.nickName}}
+					{{userInfo.username}}
 				</text>
 			</view>
 		</view>
@@ -13,7 +13,7 @@
 		<image src="@/static/image/avatar/default.jpg" mode="aspectFit"></image>
 		<view class="info">
 			<view>
-				<text class="unlogin">
+				<text class="unlogin" @click="handleClick">
 					点击授权登录
 				</text>
 			</view>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+	import { getStoreUserInfo } from '@/utils/CommonUtils';
 	export default{
 		name:'LoginCard',
 		components:{},
@@ -32,7 +33,12 @@
 		},
 		methods: {
 			getUserInfo() {
-				this.userInfo = uni.getStorageSync('user_info');
+				this.userInfo = getStoreUserInfo();
+			},
+			handleClick(){
+				uni.navigateTo({
+					url: '/pages/authority/index'
+				})
 			}
 		},
 		created() {

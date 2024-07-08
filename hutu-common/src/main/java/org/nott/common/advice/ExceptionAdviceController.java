@@ -29,11 +29,18 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
 
     @Override
     protected org.springframework.http.ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        log.error(ex.getMessage(),ex);
+        String message = ex.getMessage();
+        log.error(message,ex);
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
             request.setAttribute("javax.servlet.error.exception", ex, 0);
         }
-        return new org.springframework.http.ResponseEntity<>(ResponseEntity.failure(ex.getMessage(), status.value()), headers, status);
+        if(ex instanceof MethodArgumentNotValidException){
+            MethodArgumentNotValidException exception = (MethodArgumentNotValidException) ex;
+            BindingResult bindingResult = exception.getBindingResult();
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            message = allErrors.get(0).getDefaultMessage();
+        }
+        return new org.springframework.http.ResponseEntity<>(ResponseEntity.failure(message, status.value()), headers, status);
     }
 
     @ExceptionHandler(HutuBizException.class)

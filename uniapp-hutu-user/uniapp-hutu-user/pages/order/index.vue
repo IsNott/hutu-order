@@ -1,9 +1,9 @@
 <template>
 	<scroll-view>
-		<shop-info-card :current-merchant='currentMerchant' @click="handlerSearchMerchant"/>
+		<shop-info-card :current-merchant='currentMerchant' :key="key" @shopCardClick="handlerSearchMerchant"/>
 		<view class="body">
 			<scroll-view class="left">
-				<menu-catalog-panel :menu-catalog="menuCatalog" @menuClick="handlerCatalogClick"/>
+				<menu-catalog-panel :v-if="menuCatalog.length > 0" :menu-catalog="menuCatalog" @menuClick="handlerCatalogClick"/>
 			</scroll-view>
 			<scroll-view class="right">
 				<view class="body-right-header">
@@ -19,6 +19,8 @@
 
 <script>
 	import { listByShopCatalogId,listByShop,defaultShop } from '@/api/order.js'
+	import { getStoreUserInfo } from '@/utils/CommonUtils'
+	import { shopList } from '@/api/shop'
 	import ShopInfoCard from './component/ShopInfoCard.vue'
 	import MenuCatalogPanel from './component/MenuCatalogPanel.vue'
 	import ProductCard from './component/ProductCard.vue'
@@ -30,7 +32,8 @@
 				menuCatalog:[],
 				currentMerchant:'',
 				menuCataActiveId:'',
-				currentItemList: []
+				currentItemList: [],
+				key: new Date().getTime().toString()
 			}
 		},
 		onShow() {
@@ -52,6 +55,8 @@
 			queryMenuCatalog() {
 				listByShop(this.currentMerchant.id).then(res=>{
 					this.menuCatalog = res.data
+					const id = res.data[0] ? res.data[0].id : ''
+					this.handlerCatalogClick(id)
 				})
 			},
 			handlerCatalogClick(id) {
@@ -66,7 +71,9 @@
 				})
 			},
 			handlerItemSku(id){
-				console.log('itemClick',id);
+				const userInfo = getStoreUserInfo();
+				console.log(userInfo !== null)
+				console.log(userInfo)
 			},
 			queryCurrentMerchant(){
 				const val = uni.getStorageSync('current_shop');
@@ -84,9 +91,11 @@
 									url:'/pages/shop/index'
 								})
 							}else{
-								defaultShop().then(res=>{
-									uni.setStorageSync('current_shop',res.data)
-									this.currentMerchant = res.data
+								shopList().then(res=>{
+									const data = res.data;
+									const currentShop = data.find(obj => obj.closeNow !== 1 && obj.open)
+									uni.setStorageSync('current_shop',currentShop)
+									this.currentMerchant = currentShop
 								})
 							}
 						}

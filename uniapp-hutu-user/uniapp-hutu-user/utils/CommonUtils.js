@@ -15,7 +15,7 @@ export default function getWeekName(day){
 }
 
 export function getStoreUserInfo(){
-	return uni.getAccountInfoSync('user_info')
+	return uni.getStorageSync('user_info')
 }
 
 export function getDateStr(){

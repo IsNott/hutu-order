@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -34,7 +35,7 @@ public class BizUserController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody UserLoginDTO dto){
+    public ResponseEntity<?> login(@Valid @RequestBody UserLoginDTO dto){
         UserLoginInfoVo vo = bizUserService.loginByPhone(dto);
         return ResponseEntity.successData(vo);
     }

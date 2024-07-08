@@ -34,6 +34,7 @@
 		},
 		data() {
 			return {
+				userInfo: '',
 				name: '\xa0Hutu-Order',
 				loginAuth: false,
 				phoneAuth: false
@@ -43,7 +44,7 @@
 			
 		},
 		created() {
-			
+
 		},
 		computed: {
 		}

@@ -2,7 +2,8 @@ package org.nott.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
+
 
 /**
  * @author Nott
@@ -11,6 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UserLoginDTO {
 
-    @NotNull(message = "必填元素不能为空")
+    @NotEmpty(message = "必填元素不能为空")
     private String phoneNumber;
 }

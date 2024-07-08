@@ -67,4 +67,8 @@
 		display: flex;
 		flex-direction: column;
 	}
+	
+	.icon uni-icons{
+			text-align: center;
+	}
 </style>
