@@ -13,14 +13,14 @@ export const request = (api, method, data) => {
 }
 
 export const httpGet = (api, data) => {
-	preHandle();
+	// preHandle();
 	return new Promise((resolve, rejects) => {
 		handleRequest(api, 'GET', data, resolve, rejects)
 	})
 }
 
 export const httpPost = (api, data) => {
-	preHandle();
+	// preHandle();
 	return new Promise((resolve, rejects) => {
 		handleRequest(api, 'POST', data, resolve, rejects)
 	})
@@ -92,12 +92,15 @@ function handleRequest(api, method, data, resolve, reject) {
 	uni.showLoading({
 		title: '加载中'
 	})
+	const token = uni.getStorageSync("token")
+	console.log('token',token)
 	uni.request({
 		url: BASE_URL + api,
 		data: data,
 		method: method,
 		header: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Token': token
 		},
 		success: (response) => {
 			const res = response.data

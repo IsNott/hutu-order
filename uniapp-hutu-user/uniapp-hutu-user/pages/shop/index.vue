@@ -30,9 +30,7 @@
 		methods:{
 			getShopList(){
 				shopList().then(res=>{
-					console.log(res)
 					this.shopInfos = res.data
-					console.log(this.shopInfos)
 				})
 			},
 			setCurrentShop(shopInfo){

@@ -44,10 +44,9 @@
 		methods: {
 			getUserInfo() {
 				this.userInfo = getStoreUserInfo();
-				console.log(this.userInfo)
 			}
 		},
-		created() {
+		onShow() {
 			this.getUserInfo();
 		},
 		computed: {

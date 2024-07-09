@@ -39,6 +39,13 @@
 		{
 			"navigationBarTitleText" : "授权页"
 		}
+	},
+	{
+		"path" : "pages/setting/index",
+		"style":
+		{
+			"navigationBarTitleText" : "设置"
+		}
 	}
 	],
 	"globalStyle": {

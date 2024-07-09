@@ -28,6 +28,7 @@ export function getStoreUserInfo() {
 
 export function storeUserInfo(info) {
 	uni.setStorageSync("user_info", info)
+	uni.setStorageSync('token',info.token)
 }
 
 export function getDateStr() {

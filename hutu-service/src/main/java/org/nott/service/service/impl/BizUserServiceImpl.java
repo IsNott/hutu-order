@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.nott.common.redis.RedisUtils;
 import org.nott.common.utils.HutuUtils;
 import org.nott.dto.UserLoginDTO;
+import org.nott.dto.UserProfileDTO;
 import org.nott.dto.UserRegisterDTO;
 import org.nott.model.BizUser;
 import org.nott.service.mapper.BizUserMapper;
@@ -16,6 +17,7 @@ import org.nott.vo.WechatUserInfoVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -90,6 +92,33 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
             return this.registerUser(userRegisterDTO);
         }
         return login(bizUser);
+    }
+
+    @Override
+    public UserLoginInfoVo updateUserInfo(UserProfileDTO dto) {
+        Serializable loginId = (Serializable) StpUtil.getLoginId();
+        BizUser user = getById(loginId);
+        HutuUtils.requireNotNull(user,"当前登录信息不存在");
+        String nickName = dto.getNickName();
+        Integer gender = dto.getGender();
+        String avatarUrl = dto.getAvatarUrl();
+        if(HutuUtils.isNotEmpty(nickName)){
+            user.setUsername(nickName);
+        }
+        if(HutuUtils.isNotEmpty(gender)){
+            user.setGender(gender);
+        }
+        if(HutuUtils.isNotEmpty(avatarUrl)){
+            user.setAvatarUrl(avatarUrl);
+        }
+        this.updateById(user);
+
+        UserLoginInfoVo vo = HutuUtils.transToVo(dto, UserLoginInfoVo.class);
+        vo.setToken(StpUtil.getTokenValue());
+        vo.setAlreadyRegister(true);
+        vo.setUsername(nickName);
+
+        return vo;
     }
 
     @Override

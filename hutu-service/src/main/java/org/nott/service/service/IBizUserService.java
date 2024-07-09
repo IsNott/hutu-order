@@ -1,6 +1,7 @@
 package org.nott.service.service;
 
 import org.nott.dto.UserLoginDTO;
+import org.nott.dto.UserProfileDTO;
 import org.nott.dto.UserRegisterDTO;
 import org.nott.model.BizUser;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -28,4 +29,6 @@ public interface IBizUserService extends IService<BizUser> {
     UserLoginInfoVo register(UserRegisterDTO dto);
 
     UserLoginInfoVo loginByPhone(UserLoginDTO dto);
+
+    UserLoginInfoVo updateUserInfo(UserProfileDTO dto);
 }
