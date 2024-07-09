@@ -78,6 +78,11 @@
             <artifactId>httpclient</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>1.46</version>
+        </dependency>
 
         <!-- sa-token 权限认证, 在线文档：https://sa-token.cc/ -->
         <dependency>

@@ -13,5 +13,5 @@ import javax.validation.constraints.NotEmpty;
 public class UserLoginDTO {
 
     @NotEmpty(message = "必填元素不能为空")
-    private String phoneNumber;
+    private String phone;
 }

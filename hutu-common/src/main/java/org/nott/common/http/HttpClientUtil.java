@@ -184,16 +184,20 @@ public class HttpClientUtil {
 
         CloseableHttpResponse response = null;
         try {
+            log.info("HttpPost Url ========> : [{}]",httpPost.getURI());
             response = HttpClientUtil.build().httpClient.execute(httpPost);
             if (response == null || response.getStatusLine() == null) {
                 return null;
             }
 
             int statusCode = response.getStatusLine().getStatusCode();
+            log.info("HttpPost Response code ========> : [{}]",statusCode);
             if ( statusCode == HttpStatus.SC_OK ) {
                 HttpEntity entityRes = response.getEntity();
                 if ( entityRes != null ) {
-                    return EntityUtils.toString(entityRes, "UTF-8");
+                    String respStr = EntityUtils.toString(entityRes, "UTF-8");
+                    log.info("HttpPost Response String ========> : [{}]",respStr);
+                    return respStr;
                 }
             }
             return null;
@@ -219,8 +223,11 @@ public class HttpClientUtil {
             //发送json数据需要设置contentType
             s.setContentType("application/json");
             post.setEntity(s);
+            log.info("HttpPostJson Url ========> : [{}]",post.getURI());
             HttpResponse res = HttpClientUtil.build().httpClient.execute(post);
-            if(res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+            int statusCode = res.getStatusLine().getStatusCode();
+            log.info("HttpPostJson Response code ========> : [{}]",statusCode);
+            if(statusCode == HttpStatus.SC_OK){
                 HttpEntity entity = res.getEntity();
                 // 返回json格式：
                 String result = EntityUtils.toString(entity);
@@ -229,6 +236,7 @@ public class HttpClientUtil {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        log.info("HttpPostJson Response String ========> : [{}]",response.toJSONString());
         return response;
     }
 

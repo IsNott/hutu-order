@@ -23,6 +23,8 @@
 </template>
 
 <script>
+	import { loginByPhoneInfo } from '@/api/wechat';
+	import { storeUserInfo } from '@/utils/CommonUtils';
 	export default {
 		name: 'Authority',
 		data() {
@@ -37,16 +39,24 @@
 				this.select = !select;
 			},
 			handlerClick() {
+				this.returnOrderPage();
+			},
+			returnOrderPage(){
 				uni.switchTab({
 					url: '/pages/order/index'
 				});
 			},
 			handleUserInfo(info) {
-				console.log('Wx UserInfo callBack: ', info)
+				// console.log('Wx UserInfo callBack: ', info)
 				const detail = info.detail;
 				if(detail.errMsg === 'getPhoneNumber:ok'){
 					this.phoneInfo = info;
-					
+					loginByPhoneInfo(info.detail).then(res=>{
+						storeUserInfo(res.data)
+						this.returnOrderPage();
+					})
+				} else{
+					console.log('用户取消授权')
 				}
 			}
 		},

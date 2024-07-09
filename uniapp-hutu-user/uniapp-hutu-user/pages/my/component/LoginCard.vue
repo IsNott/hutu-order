@@ -1,10 +1,11 @@
 <template>
 	<view v-if="hasUserInfo" class="login-card" key="1">
-		<image :src="userInfo.avatarUrl" mode="aspectFit"></image>
+		<image v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" mode="aspectFit"/>
+		<image v-else src="@/static/image/avatar/default.jpg" mode="aspectFit"/>
 		<view class="info">
 			<view>
 				<text class="nick-name">
-					{{userInfo.username}}
+					{{userInfo.username === '' ? '点击绑定微信昵称' : userInfo.username}}
 				</text>
 			</view>
 		</view>
@@ -22,19 +23,26 @@
 </template>
 
 <script>
-	import { getStoreUserInfo } from '@/utils/CommonUtils';
+	const empty = {
+		token:"",
+		username:"",
+		avatarUrl:"",
+		gender:""
+	}
 	export default{
 		name:'LoginCard',
 		components:{},
+		props:{
+			userInfo:{
+				type: Object,
+				default: empty
+			}
+		},
 		data(){
 			return{
-				userInfo: ''
 			}
 		},
 		methods: {
-			getUserInfo() {
-				this.userInfo = getStoreUserInfo();
-			},
 			handleClick(){
 				uni.navigateTo({
 					url: '/pages/authority/index'
@@ -42,7 +50,7 @@
 			}
 		},
 		created() {
-			this.getUserInfo();
+			
 		},
 		computed: {
 			hasUserInfo() {

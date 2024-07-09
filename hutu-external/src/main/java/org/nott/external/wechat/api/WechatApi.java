@@ -4,16 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import org.nott.common.ResponseEntity;
 import org.nott.common.redis.RedisUtils;
 import org.nott.common.utils.HutuUtils;
+import org.nott.dto.MiniProgramPhoneInfoDTO;
 import org.nott.external.wechat.service.WechatService;
 import org.nott.model.BizUser;
 import org.nott.service.service.IBizUserService;
 import org.nott.vo.UserLoginInfoVo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,6 +46,12 @@ public class WechatApi {
             info.setToken(token);
         }
         redisUtils.set(code,openId, TimeUnit.SECONDS.toSeconds(300L));
+        return ResponseEntity.successData(info);
+    }
+
+    @PostMapping("miniProgramLogin")
+    public ResponseEntity<?> miniProgramLogin(@Valid @RequestBody MiniProgramPhoneInfoDTO dto){
+        UserLoginInfoVo info = wechatService.miniProgramLogin(dto);
         return ResponseEntity.successData(info);
     }
 

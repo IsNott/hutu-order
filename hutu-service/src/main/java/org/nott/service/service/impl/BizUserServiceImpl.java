@@ -82,7 +82,8 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
 
     @Override
     public UserLoginInfoVo loginByPhone(UserLoginDTO dto) {
-        LambdaQueryWrapper<BizUser> wrapper = new LambdaQueryWrapper<BizUser>().eq(BizUser::getPhone,dto.getPhoneNumber());
+        HutuUtils.requireNotNull(dto.getPhone(),"手机号不能为空");
+        LambdaQueryWrapper<BizUser> wrapper = new LambdaQueryWrapper<BizUser>().eq(BizUser::getPhone,dto.getPhone());
         BizUser bizUser = this.getOne(wrapper);
         if(HutuUtils.isEmpty(bizUser)){
             WechatUserInfoVo userRegisterDTO = HutuUtils.transToVo(dto, WechatUserInfoVo.class);
