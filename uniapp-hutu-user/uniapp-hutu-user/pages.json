@@ -41,6 +41,13 @@
 		}
 	},
 	{
+		"path" : "pages/order/component/ItemDetail",
+		"style":
+		{
+			"navigationBarTitleText" : "商品详情"
+		}
+	},
+	{
 		"path" : "pages/setting/index",
 		"style":
 		{
