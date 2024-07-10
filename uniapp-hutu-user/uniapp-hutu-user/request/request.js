@@ -93,7 +93,6 @@ function handleRequest(api, method, data, resolve, reject) {
 		title: '加载中'
 	})
 	const token = uni.getStorageSync("token")
-	console.log('token',token)
 	uni.request({
 		url: BASE_URL + api,
 		data: data,

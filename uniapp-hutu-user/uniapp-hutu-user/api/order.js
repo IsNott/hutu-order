@@ -20,3 +20,7 @@ export function listByCatalogId(catalogId){
 export function defaultShop(){
 	return request(`/bizShopInfo/default`,'GET')
 }
+
+export function findSkuByItemId(itemId){
+	return request(`/sku/${itemId}`)
+}
