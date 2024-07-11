@@ -1,6 +1,7 @@
 package org.nott.service.service.impl;
 
 import org.nott.model.BizMenu;
+import org.nott.service.service.ISysFileService;
 import org.nott.vo.MenuItemVo;
 import org.nott.service.mapper.BizMenuMapper;
 import org.nott.service.service.IBizMenuService;
@@ -23,6 +24,8 @@ public class BizMenuServiceImpl extends ServiceImpl<BizMenuMapper, BizMenu> impl
 
     @Resource
     private BizMenuMapper bizMenuMapper;
+    @Resource
+    private ISysFileService sysFileService;
 
     @Override
     public List<MenuItemVo> getByCatalogId(String catalogId) {

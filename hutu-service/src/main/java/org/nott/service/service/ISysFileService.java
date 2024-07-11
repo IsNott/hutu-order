@@ -1,6 +1,6 @@
 package org.nott.service.service;
 
-import org.nott.entity.SysFile;
+import org.nott.model.SysFile;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

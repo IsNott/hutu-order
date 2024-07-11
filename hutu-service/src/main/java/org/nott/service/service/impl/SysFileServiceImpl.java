@@ -1,7 +1,7 @@
 package org.nott.service.service.impl;
 
-import org.nott.entity.SysFile;
-import org.nott.mapper.SysFileMapper;
+import org.nott.model.SysFile;
+import org.nott.service.mapper.SysFileMapper;
 import org.nott.service.service.ISysFileService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
