@@ -59,7 +59,8 @@
 						const userInfo = detail.userInfo;
 						updateProfile(userInfo).then(res=>{
 							const data = res.data
-							storeUserInfo(data)
+							storeUserInfo(data);
+							this.$emit('handleRefesh')
 						})
 				}
 			}

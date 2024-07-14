@@ -1,6 +1,6 @@
 <template>
 	<scroll-view>
-		<login-card :user-info="userInfo"/>
+		<login-card :key="refeshKey" :user-info="userInfo" @refeshPage="handleRefesh"/>
 		<setting-card />
 		<cust-card class="sell-card" main-title="营销卡片" sub-title="副标题">
 			<text>故飘风不终朝，骤雨不终日。孰为此者？天地。天地尚不能久，而况于人乎？</text>
@@ -38,12 +38,16 @@
 				userInfo: '',
 				name: '\xa0Hutu-Order',
 				loginAuth: false,
-				phoneAuth: false
+				phoneAuth: false,
+				refeshKey: 0
 			}
 		},
 		methods: {
 			getUserInfo() {
 				this.userInfo = getStoreUserInfo();
+			},
+			handleRefesh(){
+				this.refeshKey++
 			}
 		},
 		onShow() {

@@ -1,40 +1,29 @@
 <template>
-	<scroll-view>
+	<scroll-view class="body">
 		<view class="header">
 			<swiper class="swiper" circular :indicator-dots="indicatorDots" autoplay="true">
 				<swiper-item :key="index" v-for="(img,index) in item.itemImageUrls">
-					<image :src="img" mode="aspectFit" class="img"/>
+					<image :src="img" mode="aspectFit" class="img" />
 				</swiper-item>
 			</swiper>
 		</view>
 		<scroll-view class="context">
-			<view class="info">
-				<view class="item-name">
-					<text class="name">
-						{{item.itemName}}
-					</text>
-					<view class="price">
-						<text class="origin-amount">
-							{{item.originAmount}}
-						</text>
-						<text class="actually-amount">
-							{{item.actuallyAmount}}
-						</text>
-					</view>
+			<item-info :desc="item.itemDesc" :name="item.itemName" :tags="tagArray"></item-info>
+			<sku-item-info v-for="(item,index) in skuList" :catalog-name="item.skuCatalogName"
+			:sku-item="item.skuItems"
+			></sku-item-info>
+			<view class="add-penal">
+				<view class="num">
+					<uni-icons type="left" size="24"></uni-icons>
+					<text>{{currentNum}}</text>
+					<uni-icons type="right" size="24"></uni-icons>
+				</view>
+				<view class="add-btn">
+					<button  type="primary">
+						加入购物袋
+					</button>
 				</view>
 			</view>
-			<view class="title">
-				<uni-title type="h3" :title="sku.skuCatalogName" align="left"/>
-			</view>
-			<view class="btn-group">
-				<button 
-				v-for="(skuItem,index) in sku.skuItems" 
-				:key="skuItem.id"
-				@click="changeColor(index,skuItem)"
-				:class="{ 'mini-btn': true, 'active': activeIndex === index }"
-				type="default" size="mini">{{skuItem.skuItemContent}}</button>
-			</view>
-			
 		</scroll-view>
 	</scroll-view>
 </template>
@@ -42,37 +31,42 @@
 <script>
 	const empty = {
 		actuallyAmount: '120',
-		itemDesc: '',
+		itemDesc: '香甜焦糖与浓郁咖啡的美妙组合',
 		itemId: '',
 		itemImageUrls: [
 			'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132',
 			'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132'
 		],
 		itemName: '商品',
-		itemTag: '',
+		itemTag: '测试,测试标签',
 		memuCatalogId: '',
 		originAmount: '123',
 		special: ''
 	}
 	const emptySku = {
-		skuCatalogName:'测试',
+		skuCatalogName: '测试',
 		displayOrder: 1,
-		skuItems:[{
+		skuItems: [{
 			id: 1,
-			skuItemContent:'测试'
-		},{
+			skuItemContent: '测试'
+		}, {
 			id: 2,
-			skuItemContent:'测试1'
-		},{
+			skuItemContent: '测试1'
+		}, {
 			id: 3,
-			skuItemContent:'测试2'
-		},{
+			skuItemContent: '测试2'
+		}, {
 			id: 4,
-			skuItemContent:'测试2'
+			skuItemContent: '测试2'
 		}]
 	}
+	import ItemInfo from './component/ItemInfo.vue'
+	import SkuItemInfo from './component/SkuItemInfo.vue'
 	export default {
 		name: 'ItemDetail',
+		components: {
+			ItemInfo,SkuItemInfo
+		},
 		props: {
 			item: {
 				type: Object,
@@ -91,57 +85,73 @@
 				swiperDotIndex: 0,
 				indicatorDots: true,
 				sku: emptySku,
-				activeIndex: null
+				activeIndex: null,
+				currentNum: 1
 			}
 		},
 		methods: {
-			changeColor(index,item) {
-			  this.activeIndex = index;
+			changeColor(index, item) {
+				console.log(index)
+				this.activeIndex = index;
+			}
+		},
+		computed: {
+			tagArray() {
+				var array = []
+				const itemTag = this.item.itemTag;
+				if (itemTag) {
+					array = itemTag.split(",");
+				}
+				return array;
+			},
+			specialTag() {
+				var array = []
+				const itemTag = this.item.special;
+				if (itemTag) {
+					array = itemTag.split(",");
+				}
+				return array;
 			}
 		}
 	}
 </script>
 
 <style scoped>
+	.body {
+		background-color: white;
+	}
+
 	.img {
 		width: 300px;
 		height: 300px;
 	}
+
+	.price {
+		display: inline;
+	}
 	
-	.item-name{
+	.add-penal{
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 	}
 	
-	.item-name text{
-		padding: 20px;
+	.num{
+		width: 30%;
+		text-align: center;
+		margin: auto;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 	}
 	
-	.price{
-		display: inline;
+	.add-btn{
+		width: 70%;
 	}
 	
-	.sku-item{
-		display: inline;
-		box-sizing: border-box;
-		padding: 16px;
-		background-color: gainsboro;
-		border-radius: 15px;
+	.add-btn button{
+		margin: 16px;
+		border-radius: 20px;
 	}
-	
-	.mini-btn{
-		margin: 0px 20px;
-		margin-bottom: 20px;
-	}
-	
-	.active {
-		color: rgba(165, 179, 169, 0.6);
-		background-color: #ffd58c;
-		border-color: #179b16;
-	  }
-		
-	.title{
-		padding: 16px;
-	}
+
 </style>

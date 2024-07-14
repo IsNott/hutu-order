@@ -1,11 +1,4 @@
 
- Target Server Type    : MySQL
- Target Server Version : 50735 (5.7.35)
- File Encoding         : 65001
-
- Date: 05/07/2024 17:54:32
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 

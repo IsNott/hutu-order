@@ -7,7 +7,7 @@
 					type="primary">
 					点击授权登录</button>
 			</view>
-			<radio-group>
+			<radio-group class="radio-box">
 				<radio value="1" @click="handleChange" :checked="select" />
 				我已阅读并同意
 				<text class="private">《隐私协议》、
@@ -108,6 +108,10 @@
 	.context image {
 		margin: auto;
 		margin-top: 200px;
+	}
+	
+	.radio-box{
+		margin: 0px 70px;
 	}
 
 	.footer {
