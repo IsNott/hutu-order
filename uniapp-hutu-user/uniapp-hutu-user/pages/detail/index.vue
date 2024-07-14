@@ -12,18 +12,7 @@
 			<sku-item-info v-for="(item,index) in skuList" :catalog-name="item.skuCatalogName"
 			:sku-item="item.skuItems"
 			></sku-item-info>
-			<view class="add-penal">
-				<view class="num">
-					<uni-icons type="left" size="24"></uni-icons>
-					<text>{{currentNum}}</text>
-					<uni-icons type="right" size="24"></uni-icons>
-				</view>
-				<view class="add-btn">
-					<button  type="primary">
-						加入购物袋
-					</button>
-				</view>
-			</view>
+			<goods-footer :num="currentNum"/>
 		</scroll-view>
 	</scroll-view>
 </template>
@@ -62,10 +51,11 @@
 	}
 	import ItemInfo from './component/ItemInfo.vue'
 	import SkuItemInfo from './component/SkuItemInfo.vue'
+	import GoodsFooter from './component/GoodsFooter.vue'
 	export default {
 		name: 'ItemDetail',
 		components: {
-			ItemInfo,SkuItemInfo
+			ItemInfo,SkuItemInfo,GoodsFooter
 		},
 		props: {
 			item: {
@@ -130,28 +120,5 @@
 		display: inline;
 	}
 	
-	.add-penal{
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-	}
-	
-	.num{
-		width: 30%;
-		text-align: center;
-		margin: auto;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-	}
-	
-	.add-btn{
-		width: 70%;
-	}
-	
-	.add-btn button{
-		margin: 16px;
-		border-radius: 20px;
-	}
 
 </style>

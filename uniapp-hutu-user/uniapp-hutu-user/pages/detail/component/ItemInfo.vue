@@ -38,6 +38,14 @@
 			desc: {
 				type: String,
 				default: ''
+			},
+			orgAmount:{
+				type: Number,
+				default: 0
+			},
+			amount:{
+				type: Number,
+				default: 0
 			}
 		}
 	}
