@@ -6,7 +6,7 @@
 		<uni-grid :showBorder="false" :square="false" :column="3" :highlight="false">
 			<uni-grid-item class="grid-item" v-for="(item,index) in skuItem" :index="item.id" :key="item.id">
 				<view>
-					<button @click="changeColor(index,item)"
+					<button :key="activeIndex+item.id" @click="changeColor(index,item)"
 						:class="{ 'btn': true, 'active': activeIndex === index }"
 						>{{item.skuItemContent}}</button>
 				</view>
@@ -29,9 +29,13 @@
 				default: []
 			}
 		},
+		data(){
+			return{
+				activeIndex: 0
+			}
+		},
 		methods:{
 			changeColor(index, item) {
-				console.log(index)
 				this.activeIndex = index;
 			}
 		}

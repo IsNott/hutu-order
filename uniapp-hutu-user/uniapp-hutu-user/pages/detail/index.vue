@@ -12,7 +12,7 @@
 			<sku-item-info v-for="(item,index) in skuList" :catalog-name="item.skuCatalogName"
 			:sku-item="item.skuItems"
 			></sku-item-info>
-			<goods-footer :num="currentNum"/>
+			<goods-footer :num="currentNum" @chooseItem="handleChooseItem" @addToPackage="handleAddPackage"/>
 		</scroll-view>
 	</scroll-view>
 </template>
@@ -83,6 +83,15 @@
 			changeColor(index, item) {
 				console.log(index)
 				this.activeIndex = index;
+			},
+			handleChooseItem(num){
+				let result = this.currentNum + num;
+				if(result >= 0){
+					this.currentNum = result;
+				}
+			},
+			handleAddPackage(){
+				console.log('add package')
 			}
 		},
 		computed: {

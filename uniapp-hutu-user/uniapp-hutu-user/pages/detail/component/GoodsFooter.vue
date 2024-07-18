@@ -1,12 +1,12 @@
 <template>
 	<view class="add-penal">
 		<view class="num">
-			<uni-icons type="left" size="24"></uni-icons>
+			<uni-icons @click="handlerIconClick(-1)" class="left-icon" type="left" size="24"></uni-icons>
 			<text>{{num}}</text>
-			<uni-icons type="right" size="24"></uni-icons>
+			<uni-icons @click="handlerIconClick(1)" type="right" size="24"></uni-icons>
 		</view>
 		<view class="add-btn">
-			<button  type="primary">
+			<button :disabled="num <= 0" type="primary" @click="handlerAddToPackage">
 				加入购物袋
 			</button>
 		</view>
@@ -20,6 +20,14 @@
 			num:{
 				type: Number,
 				default: 1
+			}
+		},
+		methods:{
+			handlerIconClick(num){
+				this.$emit('chooseItem',num)
+			},
+			handlerAddToPackage(){
+				this.$emit('addToPackage')
 			}
 		}
 	}
@@ -52,5 +60,9 @@
 	.add-btn button{
 		margin: 16px;
 		border-radius: 20px;
+	}
+	
+	.left-icon{
+		margin-left: 8px;
 	}
 </style>
