@@ -16,5 +16,7 @@ public class ItemSkuVo {
 
     private Integer displayOrder;
 
+    private Long catalogId;
+
     private List<BizSkuItem> skuItems;
 }

@@ -70,6 +70,7 @@ public class BizItemSkuRelationServiceImpl extends ServiceImpl<BizItemSkuRelatio
                 List<BizSkuItem> skuItemList = bizSkuItems.stream().filter(r -> skuItemId.equals(r.getId())).collect(Collectors.toList());
                 vo.setSkuCatalogName(catalog.getSkuCatalogName());
                 vo.setSkuItems(skuItemList);
+                vo.setCatalogId(catalogId);
                 vo.setDisplayOrder(catalogOrderMap.get(catalogId));
                 itemSkuVos.add(vo);
             }

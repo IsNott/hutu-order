@@ -9,7 +9,11 @@
 		</view>
 		<scroll-view class="context">
 			<item-info :desc="item.itemDesc" :name="item.itemName" :tags="tagArray"></item-info>
-			<sku-item-info v-for="(item,index) in skuList" :catalog-name="item.skuCatalogName"
+			<sku-item-info :key="item.catalogId" 
+			:catalog-id="item.catalogId"
+			@change-select="handleItemSelect"
+			v-for="(item,index) in skuList" 
+			:catalog-name="item.skuCatalogName"
 			:sku-item="item.skuItems"
 			></sku-item-info>
 			<goods-footer :num="currentNum" @chooseItem="handleChooseItem" @addToPackage="handleAddPackage"/>
@@ -35,6 +39,7 @@
 	const emptySku = {
 		skuCatalogName: '测试',
 		displayOrder: 1,
+		catalogId: 1,
 		skuItems: [{
 			id: 1,
 			skuItemContent: '测试'
@@ -92,6 +97,9 @@
 			},
 			handleAddPackage(){
 				console.log('add package')
+			},
+			handleItemSelect(param){
+				console.log(param)
 			}
 		},
 		computed: {
