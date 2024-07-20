@@ -8,7 +8,6 @@
 				<view>
 					<button :key="activeIndex+item.id" @click="changeColor(index,item)"
 						:class="{ 'btn': true, 'active': activeIndex === index }"
-						@click="handleSelect(item.id)"
 						>{{item.skuItemContent}}</button>
 				</view>
 			</uni-grid-item>
@@ -42,17 +41,20 @@
 		methods:{
 			changeColor(index, item) {
 				this.activeIndex = index;
-			},
-			handleSelect(id){
-				this.$emit("change-select",{
-					selectItem:id,
-					selectCatalog: this.catalogId
+				this.$emit('change-select',{
+					catalogId: this.catalogId,
+					selectItemId: item.id,
+					content: this.skuItem[0].skuItemContent
 				})
 			}
 		},
-		computed:{
-			hasChoose(){
-				return this.activeIndex > 0;
+		created() {
+			if(this.skuItem.length > 0 && this.catalogId){
+				this.$emit('change-select',{
+					catalogId: this.catalogId,
+					content: this.skuItem[0].skuItemContent,
+					selectItemId: this.skuItem[0].id
+				})
 			}
 		}
 	}

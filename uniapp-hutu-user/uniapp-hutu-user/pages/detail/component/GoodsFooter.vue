@@ -6,7 +6,7 @@
 			<uni-icons @click="handlerIconClick(1)" type="right" size="24"></uni-icons>
 		</view>
 		<view class="add-btn">
-			<button :disabled="num <= 0" type="primary" @click="handlerAddToPackage">
+			<button :disabled="num <= 0" type="default" @click="handlerAddToPackage">
 				加入购物袋
 			</button>
 		</view>
@@ -60,6 +60,8 @@
 	.add-btn button{
 		margin: 16px;
 		border-radius: 20px;
+		color: white;
+		background-color: #007aff;
 	}
 	
 	.left-icon{

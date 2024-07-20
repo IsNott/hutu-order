@@ -71,11 +71,6 @@
 					this.queryMenuCatalog();
 				}
 			}
-			// ,
-			// currentItem(o,n){
-			// 	console.log(n)
-			// 	this.querySku(n.itemId);
-			// }
 		},
 		methods: {
 			// 当前门店卡片点击事件
@@ -114,15 +109,16 @@
 				} else {
 					this.currentItem = this.currentItemList.find(r => r.itemId === id);
 					console.log('currentItem',this.currentItem);
-					this.querySku(id);
-					this.showSku = true;
+					findSkuByItemId(this.currentItem.itemId).then(res => {
+						this.currentSkuList = res.data
+						const currentSkuList = encodeURIComponent(JSON.stringify(res.data))
+						const item = encodeURIComponent(JSON.stringify(this.currentItem))
+						uni.navigateTo({
+							url: '/pages/detail/index?skuList=' + currentSkuList + '&item=' + item 
+						})
+						
+					})
 				}
-			},
-			querySku(itemId) {
-				findSkuByItemId(itemId).then(res => {
-					this.currentSkuList = res.data
-					console.log('currentSkuList',this.currentSkuList);
-				})
 			},
 			addPackage(item) {
 				console.log('add', item)

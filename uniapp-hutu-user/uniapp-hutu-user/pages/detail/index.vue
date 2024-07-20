@@ -8,69 +8,46 @@
 			</swiper>
 		</view>
 		<scroll-view class="context">
-			<item-info :desc="item.itemDesc" :name="item.itemName" :tags="tagArray"></item-info>
-			<sku-item-info :key="item.catalogId" 
-			:catalog-id="item.catalogId"
-			@change-select="handleItemSelect"
-			v-for="(item,index) in skuList" 
-			:catalog-name="item.skuCatalogName"
-			:sku-item="item.skuItems"
-			></sku-item-info>
-			<goods-footer :num="currentNum" @chooseItem="handleChooseItem" @addToPackage="handleAddPackage"/>
+			<item-info v-if="item" :desc="item.itemDesc" :name="item.itemName" :tags="tagArray"></item-info>
+			<sku-item-info :key="item.catalogId" :catalog-id="item.catalogId" @change-select="handleItemSelect"
+				v-for="(item,index) in skuList" :catalog-name="item.skuCatalogName"
+				:sku-item="item.skuItems"></sku-item-info>
+			<goods-footer :num="currentNum" @chooseItem="handleChooseItem" @addToPackage="handleAddPackage" />
 		</scroll-view>
 	</scroll-view>
 </template>
 
 <script>
 	const empty = {
-		actuallyAmount: '120',
-		itemDesc: '香甜焦糖与浓郁咖啡的美妙组合',
+		actuallyAmount: '',
+		itemDesc: '',
 		itemId: '',
-		itemImageUrls: [
-			'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132',
-			'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132'
-		],
-		itemName: '商品',
-		itemTag: '测试,测试标签',
+		itemImageUrls: [],
+		itemName: '',
+		itemTag: '',
 		memuCatalogId: '',
-		originAmount: '123',
+		originAmount: '',
 		special: ''
 	}
 	const emptySku = {
-		skuCatalogName: '测试',
-		displayOrder: 1,
-		catalogId: 1,
+		skuCatalogName: '',
+		displayOrder: '',
+		catalogId: '',
 		skuItems: [{
-			id: 1,
-			skuItemContent: '测试'
-		}, {
-			id: 2,
-			skuItemContent: '测试1'
-		}, {
-			id: 3,
-			skuItemContent: '测试2'
-		}, {
-			id: 4,
-			skuItemContent: '测试2'
+			id: '',
+			skuItemContent: ''
 		}]
 	}
+	import { addPackage } from '@/api/order'
 	import ItemInfo from './component/ItemInfo.vue'
 	import SkuItemInfo from './component/SkuItemInfo.vue'
 	import GoodsFooter from './component/GoodsFooter.vue'
 	export default {
 		name: 'ItemDetail',
 		components: {
-			ItemInfo,SkuItemInfo,GoodsFooter
-		},
-		props: {
-			item: {
-				type: Object,
-				default: () => (empty)
-			},
-			skuList: {
-				type: Array,
-				default: () => ([emptySku])
-			}
+			ItemInfo,
+			SkuItemInfo,
+			GoodsFooter
 		},
 		data() {
 			return {
@@ -81,25 +58,46 @@
 				indicatorDots: true,
 				sku: emptySku,
 				activeIndex: null,
-				currentNum: 1
+				currentNum: 1,
+				item: '',
+				skuList: [],
+				selectSkuList: []
 			}
+		},
+		onLoad: function(option) {
+			const item = JSON.parse(decodeURIComponent(option.item));
+			const skuList = JSON.parse(decodeURIComponent(option.skuList));
+			this.item = item;
+			this.skuList = skuList;
 		},
 		methods: {
 			changeColor(index, item) {
 				console.log(index)
 				this.activeIndex = index;
 			},
-			handleChooseItem(num){
+			handleChooseItem(num) {
 				let result = this.currentNum + num;
-				if(result >= 0){
+				if (result >= 0) {
 					this.currentNum = result;
 				}
 			},
-			handleAddPackage(){
-				console.log('add package')
+			handleAddPackage() {
+				addPackage({
+					itemId: this.item.itemId,
+					itemPiece: this.currentNum,
+					skuItemContents: this.selectSkuList.map(r => r.content).join(',')
+				}).then(res=>{
+					uni.navigateBack();
+				})
 			},
-			handleItemSelect(param){
-				console.log(param)
+			handleItemSelect(param) {
+				let selected = this.selectSkuList.find(r => r.catalogId === param.catalogId);
+				if (selected) {
+					selected.selectItemId = param.selectItemId;
+				} else {
+					this.selectSkuList.push(param);
+				}
+				console.log(this.selectSkuList);
 			}
 		},
 		computed: {
@@ -136,6 +134,4 @@
 	.price {
 		display: inline;
 	}
-	
-
 </style>

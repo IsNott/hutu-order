@@ -82,6 +82,7 @@
 		font-size: 12px;
 		color: #bcbcbc;
 		padding-left: 16px;
+		padding-top: 8px;
 	}
 
 	.item-desc {

@@ -47,6 +47,8 @@ spring:
     # token风格
     token-style: uuid
 
+interceptor:
+  authorize: true
 
 logging:
   config: classpath:logback-dev.xml

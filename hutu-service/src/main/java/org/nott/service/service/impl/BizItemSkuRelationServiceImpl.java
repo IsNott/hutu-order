@@ -67,12 +67,21 @@ public class BizItemSkuRelationServiceImpl extends ServiceImpl<BizItemSkuRelatio
                 Long skuItemId = relation.getSkuItemId();
                 ItemSkuVo vo = new ItemSkuVo();
                 BizSkuCatalog catalog = bizSkuCatalogMap.get(catalogId);
+                ItemSkuVo itemSkuVo = itemSkuVos.stream().filter(r -> catalogId.equals(r.getCatalogId())).findFirst().orElse(null);
                 List<BizSkuItem> skuItemList = bizSkuItems.stream().filter(r -> skuItemId.equals(r.getId())).collect(Collectors.toList());
-                vo.setSkuCatalogName(catalog.getSkuCatalogName());
-                vo.setSkuItems(skuItemList);
-                vo.setCatalogId(catalogId);
-                vo.setDisplayOrder(catalogOrderMap.get(catalogId));
-                itemSkuVos.add(vo);
+                if(itemSkuVo != null){
+                    itemSkuVo.getSkuItems().addAll(skuItemList);
+                }else {
+                    List<BizSkuItem> skuItems = new ArrayList<>();
+                    skuItems.addAll(skuItemList);
+                    vo.setSkuCatalogName(catalog.getSkuCatalogName());
+                    vo.setSkuItems(skuItemList);
+                    vo.setCatalogId(catalogId);
+                    vo.setDisplayOrder(catalogOrderMap.get(catalogId));
+                    vo.setSkuItems(skuItems);
+                    itemSkuVos.add(vo);
+                }
+
             }
         }
         return itemSkuVos;

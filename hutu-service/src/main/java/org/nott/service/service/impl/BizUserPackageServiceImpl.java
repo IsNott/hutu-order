@@ -29,14 +29,14 @@ public class BizUserPackageServiceImpl extends ServiceImpl<BizUserPackageMapper,
 
     @Override
     public List<UserPackageVo> queryPackageInfoByUserId() {
-        Long userId = (Long) StpUtil.getLoginId();
+        Long userId = Long.parseLong((String)StpUtil.getLoginId());
         List<UserPackageVo> userPackageVos = bizUserPackageMapper.selectUserPackageByUserId(userId);
         return userPackageVos;
     }
 
     @Override
     public void packageAddItem(UserPackageAddDTO dto) {
-        Long userId = (Long) StpUtil.getLoginId();
+        Long userId = Long.parseLong((String)StpUtil.getLoginId());
         Long itemId = dto.getItemId();
         Integer itemPiece = dto.getItemPiece();
         String skuItemContents = dto.getSkuItemContents();
