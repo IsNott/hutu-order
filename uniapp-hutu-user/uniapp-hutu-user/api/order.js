@@ -24,3 +24,7 @@ export function defaultShop(){
 export function findSkuByItemId(itemId){
 	return request(`/sku/${itemId}`)
 }
+
+export function queryUserPackage(){
+	return request('/bizUserPackage/query','POST')
+}

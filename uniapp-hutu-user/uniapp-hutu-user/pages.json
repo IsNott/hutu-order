@@ -48,6 +48,13 @@
 		}
 	},
 	{
+		"path" : "pages/user-package/index",
+		"style":
+		{
+			"navigationBarTitleText" : "购物袋"
+		}
+	},
+	{
 		"path" : "pages/setting/index",
 		"style":
 		{

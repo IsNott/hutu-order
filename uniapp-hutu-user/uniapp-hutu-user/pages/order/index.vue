@@ -16,6 +16,11 @@
 					:key="item.itemId" :item="item" />
 			</scroll-view>
 		</view>
+		<uni-badge v-if="packageNum > 0" class="uni-badge-left-margin" :text="packageNum" absolute="rightTop"
+			size="normal">
+			<uni-fab :pattern="pattern" horizontal="right" vertical="bottom" :pop-menu="false" @fabClick="handleTransPackage"/>
+		</uni-badge>
+		
 	</scroll-view>
 </template>
 
@@ -23,7 +28,8 @@
 	import {
 		listByShopCatalogId,
 		listByShop,
-		findSkuByItemId
+		findSkuByItemId,
+		queryUserPackage
 	} from '@/api/order.js'
 	import {
 		getStoreUserInfo
@@ -54,8 +60,16 @@
 				currentSkuList: [],
 				showSku: false,
 				showLoading: false,
+				packageNum: 1,
+				hasLogin: false,
+				pattern:{
+					icon: 'cart'
+				},
 				key: new Date().getTime().toString()
 			}
+		},
+		onLoad() {
+			this.queryPackage();
 		},
 		onShow() {
 			const vm = this;
@@ -107,21 +121,28 @@
 						url: '/pages/authority/index'
 					})
 				} else {
+					this.hasLogin = true;
 					this.currentItem = this.currentItemList.find(r => r.itemId === id);
-					console.log('currentItem',this.currentItem);
+					console.log('currentItem', this.currentItem);
 					findSkuByItemId(this.currentItem.itemId).then(res => {
 						this.currentSkuList = res.data
 						const currentSkuList = encodeURIComponent(JSON.stringify(res.data))
 						const item = encodeURIComponent(JSON.stringify(this.currentItem))
 						uni.navigateTo({
-							url: '/pages/detail/index?skuList=' + currentSkuList + '&item=' + item 
+							url: '/pages/detail/index?skuList=' + currentSkuList + '&item=' + item
 						})
-						
+
 					})
 				}
 			},
-			addPackage(item) {
-				console.log('add', item)
+			queryPackage() {
+				if (this.hasLogin) {
+					queryUserPackage().then(res => {
+						if (res.data) {
+							this.packageNum = res.data.length
+						}
+					})
+				}
 			},
 			doPay(item) {
 				console.log('pay', item)
@@ -153,6 +174,11 @@
 						}
 					})
 				}
+			},
+			handleTransPackage(){
+				uni.navigateTo({
+					url: '/pages/user-package/index'
+				})
 			}
 		},
 		computed: {
@@ -197,4 +223,5 @@
 		font-size: 8px;
 		color: gray;
 	}
+	
 </style>
