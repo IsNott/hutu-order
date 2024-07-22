@@ -1,8 +1,8 @@
 package org.nott.web.controller;
 
 import org.nott.common.ResponseEntity;
+import org.nott.common.annotation.RedisCache;
 import org.nott.service.service.IBizMenuCatalogService;
-import org.nott.service.service.IBizMenuService;
 import org.nott.vo.MenuCatalogVo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +30,7 @@ public class BizMenuCatalogController {
     }
 
     @GetMapping("listByShop/{shopId}")
+    @RedisCache(key = "listByShop",item = "#shopId")
     public ResponseEntity<?> listByShop(@PathVariable Long shopId){
         List<MenuCatalogVo> vos = bizMenuCatalogService.getCatalogByShopId(shopId);
         return ResponseEntity.successData(vos);
