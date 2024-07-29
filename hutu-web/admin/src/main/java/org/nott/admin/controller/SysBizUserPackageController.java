@@ -1,7 +1,15 @@
 package org.nott.admin.controller;
 
+import org.nott.common.ResponseEntity;
+import org.nott.service.service.IBizUserPackageService;
+import org.nott.vo.UserPackageVo;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/sys/bizUserPackage")
 public class SysBizUserPackageController {
+
+    @Resource
+    private IBizUserPackageService bizUserPackageService;
+
+    @PostMapping("/query/{userId}")
+    public ResponseEntity<?> queryPackage(@PathVariable Long userId){
+        List<UserPackageVo> userPackageVos = bizUserPackageService.queryPackageInfoByUserId(userId);
+        return ResponseEntity.successData(userPackageVos);
+    }
 
 }

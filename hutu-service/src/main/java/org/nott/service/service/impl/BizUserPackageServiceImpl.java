@@ -30,8 +30,12 @@ public class BizUserPackageServiceImpl extends ServiceImpl<BizUserPackageMapper,
     @Override
     public List<UserPackageVo> queryPackageInfoByUserId() {
         Long userId = Long.parseLong((String)StpUtil.getLoginId());
-        List<UserPackageVo> userPackageVos = bizUserPackageMapper.selectUserPackageByUserId(userId);
-        return userPackageVos;
+        return this.queryPackageInfoByUserId(userId);
+    }
+
+    @Override
+    public List<UserPackageVo> queryPackageInfoByUserId(Long userId) {
+        return bizUserPackageMapper.selectUserPackageByUserId(userId);
     }
 
     @Override

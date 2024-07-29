@@ -18,11 +18,9 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-@MapperScan("org.nott.**.mapper")
 public class MbpConfiguration {
 
     @Configuration
-    @MapperScan("scan.your.mapper.package")
     public class MybatisPlusConfig {
 
         /**
