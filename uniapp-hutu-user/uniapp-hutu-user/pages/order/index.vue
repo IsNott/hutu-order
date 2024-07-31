@@ -65,6 +65,7 @@
 				pattern:{
 					icon: 'cart'
 				},
+				packageList: [],
 				key: new Date().getTime().toString()
 			}
 		},
@@ -140,6 +141,7 @@
 					queryUserPackage().then(res => {
 						if (res.data) {
 							this.packageNum = res.data.length
+							this.packageList = res.data
 						}
 					})
 				}
@@ -177,7 +179,7 @@
 			},
 			handleTransPackage(){
 				uni.navigateTo({
-					url: '/pages/user-package/index'
+					url: '/pages/user-package/index?packageList=' + encodeURIComponent(JSON.stringify(this.packageList))
 				})
 			}
 		},
