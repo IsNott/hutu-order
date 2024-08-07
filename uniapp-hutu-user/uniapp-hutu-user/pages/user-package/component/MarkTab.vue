@@ -17,7 +17,7 @@
 			},
 			defValue:{
 				type: String,
-				default: ''
+				default: '无'
 			},
 			title:{
 				type: String,

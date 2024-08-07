@@ -9,12 +9,12 @@
 				@iconClick="handlerIconClick"></item-card>
 		</scroll-view>
 		<view class="footer">
-			<mark-tab :key="remark" title="备注" def-value="添加口味、糖度等备注" :value="remark"/>
-			<mark-tab :key="totalOrginalAmount" title="原价" def-value="0.00元" :value="amountStr"/>
-			<mark-tab :key="chooseCoupon" title="优惠券" def-value="无" :value="chooseCoupon"/>
-			<mark-tab :key="point" title="可用积分" def-value="无" :value="point"/>
+			<mark-tab :key="remark" title="备注" :def-value="markTabDefValue" :value="remark"/>
+			<mark-tab :key="totalOrginalAmount" title="原价" :def-value="amoutDefValue" :value="amountStr"/>
+			<mark-tab :key="chooseCoupon" title="优惠券" :value="chooseCoupon"/>
+			<mark-tab :key="point" title="可用积分" :value="point"/>
 			<view class="btn-group">
-				<button class="pay-btn">立即结算￥{{totalActuallyAmount}}</button>
+				<button @click="handlePay" class="pay-btn">立即结算￥{{totalActuallyAmount}}</button>
 			</view>
 		</view>
 	</view>
@@ -47,6 +47,8 @@
 				remark: '',
 				point: '',
 				coupons: '',
+				markTabDefValue: '添加口味、糖度等备注',
+				amountDefValue: '0.00元',
 				chooseCoupon: '',
 				currentShopName: '糊涂餐馆（齐河路店）',
 				currentShopAddress: '上海齐河路',
@@ -66,6 +68,9 @@
 						currentPackageItem.itemPiece = result;
 					}
 				}
+			},
+			handlePay(){
+				
 			}
 		},
 		computed: {
