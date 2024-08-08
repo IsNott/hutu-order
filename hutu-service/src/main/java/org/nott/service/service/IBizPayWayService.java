@@ -1,5 +1,6 @@
 package org.nott.service.service;
 
+import org.nott.dto.PayWayQueryDTO;
 import org.nott.model.BizPayWay;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.nott.vo.PayWayVo;
@@ -16,5 +17,5 @@ import java.util.List;
  */
 public interface IBizPayWayService extends IService<BizPayWay> {
 
-    List<PayWayVo> listPayWay();
+    List<PayWayVo> listPayWay(PayWayQueryDTO dto);
 }

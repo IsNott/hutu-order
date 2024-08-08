@@ -2,6 +2,7 @@ package org.nott.service.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.nott.common.utils.HutuUtils;
+import org.nott.dto.PayWayQueryDTO;
 import org.nott.model.BizPayWay;
 import org.nott.service.mapper.BizPayWayMapper;
 import org.nott.service.service.IBizPayWayService;
@@ -24,18 +25,18 @@ import java.util.List;
 public class BizPayWayServiceImpl extends ServiceImpl<BizPayWayMapper, BizPayWay> implements IBizPayWayService {
 
     @Override
-    public List<PayWayVo> listPayWay() {
+    public List<PayWayVo> listPayWay(PayWayQueryDTO dto) {
         List<PayWayVo> vos = new ArrayList<>();
+
         LambdaQueryWrapper<BizPayWay> wrapper = new LambdaQueryWrapper<>();
+
         wrapper.eq(BizPayWay::getIsUsable, 1)
-                .orderByAsc(BizPayWay::getOrder);
+                .like(BizPayWay::getSupportPlatform,dto.getPlatformName())
+                .orderByAsc(BizPayWay::getDisplayOrder);
+
         List<BizPayWay> payWays = this.list(wrapper);
         if (HutuUtils.isNotEmpty(payWays)) {
-            for (BizPayWay payWay : payWays) {
-                PayWayVo payWayVo = new PayWayVo();
-                HutuUtils.copyProperties(payWay, payWayVo);
-                vos.add(payWayVo);
-            }
+           payWays.forEach(r -> vos.add(HutuUtils.transToVo(r,PayWayVo.class)));
         }
         return vos;
     }

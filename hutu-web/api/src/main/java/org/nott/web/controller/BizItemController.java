@@ -1,5 +1,7 @@
 package org.nott.web.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.ItemSearchDTO;
 import org.nott.model.BizItem;
@@ -21,6 +23,7 @@ import java.util.List;
  * @author nott
  * @since 2024-05-24
  */
+@Api("商品信息")
 @RestController
 @RequestMapping("/bizItem")
 public class BizItemController {
@@ -28,6 +31,7 @@ public class BizItemController {
     @Resource
     private IBizItemService bizItemService;
 
+    @ApiOperation(value = "搜索商品")
     @PostMapping("search")
     public ResponseEntity<?> searchItem(@RequestBody @Valid ItemSearchDTO dto){
         List<BizItem> itemList = bizItemService.searchItemByName(dto.getKeyWord());

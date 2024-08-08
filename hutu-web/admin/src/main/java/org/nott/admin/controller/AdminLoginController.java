@@ -2,6 +2,8 @@ package org.nott.admin.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.nott.common.exception.PasswordNotMatchesException;
 import org.nott.common.exception.UserNotFoundException;
 import org.nott.model.SysUser;
@@ -23,7 +25,7 @@ import javax.validation.Valid;
  * @author Nott
  * @date 2024-6-6
  */
-
+@Api("后台登录")
 @RestController
 @RequestMapping("/sys/admin")
 public class AdminLoginController {
@@ -33,7 +35,7 @@ public class AdminLoginController {
 
     @Resource
     private PasswordEncoder passwordEncoder;
-
+    @ApiOperation("登录")
     @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody @Valid AdminLoginDTO dto) {
         String username = dto.getUsername();

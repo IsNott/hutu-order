@@ -80,6 +80,7 @@
                 <version>${fastjson.version}</version>
             </dependency>
 
+
         </dependencies>
 
     </dependencyManagement>

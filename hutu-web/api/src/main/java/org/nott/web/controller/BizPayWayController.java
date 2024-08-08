@@ -2,8 +2,10 @@ package org.nott.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.nott.common.ResponseEntity;
+import org.nott.dto.PayWayQueryDTO;
 import org.nott.service.service.IBizPayWayService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +27,7 @@ public class BizPayWayController {
     private IBizPayWayService bizPayWayService;
 
     @PostMapping("list")
-    public ResponseEntity<?> listPayWay(){
-        return ResponseEntity.successData(bizPayWayService.listPayWay());
+    public ResponseEntity<?> listPayWay(@RequestBody PayWayQueryDTO dto){
+        return ResponseEntity.successData(bizPayWayService.listPayWay(dto));
     }
 }

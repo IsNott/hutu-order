@@ -24,18 +24,18 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.nott</groupId>-->
-<!--            <artifactId>hutu-security</artifactId>-->
-<!--            <version>1.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
-
-        <!-- sa-token整合redis (使用jackson序列化方式) -->
         <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-dao-redis-jackson</artifactId>
-            <version>1.9.0</version>
+            <groupId>org.nott</groupId>
+            <artifactId>hutu-security</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
+
+<!--        &lt;!&ndash; sa-token整合redis (使用jackson序列化方式) &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>cn.dev33</groupId>-->
+<!--            <artifactId>sa-token-dao-redis-jackson</artifactId>-->
+<!--            <version>1.9.0</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.nott</groupId>

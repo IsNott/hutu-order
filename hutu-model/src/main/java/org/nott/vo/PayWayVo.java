@@ -14,7 +14,7 @@ public class PayWayVo {
 
     private String paymentName;
 
-    private Integer order;
+    private Integer displayOrder;
 
     private String icon;
 
