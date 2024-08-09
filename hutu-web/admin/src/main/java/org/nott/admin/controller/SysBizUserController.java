@@ -1,5 +1,7 @@
 package org.nott.admin.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.service.service.IBizUserService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import javax.annotation.Resource;
  * @date 2024-6-12
  */
 
+@Api(tags = "用户管理")
 @RestController
 @RequestMapping("/sys/bizUser/")
 public class SysBizUserController {
@@ -20,6 +23,7 @@ public class SysBizUserController {
     @Resource
     private IBizUserService bizUserService;
 
+    @ApiOperation("数量统计")
     @GetMapping("/count")
     public ResponseEntity<?> countBizUser(){
         return ResponseEntity.successData(bizUserService.count());

@@ -27,11 +27,6 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         log.info("AuthorizationInterceptor execute");
         String requestURI = request.getRequestURI();
 
-//        if (matcher.match(SecurityConstants.ERROR_URL,requestURI)) {
-////            HttpHandler.writeResponse(ResponseEntity.failure("系统异常", 500), response);
-//            return true;
-//        }
-
         for (String url : SecurityConstants.PERMITTED_URL) {
             if (matcher.match(url, requestURI)) {
                 return true;

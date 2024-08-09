@@ -11,9 +11,9 @@ import org.nott.model.BizUser;
 import org.nott.service.mapper.BizUserMapper;
 import org.nott.service.service.IBizUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.nott.vo.ExternalUserInfo;
+import org.nott.vo.ExternalBaseUserInfo;
 import org.nott.vo.UserLoginInfoVo;
-import org.nott.vo.WechatUserInfoVo;
+import org.nott.vo.WechatBaseUserInfoVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,7 +43,7 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
 
 
     @Override
-    public UserLoginInfoVo registerUser(ExternalUserInfo userInfo) {
+    public UserLoginInfoVo registerUser(ExternalBaseUserInfo userInfo) {
         BizUser user = new BizUser();
         user.setLoginCount(1);
         user.setRegistTime(new Date());
@@ -57,7 +57,7 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
     }
 
     @Override
-    public UserLoginInfoVo loginUser(ExternalUserInfo userInfo) {
+    public UserLoginInfoVo loginUser(ExternalBaseUserInfo userInfo) {
         BizUser user = getUserByOpenId(userInfo.getOpenId());
         Integer loginCount = user.getLoginCount();
         loginCount += 1;
@@ -75,10 +75,8 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
     public UserLoginInfoVo register(UserRegisterDTO dto) {
         String code = dto.getCode();
         String openId = redisUtils.get(code, String.class);
-        ExternalUserInfo info = new WechatUserInfoVo();
-        HutuUtils.copyProperties(dto,info);
+        ExternalBaseUserInfo info = HutuUtils.transToVo(dto, ExternalBaseUserInfo.class);
         info.setOpenId(openId);
-
         return registerUser(info);
     }
 
@@ -88,7 +86,7 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         LambdaQueryWrapper<BizUser> wrapper = new LambdaQueryWrapper<BizUser>().eq(BizUser::getPhone,dto.getPhone());
         BizUser bizUser = this.getOne(wrapper);
         if(HutuUtils.isEmpty(bizUser)){
-            WechatUserInfoVo userRegisterDTO = HutuUtils.transToVo(dto, WechatUserInfoVo.class);
+            ExternalBaseUserInfo userRegisterDTO = HutuUtils.transToVo(dto, ExternalBaseUserInfo.class);
             return this.registerUser(userRegisterDTO);
         }
         return login(bizUser);

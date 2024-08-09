@@ -1,6 +1,8 @@
 package org.nott.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.PayWayQueryDTO;
 import org.nott.service.service.IBizPayWayService;
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
  * @author nott
  * @since 2024-05-24
  */
+@Api(tags = "支付方式")
 @RestController
 @RequestMapping("/bizPayWay")
 public class BizPayWayController {
@@ -26,6 +29,7 @@ public class BizPayWayController {
     @Resource
     private IBizPayWayService bizPayWayService;
 
+    @ApiOperation("查询支付方式列表")
     @PostMapping("list")
     public ResponseEntity<?> listPayWay(@RequestBody PayWayQueryDTO dto){
         return ResponseEntity.successData(bizPayWayService.listPayWay(dto));

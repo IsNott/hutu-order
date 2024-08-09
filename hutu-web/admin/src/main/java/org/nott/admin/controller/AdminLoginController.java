@@ -25,7 +25,7 @@ import javax.validation.Valid;
  * @author Nott
  * @date 2024-6-6
  */
-@Api("后台登录")
+@Api(tags = "后台登录")
 @RestController
 @RequestMapping("/sys/admin")
 public class AdminLoginController {
@@ -35,6 +35,7 @@ public class AdminLoginController {
 
     @Resource
     private PasswordEncoder passwordEncoder;
+
     @ApiOperation("登录")
     @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody @Valid AdminLoginDTO dto) {
@@ -54,15 +55,11 @@ public class AdminLoginController {
         return ResponseEntity.successData(vo);
     }
 
+    @ApiOperation("登出")
     @PostMapping("logout")
     public ResponseEntity<?> logout(){
         StpUtil.logout();
         return ResponseEntity.success();
     }
 
-    @PostMapping("test")
-    public ResponseEntity<?> testToken(){
-        StpUtil.checkLogin();
-        return ResponseEntity.success();
-    }
 }

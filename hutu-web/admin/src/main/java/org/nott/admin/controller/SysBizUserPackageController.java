@@ -1,5 +1,7 @@
 package org.nott.admin.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.service.service.IBizUserPackageService;
 import org.nott.vo.UserPackageVo;
@@ -19,6 +21,7 @@ import java.util.List;
  * @author nott
  * @since 2024-06-07
  */
+@Api("购物袋管理")
 @RestController
 @RequestMapping("/sys/bizUserPackage")
 public class SysBizUserPackageController {
@@ -26,6 +29,7 @@ public class SysBizUserPackageController {
     @Resource
     private IBizUserPackageService bizUserPackageService;
 
+    @ApiOperation("查询用户购物袋")
     @PostMapping("/query/{userId}")
     public ResponseEntity<?> queryPackage(@PathVariable Long userId){
         List<UserPackageVo> userPackageVos = bizUserPackageService.queryPackageInfoByUserId(userId);

@@ -1,6 +1,9 @@
 package org.nott.external.wechat.api;
 
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.common.redis.RedisUtils;
 import org.nott.common.utils.HutuUtils;
@@ -20,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2024-6-14
  */
 
+@Api(tags = "微信api")
 @RestController
 @RequestMapping("/external/wechat/")
 public class WechatApi {
@@ -31,6 +35,8 @@ public class WechatApi {
     @Resource
     private WechatService wechatService;
 
+    @ApiOperation("微信小程序登录-授权码")
+    @ApiImplicitParam(required = true)
     @GetMapping("miniProgram/{code}")
     public ResponseEntity<?> oauth(@PathVariable String code) {
         // 存在时登录
@@ -49,6 +55,7 @@ public class WechatApi {
         return ResponseEntity.successData(info);
     }
 
+    @ApiOperation("微信小程序登录-uniapp传递DTO")
     @PostMapping("miniProgramLogin")
     public ResponseEntity<?> miniProgramLogin(@Valid @RequestBody MiniProgramPhoneInfoDTO dto){
         UserLoginInfoVo info = wechatService.miniProgramLogin(dto);

@@ -13,11 +13,10 @@ import org.nott.external.wechat.config.WechatAppConfig;
 import org.nott.external.wechat.constant.WechatApiConstant;
 import org.nott.service.service.IBizUserService;
 import org.nott.vo.UserLoginInfoVo;
-import org.nott.vo.WechatUserInfoVo;
+import org.nott.vo.WechatBaseUserInfoVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 
 /**
  * @author Nott
@@ -95,7 +94,7 @@ public class WechatService {
         return phoneInfo.getString("purePhoneNumber");
     }
 
-    public WechatUserInfoVo fetchUserInfoByAcToken(String openId, String accessToken) {
+    public WechatBaseUserInfoVo fetchUserInfoByAcToken(String openId, String accessToken) {
         String url = WechatApiConstant.OAUTH_GET_USERINFO_URL
                 .replaceAll("\\{OPENID}", openId)
                 .replaceAll("\\{ACCESS_TOKEN}", accessToken);
@@ -104,7 +103,7 @@ public class WechatService {
         if (!response.containsKey("openid")) {
             throw new HutuBizException("获取微信用户信息失败，请重试");
         }
-        WechatUserInfoVo wechatUserInfoVo = JSON.parseObject(respStr, WechatUserInfoVo.class);
+        WechatBaseUserInfoVo wechatUserInfoVo = JSON.parseObject(respStr, WechatBaseUserInfoVo.class);
         wechatUserInfoVo.setOpenId(wechatUserInfoVo.getOpenid());
         wechatUserInfoVo.setNickName(wechatUserInfoVo.getNickname());
         wechatUserInfoVo.setAvatarUrl(wechatUserInfoVo.getHeadimgurl());

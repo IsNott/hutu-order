@@ -5,7 +5,7 @@ import org.nott.dto.UserProfileDTO;
 import org.nott.dto.UserRegisterDTO;
 import org.nott.model.BizUser;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.nott.vo.ExternalUserInfo;
+import org.nott.vo.ExternalBaseUserInfo;
 import org.nott.vo.UserLoginInfoVo;
 
 /**
@@ -22,9 +22,9 @@ public interface IBizUserService extends IService<BizUser> {
 
     String login(String openId,BizUser user);
 
-    UserLoginInfoVo registerUser(ExternalUserInfo userInfo);
+    UserLoginInfoVo registerUser(ExternalBaseUserInfo userInfo);
 
-    UserLoginInfoVo loginUser(ExternalUserInfo userInfo);
+    UserLoginInfoVo loginUser(ExternalBaseUserInfo userInfo);
 
     UserLoginInfoVo register(UserRegisterDTO dto);
 

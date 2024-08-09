@@ -1,5 +1,8 @@
 package org.nott.web.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.common.annotation.RedisCache;
 import org.nott.service.service.IBizMenuCatalogService;
@@ -14,9 +17,11 @@ import java.util.List;
 
 /**
  * 菜单分类控制层
+ *
  * @author nott
  * @since 2024-05-24
  */
+@Api(tags = "菜单分类")
 @RestController
 @RequestMapping("/bizMenuCatalog")
 public class BizMenuCatalogController {
@@ -24,14 +29,17 @@ public class BizMenuCatalogController {
     @Resource
     private IBizMenuCatalogService bizMenuCatalogService;
 
+    @Deprecated
+    @ApiOperation(value = "分类列表")
     @GetMapping("/list")
-    public ResponseEntity<?> menuList(){
+    public ResponseEntity<?> menuList() {
         return ResponseEntity.successData(bizMenuCatalogService.list());
     }
 
     @GetMapping("listByShop/{shopId}")
-    @RedisCache(key = "listByShop",item = "#shopId")
-    public ResponseEntity<?> listByShop(@PathVariable Long shopId){
+    @RedisCache(key = "listByShop", item = "#shopId")
+    @ApiOperation(value = "门店分类列表", notes = "根据门店id获取菜单分类")
+    public ResponseEntity<?> listByShop(@PathVariable Long shopId) {
         List<MenuCatalogVo> vos = bizMenuCatalogService.getCatalogByShopId(shopId);
         return ResponseEntity.successData(vos);
     }

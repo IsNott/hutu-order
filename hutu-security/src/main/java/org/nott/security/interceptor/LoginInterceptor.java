@@ -31,10 +31,6 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         log.info("Request Url: [{}]", requestURI);
-//        if (matcher.match(SecurityConstants.ERROR_URL,requestURI)) {
-////            HttpHandler.writeResponse(ResponseEntity.failure("系统异常", 500), response);
-//            return true;
-//        }
 
         for (String url : SecurityConstants.PERMITTED_URL) {
             if(matcher.match(url,requestURI)){

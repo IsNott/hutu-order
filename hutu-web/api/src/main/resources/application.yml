@@ -69,3 +69,6 @@ weixinpay:
 payment:
   package:
     name: org.nott.payment
+
+swagger2:
+  group-name: "糊涂点餐-用户端"

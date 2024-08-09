@@ -1,5 +1,7 @@
 package org.nott.web.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.vo.MenuItemVo;
 import org.nott.service.service.IBizMenuService;
@@ -17,6 +19,7 @@ import java.util.List;
  * @author nott
  * @since 2024-05-24
  */
+@Api(tags = "菜单")
 @RestController
 @RequestMapping("/bizMenu")
 public class BizMenuController {
@@ -24,12 +27,15 @@ public class BizMenuController {
     @Resource
     private IBizMenuService bizMenuService;
 
+    @Deprecated
+    @ApiOperation("菜单列表")
     @GetMapping("listByCatalogId/{catalogId}")
     public ResponseEntity<?> listByCatalogId(@PathVariable("catalogId") String catalogId) {
         List<MenuItemVo> menuList = bizMenuService.getByCatalogId(catalogId);
         return ResponseEntity.successData(menuList);
     }
 
+    @ApiOperation(value = "门店菜单列表",tags = "根据门店+分类id查询")
     @GetMapping("listByShopCatalogId/{shopId}/{catalogId}")
     public ResponseEntity<?> listByCatalogId(@PathVariable("shopId") Long shopId, @PathVariable("catalogId") String catalogId) {
         List<MenuItemVo> menuList = bizMenuService.getByShopCatalogId(shopId,catalogId);

@@ -54,3 +54,6 @@ logging:
   config: classpath:logback-dev.xml
   level:
     org.nott.admin.mapper: debug
+
+swagger2:
+  group-name: "糊涂点餐-后台管理端"

@@ -23,7 +23,7 @@ import java.util.List;
  * @author nott
  * @since 2024-05-24
  */
-@Api("商品信息")
+@Api(tags = "商品信息")
 @RestController
 @RequestMapping("/bizItem")
 public class BizItemController {

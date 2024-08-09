@@ -8,7 +8,7 @@ import lombok.Data;
  */
 
 @Data
-public abstract class ExternalUserInfo {
+public class ExternalBaseUserInfo {
 
     private String openId;
 

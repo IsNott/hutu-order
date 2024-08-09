@@ -1,5 +1,7 @@
 package org.nott.admin.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.service.service.IBizCommentService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import javax.annotation.Resource;
  * @date 2024-6-13
  */
 
+@Api(tags = "商品评论管理")
 @RestController
 @RequestMapping("/sys/bizComment/")
 public class SysBizCommentController {
@@ -20,6 +23,7 @@ public class SysBizCommentController {
     @Resource
     private IBizCommentService bizCommentService;
 
+    @ApiOperation("评论数量统计")
     @GetMapping("count")
     public ResponseEntity<?> count(){
         return ResponseEntity.successData(bizCommentService.count());

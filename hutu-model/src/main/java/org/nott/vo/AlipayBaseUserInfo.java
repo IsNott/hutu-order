@@ -8,7 +8,7 @@ import lombok.Data;
  */
 
 @Data
-public class AlipayUserInfo extends ExternalUserInfo {
+public class AlipayBaseUserInfo extends ExternalBaseUserInfo {
 
     private String avatar;
 

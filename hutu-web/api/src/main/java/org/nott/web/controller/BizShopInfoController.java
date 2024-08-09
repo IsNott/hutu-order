@@ -1,5 +1,7 @@
 package org.nott.web.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.service.service.IBizShopInfoService;
 import org.nott.vo.ShopInfoVo;
@@ -18,6 +20,7 @@ import java.util.List;
  * @author nott
  * @since 2024-06-26
  */
+@Api(tags = "门店信息")
 @RestController
 @RequestMapping("/bizShopInfo")
 public class BizShopInfoController {
@@ -25,12 +28,14 @@ public class BizShopInfoController {
     @Resource
     private IBizShopInfoService bizShopInfoService;
 
+    @ApiOperation("查询当前营业门店列表")
     @GetMapping("list")
     public ResponseEntity<?> shopList(){
         List<ShopInfoVo> shopInfos = bizShopInfoService.listShopInfo();
         return ResponseEntity.successData(shopInfos);
     }
 
+    @ApiOperation("查询默认门店")
     @GetMapping("default")
     public ResponseEntity<?> defaultShop(){
         ShopInfoVo vo = bizShopInfoService.getDefaultShop();

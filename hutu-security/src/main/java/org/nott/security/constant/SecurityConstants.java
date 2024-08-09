@@ -11,7 +11,9 @@ public class SecurityConstants {
 
     public static final String ADMIN_REQUEST_SUFFIX = "/sys/";
 
-    public final static List<String> PERMITTED_URL = Arrays.asList("/sys/admin/login", "/sys/admin/logout", "/error","/doc.html");
+    public final static List<String> PERMITTED_URL = Arrays.asList("/sys/admin/login",
+            "/sys/admin/logout", "/error","/doc.html","/webjars/**","/swagger-ui.html","/swagger-resources","/swagger-resources/**"
+    );
 
     public final static String ERROR_URL = "/error";
 

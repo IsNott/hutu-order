@@ -23,8 +23,9 @@ public class InterceptorConfiguration {
     WebMvcConfigurer createWebMvcConfigurer() {
         return new WebMvcConfigurer() {
             public void addInterceptors(InterceptorRegistry registry) {
+                registry.addInterceptor(new LoginInterceptor());
+
                 if(needAuthorize){
-                    registry.addInterceptor(new LoginInterceptor());
                     registry.addInterceptor(new AuthorizationInterceptor());
                 }
             }
@@ -33,11 +34,11 @@ public class InterceptorConfiguration {
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
                 registry.addResourceHandler("doc.html")
-                        .addResourceLocations("classpath:/META-INF/resource/");
-                registry.addResourceHandler("swagger-ui.html")
-                        .addResourceLocations("classpath:/META-INF/resource/");
+                        .addResourceLocations("classpath:/META-INF/resources/");
+                registry.addResourceHandler("/swagger-ui.html")
+                        .addResourceLocations("classpath:/META-INF/resources/");
                 registry.addResourceHandler("/webjars/**")
-                        .addResourceLocations("classpath:/META-INF/resource/webjars/");
+                        .addResourceLocations("classpath:/META-INF/resources/webjars/");
             }
         };
     }
