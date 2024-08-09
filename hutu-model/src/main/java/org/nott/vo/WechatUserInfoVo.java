@@ -8,7 +8,7 @@ import lombok.Data;
  */
 
 @Data
-public class WechatBaseUserInfoVo extends ExternalBaseUserInfo {
+public class WechatUserInfoVo extends ExternalBaseUserInfo {
 
     private String openid;
 

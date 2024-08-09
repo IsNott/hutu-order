@@ -6,7 +6,7 @@ import org.nott.common.ResponseEntity;
 import org.nott.external.alipay.service.AlipayService;
 import org.nott.model.BizUser;
 import org.nott.service.service.IBizUserService;
-import org.nott.vo.AlipayBaseUserInfo;
+import org.nott.vo.AlipayUserInfo;
 import org.nott.vo.UserLoginInfoVo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +34,7 @@ public class AlipayApi {
     @GetMapping("oauth/{code}")
     public ResponseEntity<?> oauth(@PathVariable String code) {
         String accessToken = alipayService.getAccessTokenByCode(code);
-        AlipayBaseUserInfo alipayUserInfo = alipayService.fetchUserInfoByAcToken(accessToken);
+        AlipayUserInfo alipayUserInfo = alipayService.fetchUserInfoByAcToken(accessToken);
         BizUser bizUser = bizUserService.getUserByOpenId(alipayUserInfo.getOpenId());
         UserLoginInfoVo vo = Objects.isNull(bizUser) ? bizUserService.registerUser(alipayUserInfo) : bizUserService.loginUser(alipayUserInfo);
 //        redisTemplate.opsForHash().put("AlipayLogInfo",vo.getLoginId() + "", accessToken);

@@ -9,7 +9,7 @@ import com.alipay.api.response.AlipaySystemOauthTokenResponse;
 import com.alipay.api.response.AlipayUserInfoShareResponse;
 import org.nott.common.exception.HutuBizException;
 import org.nott.external.alipay.config.AlipayConfig;
-import org.nott.vo.AlipayBaseUserInfo;
+import org.nott.vo.AlipayUserInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -70,10 +70,10 @@ public class AlipayService {
         return response.getAccessToken();
     }
 
-    public AlipayBaseUserInfo fetchUserInfoByAcToken(String accessToken) {
+    public AlipayUserInfo fetchUserInfoByAcToken(String accessToken) {
         AlipayClient alipayClient = getAlipayClient();
         AlipayUserInfoShareRequest request = new AlipayUserInfoShareRequest();
-        AlipayBaseUserInfo alipayUserInfo = new AlipayBaseUserInfo();
+        AlipayUserInfo alipayUserInfo = new AlipayUserInfo();
         try {
             AlipayUserInfoShareResponse response = alipayClient.execute(request,accessToken);
             BeanUtils.copyProperties(response,alipayUserInfo);

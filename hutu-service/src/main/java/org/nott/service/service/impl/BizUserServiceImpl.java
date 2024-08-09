@@ -13,7 +13,6 @@ import org.nott.service.service.IBizUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.vo.ExternalBaseUserInfo;
 import org.nott.vo.UserLoginInfoVo;
-import org.nott.vo.WechatBaseUserInfoVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
