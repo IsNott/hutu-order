@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PayWayQueryDTO {
 
-    @ApiModelProperty(value = "当前平台",required = true)
+    @ApiModelProperty(value = "当前业务平台",required = true)
     @NotNull(message = "平台为空")
     private String platformName;
 }

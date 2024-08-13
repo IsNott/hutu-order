@@ -34,3 +34,17 @@ export function storeUserInfo(info) {
 export function getDateStr() {
 	return new Date().getTime().toString();
 }
+
+export function getCurrentPlatform(){
+	var str = '';
+	// #ifdef MP-WEIXIN
+	str = 'MP-WEIXIN'
+	// #endif
+	// #ifdef MP-ALIPAY
+	str = 'MP-WEIXIN'
+	// #endif
+	// #ifdef H5
+	str = "WEB"
+	// #endif
+	return str;
+}

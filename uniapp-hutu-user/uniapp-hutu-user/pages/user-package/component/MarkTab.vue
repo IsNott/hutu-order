@@ -45,9 +45,12 @@
 	
 	.def-placeholder{
 		color: #b4b4b4;
+		font-size: 14px;
+		font-weight: bold;
 	}
 	
 	.placeholder{
 		color: black;
+		font-size: 14px;
 	}
 </style>
