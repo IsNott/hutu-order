@@ -6,11 +6,15 @@
 					:text="noticeTitle" />
 			</uni-section>
 			<view class="pick-way">
-				<text>就餐方式</text>
-				<view class="pick-btn">
-					<button :class="select === 'take' ? 'selected' : 'unselect'" type="primary">外带</button>
+				<text class="pick-way-title">就餐方式</text>
+				<view class="pick-btn" >
+					<button :key="selectedPickWay + '01'" size="mini" :class="isTake"
+					@click="handlePickWay('take')"
+					>外带</button>
 					<text> / </text>
-					<button :class="select === 'eatIn' ? 'selected' : 'unselect'" type="primary">堂食</button>
+					<button :key="selectedPickWay + '02'" size="mini" :class="{'selected':selectedPickWay === 'take'}"
+					@click="handlePickWay('eatIn')"
+					>堂食</button>
 				</view>
 			</view>
 			<item-card v-if="packageList.length > 0" v-for="item in packageList" :key="item.id" :item="item"
@@ -48,7 +52,7 @@
 			paymentName: '微信支付',
 			icon: ''
 		}],
-		select: ''
+		selectedPickWay: ''
 	}
 	import ItemCard from './component/ItemCard.vue';
 	import CustCard from '@/component/CustCard.vue';
@@ -104,6 +108,9 @@
 					}
 				}
 			},
+			handlePickWay(val){
+				this.selectedPickWay = val;
+			},
 			queryPayway() {
 				const platformName = getCurrentPlatform();
 				getPayWay({
@@ -152,13 +159,55 @@
 					this.selectPayway = this.paywayList[0];
 				}
 				return payName;
+			},
+			isTake(){
+				return {
+					'selected': this.selectedPickWay === 'take'
+				}
 			}
 		}
 	}
 </script>
 
 <style scoped>
-	.
+	.pick-way {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		background-color: #ffffff;
+	}
+
+	.pick-way text {
+		font-size: 14px;
+		align-self: center;
+		font-weight: 600;
+	}
+
+	.pick-btn {
+		width: 40%;
+		display: flex;
+		flex-direction: row;
+	}
+
+	.pick-btn button {
+		border-radius: 8px;
+		align-self: center;
+	}
+
+	.pick-way-title {
+		padding: 8px;
+	}
+
+	.selected {
+		background-color: #007aff;
+		color: #ffffff;
+	}
+
+	.unselect {
+		background-color: #ffffff;
+		color: black;
+	}
+
 	.footer {
 		width: 100%;
 		position: fixed;
@@ -177,9 +226,7 @@
 		justify-content: space-between;
 	}
 
-  .unselect{
-		
-	}
+	.unselect {}
 
 	.btn-group button {
 		margin: 4px 20px;
@@ -187,7 +234,7 @@
 		width: 100%;
 	}
 
-/* 	.pay-lab {
+	/* 	.pay-lab {
 		display: flex;
 	} */
 
