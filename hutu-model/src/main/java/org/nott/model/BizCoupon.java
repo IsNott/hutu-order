@@ -10,51 +10,59 @@ import lombok.Setter;
 
 /**
  * <p>
- * 系统文件表
+ * 用户优惠券表
  * </p>
  *
  * @author nott
- * @since 2024-07-10
+ * @since 2024-08-16
  */
 @Getter
 @Setter
-@TableName("sys_file")
-public class SysFile implements Serializable {
+@TableName("biz_coupon")
+public class BizCoupon implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     private Long id;
 
     /**
-     * 文件原名
+     * 条件id
      */
-    private String originName;
+    private Long conditionId;
 
     /**
-     * 文件存储名称
+     * 优惠券标题
      */
-    private String fileName;
+    private String titile;
 
     /**
-     * 上传路径
+     * 二级标题
      */
-    private String path;
+    private String subTitle;
 
     /**
-     * 业务数据id
+     * 创建人id
      */
-    private Long bizId;
+    private Long creatorId;
 
     /**
-     * 文件类型
+     * 删除标识
      */
-    private String type;
+    private Integer delFlag;
 
     /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
 
 
 }

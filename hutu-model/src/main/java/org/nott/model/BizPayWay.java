@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 支付方式表
  * </p>
  *
  * @author nott
@@ -42,14 +42,25 @@ public class BizPayWay implements Serializable {
      */
     private String paymentName;
 
+    /**
+     * 展示排序
+     */
     private Integer displayOrder;
-
+    /**
+     * 图标地址
+     */
     private String icon;
-
+    /**
+     * 展示收起 0-不收起 1-收起
+     */
     private Integer packUp;
-
+    /**
+     * 是否在用
+     */
     private Integer isUsable;
-
+    /**
+     * 支持的平台（枚举）
+     */
     private String supportPlatform;
 
 

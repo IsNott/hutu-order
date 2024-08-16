@@ -12,7 +12,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 用户购物袋表（过时）
  * </p>
  *
  * @author nott

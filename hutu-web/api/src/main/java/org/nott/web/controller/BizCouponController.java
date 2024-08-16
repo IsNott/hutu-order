@@ -1,18 +1,20 @@
 package org.nott.web.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 用户优惠券表 前端控制器
  * </p>
  *
  * @author nott
- * @since 2024-07-10
+ * @since 2024-08-16
  */
+@Api("用户优惠券")
 @RestController
-@RequestMapping("/sysFile")
-public class SysFileController {
+@RequestMapping("/bizCoupon")
+public class BizCouponController {
 
 }

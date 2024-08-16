@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 用户购物袋表
  * </p>
  *
  * @author nott

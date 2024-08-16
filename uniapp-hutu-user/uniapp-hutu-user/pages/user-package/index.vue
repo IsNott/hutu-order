@@ -7,14 +7,12 @@
 			</uni-section>
 			<view class="pick-way">
 				<text class="pick-way-title">就餐方式</text>
-				<view class="pick-btn" >
-					<button :key="selectedPickWay + '01'" size="mini" :class="isTake"
-					@click="handlePickWay('take')"
-					>外带</button>
-					<text> / </text>
-					<button :key="selectedPickWay + '02'" size="mini" :class="{'selected':selectedPickWay === 'take'}"
-					@click="handlePickWay('eatIn')"
-					>堂食</button>
+				<view class="pick-btn">
+					<button :key="pickKey + '01'" size="mini" :class="{'selected':isTake}"
+						@click="handlePickWay('take')">外带</button>
+					<text> | </text>
+					<button :key="pickKey + '02'" size="mini" :class="{'selected':isEatIn}"
+						@click="handlePickWay('eatIn')">堂食</button>
 				</view>
 			</view>
 			<item-card v-if="packageList.length > 0" v-for="item in packageList" :key="item.id" :item="item"
@@ -25,7 +23,7 @@
 			<mark-tab :key="totalOrginalAmount" title="原价" :def-value="amoutDefValue" :value="amountStr" />
 			<mark-tab :key="chooseCoupon" title="优惠券" :value="chooseCoupon" />
 			<mark-tab :key="point" title="可用积分" :value="point" />
-			<mark-tab :key="point" title="支付方式" :def-value="defPaywayByCurrPlatform" <!-- #ifdef WEB -->
+			<mark-tab title="支付方式" :def-value="defPaywayByCurrPlatform" <!-- #ifdef WEB -->
 				@click="handleSelectPayway"
 				<!-- #endif -->
 				:value="selectPayway.paymentName"/>
@@ -61,7 +59,7 @@
 		getPayWay
 	} from '@/api/user-package';
 	import {
-		getCurrentPlatform
+		getCurrentPlatform,getDateStr
 	} from '@/utils/CommonUtils';
 	export default {
 		name: 'UserPackage',
@@ -86,6 +84,7 @@
 					displayOrder: 1
 				}],
 				selectPayway: {},
+				pickKey: getDateStr(),
 				currentShopName: '糊涂餐馆（齐河路店）',
 				currentShopAddress: '上海齐河路',
 				noticeTitle: '如您在点单过程中有任何问题请移步到前台咨询，如遇下单后需要更换商品请及时通知店员，谢谢！',
@@ -108,8 +107,9 @@
 					}
 				}
 			},
-			handlePickWay(val){
+			handlePickWay(val) {
 				this.selectedPickWay = val;
+				this.pickKey = this.selectPayway + getDateStr();
 			},
 			queryPayway() {
 				const platformName = getCurrentPlatform();
@@ -160,10 +160,11 @@
 				}
 				return payName;
 			},
-			isTake(){
-				return {
-					'selected': this.selectedPickWay === 'take'
-				}
+			isTake() {
+				return this.selectedPickWay === 'take'
+			},
+			isEatIn() {
+				return this.selectedPickWay === 'eatIn'
 			}
 		}
 	}

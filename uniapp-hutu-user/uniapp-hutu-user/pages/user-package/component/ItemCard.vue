@@ -57,7 +57,8 @@
 		padding-left: 14px;
 		width: 20%;
 		display: inline;
-		
+		display: flex;
+		flex-direction: row;
 	}
 	
 	.right-info{
@@ -65,6 +66,7 @@
 		padding: 14px 0px;
 		display: flex;
 		flex-direction: column;
+		justify-content: space-between;
 	}
 	
 	.item-content{

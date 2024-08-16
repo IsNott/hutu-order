@@ -12,7 +12,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 系统商品表
  * </p>
  *
  * @author nott

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 商品-sku关系表
  * </p>
  *
  * @author nott
@@ -22,10 +22,19 @@ public class BizItemSkuRelation implements Serializable {
 
     private Long id;
 
+    /**
+     * 产品id
+     */
     private Long itemId;
 
+    /**
+     * 排序
+     */
     private Integer displayOrder;
 
+    /**
+     * sku分类id
+     */
     private Long skuCatalogId;
 
 

@@ -11,7 +11,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 门店菜单分类表
  * </p>
  *
  * @author nott

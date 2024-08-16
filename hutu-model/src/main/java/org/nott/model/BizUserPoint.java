@@ -7,16 +7,16 @@ import lombok.Setter;
 
 /**
  * <p>
- * sku分类表
+ * 用户积分表
  * </p>
  *
  * @author nott
- * @since 2024-06-03
+ * @since 2024-08-16
  */
 @Getter
 @Setter
-@TableName("biz_sku_catalog")
-public class BizSkuCatalog implements Serializable {
+@TableName("biz_user_point")
+public class BizUserPoint implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,9 +26,14 @@ public class BizSkuCatalog implements Serializable {
     private Long id;
 
     /**
-     * sku分类名称
+     * 用户id
      */
-    private String skuCatalogName;
+    private Long userId;
+
+    /**
+     * 积分
+     */
+    private Long point;
 
 
 }

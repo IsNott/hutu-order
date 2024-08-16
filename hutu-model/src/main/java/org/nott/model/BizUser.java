@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 用户表
  * </p>
  *
  * @author nott
@@ -38,8 +38,14 @@ public class BizUser implements Serializable {
      */
     private String openId;
 
+    /**
+     * 头像地址
+     */
     private String avatarUrl;
 
+    /**
+     * 性别
+     */
     private Integer gender;
 
     /**
@@ -52,6 +58,9 @@ public class BizUser implements Serializable {
      */
     private Date registTime;
 
+    /**
+     * 最后登录时间
+     */
     private Date lastLogTime;
 
 

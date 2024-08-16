@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 门店信息表
  * </p>
  *
  * @author nott

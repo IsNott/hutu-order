@@ -11,7 +11,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 系统用户表
  * </p>
  *
  * @author nott

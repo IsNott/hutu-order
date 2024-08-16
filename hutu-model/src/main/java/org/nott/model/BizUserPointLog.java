@@ -4,57 +4,61 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 系统文件表
+ * 用户积分日志表
  * </p>
  *
  * @author nott
- * @since 2024-07-10
+ * @since 2024-08-16
  */
 @Getter
 @Setter
-@TableName("sys_file")
-public class SysFile implements Serializable {
+@TableName("biz_user_point_log")
+public class BizUserPointLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     private Long id;
 
     /**
-     * 文件原名
+     * 用户id
      */
-    private String originName;
+    private Long userId;
 
     /**
-     * 文件存储名称
+     * 业务金额
      */
-    private String fileName;
+    private BigDecimal bizFee;
 
     /**
-     * 上传路径
+     * 添加积分
      */
-    private String path;
+    private Long point;
 
     /**
-     * 业务数据id
+     * 描述
      */
-    private Long bizId;
-
-    /**
-     * 文件类型
-     */
-    private String type;
+    private String description;
 
     /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
+
+    /**
+     * 删除标识
+     */
+    private Integer delFlag;
 
 
 }

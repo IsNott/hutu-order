@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 微信api
  * @author Nott
  * @date 2024-6-14
  */

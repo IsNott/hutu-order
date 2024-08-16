@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 系统角色-权限关系表
  * </p>
  *
  * @author nott
@@ -22,8 +22,14 @@ public class SysRolePermission implements Serializable {
 
     private Long id;
 
+    /**
+     * 角色id
+     */
     private Long roleId;
 
+    /**
+     * 权限id
+     */
     private Long permissionId;
 
 

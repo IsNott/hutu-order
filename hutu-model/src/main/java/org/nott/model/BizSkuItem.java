@@ -11,7 +11,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * sku子项表
  * </p>
  *
  * @author nott
