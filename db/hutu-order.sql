@@ -1,4 +1,3 @@
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -13,11 +12,58 @@ CREATE TABLE `biz_comment`  (
   `comment_urls` json NULL COMMENT '评价图片',
   `comment_user_id` bigint(20) NULL DEFAULT NULL COMMENT '评价用户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户评论表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_comment
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for biz_coupon
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_coupon`;
+CREATE TABLE `biz_coupon`  (
+  `id` bigint(20) NOT NULL COMMENT 'id',
+  `discount_fee` double NULL DEFAULT NULL COMMENT '优惠金额',
+  `condition_id` bigint(20) NULL DEFAULT NULL COMMENT '条件id',
+  `titile` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '优惠券标题',
+  `sub_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '二级标题',
+  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
+  `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户优惠券表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_coupon
+-- ----------------------------
+INSERT INTO `biz_coupon` VALUES (613298191621689345, 4, 613298191621689346, '测试优惠券', '无门槛4元券', NULL, 0, '2024-08-19 17:08:31', NULL);
+
+-- ----------------------------
+-- Table structure for biz_coupon_condition
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_coupon_condition`;
+CREATE TABLE `biz_coupon_condition`  (
+  `id` bigint(20) NOT NULL COMMENT 'id',
+  `coupon_id` bigint(20) NULL DEFAULT NULL COMMENT '优惠券id',
+  `biz_id` bigint(20) NULL DEFAULT NULL COMMENT '关联业务id',
+  `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `is_enable` tinyint(4) NULL DEFAULT NULL COMMENT '是否启用',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建者id',
+  `type` tinyint(4) NULL DEFAULT NULL COMMENT '0-时间 1-满减 2-关联业务 3-全部',
+  `price_condition` decimal(10, 2) NULL DEFAULT NULL COMMENT '金额条件',
+  `biz_condition` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务条件',
+  `condition_expression` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '条件表达式',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优惠券规则表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_coupon_condition
+-- ----------------------------
+INSERT INTO `biz_coupon_condition` VALUES (613298191621689346, 613298191621689345, NULL, '2024-08-06 17:08:51', '2024-08-30 17:08:55', 1, '2024-08-19 17:09:02', NULL, 0, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for biz_item
@@ -36,12 +82,12 @@ CREATE TABLE `biz_item`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统商品表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_item
 -- ----------------------------
-INSERT INTO `biz_item` VALUES (1, '15.00', '12.00', '拿铁', '热', '优质咖啡豆搭配顶级牛奶', '热销,新品,新品,新品', '[\"http://example.com/images/latte.jpg\"]', 0, '2024-05-24 09:00:00', '2024-05-24 09:00:00');
+INSERT INTO `biz_item` VALUES (1, '15.00', '12.00', '拿铁', '热', '优质咖啡豆搭配顶级牛奶', '热销,新品,新品,新品', 'http://example.com/images/latte.jpg', 0, '2024-05-24 09:00:00', '2024-05-24 09:00:00');
 INSERT INTO `biz_item` VALUES (2, '18.00', '15.00', '卡布奇诺', '无糖', '意式浓缩咖啡与丝滑牛奶的完美结合', '推荐', '[\"http://example.com/images/cappuccino.jpg\"]', 0, '2024-05-24 09:15:00', '2024-05-24 09:15:00');
 INSERT INTO `biz_item` VALUES (3, '20.00', '18.00', '摩卡', NULL, '香浓巧克力、浓郁咖啡与奶泡的完美融合', '新品', '[\"http://example.com/images/mocha.jpg\"]', 0, '2024-05-24 09:30:00', '2024-05-24 09:30:00');
 INSERT INTO `biz_item` VALUES (4, '25.00', '22.00', '美式咖啡', NULL, '纯粹的咖啡香味', '', '[\"http://example.com/images/americano.jpg\"]', 0, '2024-05-24 09:45:00', '2024-05-24 09:45:00');
@@ -70,7 +116,7 @@ CREATE TABLE `biz_item_sku_relation`  (
   `sku_catalog_id` bigint(20) NOT NULL COMMENT 'sku分类id',
   `display_order` tinyint(4) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品-sku关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_item_sku_relation
@@ -78,21 +124,9 @@ CREATE TABLE `biz_item_sku_relation`  (
 INSERT INTO `biz_item_sku_relation` VALUES (585317148230942720, 11, 585315952858497025, 3);
 INSERT INTO `biz_item_sku_relation` VALUES (585317148230942721, 11, 585315952858497026, 1);
 INSERT INTO `biz_item_sku_relation` VALUES (585317148230942722, 11, 585315952858497024, 2);
-
--- ----------------------------
--- Table structure for biz_item_type
--- ----------------------------
-DROP TABLE IF EXISTS `biz_item_type`;
-CREATE TABLE `biz_item_type`  (
-  `id` bigint(20) NOT NULL,
-  `type_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `type_desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of biz_item_type
--- ----------------------------
+INSERT INTO `biz_item_sku_relation` VALUES (585317148230942723, 1, 585315952858497025, 3);
+INSERT INTO `biz_item_sku_relation` VALUES (585317148230942724, 1, 585315952858497026, 1);
+INSERT INTO `biz_item_sku_relation` VALUES (585317148230942725, 1, 585315952858497024, 2);
 
 -- ----------------------------
 -- Table structure for biz_menu
@@ -107,7 +141,7 @@ CREATE TABLE `biz_menu`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_menu
@@ -122,6 +156,11 @@ INSERT INTO `biz_menu` VALUES (7, 4, '7', 593630146225766400, 0, '2024-05-24 13:
 INSERT INTO `biz_menu` VALUES (8, 4, '8', 593630146225766400, 0, '2024-05-24 13:45:00', '2024-05-24 13:45:00');
 INSERT INTO `biz_menu` VALUES (9, 5, '9', 593630146225766400, 0, '2024-05-24 14:00:00', '2024-05-24 14:00:00');
 INSERT INTO `biz_menu` VALUES (10, 5, '10', 593630146225766400, 0, '2024-05-24 14:15:00', '2024-05-24 14:15:00');
+INSERT INTO `biz_menu` VALUES (11, 1, '3', 593630146225766400, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
+INSERT INTO `biz_menu` VALUES (12, 1, '4', 593630146225766400, 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
+INSERT INTO `biz_menu` VALUES (13, 1, '5', 593630146225766400, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
+INSERT INTO `biz_menu` VALUES (14, 1, '6', 593630146225766400, 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
+INSERT INTO `biz_menu` VALUES (15, 1, '7', 593630146225766400, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
 
 -- ----------------------------
 -- Table structure for biz_menu_catalog
@@ -138,7 +177,7 @@ CREATE TABLE `biz_menu_catalog`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店菜单分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_menu_catalog
@@ -169,7 +208,7 @@ CREATE TABLE `biz_package`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `expire_time` datetime NULL DEFAULT NULL COMMENT '过期时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户购物袋表（过时）' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_package
@@ -196,7 +235,7 @@ CREATE TABLE `biz_pay_order`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户订单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_pay_order
@@ -215,17 +254,20 @@ CREATE TABLE `biz_pay_way`  (
   `refund_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '退款地址',
   `query_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '查询地址',
   `payment_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '交易系统名称',
-  `order` tinyint(4) NULL DEFAULT NULL COMMENT '排序',
+  `display_order` tinyint(4) NULL DEFAULT NULL COMMENT '展示排序',
   `pack_up` tinyint(4) NULL DEFAULT 0 COMMENT '展示收起 0-不收起 1-收起',
   `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标地址',
   `is_usable` tinyint(4) NULL DEFAULT NULL COMMENT '是否在用',
+  `support_platform` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支持的平台（枚举）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '支付方式表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_pay_way
 -- ----------------------------
-INSERT INTO `biz_pay_way` VALUES (593698122811576324, 'http://test.com', 'http://test.com', 'http://test.com', '北京工商银行分行', 1, 0, 'icon.tex', 1);
+INSERT INTO `biz_pay_way` VALUES (593698122811576324, 'http://test.com', 'http://test.com', 'http://test.com', '北京工商银行分行', 1, 0, 'icon.tex', 1, 'WEB');
+INSERT INTO `biz_pay_way` VALUES (593698122811579901, 'http://ali.pay.com', 'http://ali.pay.com', 'http://ali.pay.com', '支付宝小程序支付', 1, 0, NULL, NULL, 'MP-ALIPAY');
+INSERT INTO `biz_pay_way` VALUES (593698122811579991, 'http://weixin.pay.com', 'http://weixin.pay.com', 'http://weixin.pay.com', '微信小程序支付', 1, 0, NULL, NULL, 'MP-WEIXIN');
 
 -- ----------------------------
 -- Table structure for biz_shop_info
@@ -245,12 +287,12 @@ CREATE TABLE `biz_shop_info`  (
   `week_end_date` tinyint(4) NULL DEFAULT NULL COMMENT '每周营业结束日',
   `main_shop` tinyint(4) NULL DEFAULT NULL COMMENT '是否主店',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_shop_info
 -- ----------------------------
-INSERT INTO `biz_shop_info` VALUES (593630146225766400, '糊涂餐馆（齐河路店）', '上海市齐河路28弄31号303室', '13092621512', '10:00', '18:00', 0, NULL, NULL, 1, 5, 1);
+INSERT INTO `biz_shop_info` VALUES (593630146225766400, '糊涂餐馆（齐河路店）', '上海市齐河路28弄31号303室', '13092621512', '08:00', '18:00', 0, NULL, NULL, 1, 5, 1);
 INSERT INTO `biz_shop_info` VALUES (593630146225766401, '糊涂餐馆（杨铭园店）', '赤岗冲红花坡杨铭园C栋', '13063855026', '09:00', '17:00', 0, NULL, NULL, 1, 5, NULL);
 INSERT INTO `biz_shop_info` VALUES (593630146225766402, '糊涂餐馆（村水云居店）', '余家湖村水云居A栋2单元404室', '13013802811', '11:00', '20:00', 0, NULL, NULL, 1, 5, NULL);
 INSERT INTO `biz_shop_info` VALUES (593630146225766403, '糊涂餐馆（中胜街店）', '中胜街54-2号392', '13092626359', '08:00', '16:00', 0, NULL, NULL, 1, 7, NULL);
@@ -263,9 +305,9 @@ INSERT INTO `biz_shop_info` VALUES (593630146225766405, '糊涂餐馆（霄云�
 DROP TABLE IF EXISTS `biz_sku_catalog`;
 CREATE TABLE `biz_sku_catalog`  (
   `id` bigint(20) NOT NULL,
-  `sku_catalog_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `sku_catalog_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'sku分类名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_sku_catalog
@@ -280,10 +322,10 @@ INSERT INTO `biz_sku_catalog` VALUES (585315952858497026, '温度');
 DROP TABLE IF EXISTS `biz_sku_catalog_relation`;
 CREATE TABLE `biz_sku_catalog_relation`  (
   `id` bigint(20) NOT NULL,
-  `sku_catalog_id` bigint(20) NULL DEFAULT NULL,
-  `sku_item_id` bigint(20) NULL DEFAULT NULL,
+  `sku_catalog_id` bigint(20) NULL DEFAULT NULL COMMENT 'sku分类id',
+  `sku_item_id` bigint(20) NULL DEFAULT NULL COMMENT 'sku小项id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku-子项关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_sku_catalog_relation
@@ -296,12 +338,12 @@ INSERT INTO `biz_sku_catalog_relation` VALUES (585317148230942999, 5853159528584
 DROP TABLE IF EXISTS `biz_sku_item`;
 CREATE TABLE `biz_sku_item`  (
   `id` bigint(20) NOT NULL,
-  `sku_item_content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `sku_item_content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'sku项目正文',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku子项表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_sku_item
@@ -325,7 +367,7 @@ CREATE TABLE `biz_table_info`  (
   `id` bigint(20) NOT NULL,
   `table_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '桌面信息',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店桌台信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_table_info
@@ -346,12 +388,28 @@ CREATE TABLE `biz_user`  (
   `regist_time` datetime NULL DEFAULT NULL COMMENT '注册时间',
   `last_log_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_user
 -- ----------------------------
-INSERT INTO `biz_user` VALUES (1258018376433795072, '微信用户', NULL, NULL, 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132', 'oL18J6ekWsOAVXM2bt4QQh_TV3tQ', 1, '2024-07-03 11:15:54', '2024-07-03 11:16:23');
+INSERT INTO `biz_user` VALUES (1258018376433795072, '微信用户', '17779548660', NULL, 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132', 'oL18J6ekWsOAVXM2bt4QQh_TV3tQ', 1, '2024-07-03 11:15:54', '2024-08-19 17:05:29');
+
+-- ----------------------------
+-- Table structure for biz_user_coupon_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_user_coupon_relation`;
+CREATE TABLE `biz_user_coupon_relation`  (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id',
+  `coupon_id` bigint(20) NULL DEFAULT NULL COMMENT '优惠券id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户-优惠券关系表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_user_coupon_relation
+-- ----------------------------
+INSERT INTO `biz_user_coupon_relation` VALUES (613298625304334349, 1258018376433795072, 613298191621689345);
 
 -- ----------------------------
 -- Table structure for biz_user_package
@@ -364,7 +422,7 @@ CREATE TABLE `biz_user_package`  (
   `item_piece` int(11) NULL DEFAULT NULL COMMENT '选购件数',
   `sku_item_contents` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '选购规格，以逗号分隔',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户购物袋表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_user_package
@@ -372,20 +430,74 @@ CREATE TABLE `biz_user_package`  (
 INSERT INTO `biz_user_package` VALUES (585384179567427584, 585384223465017355, 11, 1, '三分糖');
 
 -- ----------------------------
+-- Table structure for biz_user_point
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_user_point`;
+CREATE TABLE `biz_user_point`  (
+  `id` bigint(20) NOT NULL COMMENT 'id',
+  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id',
+  `point` bigint(20) NULL DEFAULT NULL COMMENT '积分',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户积分表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_user_point
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for biz_user_point_log
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_user_point_log`;
+CREATE TABLE `biz_user_point_log`  (
+  `id` bigint(20) NOT NULL COMMENT 'id',
+  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `biz_fee` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务金额',
+  `point` bigint(20) NULL DEFAULT NULL COMMENT '添加积分',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `type` tinyint(4) NULL DEFAULT NULL COMMENT '使用类型 0-主动 1-系统扣除',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户积分日志表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_user_point_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_file
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_file`;
+CREATE TABLE `sys_file`  (
+  `id` bigint(20) NOT NULL,
+  `origin_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件原名',
+  `file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件存储名称',
+  `path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '上传路径',
+  `biz_id` bigint(20) NULL DEFAULT NULL COMMENT '业务数据id',
+  `type` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件类型',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统文件表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_file
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_permission
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_permission`;
 CREATE TABLE `sys_permission`  (
   `id` bigint(20) NOT NULL,
-  `menu_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `request_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `del_flag` tinyint(4) NULL DEFAULT NULL,
-  `create_time` datetime NULL DEFAULT NULL,
-  `update_time` datetime NULL DEFAULT NULL,
+  `menu_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单路径',
+  `request_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问地址',
+  `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
+  `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限名称',
+  `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_permission
@@ -398,10 +510,10 @@ INSERT INTO `sys_permission` VALUES (586722256965603329, NULL, '/sys/admin/test'
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role`  (
   `id` bigint(20) NOT NULL,
-  `role_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `role_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色名称',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
@@ -414,10 +526,10 @@ INSERT INTO `sys_role` VALUES (586717827931574273, 'admin', '管理员');
 DROP TABLE IF EXISTS `sys_role_permission`;
 CREATE TABLE `sys_role_permission`  (
   `id` bigint(20) NOT NULL,
-  `role_id` bigint(20) NULL DEFAULT NULL,
-  `permission_id` bigint(20) NULL DEFAULT NULL,
+  `role_id` bigint(20) NULL DEFAULT NULL COMMENT '角色id',
+  `permission_id` bigint(20) NULL DEFAULT NULL COMMENT '权限id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统角色-权限关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_permission
@@ -440,7 +552,7 @@ CREATE TABLE `sys_user`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
@@ -453,10 +565,10 @@ INSERT INTO `sys_user` VALUES (586394601263202304, '周图', 'zhoututu', '$2a$10
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role`  (
   `id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NULL DEFAULT NULL,
-  `role_id` bigint(20) NULL DEFAULT NULL,
+  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '系统用户id',
+  `role_id` bigint(20) NULL DEFAULT NULL COMMENT '角色id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户-角色关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role
