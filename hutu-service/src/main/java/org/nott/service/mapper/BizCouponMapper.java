@@ -3,6 +3,8 @@ package org.nott.service.mapper;
 import org.nott.model.BizCoupon;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户优惠券表 Mapper 接口
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface BizCouponMapper extends BaseMapper<BizCoupon> {
 
+    List<BizCoupon> getCouponsByUserId(Long userId);
 }

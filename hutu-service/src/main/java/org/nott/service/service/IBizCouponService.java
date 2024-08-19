@@ -2,6 +2,9 @@ package org.nott.service.service;
 
 import org.nott.model.BizCoupon;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.nott.vo.UserCouponVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IBizCouponService extends IService<BizCoupon> {
 
+    List<UserCouponVo> queryAvailableCoupon();
+
+    List<BizCoupon> findCouponsByUserId(Long userId);
 }

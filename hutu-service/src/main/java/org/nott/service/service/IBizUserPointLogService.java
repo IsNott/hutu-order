@@ -1,5 +1,6 @@
 package org.nott.service.service;
 
+import org.nott.enums.UserPointUseEnum;
 import org.nott.model.BizUserPointLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IBizUserPointLogService extends IService<BizUserPointLog> {
 
+    void saveLog(String fee, Long usePoint, UserPointUseEnum userPointUseEnum);
 }

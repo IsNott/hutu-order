@@ -2,4 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.nott.service.mapper.BizCouponMapper">
 
+    <select id="getCouponsByUserId" resultType="org.nott.model.BizCoupon" parameterType="long">
+        select *
+        from biz_coupon t1
+                 LEFT JOIN biz_user_coupon_relation t2
+                           on t1.id = t2.coupon_id
+        where t2.user_id = ${user_id}
+        order by t1.discount_fee desc
+    </select>
 </mapper>

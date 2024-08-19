@@ -2,6 +2,10 @@ package org.nott.enums;
 
 import lombok.Getter;
 
+/**
+ * 运行平台枚举
+ */
+
 @Getter
 public enum BusinessPlatformEnum {
 

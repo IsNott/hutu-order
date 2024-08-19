@@ -3,6 +3,8 @@ package org.nott.service.service;
 import org.nott.model.BizUserPoint;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.math.BigDecimal;
+
 /**
  * <p>
  * 用户积分表 服务类
@@ -13,4 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IBizUserPointService extends IService<BizUserPoint> {
 
+    Long queryUsablePoint();
+
+    void usePoint(String fee,Long originPoint, Long usePoint);
 }

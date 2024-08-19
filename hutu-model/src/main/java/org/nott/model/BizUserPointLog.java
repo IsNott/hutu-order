@@ -37,7 +37,7 @@ public class BizUserPointLog implements Serializable {
     /**
      * 业务金额
      */
-    private BigDecimal bizFee;
+    private String bizFee;
 
     /**
      * 添加积分
@@ -59,6 +59,11 @@ public class BizUserPointLog implements Serializable {
      * 删除标识
      */
     private Integer delFlag;
+
+    /**
+     * 使用类型 0-主动 1-系统扣除
+     */
+    private Integer type;
 
 
 }

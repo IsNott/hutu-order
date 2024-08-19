@@ -1,6 +1,7 @@
 package org.nott.common.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import org.nott.common.exception.HutuBizException;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.util.Assert;
@@ -31,6 +32,24 @@ public class HutuUtils {
         public static final SimpleDateFormat MD = new SimpleDateFormat("MMdd");
         public static final SimpleDateFormat YEAR = new SimpleDateFormat("yyyy");
         public static final SimpleDateFormat DATETIME = new SimpleDateFormat("yyyyMMddHHmmss");
+    }
+
+    public static void requireTrue(boolean condition) throws HutuBizException{
+        requireTrue(condition,null);
+    }
+
+    public static void requireFalse(boolean condition) throws HutuBizException{
+        requireTrue(!condition,null);
+    }
+
+    public static void requireTrue(boolean condition, @Nullable String msg) throws HutuBizException{
+        if(!condition){
+            throw new HutuBizException(isNotEmpty(msg) ? msg : "业务条件不符合要求");
+        }
+    }
+
+    public static void requireFalse(boolean condition,@Nullable String msg) throws HutuBizException{
+        requireTrue(!condition,msg);
     }
 
     public static void requireNotNull(Object o) throws HutuBizException {
@@ -71,11 +90,11 @@ public class HutuUtils {
         return sList;
     }
 
-    public static <T, S> S transToVo(T obj, Class<S> sClazz) {
+    public static <T, S> S transToVo(T source, Class<S> targetClass) {
         S s;
         try {
-            s = sClazz.newInstance();
-            copyProperties(obj, s);
+            s = targetClass.newInstance();
+            copyProperties(source, s);
         } catch (Exception e) {
             throw new HutuBizException("Trans obj to vo failed");
         }
@@ -96,6 +115,10 @@ public class HutuUtils {
 
     public static boolean isNotEmpty(Object o){
         return !isEmpty(o);
+    }
+
+    public static <T> T getIfValue(T value,T ifValue){
+        return isEmpty(value) ? ifValue : value;
     }
 
     public static int pageOffset(Integer page,Integer size){
