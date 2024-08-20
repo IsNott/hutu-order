@@ -1,25 +1,27 @@
 <template>
 	<view>
 		<scroll-view class="boby">
-			<uni-section :title="currentShopName" type="square" titleFontSize="16px" :subTitle="currentShopAddress">
+			<uni-section :title="currentShopInfo.shopName" type="square" titleFontSize="16px"
+				:subTitle="currentShopInfo.address">
 				<uni-notice-bar v-if="noticeTitle" color="#2979FF" background-color="#EAF2FF" show-icon scrollable
 					:text="noticeTitle" />
 			</uni-section>
 			<view class="pick-way">
 				<text class="pick-way-title">就餐方式</text>
 				<view class="pick-btn">
-					<button :key="pickKey + '01'" size="mini" :class="{'selected':isTake}"
-						@click="handlePickWay('take')">外带</button>
-					<text> | </text>
-					<button :key="pickKey + '02'" size="mini" :class="{'selected':isEatIn}"
-						@click="handlePickWay('eatIn')">堂食</button>
+					<button size="mini" :key="item.type" v-for="(item,index) in pickUpTypeList"
+						:class="{'pick-btn-chlid':true,'selected': activeIndex === index}"
+						@click="selectPickUpWay(index,item.type)">
+						{{item.name}}
+					</button>
 				</view>
 			</view>
 			<item-card v-if="packageList.length > 0" v-for="item in packageList" :key="item.id" :item="item"
 				@iconClick="handlerIconClick"></item-card>
 		</scroll-view>
 		<view class="footer">
-			<mark-tab :key="remark" title="备注" :def-value="markTabDefValue" :value="remark" />
+			<mark-tab :key="remark" title="备注" :def-value="markTabDefValue" :value="remark"
+				@click="uni.navigateTo({url: '/pages/mark/index'})" />
 			<mark-tab :key="totalOrginalAmount" title="原价" :def-value="amoutDefValue" :value="amountStr" />
 			<mark-tab :key="chooseCoupon" title="优惠券" :value="chooseCoupon" />
 			<mark-tab :key="point" title="可用积分" :value="point" />
@@ -35,23 +37,6 @@
 </template>
 
 <script>
-	const empty = {
-		id: '',
-		userId: '',
-		itemId: '',
-		itemPiece: 0,
-		skuItemContents: '',
-		singleActuallyAmount: '',
-		itemSkeletonUrl: '',
-		itemName: '',
-		selectPayWayId: '',
-		paywayList: [{
-			id: '',
-			paymentName: '微信支付',
-			icon: ''
-		}],
-		selectedPickWay: ''
-	}
 	import ItemCard from './component/ItemCard.vue';
 	import CustCard from '@/component/CustCard.vue';
 	import MarkTab from './component/MarkTab.vue';
@@ -59,7 +44,8 @@
 		getPayWay
 	} from '@/api/user-package';
 	import {
-		getCurrentPlatform,getDateStr
+		getCurrentPlatform,
+		getDateStr
 	} from '@/utils/CommonUtils';
 	export default {
 		name: 'UserPackage',
@@ -70,7 +56,7 @@
 		},
 		data() {
 			return {
-				packageList: [empty],
+				packageList: [],
 				remark: '',
 				point: '',
 				coupons: '',
@@ -83,19 +69,29 @@
 					icon: '',
 					displayOrder: 1
 				}],
-				selectPayway: {},
+				pickUpTypeList: [{
+					type: 0,
+					name: '堂食'
+				}, {
+					type: 0,
+					name: '外带'
+				}],
+				selectedPickUpType: '',
+				activeIndex: 0,
 				pickKey: getDateStr(),
-				currentShopName: '糊涂餐馆（齐河路店）',
-				currentShopAddress: '上海齐河路',
+				currentShopInfo: {},
 				noticeTitle: '如您在点单过程中有任何问题请移步到前台咨询，如遇下单后需要更换商品请及时通知店员，谢谢！',
 			}
 		},
 		onLoad: function(option) {
 			const packageList = JSON.parse(decodeURIComponent(option.packageList));
+			console.log(packageList)
 			this.packageList = packageList;
 		},
 		created() {
 			//this.queryPayway();
+			this.getShopInfo();
+			this.assembleOtherInfo();
 		},
 		methods: {
 			handlerIconClick(id, num) {
@@ -122,6 +118,19 @@
 			// WEB 平台时选择支付方式
 			handleSelectPayway() {
 
+			},
+			// 切换就餐方式
+			selectPickUpWay(index, type) {
+				if (index !== this.activeIndex) {
+					this.activeIndex = index;
+					this.selectedPickUpType = type;
+				}
+			},
+			getShopInfo() {
+				this.currentShopInfo = uni.getStorageSync('current_shop');
+			},
+			assembleOtherInfo() {
+				this.remark = uni.getStorageInfoSync('order_remark');
 			}
 		},
 		computed: {
@@ -159,12 +168,6 @@
 					this.selectPayway = this.paywayList[0];
 				}
 				return payName;
-			},
-			isTake() {
-				return this.selectedPickWay === 'take'
-			},
-			isEatIn() {
-				return this.selectedPickWay === 'eatIn'
 			}
 		}
 	}
@@ -176,10 +179,11 @@
 		flex-direction: row;
 		justify-content: space-between;
 		background-color: #ffffff;
+		padding: 6px 0px;
 	}
 
 	.pick-way text {
-		font-size: 14px;
+		font-size: 16px;
 		align-self: center;
 		font-weight: 600;
 	}
@@ -190,7 +194,7 @@
 		flex-direction: row;
 	}
 
-	.pick-btn button {
+	.pick-btn-chlid {
 		border-radius: 8px;
 		align-self: center;
 	}
@@ -208,6 +212,7 @@
 		background-color: #ffffff;
 		color: black;
 	}
+
 
 	.footer {
 		width: 100%;

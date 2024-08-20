@@ -93,22 +93,31 @@ function handleRequest(api, method, data, resolve, reject) {
 		title: '加载中'
 	})
 	const token = uni.getStorageSync("token")
+	var header = {
+		'Content-Type': 'application/json'
+	}
+	if(token){
+		header.token = token
+	}
 	uni.request({
 		url: BASE_URL + api,
 		data: data,
 		method: method,
 		header: {
-			'Content-Type': 'application/json',
-			'Token': token
+			...header
 		},
 		success: (response) => {
 			const res = response.data
-			if (response.statusCode == 401) {
+			if (res.code == 401) {
 				uni.showToast({
 					icon: 'error',
 					position: 'top',
 					title: '请重新登录'
 				});
+				
+				uni.navigateTo({
+					url: '/pages/authority/index'
+				})
 				return reject(err)
 			}
 			if (res.code != 200) {

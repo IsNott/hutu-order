@@ -122,7 +122,7 @@
 						url: '/pages/authority/index'
 					})
 				} else {
-					this.hasLogin = true;
+					// this.hasLogin = true;
 					this.currentItem = this.currentItemList.find(r => r.itemId === id);
 					console.log('currentItem', this.currentItem);
 					findSkuByItemId(this.currentItem.itemId).then(res => {
@@ -137,14 +137,14 @@
 				}
 			},
 			queryPackage() {
-				if (this.hasLogin) {
+				// if (this.hasLogin) {
 					queryUserPackage().then(res => {
 						if (res.data) {
 							this.packageNum = res.data.length
 							this.packageList = res.data
 						}
 					})
-				}
+				// }
 			},
 			doPay(item) {
 				console.log('pay', item)

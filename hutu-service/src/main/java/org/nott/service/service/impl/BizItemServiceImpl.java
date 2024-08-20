@@ -1,6 +1,7 @@
 package org.nott.service.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.nott.common.redis.RedisUtils;
 import org.nott.model.BizItem;
 import org.nott.service.mapper.BizItemMapper;
 import org.nott.service.service.IBizItemService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -22,7 +24,7 @@ import java.util.List;
 public class BizItemServiceImpl extends ServiceImpl<BizItemMapper, BizItem> implements IBizItemService {
 
     @Resource
-    private BizItemMapper bizItemMapper;
+    private RedisUtils redisUtils;
 
     @Override
     public List<BizItem> searchItemByName(String keyWord) {
@@ -30,5 +32,11 @@ public class BizItemServiceImpl extends ServiceImpl<BizItemMapper, BizItem> impl
                 .like(BizItem::getItemName, keyWord);
         List<BizItem> bizItems = this.list(queryWrapper);
         return bizItems;
+    }
+
+    @Override
+    public Set<String> getSearchItemTags() {
+        Set<String> bizItemTags = (Set)redisUtils.sGet("bizItemTags");
+        return bizItemTags;
     }
 }

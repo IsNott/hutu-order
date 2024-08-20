@@ -6,14 +6,12 @@ import org.nott.common.ResponseEntity;
 import org.nott.dto.ItemSearchDTO;
 import org.nott.model.BizItem;
 import org.nott.service.service.IBizItemService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -36,5 +34,12 @@ public class BizItemController {
     public ResponseEntity<?> searchItem(@RequestBody @Valid ItemSearchDTO dto){
         List<BizItem> itemList = bizItemService.searchItemByName(dto.getKeyWord());
         return ResponseEntity.successData(itemList);
+    }
+
+    @ApiOperation(value = "热搜tag")
+    @GetMapping("searchTags")
+    public ResponseEntity<?> searchTags(){
+        Set<String> tags = bizItemService.getSearchItemTags();
+        return ResponseEntity.successData(tags);
     }
 }

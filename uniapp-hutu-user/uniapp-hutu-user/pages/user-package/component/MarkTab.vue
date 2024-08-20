@@ -35,22 +35,22 @@
 	}
 	
 	text{
-		padding: 4px 8px;
+		padding: 12px 8px;
 	}
 	
 	.title{
-		font-size: 16px;
+		font-size: 18px;
 		font-weight: bold;
 	}
 	
 	.def-placeholder{
 		color: #b4b4b4;
-		font-size: 14px;
-		font-weight: bold;
+		font-size: 16px;
+		font-weight: 500;
 	}
 	
 	.placeholder{
 		color: black;
-		font-size: 14px;
+		font-size: 16px;
 	}
 </style>
