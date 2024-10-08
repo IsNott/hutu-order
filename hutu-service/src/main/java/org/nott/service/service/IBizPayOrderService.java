@@ -1,7 +1,9 @@
 package org.nott.service.service;
 
+import org.nott.dto.UserSettleOrderDTO;
 import org.nott.model.BizPayOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.nott.vo.SettleOrderVo;
 
 /**
  * <p>
@@ -14,4 +16,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IBizPayOrderService extends IService<BizPayOrder> {
 
     String countPurchases();
+
+    SettleOrderVo doUserSettle(UserSettleOrderDTO userSettleOrderDTO);
 }

@@ -62,6 +62,12 @@ public class HutuUtils {
         }
     }
 
+    public static void requireNotNull(boolean condition,Object o,String message) throws HutuBizException {
+        if(condition){
+            requireNotNull(o,message);
+        }
+    }
+
     public static void requireNull(Object o) throws HutuBizException{
         requireNull(o, null);
     }

@@ -1,9 +1,11 @@
 package org.nott.service.service.impl;
 
+import org.nott.dto.UserSettleOrderDTO;
 import org.nott.model.BizPayOrder;
 import org.nott.service.mapper.BizPayOrderMapper;
 import org.nott.service.service.IBizPayOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.nott.vo.SettleOrderVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,5 +37,16 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
             }
         }
         return decimal.toString();
+    }
+
+    @Override
+    public SettleOrderVo doUserSettle(UserSettleOrderDTO userSettleOrderDTO) {
+        SettleOrderVo vo = new SettleOrderVo();
+        // TODO 检验积分
+        // TODO 检验优惠券
+        // TODO 检验库存
+        // TODO 确认需支付金额
+
+        return vo;
     }
 }

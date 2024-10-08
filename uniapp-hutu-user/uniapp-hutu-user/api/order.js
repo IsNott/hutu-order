@@ -28,3 +28,7 @@ export function findSkuByItemId(itemId){
 export function queryUserPackage(){
 	return request('/bizUserPackage/query','POST')
 }
+
+export function addPackage(param){
+	return request('/bizUserPackage/addItem','POST',param)
+}

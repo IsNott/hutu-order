@@ -30,11 +30,6 @@ public class BizCouponCondition implements Serializable {
     private Long id;
 
     /**
-     * 优惠券id
-     */
-    private Long couponId;
-
-    /**
      * 关联业务id
      */
     private Long bizId;
