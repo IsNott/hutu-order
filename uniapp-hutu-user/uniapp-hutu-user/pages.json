@@ -55,6 +55,13 @@
 		}
 	},
 	{
+		"path": "pages/mark/index",
+		"style":
+		{
+			"navigationBarTitleText" : "备注"
+		}
+	},
+	{
 		"path" : "pages/setting/index",
 		"style":
 		{
