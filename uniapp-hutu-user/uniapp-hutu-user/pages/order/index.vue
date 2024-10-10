@@ -16,11 +16,7 @@
 					:key="item.itemId" :item="item" />
 			</scroll-view>
 		</view>
-		<uni-badge v-if="packageNum > 0" class="uni-badge-left-margin" :text="packageNum" absolute="rightTop"
-			size="normal">
-			<uni-fab :pattern="pattern" horizontal="right" vertical="bottom" :pop-menu="false" @fabClick="handleTransPackage"/>
-		</uni-badge>
-		
+		<uni-fab v-if="packageList.length > 0" :pattern="pattern" horizontal="right" vertical="bottom" :pop-menu="false" @fabClick="handleTransPackage"/>
 	</scroll-view>
 </template>
 

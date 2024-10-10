@@ -17,4 +17,6 @@ import java.util.List;
 public interface BizUserPackageMapper extends BaseMapper<BizUserPackage> {
 
     List<UserPackageVo> selectUserPackageByUserId(Long userId);
+
+    void removeByUserId(long userId);
 }

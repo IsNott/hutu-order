@@ -1,6 +1,7 @@
 package org.nott.service.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.nott.dto.UserPackageAddDTO;
 import org.nott.dto.UserPackageQueryDTO;
 import org.nott.model.BizUserPackage;
@@ -52,5 +53,11 @@ public class BizUserPackageServiceImpl extends ServiceImpl<BizUserPackageMapper,
         userPackage.setSkuItemContents(skuItemContents);
 
         this.save(userPackage);
+    }
+
+    @Override
+    public void cancelAddPackage() {
+        long userId = StpUtil.getLoginIdAsLong();
+        bizUserPackageMapper.removeByUserId(userId);
     }
 }

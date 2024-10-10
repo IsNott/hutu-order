@@ -83,6 +83,16 @@
 				noticeTitle: '如您在点单过程中有任何问题请移步到前台咨询，如遇下单后需要更换商品请及时通知店员，谢谢！',
 			}
 		},
+		watch:{
+			packageList(o,n){
+				if(this.packageList.length = 0){
+					
+					uni.navigateTo({
+						url: '/pages/orde/index'
+					})
+				}
+			}
+		},
 		onLoad: function(option) {
 			const packageList = JSON.parse(decodeURIComponent(option.packageList));
 			console.log(packageList)
@@ -100,8 +110,11 @@
 					let result = currentPackageItem.itemPiece + num;
 					if (result >= 1) {
 						currentPackageItem.itemPiece = result;
+					}else if(result == 0){
+						this.packageList.splice(item => item.id = id,1)
 					}
 				}
+				
 			},
 			handlePickWay(val) {
 				this.selectedPickWay = val;
@@ -130,7 +143,7 @@
 				this.currentShopInfo = uni.getStorageSync('current_shop');
 			},
 			assembleOtherInfo() {
-				this.remark = uni.getStorageInfoSync('order_remark');
+				this.remark = uni.getStorageSync('order_remark');
 			}
 		},
 		computed: {

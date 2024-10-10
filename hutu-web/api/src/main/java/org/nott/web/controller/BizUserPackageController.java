@@ -52,9 +52,9 @@ public class BizUserPackageController {
     }
 
     @ApiOperation("移除整个购物袋")
-    @PutMapping("cancelAdd/{packageId}")
-    public ResponseEntity<?> cancelAdd(@PathVariable Long packageId){
-        bizUserPackageService.removeById(packageId);
+    @PutMapping("cancelAdd")
+    public ResponseEntity<?> cancelAdd(){
+        bizUserPackageService.cancelAddPackage();
         return ResponseEntity.success();
     }
 }

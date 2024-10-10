@@ -10,4 +10,8 @@
         where t1.user_id = #{userId}
     </select>
 
+    <delete id="removeByUserId" parameterType="long">
+        delete from biz_user_package where user_id = #{userId}
+    </delete>
+
 </mapper>
