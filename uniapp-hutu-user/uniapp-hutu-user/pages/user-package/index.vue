@@ -95,7 +95,8 @@
 		},
 		onLoad: function(option) {
 			const packageList = JSON.parse(decodeURIComponent(option.packageList));
-			console.log(packageList)
+			console.log('pages/user-package:decodePackageList:',decodeURIComponent(option.packageList))
+			console.log('pages/user-package:packageList:',packageList)
 			this.packageList = packageList;
 		},
 		created() {

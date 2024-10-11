@@ -5,9 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.service.service.IBizShopInfoService;
 import org.nott.vo.ShopInfoVo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -40,6 +38,13 @@ public class BizShopInfoController {
     public ResponseEntity<?> defaultShop(){
         ShopInfoVo vo = bizShopInfoService.getDefaultShop();
         return ResponseEntity.successData(vo);
+    }
+
+    @ApiOperation("搜索门店")
+    @PostMapping("search")
+    public ResponseEntity<?> search(@RequestBody String keyWord){
+        List<ShopInfoVo> vos = bizShopInfoService.searchShopByKeyWord(keyWord);
+        return ResponseEntity.successData(vos);
     }
 
 }

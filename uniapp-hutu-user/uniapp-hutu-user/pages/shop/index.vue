@@ -3,10 +3,12 @@
 		<scroll-view class="shop-list">
 			<ww-bottom-drawerapp :is-expand="true" :proportionShow='0.3' :dragHandleHeight="20" :proportionMiniShow="0.1">
 				<slot>
-					<view class="header">
-						<input class="uni-input" confirm-type="search" placeholder="输入地址" />
+					<view style="width: 80px;margin: auto;">
+						<text style="font-size: 16px;text-align: center;" class="title">门店列表</text>
 					</view>
-					<text style="margin-left: 20px;font-size: 12px;" class="title">门店列表</text>
+					<view class="header">
+						<input class="uni-input" confirm-type="search" @confirm="onConfirm" placeholder="输入关键字" />
+					</view>
 					<shop-card @chooseShop="setCurrentShop"  v-for="shop in shopInfos" :key="shop.id" :shop-info="shop"/>
 				</slot>
 			</ww-bottom-drawerapp>
@@ -16,7 +18,7 @@
 
 <script>
 	import ShopCard from './component/ShopCard.vue';
-	import { shopList } from '@/api/shop';
+	import { shopList,search } from '@/api/shop';
 	export default {
 		name: 'shop',
 		components: {
@@ -24,7 +26,15 @@
 		},
 		data() {
 			return {
-				shopInfos: []
+				shopInfos: [],
+				keyWord: ''
+			}
+		},
+		watch:{
+			keyWord(o,n){
+				if(!n){
+					this.getShopList();
+				}
 			}
 		},
 		methods:{
@@ -43,6 +53,15 @@
 						})
 					}
 				})
+			},
+			onKeyInput(event){
+			  this.keyWord = event.target.value
+			},
+			onConfirm(e){
+				this.keyWord = e.detail.val;
+				search(keyWord).then(res =>{
+					this.shopInfos = res.data
+				})
 			}
 		},
 		computed: {
@@ -57,9 +76,9 @@
 </script>
 
 <style scoped>
-	.header uni-input{
+	.header {
 		margin: 20px;
-		margin-top: 30px;
+		margin-top: 12px;
 		padding: 10px;
 		border: 1px solid black;
 		border-radius: 6px;

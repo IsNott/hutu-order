@@ -16,7 +16,7 @@
 					:key="item.itemId" :item="item" />
 			</scroll-view>
 		</view>
-		<uni-fab v-if="packageList.length > 0" :pattern="pattern" horizontal="right" vertical="bottom" :pop-menu="false" @fabClick="handleTransPackage"/>
+		<uni-fab :v-if="packageList.length > 0" :pattern="pattern" horizontal="right" vertical="bottom" :pop-menu="false" @fabClick="handleTransPackage"/>
 	</scroll-view>
 </template>
 
@@ -157,11 +157,12 @@
 						cancelText: '否',
 						confirmText: '是',
 						success: (res) => {
-							if (res.success) {
+							if (res.confirm) {
 								uni.switchTab({
 									url: '/pages/shop/index'
 								})
-							} else {
+							} 
+							if(res.cancel){
 								shopList().then(res => {
 									const data = res.data;
 									const currentShop = data.find(obj => obj.closeNow !== 1 && obj.open)
@@ -174,6 +175,7 @@
 				}
 			},
 			handleTransPackage(){
+				console.log('pages/orders:packageList:',this.packageList)
 				uni.navigateTo({
 					url: '/pages/user-package/index?packageList=' + encodeURIComponent(JSON.stringify(this.packageList))
 				})

@@ -8,16 +8,15 @@
 					点击授权登录</button>
 			</view>
 			<radio-group class="radio-box">
-				<radio value="1" @click="handleChange" :checked="select" />
+				<radio style="vertical-align: 3px" value="1" @click="handleChange" :checked="select" />
 				我已阅读并同意
-				<text class="private">《隐私协议》、
-				</text>
+				<text class="private">《隐私协议》\n</text>
 				<text class="private">《用户协议》</text>
 				的内容
 			</radio-group>
 		</view>
 		<view class="footer">
-			<text @click="handlerClick">免登录点单</text>
+			<text v-if="false" @click="handlerClick">免登录点单</text>
 		</view>
 	</view>
 </template>
@@ -112,6 +111,7 @@
 	
 	.radio-box{
 		margin: 0px 70px;
+		text-align: center;
 	}
 
 	.footer {
