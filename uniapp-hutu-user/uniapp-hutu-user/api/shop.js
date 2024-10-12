@@ -5,5 +5,7 @@ export function shopList(){
 }
 
 export function search(param){
-		return request('/bizShopInfo/search','POST',param)
+		var url = '/bizShopInfo/search';
+		url += '?keyWord=' + param
+		return request(url,'GET')
 }

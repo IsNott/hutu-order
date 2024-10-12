@@ -31,6 +31,7 @@
 			}
 		},
 		watch:{
+			// 关键字为空时获取全部门店
 			keyWord(o,n){
 				if(!n){
 					this.getShopList();
@@ -59,7 +60,7 @@
 			},
 			onConfirm(e){
 				this.keyWord = e.detail.val;
-				search(keyWord).then(res =>{
+				search(this.keyWord).then(res =>{
 					this.shopInfos = res.data
 				})
 			}

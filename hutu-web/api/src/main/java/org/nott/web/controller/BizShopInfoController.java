@@ -41,8 +41,8 @@ public class BizShopInfoController {
     }
 
     @ApiOperation("搜索门店")
-    @PostMapping("search")
-    public ResponseEntity<?> search(@RequestBody String keyWord){
+    @GetMapping("search")
+    public ResponseEntity<?> search(String keyWord){
         List<ShopInfoVo> vos = bizShopInfoService.searchShopByKeyWord(keyWord);
         return ResponseEntity.successData(vos);
     }
