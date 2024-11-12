@@ -44,10 +44,6 @@ Sa-token、Spring Security、Redis、Mybatis-plus、AspectJ
 ├─vue-hutu-admin # 后台管理web端
 ```
 
-## 项目意见与交流
-
-如果有更好的意见交流，或者想持续关注本项目，可加入**QQ群聊**沟通，群号：256880376
-
 ## 系统截图
 
 待更新
