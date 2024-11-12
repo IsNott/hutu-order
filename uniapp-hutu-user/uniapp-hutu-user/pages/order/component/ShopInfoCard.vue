@@ -55,7 +55,7 @@
 	}
 	
 	.right text{
-		font-size: 18px;
+		font-size: 24px;
 		font-weight: 500;
 	}
 </style>

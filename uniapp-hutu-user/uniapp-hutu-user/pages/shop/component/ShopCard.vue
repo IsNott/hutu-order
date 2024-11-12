@@ -3,13 +3,13 @@
 		<view>
 			<uni-icons type="shop" size="18" />
 			<text class="title">
-				{{ shopInfo.shopName}}
+				{{ shopInfo ? shopInfo.shopName : ''}}
 			</text>
 		</view>
 		<view>
 			<uni-icons type="location" size="18" />
 			<text class="address">
-				{{ shopInfo.address}}
+				{{ shopInfo ? shopInfo.address : ''}}
 			</text>
 		</view>
 		<view>

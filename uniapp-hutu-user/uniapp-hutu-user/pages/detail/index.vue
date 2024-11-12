@@ -2,7 +2,7 @@
 	<scroll-view class="body">
 		<view class="header">
 			<swiper class="swiper" circular :indicator-dots="indicatorDots" autoplay="true">
-				<swiper-item :key="index" v-for="(img,index) in item.itemImageUrls">
+				<swiper-item :key="index" v-for="(img,index) in previewUrls">
 					<image :src="img" mode="aspectFit" class="img" />
 				</swiper-item>
 			</swiper>
@@ -10,8 +10,7 @@
 		<scroll-view class="context">
 			<item-info v-if="item" :desc="item.itemDesc" :name="item.itemName" :tags="tagArray"></item-info>
 			<sku-item-info :key="item.catalogId" :catalog-id="item.catalogId" @change-select="handleItemSelect"
-				v-for="(item,index) in skuList" :catalog-name="item.skuCatalogName"
-				:sku-item="item.skuItems"></sku-item-info>
+				v-for="(item,index) in skuList" :catalog-name="item.skuCatalogName" :sku-item="item.skuItems" />
 			<goods-footer :num="currentNum" @chooseItem="handleChooseItem" @addToPackage="handleAddPackage" />
 		</scroll-view>
 	</scroll-view>
@@ -22,7 +21,7 @@
 		actuallyAmount: '',
 		itemDesc: '',
 		itemId: '',
-		itemImageUrls: [],
+		itemImageUrls: '',
 		itemName: '',
 		itemTag: '',
 		memuCatalogId: '',
@@ -38,7 +37,10 @@
 			skuItemContent: ''
 		}]
 	}
-	import { addPackage } from '@/api/order'
+	import {
+		addPackage
+	} from '@/api/order'
+	import { handleImageUrl } from '../../utils/CommonUtils'
 	import ItemInfo from './component/ItemInfo.vue'
 	import SkuItemInfo from './component/SkuItemInfo.vue'
 	import GoodsFooter from './component/GoodsFooter.vue'
@@ -68,6 +70,7 @@
 			const item = JSON.parse(decodeURIComponent(option.item));
 			const skuList = JSON.parse(decodeURIComponent(option.skuList));
 			this.item = item;
+			console.log(item)
 			this.skuList = skuList;
 		},
 		methods: {
@@ -86,7 +89,7 @@
 					itemId: this.item.itemId,
 					itemPiece: this.currentNum,
 					skuItemContents: this.selectSkuList.map(r => r.content).join(',')
-				}).then(res=>{
+				}).then(res => {
 					uni.navigateBack();
 				})
 			},
@@ -116,6 +119,10 @@
 					array = itemTag.split(",");
 				}
 				return array;
+			},
+			previewUrls(){
+				var str = handleImageUrl(this.item.itemImgeUrls)
+				return str
 			}
 		}
 	}

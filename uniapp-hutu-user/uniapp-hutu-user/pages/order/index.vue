@@ -16,7 +16,8 @@
 					:key="item.itemId" :item="item" />
 			</scroll-view>
 		</view>
-		<uni-fab :v-if="packageList.length > 0" :pattern="pattern" horizontal="right" vertical="bottom" :pop-menu="false" @fabClick="handleTransPackage"/>
+		<uni-fab :v-if="packageList.length > 0" :pattern="pattern" horizontal="right" vertical="bottom" :pop-menu="false"
+			@fabClick="handleTransPackage" />
 	</scroll-view>
 </template>
 
@@ -58,7 +59,7 @@
 				showLoading: false,
 				packageNum: 1,
 				hasLogin: false,
-				pattern:{
+				pattern: {
 					icon: 'cart'
 				},
 				packageList: [],
@@ -134,12 +135,12 @@
 			},
 			queryPackage() {
 				// if (this.hasLogin) {
-					queryUserPackage().then(res => {
-						if (res.data) {
-							this.packageNum = res.data.length
-							this.packageList = res.data
-						}
-					})
+				queryUserPackage().then(res => {
+					if (res.data) {
+						this.packageNum = res.data.length
+						this.packageList = res.data
+					}
+				})
 				// }
 			},
 			doPay(item) {
@@ -161,8 +162,8 @@
 								uni.switchTab({
 									url: '/pages/shop/index'
 								})
-							} 
-							if(res.cancel){
+							}
+							if (res.cancel) {
 								shopList().then(res => {
 									const data = res.data;
 									const currentShop = data.find(obj => obj.closeNow !== 1 && obj.open)
@@ -174,8 +175,9 @@
 					})
 				}
 			},
-			handleTransPackage(){
-				console.log('pages/orders:packageList:',this.packageList)
+			// 点击购物车图标跳转购物袋页面
+			handleTransPackage() {
+				console.log('pages/orders:packageList:', this.packageList)
 				uni.navigateTo({
 					url: '/pages/user-package/index?packageList=' + encodeURIComponent(JSON.stringify(this.packageList))
 				})
@@ -215,13 +217,12 @@
 	}
 
 	.current-catalog-name {
-		font-size: 16px;
+		font-size: 20px;
 		font-weight: 590;
 	}
 
 	.current-catalog-desc {
-		font-size: 8px;
+		font-size: 16px;
 		color: gray;
 	}
-	
 </style>

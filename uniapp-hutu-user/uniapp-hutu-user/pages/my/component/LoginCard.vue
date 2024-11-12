@@ -6,7 +6,7 @@
 			<view>
 				<button v-if="userInfo.username === ''" id="infoBtn" style="background-color: #F5F5F5;" hover-class="none" open-type="getUserInfo"
 					@getuserinfo="handlerUserInfo"><text class="nick-name">
-					点击绑定微信信息
+					点击绑定微信
 				</text></button>
 				<text v-else class="nick-name">
 					{{userInfo.username}}

@@ -3,7 +3,7 @@
 		<uni-list-item direction="column" :customStyle="itemStyle" v-for="(item,index) in menuCatalog" :key="item.id"
 			:clickable="true" :border="false" ref="listItems" @click="handlerCatalogClick(item.id)">
 			<template class="panel-body" v-slot:body>
-				<image class="catalog-img" src="@/static/item/coffee.png" mode="aspectFit"></image>
+				<image class="catalog-img" :src="item.imgUrl ? item.imgUrl : require('../../../static/image/not-image.png')" mode="aspectFit"></image>
 				<text class="catalog-name">{{ item.catalogName}}</text>
 			</template>
 		</uni-list-item>
@@ -49,14 +49,14 @@
 <style scoped>
 	.catalog-name {
 		display: block;
-		font-size: 12px;
-		font-weight: 650;
+		font-size: 18px;
+		/* font-weight: 500; */
 	}
 
 	.catalog-img {
 		margin: auto;
-		width: 36px;
-		height: 36px;
+		width: 52px;
+		height: 64px;
 	}
 
 	.panel-body {

@@ -2,21 +2,17 @@
 	<scroll-view>
 		<login-card :key="refeshKey" :user-info="userInfo" @refeshPage="handleRefesh"/>
 		<setting-card />
-		<cust-card class="sell-card" main-title="营销卡片" sub-title="副标题">
-			<text>故飘风不终朝，骤雨不终日。孰为此者？天地。天地尚不能久，而况于人乎？</text>
-		</cust-card>
-		<cust-card class="sell-card" main-title="营销卡片" sub-title="副标题">
-			<text>故飘风不终朝，骤雨不终日。孰为此者？天地。天地尚不能久，而况于人乎？</text>
-		</cust-card>
-		<cust-card class="sell-card" main-title="营销卡片" sub-title="副标题">
-			<text>故飘风不终朝，骤雨不终日。孰为此者？天地。天地尚不能久，而况于人乎？</text>
-		</cust-card>
-		<cust-card class="sell-card" main-title="营销卡片" sub-title="副标题">
-			<text>故飘风不终朝，骤雨不终日。孰为此者？天地。天地尚不能久，而况于人乎？</text>
+		<cust-card class="sell-card" main-title="糊涂加盟" sub-title="查看Github">
+			<view>
+				<text>还在为没有做过开源项目烦恼？还在为技能拓展发愁？</text>
+			</view>
+			<view>
+				<text>快来加入糊涂点餐开发团队吧!</text>
+			</view>
 		</cust-card>
 		<view class="footer">
-			<text>Power by </text>
-			<text style="font-weight: bold;">{{name}}</text>
+			<text>Powered by </text>
+			<text style="font-weight: bold;color:#FF4500;">{{name}}</text>
 		</view>
 	</scroll-view>
 </template>

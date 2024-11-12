@@ -1,6 +1,5 @@
 <template>
-	<uni-card :margin='margin' :is-shadow='isShadow' shadow="3px"  :style="backGroundImage"
-	class="cust-card">
+	<uni-card :margin='margin' :is-shadow='isShadow' shadow="3px" :style="backGroundImage" class="cust-card">
 		<view class="title">
 			<text class="main">{{mainTitle}}</text>
 			<text class="sub">{{subTitle}}</text>
@@ -12,41 +11,42 @@
 </template>
 
 <script>
-	export default{
-		name:'CustCard',
-		props:{
-			margin:{
+	export default {
+		name: 'CustCard',
+		props: {
+			margin: {
 				type: String,
 				default: '6px'
 			},
-			isShadow:{
+			isShadow: {
 				type: Boolean,
 				default: false
 			},
-			shadow:{
-				type: String ,
-				default: ''
-			},
-			mainTitle:{
+			shadow: {
 				type: String,
 				default: ''
 			},
-			subTitle:{
+			mainTitle: {
 				type: String,
 				default: ''
 			},
-			backGroudImg:{
+			subTitle: {
+				type: String,
+				default: ''
+			},
+			backGroudImg: {
 				type: String,
 				default: ''
 			}
 		},
-		computed:{
-			backGroundImage(){
+		computed: {
+			backGroundImage() {
 				var styleValue = '';
-				if(this.backGroudImg){
+				if (this.backGroudImg) {
 					styleValue = {
-						'background-image' : `url(${this.backGroudImg})`,
-						'background-repeat': 'no-repeat'
+						'background-image': `url(${this.backGroudImg})`,
+						'background-repeat': 'no-repeat',
+						'height': '100px'
 					}
 				}
 				return styleValue;
@@ -56,24 +56,24 @@
 </script>
 
 <style scoped>
-	.title{
+	.title {
 		padding: 0px;
 		display: flex;
 		margin: 10px 0px;
 		justify-content: space-between;
 	}
-	
-	.main{
+
+	.main {
 		font-weight: bold;
 		font-size: 110%;
 	}
-	
-	.sub{
+
+	.sub {
 		font-size: 100%;
-		
+
 	}
-	
-	.cust-info{
+
+	.cust-info {
 		padding: 4px;
 	}
 </style>

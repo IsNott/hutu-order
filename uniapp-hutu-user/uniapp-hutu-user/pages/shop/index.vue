@@ -1,15 +1,20 @@
 <template>
 	<scroll-view>
 		<scroll-view class="shop-list">
-			<ww-bottom-drawerapp :is-expand="true" :proportionShow='0.3' :dragHandleHeight="20" :proportionMiniShow="0.1">
+			<ww-bottom-drawerapp :key="key" :is-expand="true" :proportionShow='0.3' :dragHandleHeight="20" :proportionMiniShow="0.1">
 				<slot>
-					<view style="width: 80px;margin: auto;">
-						<text style="font-size: 16px;text-align: center;" class="title">门店列表</text>
+					<view style="width: 88px;margin: auto;padding-top: 6px;padding-bottom: 6px;">
+						<text style="font-size: 22px;text-align: center;" class="title">门店列表</text>
 					</view>
-					<view class="header">
-						<input class="uni-input" confirm-type="search" @confirm="onConfirm" placeholder="输入关键字" />
+					<view class="header" v-if="false">
+						<input class="uni-input" confirm-type="search" @confirm="onConfirm" placeholder="输入关键字"/>
 					</view>
-					<shop-card @chooseShop="setCurrentShop"  v-for="shop in shopInfos" :key="shop.id" :shop-info="shop"/>
+					<view v-if="shopInfos.length > 0">
+						<shop-card @chooseShop="setCurrentShop"  v-for="shop in shopInfos" :key="shop.id" :shop-info="shop"/>
+					</view>
+					<view v-else>
+						<text>没有更多信息了</text>
+					</view>
 				</slot>
 			</ww-bottom-drawerapp>
 		</scroll-view>
@@ -27,16 +32,17 @@
 		data() {
 			return {
 				shopInfos: [],
-				keyWord: ''
+				keyWord: '',
+				key: new Date().getTime()
 			}
 		},
 		watch:{
 			// 关键字为空时获取全部门店
-			keyWord(o,n){
-				if(!n){
-					this.getShopList();
-				}
-			}
+			// keyWord(o,n){
+			// 	if(!n){
+			// 		this.getShopList();
+			// 	}
+			// }
 		},
 		methods:{
 			getShopList(){
@@ -59,8 +65,9 @@
 			  this.keyWord = event.target.value
 			},
 			onConfirm(e){
-				this.keyWord = e.detail.val;
+				this.keyWord = e.detail.value;
 				search(this.keyWord).then(res =>{
+					this.key = new Date().getTime()
 					this.shopInfos = res.data
 				})
 			}

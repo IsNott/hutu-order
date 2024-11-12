@@ -1,73 +1,63 @@
 {
-	"pages": [
-	{
-		"path" : "pages/order/index",
-		"style" : 
+	"pages": [{
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
 		{
-			"navigationBarTitleText" : "点单"
-		}
-	},
-	{
-		"path": "pages/shop/index",
-		"style": {
-			"navigationBarTitleText": "门店列表"
-		}
-	},
-	{
-		"path" : "pages/home/index",
-		"style" : 
+			"path": "pages/order/index",
+			"style": {
+				"navigationBarTitleText": "点单"
+			}
+		},
 		{
-			"navigationBarTitleText" : "首页"
-		}
-	},
-	{
-		"path" : "pages/search/index",
-		"style" : 
+			"path": "pages/shop/index",
+			"style": {
+				"navigationBarTitleText": "门店列表"
+			}
+		},
 		{
-			"navigationBarTitleText" : "搜索"
-		}
-	},{
-		"path" : "pages/my/index",
-		"style" : 
+			"path": "pages/search/index",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		}, {
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "会员中心"
+			}
+		},
 		{
-			"navigationBarTitleText" : "会员中心"
-		}
-	},
-	{
-		"path" : "pages/authority/index",
-		"style":
+			"path": "pages/authority/index",
+			"style": {
+				"navigationBarTitleText": "授权页"
+			}
+		},
 		{
-			"navigationBarTitleText" : "授权页"
-		}
-	},
-	{
-		"path" : "pages/detail/index",
-		"style":
+			"path": "pages/detail/index",
+			"style": {
+				"navigationBarTitleText": "商品详情"
+			}
+		},
 		{
-			"navigationBarTitleText" : "商品详情"
-		}
-	},
-	{
-		"path" : "pages/user-package/index",
-		"style":
+			"path": "pages/user-package/index",
+			"style": {
+				"navigationBarTitleText": "购物袋"
+			}
+		},
 		{
-			"navigationBarTitleText" : "购物袋"
-		}
-	},
-	{
-		"path": "pages/mark/index",
-		"style":
+			"path": "pages/mark/index",
+			"style": {
+				"navigationBarTitleText": "备注"
+			}
+		},
 		{
-			"navigationBarTitleText" : "备注"
+			"path": "pages/setting/index",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
 		}
-	},
-	{
-		"path" : "pages/setting/index",
-		"style":
-		{
-			"navigationBarTitleText" : "设置"
-		}
-	}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -80,27 +70,31 @@
 	},
 	"tabBar": {
 		"color": "#7A7E83",
-		"selectedColor": "#3cc51f",
+		"selectedColor": "#3f7591",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
-			"pagePath": "pages/home/index",
-			"iconPath": "static/image/home.png",
-			"text": "首页"
-		}, {
-			"pagePath": "pages/order/index",
-			"iconPath": "static/image/coffee.png",
-			"text": "点单"
-		}, {
-			"pagePath": "pages/shop/index",
-			"iconPath": "static/image/shop.png",
-			"text": "门店"
-		}, 
-		{
-			"pagePath": "pages/my/index",
-			"iconPath": "static/image/my.png",
-			"text": "会员中心"
-		}
+				"pagePath": "pages/home/index",
+				"iconPath": "static/image/home.png",
+				"selectedIconPath": "static/image/home-selected.png",
+				"text": "首页"
+			}, {
+				"pagePath": "pages/order/index",
+				"iconPath": "static/image/coffee.png",
+				"selectedIconPath": "static/image/coffee-selected.png",
+				"text": "点单"
+			}, {
+				"pagePath": "pages/shop/index",
+				"iconPath": "static/image/shop.png",
+				"selectedIconPath": "static/image/shop-selected.png",
+				"text": "门店"
+			},
+			{
+				"pagePath": "pages/my/index",
+				"iconPath": "static/image/my.png",
+				"selectedIconPath": "static/image/my-selected.png",
+				"text": "我的"
+			}
 		]
 	}
 

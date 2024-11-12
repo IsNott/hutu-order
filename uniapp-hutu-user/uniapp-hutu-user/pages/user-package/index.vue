@@ -94,10 +94,9 @@
 			}
 		},
 		onLoad: function(option) {
-			const packageList = JSON.parse(decodeURIComponent(option.packageList));
-			console.log('pages/user-package:decodePackageList:',decodeURIComponent(option.packageList))
-			console.log('pages/user-package:packageList:',packageList)
-			this.packageList = packageList;
+			const packageList = JSON.parse(decodeURIComponent(option.packageList))
+			this.packageList = packageList
+			
 		},
 		created() {
 			//this.queryPayway();
@@ -142,6 +141,7 @@
 			},
 			getShopInfo() {
 				this.currentShopInfo = uni.getStorageSync('current_shop');
+				console.log('pages/user-package:',this.packageList)
 			},
 			assembleOtherInfo() {
 				this.remark = uni.getStorageSync('order_remark');

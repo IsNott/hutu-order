@@ -2,6 +2,8 @@ package org.nott.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 运行平台枚举
  */
@@ -17,5 +19,12 @@ public enum BusinessPlatformEnum {
 
     BusinessPlatformEnum(String name) {
         this.name = name;
+    }
+
+    public static BusinessPlatformEnum getByName(String name){
+        return Arrays.stream(BusinessPlatformEnum.values())
+                .filter(r -> name.equalsIgnoreCase(r.getName()))
+                .findAny()
+                .orElse(null);
     }
 }

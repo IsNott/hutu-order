@@ -48,3 +48,31 @@ export function getCurrentPlatform(){
 	// #endif
 	return str;
 }
+
+export function handleImageUrl(urlStr){
+	console.log(urlStr)
+	if(urlStr == undefined){
+		return ''
+	}
+	var url = ''
+	if (urlStr.includes(',')) {
+		url = urlStr.split(',')[0]
+	} else {
+		url = urlStr
+	}
+	return url == '' ? require('@/static/image/not-image.png') : url
+}
+
+export function handleImageUrlArray(urlStr){
+	console.log(urlStr)
+	if(urlStr == undefined){
+		return ''
+	}
+	var url = ''
+	if (urlStr.includes(',')) {
+		url = urlStr.split(',')
+	} else {
+		url = urlStr
+	}
+	return url == '' ? require('@/static/image/not-image.png') : url
+}
