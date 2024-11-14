@@ -4,7 +4,9 @@ import {
 import {
 	register
 } from "@/api/user"
+
 const BASE_URL = 'http://localhost:10001'
+const TIME_OUT = 60000
 
 export const request = (api, method, data) => {
 	return new Promise((resolve, rejects) => {
@@ -106,6 +108,7 @@ function handleRequest(api, method, data, resolve, reject) {
 		header: {
 			...header
 		},
+		timeout:TIME_OUT,
 		success: (response) => {
 			const res = response.data
 			if (res.code == 401) {

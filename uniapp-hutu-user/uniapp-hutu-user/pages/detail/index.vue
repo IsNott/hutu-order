@@ -80,7 +80,7 @@
 			},
 			handleChooseItem(num) {
 				let result = this.currentNum + num;
-				if (result >= 0) {
+				if (result >= 1) {
 					this.currentNum = result;
 				}
 			},

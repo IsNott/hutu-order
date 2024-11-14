@@ -2,6 +2,16 @@ server:
   port: 10001
 
 spring:
+  redis:
+    host: localhost
+    password:
+    database: 0
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
   mvc:
     throw-exception-if-no-handler-found: true
   resources:

@@ -22,7 +22,7 @@
 		data() {
 			return {
 				itemStyle: {
-					backgroundColor: '#F5F5F5',
+					backgroundColor: 'white',
 					borderStyle: 'none'
 				},
 				currentIndex: 0,

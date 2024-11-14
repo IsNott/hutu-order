@@ -13,7 +13,9 @@
 						<shop-card @chooseShop="setCurrentShop"  v-for="shop in shopInfos" :key="shop.id" :shop-info="shop"/>
 					</view>
 					<view v-else>
-						<text>没有更多信息了</text>
+						<view style="padding: 20px;font-size: 25px;">
+							<text>没有更多信息了</text>
+						</view>
 					</view>
 				</slot>
 			</ww-bottom-drawerapp>

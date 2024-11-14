@@ -25,8 +25,24 @@
 					<text>我的</text>
 				</view>
 			</view>
-			<cust-card main-title="庆贺新店开张" sub-title="全场满99-20"/>
-			<cust-card main-title="糊涂餐馆" sub-title="招聘中..."/>
+			<cust-card main-title="庆贺新店开张" click-url="/pages/order/index">
+				<view>
+					<text>全场满99-20，上不设限!</text>
+				</view>
+			</cust-card>
+			<cust-card main-title="糊涂餐馆" sub-title="招聘中...">
+				<view>
+					<text>诚邀全职、兼职员工</text>
+				</view>
+			</cust-card>
+			<view class="footer">
+				<view style="text-align: center;
+				padding: 10px 0px;
+				font-size: 16px;
+				color: #c5c5c5;">
+					<text>Hutu-Order© Since 2024</text>
+				</view>
+			</view>
 		</view>
 	</scroll-view>
 </template>
@@ -101,8 +117,8 @@
 		color: darkred;
 		font-size: 16px;
 	}
-	
-	.card-images{
+
+	.card-images {
 		height: 80px;
 		width: 80px;
 		display: block;
