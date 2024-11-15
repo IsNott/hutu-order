@@ -16,8 +16,7 @@
 					:key="item.itemId" :item="item" />
 			</scroll-view>
 		</view>
-		<uni-fab :v-if="packageList.length > 0" :pattern="pattern" horizontal="right" vertical="bottom" :pop-menu="false"
-			@fabClick="handleTransPackage" />
+		<shop-package :key="key" v-if="packageList" @shopPackageClick="handleTransPackage" :num="packageList.length" />
 	</scroll-view>
 </template>
 
@@ -38,13 +37,15 @@
 	import MenuCatalogPanel from './component/MenuCatalogPanel.vue'
 	import ProductCard from './component/ProductCard.vue'
 	import OrderSkeleton from '../skeleton/OrderSkeleton.vue'
+	import ShopPackage from '@/component/ShopPackage.vue'
 	export default {
 		name: 'Order',
 		components: {
 			ShopInfoCard,
 			MenuCatalogPanel,
 			ProductCard,
-			OrderSkeleton
+			OrderSkeleton,
+			ShopPackage
 		},
 		data() {
 			return {
@@ -67,13 +68,14 @@
 			}
 		},
 		onLoad() {
-			this.queryPackage();
+			// this.queryPackage();
 		},
 		onShow() {
 			const vm = this;
 			vm.showLoading = true;
 			this.queryCurrentMerchant();
 			setTimeout(() => {
+				this.queryPackage();
 				vm.showLoading = false;
 			}, 300)
 		},
@@ -121,7 +123,6 @@
 				} else {
 					// this.hasLogin = true;
 					this.currentItem = this.currentItemList.find(r => r.itemId === id);
-					console.log('currentItem', this.currentItem);
 					findSkuByItemId(this.currentItem.itemId).then(res => {
 						this.currentSkuList = res.data
 						const currentSkuList = encodeURIComponent(JSON.stringify(res.data))

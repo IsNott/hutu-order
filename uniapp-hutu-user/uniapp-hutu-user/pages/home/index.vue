@@ -48,6 +48,7 @@
 </template>
 
 <script>
+	import { commonNavigate } from '../../utils/CommonUtils';
 	import CustCard from '@/component/CustCard.vue';
 	export default {
 		name: 'home',
@@ -59,10 +60,7 @@
 		},
 		methods: {
 			handlerRoute(path) {
-				console.log(path)
-				uni.switchTab({
-					url: path
-				});
+				commonNavigate(path)
 			},
 			showDevMsg() {
 				uni.showModal({

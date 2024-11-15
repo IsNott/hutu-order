@@ -1,9 +1,9 @@
 <template>
 	<uni-list :border="false">
-		<uni-list-item direction="column" :customStyle="itemStyle" v-for="(item,index) in menuCatalog" :key="item.id"
+		<uni-list-item direction="column" v-for="(item,index) in menuCatalog" :key="item.id"
 			:clickable="true" :border="false" ref="listItems" @click="handlerCatalogClick(item.id)">
 			<template class="panel-body" v-slot:body>
-				<image class="catalog-img" :src="item.imgUrl ? item.imgUrl : require('../../../static/image/not-image.png')" mode="aspectFit"></image>
+				<image class="catalog-img" :src="item.imgUrl ? item.imgUrl : require('@/static/image/not-image.png')" mode="aspectFit"></image>
 				<text class="catalog-name">{{ item.catalogName}}</text>
 			</template>
 		</uni-list-item>
@@ -35,9 +35,7 @@
 			},
 			triggerFirstItemClick() {
 				if (!this.firstItemClicked && this.$refs.listItems && this.$refs.listItems.length > 0) {
-					// this.$refs.listItems[0].$el.click();
 					this.$nextTick(() => {
-						console.log(2, this.$refs.listItems)
 						this.firstItemClicked = true;
 					})
 				}

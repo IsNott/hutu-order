@@ -73,9 +73,7 @@ export function commonNavigate(url){
 	})
 }
 
-// todo 此方法未完成
 export function handleImageUrlArray(urlStr){
-	console.log(urlStr)
 	if(urlStr == undefined){
 		return ''
 	}
@@ -83,7 +81,7 @@ export function handleImageUrlArray(urlStr){
 	if (urlStr.includes(',')) {
 		url = urlStr.split(',')
 	} else {
-		url = [...urlStr]
+		url.push(urlStr)
 	}
-	return url == [] ? require('@/static/image/not-image.png') : url
+	return url
 }

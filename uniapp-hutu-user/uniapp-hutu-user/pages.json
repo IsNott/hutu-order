@@ -57,6 +57,12 @@
 			"style": {
 				"navigationBarTitleText": "设置"
 			}
+		},
+		{
+			"path": "component/ShopPackage",
+			"style": {
+				"navigationBarTitleText": ""
+			}
 		}
 	],
 	"globalStyle": {
