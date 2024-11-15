@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="page">
 		<scroll-view class="boby">
 			<uni-section :title="currentShopInfo.shopName" type="square" titleFontSize="16px"
 				:subTitle="currentShopInfo.address">
@@ -16,8 +16,20 @@
 					</button>
 				</view>
 			</view>
-			<item-card v-if="packageList.length > 0" v-for="item in packageList" :key="item.id" :item="item"
-				@iconClick="handlerIconClick"></item-card>
+			<uni-list :ellipsis="3" v-if="packageList.length > 0">
+				<uni-list-item v-for="item in packageList" :key="item.id"
+				:title="item.itemName"
+				:right-text="item.singleActuallyAmount"
+				thumb-size="lg"
+				:note="item.skuItemContents"
+				:thumb="handerImage(item.itemImageUrls)"
+				>
+				
+					<!-- <template v-slot:body>
+						<item-card :item="item" @iconClick="handlerIconClick" />
+					</template> -->
+				</uni-list-item>
+			</uni-list>
 		</scroll-view>
 		<view class="footer">
 			<mark-tab :key="remark" title="备注" :def-value="markTabDefValue" :value="remark"
@@ -37,16 +49,20 @@
 </template>
 
 <script>
-	import ItemCard from './component/ItemCard.vue';
-	import CustCard from '@/component/CustCard.vue';
-	import MarkTab from './component/MarkTab.vue';
+	import ItemCard from './component/ItemCard.vue'
+	import CustCard from '@/component/CustCard.vue'
+	import MarkTab from './component/MarkTab.vue'
 	import {
 		getPayWay
-	} from '@/api/user-package';
+	} from '@/api/user-package'
+	import {
+		queryUserPackage
+	} from '@/api/order.js'
 	import {
 		getCurrentPlatform,
-		getDateStr
-	} from '@/utils/CommonUtils';
+		getDateStr,
+		handleImageUrl
+	} from '@/utils/CommonUtils'
 	export default {
 		name: 'UserPackage',
 		components: {
@@ -83,49 +99,43 @@
 				noticeTitle: '如您在点单过程中有任何问题请移步到前台咨询，如遇下单后需要更换商品请及时通知店员，谢谢！',
 			}
 		},
-		watch:{
-			packageList(o,n){
-				if(this.packageList.length = 0){
-					
-					uni.navigateTo({
-						url: '/pages/orde/index'
-					})
-				}
-			}
-		},
-		onLoad: function(option) {
-			const packageList = JSON.parse(decodeURIComponent(option.packageList))
-			this.packageList = packageList
-			
+		watch: {
+			// packageList(o, n) {
+			// 	if (this.packageList.length = 0) {
+			// 		uni.navigateTo({
+			// 			url: '/pages/orde/index'
+			// 		})
+			// 	}
+			// }
 		},
 		created() {
 			//this.queryPayway();
-			this.getShopInfo();
-			this.assembleOtherInfo();
+			this.getShopInfo()
+			this.assembleOtherInfo()
+			this.queryPackage()
 		},
 		methods: {
 			handlerIconClick(id, num) {
-				const currentPackageItem = this.packageList.find(r => r.id === id);
+				const currentPackageItem = this.packageList.find(r => r.id === id)
 				if (currentPackageItem) {
-					let result = currentPackageItem.itemPiece + num;
+					let result = currentPackageItem.itemPiece + num
 					if (result >= 1) {
-						currentPackageItem.itemPiece = result;
-					}else if(result == 0){
-						this.packageList.splice(item => item.id = id,1)
+						currentPackageItem.itemPiece = result
+					} else if (result == 0) {
+						this.packageList.splice(item => item.id = id, 1)
 					}
 				}
-				
 			},
 			handlePickWay(val) {
 				this.selectedPickWay = val;
-				this.pickKey = this.selectPayway + getDateStr();
+				this.pickKey = this.selectPayway + getDateStr()
 			},
 			queryPayway() {
-				const platformName = getCurrentPlatform();
+				const platformName = getCurrentPlatform()
 				getPayWay({
 					...platformName
 				}).then(res => {
-					this.paywayList = res.data;
+					this.paywayList = res.data
 				})
 			},
 			// WEB 平台时选择支付方式
@@ -136,15 +146,28 @@
 			selectPickUpWay(index, type) {
 				if (index !== this.activeIndex) {
 					this.activeIndex = index;
-					this.selectedPickUpType = type;
+					this.selectedPickUpType = type
 				}
 			},
 			getShopInfo() {
-				this.currentShopInfo = uni.getStorageSync('current_shop');
-				console.log('pages/user-package:',this.packageList)
+				this.currentShopInfo = uni.getStorageSync('current_shop')
 			},
 			assembleOtherInfo() {
-				this.remark = uni.getStorageSync('order_remark');
+				this.remark = uni.getStorageSync('order_remark')
+			},
+			queryPackage() {
+				// if (this.hasLogin) {
+				queryUserPackage().then(res => {
+					if (res.data) {
+						this.packageNum = res.data.length
+						this.packageList = res.data
+						console.log(this.packageList)
+					}
+				})
+				// }
+			},
+			handerImage(url){
+				return handleImageUrl(url)
 			}
 		},
 		computed: {
@@ -158,7 +181,7 @@
 						sum += parseFloat(item.singleActuallyAmount) * parseInt(item.itemPiece);
 					}
 				}
-				return sum;
+				return sum
 			},
 			// 原价= 件数*实际单价（不计优惠）
 			totalOrginalAmount() {
@@ -176,12 +199,12 @@
 				return '￥' + this.totalOrginalAmount
 			},
 			defPaywayByCurrPlatform() {
-				var payName = '';
+				var payName = ''
 				if (this.paywayList.length > 0) {
-					payName = this.paywayList[0].paymentName;
-					this.selectPayway = this.paywayList[0];
+					payName = this.paywayList[0].paymentName
+					this.selectPayway = this.paywayList[0]
 				}
-				return payName;
+				return payName
 			}
 		}
 	}
@@ -236,7 +259,8 @@
 		right: 0;
 		display: flex;
 		flex-direction: column;
-		z-index: 1;
+		z-index: 5;
+		background: white;
 	}
 
 	.footer view {
@@ -253,10 +277,6 @@
 		border-radius: 14px;
 		width: 100%;
 	}
-
-	/* 	.pay-lab {
-		display: flex;
-	} */
 
 	.pay-btn {
 		color: white;

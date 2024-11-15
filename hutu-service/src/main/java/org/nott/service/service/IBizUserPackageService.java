@@ -25,4 +25,6 @@ public interface IBizUserPackageService extends IService<BizUserPackage> {
     void packageAddItem(UserPackageAddDTO dto);
 
     void cancelAddPackage();
+
+    Long queryPackageNumByUserId();
 }

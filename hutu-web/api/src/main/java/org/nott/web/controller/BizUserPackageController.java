@@ -43,6 +43,13 @@ public class BizUserPackageController {
         return ResponseEntity.successData(userPackageVos);
     }
 
+    @GetMapping("/num")
+    @ApiOperation("查询购物袋商品数量")
+    public ResponseEntity<Long> num(){
+        return ResponseEntity.successData(bizUserPackageService.queryPackageNumByUserId());
+    }
+
+
     @PostMapping("addItem")
     @ApiOperation("添加商品")
     public ResponseEntity<?> addItem(@RequestBody @Valid UserPackageAddDTO dto){

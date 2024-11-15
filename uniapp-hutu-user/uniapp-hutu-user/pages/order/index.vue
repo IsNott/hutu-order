@@ -16,7 +16,7 @@
 					:key="item.itemId" :item="item" />
 			</scroll-view>
 		</view>
-		<shop-package :key="key" v-if="packageList" @shopPackageClick="handleTransPackage" :num="packageList.length" />
+		<shop-package :key="key" v-if="packageNum > 0" @shopPackageClick="handleTransPackage" :num="packageNum" />
 	</scroll-view>
 </template>
 
@@ -25,10 +25,11 @@
 		listByShopCatalogId,
 		listByShop,
 		findSkuByItemId,
-		queryUserPackage
+		bizUserPackageNum
 	} from '@/api/order.js'
 	import {
-		getStoreUserInfo
+		getStoreUserInfo,
+		commonNavigate
 	} from '@/utils/CommonUtils'
 	import {
 		shopList
@@ -63,19 +64,17 @@
 				pattern: {
 					icon: 'cart'
 				},
-				packageList: [],
+				packageNum: 0,
 				key: new Date().getTime().toString()
 			}
 		},
-		onLoad() {
-			// this.queryPackage();
-		},
+		onLoad() {},
 		onShow() {
 			const vm = this;
 			vm.showLoading = true;
 			this.queryCurrentMerchant();
 			setTimeout(() => {
-				this.queryPackage();
+				this.queryPackageNum();
 				vm.showLoading = false;
 			}, 300)
 		},
@@ -134,12 +133,11 @@
 					})
 				}
 			},
-			queryPackage() {
+			queryPackageNum() {
 				// if (this.hasLogin) {
-				queryUserPackage().then(res => {
+				bizUserPackageNum().then(res => {
 					if (res.data) {
-						this.packageNum = res.data.length
-						this.packageList = res.data
+						this.packageNum = res.data
 					}
 				})
 				// }
@@ -178,10 +176,7 @@
 			},
 			// 点击购物车图标跳转购物袋页面
 			handleTransPackage() {
-				console.log('pages/orders:packageList:', this.packageList)
-				uni.navigateTo({
-					url: '/pages/user-package/index?packageList=' + encodeURIComponent(JSON.stringify(this.packageList))
-				})
+				commonNavigate('/pages/user-package/index')
 			}
 		},
 		computed: {

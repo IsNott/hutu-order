@@ -60,4 +60,13 @@ public class BizUserPackageServiceImpl extends ServiceImpl<BizUserPackageMapper,
         long userId = StpUtil.getLoginIdAsLong();
         bizUserPackageMapper.removeByUserId(userId);
     }
+
+    @Override
+    public Long queryPackageNumByUserId() {
+        long userId = StpUtil.getLoginIdAsLong();
+        LambdaUpdateWrapper<BizUserPackage> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(BizUserPackage::getUserId,userId);
+        long count = this.count(wrapper);
+        return count;
+    }
 }

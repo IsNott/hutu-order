@@ -1,7 +1,7 @@
 <template>
 	<view class="item-card">
 		<view class="left-info">
-			<image src="@/static/item/coffee.png"/>
+			<image :src="handleImageUrl" mode="aspectFit"/>
 		</view>
 		<view class="right-info">
 			<view class="item-name-amount">
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+	import { handleImageUrl } from '../../../utils/CommonUtils'
 	const empty = {
 		id: '',
 		userId: '',
@@ -26,7 +27,7 @@
 		itemPiece: 0,
 		skuItemContents: '',
 		singleActuallyAmount: 0.00,
-		itemSkeletonUrl: '',
+		itemImageUrls: '',
 		itemName: ''
 	}
 	export default{
@@ -39,7 +40,12 @@
 		},
 		methods:{
 			handlerIconClick(num){
-				this.$emit('iconClick',this.item.id,num);
+				this.$emit('iconClick',this.item.id,num)
+			}
+		},
+		computed:{
+			imageUrl(){
+				return handleImageUrl(this.item.itemImageUrls)
 			}
 		}
 	}

@@ -22,4 +22,6 @@ public class UserPackageVo {
     private String singleActuallyAmount;
 
     private String itemName;
+
+    private String itemImageUrls;
 }
