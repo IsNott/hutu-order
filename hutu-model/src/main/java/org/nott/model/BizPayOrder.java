@@ -81,6 +81,11 @@ public class BizPayOrder implements Serializable {
     private String refundNotifyMsg;
 
     /**
+     * 订单备注
+     */
+    private String remark;
+
+    /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)

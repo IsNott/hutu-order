@@ -16,34 +16,21 @@
 					</button>
 				</view>
 			</view>
-			<uni-list :ellipsis="3" v-if="packageList.length > 0">
-				<uni-list-item v-for="item in packageList" :key="item.id"
-				:title="item.itemName"
-				:right-text="item.singleActuallyAmount"
-				thumb-size="lg"
-				:note="item.skuItemContents"
-				:thumb="handerImage(item.itemImageUrls)"
-				>
-				
-					<!-- <template v-slot:body>
-						<item-card :item="item" @iconClick="handlerIconClick" />
-					</template> -->
-				</uni-list-item>
-			</uni-list>
+			<item-card v-for="item in packageList" :key="item.id" :item="item" @iconClick="handleIconClick" />
 		</scroll-view>
 		<view class="footer">
 			<mark-tab :key="remark" title="备注" :def-value="markTabDefValue" :value="remark"
-				@click="uni.navigateTo({url: '/pages/mark/index'})" />
+				@click="commonNavigate('/pages/mark/index')" />
 			<mark-tab :key="totalOrginalAmount" title="原价" :def-value="amoutDefValue" :value="amountStr" />
 			<mark-tab :key="chooseCoupon" title="优惠券" :value="chooseCoupon" />
 			<mark-tab :key="point" title="可用积分" :value="point" />
-			<mark-tab title="支付方式" :def-value="defPaywayByCurrPlatform" <!-- #ifdef WEB -->
-				@click="handleSelectPayway"
-				<!-- #endif -->
-				:value="selectPayway.paymentName"/>
-				<view class="btn-group">
-					<button @click="handlePay" class="pay-btn">立即结算￥{{totalActuallyAmount}}</button>
-				</view>
+			<!-- #ifdef WEB -->
+			<mark-tab title="支付方式" :def-value="defPaywayByCurrPlatform" @click="handleSelectPayway"
+				:value="selectPayway.paymentName" />
+			<!-- #endif -->
+			<view class="btn-group">
+				<button @click="handlePay" class="pay-btn">立即结算￥{{totalActuallyAmount}}</button>
+			</view>
 		</view>
 	</view>
 </template>
@@ -53,15 +40,14 @@
 	import CustCard from '@/component/CustCard.vue'
 	import MarkTab from './component/MarkTab.vue'
 	import {
-		getPayWay
+		getPayWay,removeItemById,updateContext
 	} from '@/api/user-package'
 	import {
 		queryUserPackage
 	} from '@/api/order.js'
 	import {
 		getCurrentPlatform,
-		getDateStr,
-		handleImageUrl
+		getDateStr
 	} from '@/utils/CommonUtils'
 	export default {
 		name: 'UserPackage',
@@ -100,31 +86,46 @@
 			}
 		},
 		watch: {
-			// packageList(o, n) {
-			// 	if (this.packageList.length = 0) {
-			// 		uni.navigateTo({
-			// 			url: '/pages/orde/index'
-			// 		})
-			// 	}
-			// }
+			packageList(o, n) {
+				if (n.length = 0) {
+					this.handleBack(true)
+				}
+			}
+		},
+		onBackPress(opt) {
+			this.handleBack(false)
 		},
 		created() {
-			//this.queryPayway();
+			// #ifdef WEB
+			this.queryPayway()
+			// #endif
 			this.getShopInfo()
 			this.assembleOtherInfo()
 			this.queryPackage()
 		},
 		methods: {
-			handlerIconClick(id, num) {
+			handleIconClick(id, num) {
 				const currentPackageItem = this.packageList.find(r => r.id === id)
 				if (currentPackageItem) {
 					let result = currentPackageItem.itemPiece + num
-					if (result >= 1) {
-						currentPackageItem.itemPiece = result
-					} else if (result == 0) {
-						this.packageList.splice(item => item.id = id, 1)
+					if (result == 0) {
+						this.handlerPackageItemRemove(id)
+						return;
 					}
+					this.handlePackageItemNumUpdate(currentPackageItem,result)
 				}
+			},
+			handlePackageItemNumUpdate(item,newNum){
+				var temp = item
+				temp.itemPiece = newNum
+				updateContext(temp).then(res => {
+					this.queryPackage()
+				})
+			},
+			handlerPackageItemRemove(itemId){
+				removeItemById(itemId).then(res => {
+					this.queryPackage()
+				})
 			},
 			handlePickWay(val) {
 				this.selectedPickWay = val;
@@ -161,13 +162,9 @@
 					if (res.data) {
 						this.packageNum = res.data.length
 						this.packageList = res.data
-						console.log(this.packageList)
 					}
 				})
 				// }
-			},
-			handerImage(url){
-				return handleImageUrl(url)
 			}
 		},
 		computed: {
@@ -253,13 +250,13 @@
 
 	.footer {
 		width: 100%;
-		position: fixed;
+		/* position: fixed; */
 		bottom: 0;
 		left: 0;
 		right: 0;
 		display: flex;
 		flex-direction: column;
-		z-index: 5;
+		z-index: 1;
 		background: white;
 	}
 

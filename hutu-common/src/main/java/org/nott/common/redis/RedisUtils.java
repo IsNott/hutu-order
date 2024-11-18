@@ -2,11 +2,15 @@ package org.nott.common.redis;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.nott.common.utils.HutuUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -530,5 +534,23 @@ public class RedisUtils {
             log.error(e.getMessage(), e);
             return 0;
         }
+    }
+
+    /**
+     * 获取递增的序列号
+     *
+     * @param prefix 生成序列号的前缀
+     * @return
+     */
+    @SuppressWarnings("all")
+    public Long getIncrement(String prefix) {
+        //序列号前缀加特定标识，如系统模块名之类的 防止重复
+        String key = "HUTU_" + prefix + "_" + HutuUtils.FORMAT.DATE.format(new Date());
+        RedisAtomicLong entityIdCounter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
+        Long counter = entityIdCounter.incrementAndGet();
+        if ((null == counter || counter.longValue() == 1)) {// 初始设置过期时间
+            entityIdCounter.expire(1, TimeUnit.DAYS);// 单位天
+        }
+        return counter;
     }
 }

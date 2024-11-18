@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.UserPackageAddDTO;
 import org.nott.dto.UserPackageQueryDTO;
+import org.nott.dto.UserPackageUpDateDTO;
 import org.nott.vo.UserPackageVo;
 import org.nott.service.service.IBizItemService;
 import org.nott.service.service.IBizUserPackageService;
@@ -55,6 +56,20 @@ public class BizUserPackageController {
     public ResponseEntity<?> addItem(@RequestBody @Valid UserPackageAddDTO dto){
         Objects.requireNonNull(bizItemService.getById(dto.getItemId()),"itemId有误");
         bizUserPackageService.packageAddItem(dto);
+        return ResponseEntity.success();
+    }
+
+    @PostMapping("updateContext")
+    @ApiOperation("更新购物袋内容")
+    public ResponseEntity<?> updateContext(@RequestBody @Valid UserPackageUpDateDTO dto){
+        bizUserPackageService.updateContext(dto);
+        return ResponseEntity.success();
+    }
+
+    @PutMapping("removeItemById/{id}")
+    @ApiOperation("移除购物袋内容")
+    public ResponseEntity<?> removeItemById(@PathVariable("id") Long id){
+        bizUserPackageService.removeById(id);
         return ResponseEntity.success();
     }
 

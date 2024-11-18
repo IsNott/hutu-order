@@ -36,7 +36,7 @@ public class BizPayWayServiceImpl extends ServiceImpl<BizPayWayMapper, BizPayWay
 
         List<BizPayWay> payWays = this.list(wrapper);
         if (HutuUtils.isNotEmpty(payWays)) {
-           payWays.forEach(r -> vos.add(HutuUtils.transToVo(r,PayWayVo.class)));
+           payWays.forEach(r -> vos.add(HutuUtils.transToObject(r,PayWayVo.class)));
         }
         return vos;
     }

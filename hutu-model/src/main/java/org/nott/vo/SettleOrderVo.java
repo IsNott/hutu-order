@@ -20,6 +20,9 @@ public class SettleOrderVo {
     @ApiModelProperty("订单表id")
     private Long orderId;
 
+    @ApiModelProperty("内部订单号")
+    private String orderNo;
+
     @ApiModelProperty("创建时间")
     private Date createTime;
 }

@@ -18,4 +18,5 @@ public interface IBizPayOrderService extends IService<BizPayOrder> {
     String countPurchases();
 
     SettleOrderVo doUserSettle(UserSettleOrderDTO userSettleOrderDTO);
+
 }

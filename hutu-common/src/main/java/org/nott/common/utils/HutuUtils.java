@@ -32,6 +32,7 @@ public class HutuUtils {
         public static final SimpleDateFormat MD = new SimpleDateFormat("MMdd");
         public static final SimpleDateFormat YEAR = new SimpleDateFormat("yyyy");
         public static final SimpleDateFormat DATETIME = new SimpleDateFormat("yyyyMMddHHmmss");
+        public static final SimpleDateFormat DATE = new SimpleDateFormat("yyyy-MM-dd");
     }
 
     public static void requireTrue(boolean condition) throws HutuBizException{
@@ -96,7 +97,7 @@ public class HutuUtils {
         return sList;
     }
 
-    public static <T, S> S transToVo(T source, Class<S> targetClass) {
+    public static <T, S> S transToObject(T source, Class<S> targetClass) {
         S s;
         try {
             s = targetClass.newInstance();

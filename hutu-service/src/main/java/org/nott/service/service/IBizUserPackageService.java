@@ -2,6 +2,7 @@ package org.nott.service.service;
 
 import org.nott.dto.UserPackageAddDTO;
 import org.nott.dto.UserPackageQueryDTO;
+import org.nott.dto.UserPackageUpDateDTO;
 import org.nott.model.BizUserPackage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.nott.vo.UserPackageVo;
@@ -27,4 +28,6 @@ public interface IBizUserPackageService extends IService<BizUserPackage> {
     void cancelAddPackage();
 
     Long queryPackageNumByUserId();
+
+    UserPackageVo updateContext(UserPackageUpDateDTO dto);
 }
