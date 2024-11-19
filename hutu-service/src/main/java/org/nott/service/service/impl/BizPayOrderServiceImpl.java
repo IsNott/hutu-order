@@ -102,7 +102,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
             HutuUtils.requireNotNull(bizItem, "没有找到对应的商品");
             BigDecimal itemAmount = new BigDecimal(bizItem.getActuallyAmount());
             BigDecimal totalAmount4Item = itemAmount.multiply(BigDecimal.valueOf(dtoItemPiece));
-            originalAmount.add(totalAmount4Item);
+            originalAmount = originalAmount.add(totalAmount4Item);
         }
 
         return originalAmount;

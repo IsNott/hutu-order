@@ -29,7 +29,8 @@
 				:value="selectPayway.paymentName" />
 			<!-- #endif -->
 			<view class="btn-group">
-				<button @click="handlePay" class="pay-btn">立即结算￥{{totalActuallyAmount}}</button>
+				<button @click="doOrderSettle" :disabled="settleBtnDisable"
+					class="pay-btn">立即结算￥{{totalActuallyAmount}}</button>
 			</view>
 		</view>
 	</view>
@@ -40,15 +41,21 @@
 	import CustCard from '@/component/CustCard.vue'
 	import MarkTab from './component/MarkTab.vue'
 	import {
-		getPayWay,removeItemById,updateContext
+		getPayWay,
+		removeItemById,
+		updateContext
 	} from '@/api/user-package'
 	import {
 		queryUserPackage
 	} from '@/api/order.js'
 	import {
 		getCurrentPlatform,
-		getDateStr
+		getDateStr,
+		getShopInfo
 	} from '@/utils/CommonUtils'
+	import {
+		orderSettle
+	} from '@/api/user-package'
 	export default {
 		name: 'UserPackage',
 		components: {
@@ -75,13 +82,14 @@
 					type: 0,
 					name: '堂食'
 				}, {
-					type: 0,
+					type: 1,
 					name: '外带'
 				}],
-				selectedPickUpType: '',
+				selectedPickUpType: 0,
 				activeIndex: 0,
 				pickKey: getDateStr(),
 				currentShopInfo: {},
+				settleBtnDisable: false,
 				noticeTitle: '如您在点单过程中有任何问题请移步到前台咨询，如遇下单后需要更换商品请及时通知店员，谢谢！',
 			}
 		},
@@ -112,17 +120,17 @@
 						this.handlerPackageItemRemove(id)
 						return;
 					}
-					this.handlePackageItemNumUpdate(currentPackageItem,result)
+					this.handlePackageItemNumUpdate(currentPackageItem, result)
 				}
 			},
-			handlePackageItemNumUpdate(item,newNum){
+			handlePackageItemNumUpdate(item, newNum) {
 				var temp = item
 				temp.itemPiece = newNum
 				updateContext(temp).then(res => {
 					this.queryPackage()
 				})
 			},
-			handlerPackageItemRemove(itemId){
+			handlerPackageItemRemove(itemId) {
 				removeItemById(itemId).then(res => {
 					this.queryPackage()
 				})
@@ -165,6 +173,19 @@
 					}
 				})
 				// }
+			},
+			doOrderSettle() {
+				this.settleBtnDisable = true
+				var dto = {
+					isUseCoupon: false,
+					isUsePoint: false,
+					remark: '',
+					pickType: this.selectedPickUpType,
+					orderType: 0,
+					items: this.packageList,
+					shopId: getShopInfo.id
+				}
+				orderSettle(dto).then(res => console.log(res)).finally(this.settleBtnDisable = false)
 			}
 		},
 		computed: {
@@ -175,19 +196,19 @@
 				if (packages.length > 0) {
 					for (let i = 0; i < packages.length; i++) {
 						const item = packages[i];
-						sum += parseFloat(item.singleActuallyAmount) * parseInt(item.itemPiece);
+						sum += parseFloat(item.singleActuallyAmount) * parseInt(item.itemPiece)
 					}
 				}
 				return sum
 			},
 			// 原价= 件数*实际单价（不计优惠）
 			totalOrginalAmount() {
-				const packages = this.packageList;
-				let sum = 0;
+				const packages = this.packageList
+				let sum = 0
 				if (packages.length > 0) {
 					for (let i = 0; i < packages.length; i++) {
-						const item = packages[i];
-						sum += parseFloat(item.singleActuallyAmount) * parseInt(item.itemPiece);
+						const item = packages[i]
+						sum += parseFloat(item.singleActuallyAmount) * parseInt(item.itemPiece)
 					}
 				}
 				return sum;

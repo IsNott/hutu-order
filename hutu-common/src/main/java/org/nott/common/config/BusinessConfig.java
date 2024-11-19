@@ -1,14 +1,16 @@
 package org.nott.common.config;
 
 import lombok.Data;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Nott
  * @date 2024-11-18
  */
 @Data
-@ConditionalOnProperty(prefix = "business")
+@ConfigurationProperties(prefix = "business")
+@Component
 public class BusinessConfig {
 
     private String prefixEatIn;
@@ -18,4 +20,6 @@ public class BusinessConfig {
     private Long orderExpire;
 
     private Integer orderLength;
+
+    private String checkType;
 }

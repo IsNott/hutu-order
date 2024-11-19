@@ -3,10 +3,12 @@ package org.nott.service.delayed.handler;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.nott.common.config.BusinessConfig;
 import org.nott.common.delayed.DelayedTask;
 import org.nott.common.redis.RedisUtils;
 import org.nott.common.thread.pool.HutuThreadPoolExecutor;
 import org.nott.common.utils.HutuUtils;
+import org.nott.enums.HandleOrderExpireType;
 import org.nott.enums.OrderStatusEnum;
 import org.nott.model.BizPayOrder;
 import org.nott.service.service.IBizPayOrderService;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.DelayQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Nott
@@ -27,16 +30,20 @@ public class UserPayOrderQueueHandler {
 
     private final RedisUtils redisUtils;
 
-    private DelayQueue<DelayedTask<SettleOrderVo>> payOrderQueue = new DelayQueue<>();
+    private final DelayQueue<DelayedTask<SettleOrderVo>> payOrderQueue = new DelayQueue<>();
 
     private final IBizPayOrderService payOrderService;
 
     public static final String NON_PAYMENT_ORDER_KEY_PREFIX = "NON-PAYMENT-ORDER:";
 
+    private final BusinessConfig businessConfig;
+
     @PostConstruct
     public void handleOrderExpire() {
-        HutuThreadPoolExecutor.threadPool.submit(this::doOrderExpire);
-        log.info("向线程池提交检查订单过期线程");
+        if (HandleOrderExpireType.DELAYED_QUEUE.getName().equals(businessConfig.getCheckType())) {
+            HutuThreadPoolExecutor.threadPool.submit(this::doOrderExpire);
+            log.info("向线程池提交检查订单过期线程");
+        }
     }
 
     public void doOrderExpire() {
@@ -56,6 +63,7 @@ public class UserPayOrderQueueHandler {
                         .set(BizPayOrder::getOrderStatus, OrderStatusEnum.EXPIRE.getVal());
                 payOrderService.update(wrapper);
                 redisUtils.delByKey(NON_PAYMENT_ORDER_KEY_PREFIX + userId);
+                log.info("订单已超时，设置为过期状态...");
             } catch (InterruptedException e) {
                 log.error(e.getLocalizedMessage(), e);
             }
@@ -65,7 +73,8 @@ public class UserPayOrderQueueHandler {
     public void pushData2Queue(SettleOrderVo data, long expireTime) {
         DelayedTask<SettleOrderVo> settleOrderVoDelayedTask = new DelayedTask<>();
         settleOrderVoDelayedTask.setData(data);
-        settleOrderVoDelayedTask.setAvailableTime(expireTime);
+        settleOrderVoDelayedTask.setStartTime(data.getCreateTime().getTime());
+        settleOrderVoDelayedTask.setDelayTime(TimeUnit.MILLISECONDS.convert(expireTime,TimeUnit.SECONDS));
         payOrderQueue.offer(settleOrderVoDelayedTask);
     }
 

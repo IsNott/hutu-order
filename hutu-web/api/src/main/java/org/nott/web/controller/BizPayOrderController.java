@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * @since 2024-05-24
  */
 @RestController
-@RequestMapping("/bizPayOrder")
+    @RequestMapping("/bizPayOrder")
 public class BizPayOrderController {
 
     @Resource

@@ -10,7 +10,7 @@ import java.util.concurrent.*;
  */
 public class HutuThreadPoolExecutor {
 
-    private static ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+    private static final ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("hutu-pool-%d").build();
 
     public static ExecutorService threadPool = new ThreadPoolExecutor(5, 200,

@@ -85,3 +85,7 @@ export function handleImageUrlArray(urlStr){
 	}
 	return url
 }
+
+export function getShopInfo(){
+	return uni.getStorageSync('current_shop')
+}

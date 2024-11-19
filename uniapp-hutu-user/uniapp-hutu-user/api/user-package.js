@@ -17,3 +17,7 @@ export function updateContext(param){
 export function removeItemById(id){
 	return request('/bizUserPackage/removeItemById/' + id, 'PUT')
 }
+
+export function orderSettle(param){
+		return request('/bizPayOrder/settle', 'POST', param)
+}

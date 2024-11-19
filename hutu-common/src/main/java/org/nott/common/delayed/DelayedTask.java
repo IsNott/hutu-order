@@ -15,17 +15,25 @@ public class DelayedTask<T> implements Delayed {
 
     private T data;
 
-    private long availableTime;
+    private long startTime;
+
+    private long delayTime;
 
 
     @Override
     public long getDelay(@NotNull TimeUnit unit) {
-        return unit.convert(availableTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+        long diff = delayTime - (System.currentTimeMillis() - startTime);
+        return unit.convert(diff, TimeUnit.MILLISECONDS);
     }
 
     @Override
     public int compareTo(@NotNull Delayed o) {
-        Long i = this.getDelay(TimeUnit.SECONDS) - o.getDelay(TimeUnit.SECONDS);
-        return i.intValue();
+        if (this.getDelay(TimeUnit.MILLISECONDS) < o.getDelay(TimeUnit.MILLISECONDS)) {
+            return -1;
+        }
+        if (this.getDelay(TimeUnit.MILLISECONDS) > o.getDelay(TimeUnit.MILLISECONDS)) {
+            return 1;
+        }
+        return 0;
     }
 }

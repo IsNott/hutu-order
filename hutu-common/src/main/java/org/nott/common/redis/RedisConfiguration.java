@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.nott.common.config.JedisPoolYmlConfig;
 import org.nott.common.config.RedisConfig;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
+
+import java.time.Duration;
 
 /**
  * redis配置类
@@ -41,12 +44,16 @@ public class RedisConfiguration{
         config.setMaxTotal(jedisPoolYmlConfig.getMaxActive());
         config.setMinIdle(jedisPoolYmlConfig.getMinIdle());
         config.setMaxIdle(jedisPoolYmlConfig.getMaxIdle());
+        config.setBlockWhenExhausted(true);
+        config.setTestWhileIdle(true);
+        config.setTestOnBorrow(true);
+        config.setTimeBetweenEvictionRunsMillis(3000);
         return config;
     }
 
     @Bean
     @DependsOn("jedisPoolConfig")
-    public RedisConnectionFactory getRedisConnectionFactory(){
+    public RedisConnectionFactory getRedisConnectionFactory(@Qualifier("jedisPoolConfig") JedisPoolConfig jedisPoolConfig){
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
         configuration.setHostName(redisConfig.getHost());
         configuration.setPort(redisConfig.getPort());
@@ -54,7 +61,10 @@ public class RedisConfiguration{
         if(StringUtils.isNotEmpty(redisConfig.getPassword())){
             configuration.setPassword(redisConfig.getPassword());
         }
-        JedisClientConfiguration.JedisPoolingClientConfigurationBuilder jpcf = (JedisClientConfiguration.JedisPoolingClientConfigurationBuilder) JedisClientConfiguration.builder();
+        JedisClientConfiguration.JedisClientConfigurationBuilder jpcf =  JedisClientConfiguration.builder();
+        jpcf.connectTimeout(Duration.ofMillis(jedisPoolYmlConfig.getTimeOut()))
+                .readTimeout(Duration.ofMillis(jedisPoolYmlConfig.getTimeOut()))
+                .usePooling().poolConfig(jedisPoolConfig);
         JedisClientConfiguration jedisClientConfiguration = jpcf.build();
         return new JedisConnectionFactory(configuration, jedisClientConfiguration);
     }
@@ -64,7 +74,7 @@ public class RedisConfiguration{
         //1.创建redisTemplate模板
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         //2.关联redisConnectionFactory
-        template.setConnectionFactory(getRedisConnectionFactory());
+        template.setConnectionFactory(getRedisConnectionFactory(jedisPoolConfig()));
         //3.创建序列化类
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper objectMapper = new ObjectMapper();
