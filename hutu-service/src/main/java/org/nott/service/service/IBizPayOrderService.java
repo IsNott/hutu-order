@@ -3,6 +3,7 @@ package org.nott.service.service;
 import org.nott.dto.UserSettleOrderDTO;
 import org.nott.model.BizPayOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.nott.vo.PayOrderVo;
 import org.nott.vo.SettleOrderVo;
 
 /**
@@ -19,4 +20,5 @@ public interface IBizPayOrderService extends IService<BizPayOrder> {
 
     SettleOrderVo doUserSettle(UserSettleOrderDTO userSettleOrderDTO);
 
+    PayOrderVo queryPayOrderById(Long id);
 }

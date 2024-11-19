@@ -49,6 +49,7 @@
 		queryUserPackage
 	} from '@/api/order.js'
 	import {
+		commonNavigate,
 		getCurrentPlatform,
 		getDateStr,
 		getShopInfo
@@ -176,6 +177,7 @@
 			},
 			doOrderSettle() {
 				this.settleBtnDisable = true
+				const shop = getShopInfo()
 				var dto = {
 					isUseCoupon: false,
 					isUsePoint: false,
@@ -183,9 +185,22 @@
 					pickType: this.selectedPickUpType,
 					orderType: 0,
 					items: this.packageList,
-					shopId: getShopInfo.id
+					shopId: shop.id
 				}
-				orderSettle(dto).then(res => console.log(res)).finally(this.settleBtnDisable = false)
+				orderSettle(dto).then(res => {
+					// TODO 根据平台+用户选择的方式（Web端）拉起对应支付页面
+					// 目前只能写倒计时loading
+					const orderId = res.data.orderId
+					uni.showLoading({
+						title: '等待支付'
+					})
+					setTimeout(() => {
+						uni.hideLoading()
+						uni.navigateTo({
+							url:'/pages/settled/index?orderId=' + orderId
+						})
+					}, 2000)
+				}).finally(this.settleBtnDisable = false)
 			}
 		},
 		computed: {

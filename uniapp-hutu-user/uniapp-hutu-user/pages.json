@@ -63,6 +63,12 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
+		},
+		{
+			"path": "pages/settled/index",
+			"style": {
+				"navigationBarTitleText": "商家叫号"
+			}
 		}
 	],
 	"globalStyle": {

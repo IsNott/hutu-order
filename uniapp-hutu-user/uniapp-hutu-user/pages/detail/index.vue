@@ -68,19 +68,19 @@
 			}
 		},
 		onLoad: function(option) {
-			const item = JSON.parse(decodeURIComponent(option.item));
-			const skuList = JSON.parse(decodeURIComponent(option.skuList));
-			this.item = item;
-			this.skuList = skuList;
+			const item = JSON.parse(decodeURIComponent(option.item))
+			const skuList = JSON.parse(decodeURIComponent(option.skuList))
+			this.item = item
+			this.skuList = skuList
 		},
 		methods: {
 			changeColor(index, item) {
-				this.activeIndex = index;
+				this.activeIndex = index
 			},
 			handleChooseItem(num) {
-				let result = this.currentNum + num;
+				let result = this.currentNum + num
 				if (result >= 1) {
-					this.currentNum = result;
+					this.currentNum = result
 				}
 			},
 			handleAddPackage() {
@@ -93,29 +93,29 @@
 				})
 			},
 			handleItemSelect(param) {
-				let selected = this.selectSkuList.find(r => r.catalogId === param.catalogId);
+				let selected = this.selectSkuList.find(r => r.catalogId === param.catalogId)
 				if (selected) {
-					selected.selectItemId = param.selectItemId;
+					selected.selectItemId = param.selectItemId
 				} else {
-					this.selectSkuList.push(param);
+					this.selectSkuList.push(param)
 				}
-				console.log(this.selectSkuList);
+				console.log(this.selectSkuList)
 			}
 		},
 		computed: {
 			tagArray() {
 				var array = []
-				const itemTag = this.item.itemTag;
+				const itemTag = this.item.itemTag
 				if (itemTag) {
-					array = itemTag.split(",");
+					array = itemTag.split(",")
 				}
 				return array;
 			},
 			specialTag() {
 				var array = []
-				const itemTag = this.item.special;
+				const itemTag = this.item.special
 				if (itemTag) {
-					array = itemTag.split(",");
+					array = itemTag.split(",")
 				}
 				return array;
 			},

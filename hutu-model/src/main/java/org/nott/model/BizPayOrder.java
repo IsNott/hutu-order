@@ -103,5 +103,20 @@ public class BizPayOrder implements Serializable {
     @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
 
+    /**
+     * 支付时间
+     */
+    private Date settleTime;
+
+    /**
+     * 店铺id
+     */
+    private Long shopId;
+
+    /**
+     * 用户id
+     */
+    private Long userId;
+
 
 }

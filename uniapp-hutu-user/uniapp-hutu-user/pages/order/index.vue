@@ -81,16 +81,14 @@
 		watch: {
 			currentMerchant(o, n) {
 				if (n !== o) {
-					this.queryMenuCatalog();
+					this.queryMenuCatalog()
 				}
 			}
 		},
 		methods: {
 			// 当前门店卡片点击事件
 			handlerSearchMerchant() {
-				uni.switchTab({
-					url: '/pages/shop/index'
-				})
+				commonNavigate('/pages/shop/index')
 			},
 			// 门店id查询菜单
 			queryMenuCatalog() {
@@ -116,20 +114,14 @@
 			handlerItemSku(id) {
 				const userInfo = getStoreUserInfo();
 				if (!userInfo) {
-					uni.navigateTo({
-						url: '/pages/authority/index'
-					})
+					commonNavigate('/pages/authority/index')
 				} else {
-					// this.hasLogin = true;
 					this.currentItem = this.currentItemList.find(r => r.itemId === id);
 					findSkuByItemId(this.currentItem.itemId).then(res => {
 						this.currentSkuList = res.data
 						const currentSkuList = encodeURIComponent(JSON.stringify(res.data))
 						const item = encodeURIComponent(JSON.stringify(this.currentItem))
-						uni.navigateTo({
-							url: '/pages/detail/index?skuList=' + currentSkuList + '&item=' + item
-						})
-
+						commonNavigate('/pages/detail/index?skuList=' + currentSkuList + '&item=' + item)
 					})
 				}
 			},
@@ -142,12 +134,9 @@
 				})
 				// }
 			},
-			doPay(item) {
-				console.log('pay', item)
-			},
 			// 查询当前门店
 			queryCurrentMerchant() {
-				const val = uni.getStorageSync('current_shop');
+				const val = uni.getStorageSync('current_shop')
 				if (val) {
 					this.currentMerchant = val;
 				} else {
@@ -158,9 +147,7 @@
 						confirmText: '是',
 						success: (res) => {
 							if (res.confirm) {
-								uni.switchTab({
-									url: '/pages/shop/index'
-								})
+								commonNavigate('/pages/shop/index')
 							}
 							if (res.cancel) {
 								shopList().then(res => {

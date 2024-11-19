@@ -30,7 +30,7 @@ public class UserPayOrderQueueHandler {
 
     private final RedisUtils redisUtils;
 
-    private final DelayQueue<DelayedTask<SettleOrderVo>> payOrderQueue = new DelayQueue<>();
+    private final DelayQueue<DelayedTask<BizPayOrder>> payOrderQueue = new DelayQueue<>();
 
     private final IBizPayOrderService payOrderService;
 
@@ -49,20 +49,20 @@ public class UserPayOrderQueueHandler {
     public void doOrderExpire() {
         while (true) {
             try {
-                DelayedTask<SettleOrderVo> delayedTask = payOrderQueue.take();
-                SettleOrderVo data = delayedTask.getData();
-                log.info("开始处理过期订单信息，订单id：[{}]", data.getOrderId());
+                DelayedTask<BizPayOrder> delayedTask = payOrderQueue.take();
+                BizPayOrder data = delayedTask.getData();
+                log.info("开始处理过期订单信息，订单id：[{}]", data.getId());
                 Long userId = data.getUserId();
-                Object object = redisUtils.get(NON_PAYMENT_ORDER_KEY_PREFIX + userId);
+                Object object = redisUtils.hget(NON_PAYMENT_ORDER_KEY_PREFIX + userId, data.getId() + "");
                 if (HutuUtils.isEmpty(object)) {
                     log.info("订单已完成，无需处理");
                     return;
                 }
                 LambdaUpdateWrapper<BizPayOrder> wrapper = new LambdaUpdateWrapper<>();
-                wrapper.eq(BizPayOrder::getId, data.getOrderId())
+                wrapper.eq(BizPayOrder::getId, data.getId())
                         .set(BizPayOrder::getOrderStatus, OrderStatusEnum.EXPIRE.getVal());
                 payOrderService.update(wrapper);
-                redisUtils.delByKey(NON_PAYMENT_ORDER_KEY_PREFIX + userId);
+                redisUtils.hdel(NON_PAYMENT_ORDER_KEY_PREFIX + userId, data.getId());
                 log.info("订单已超时，设置为过期状态...");
             } catch (InterruptedException e) {
                 log.error(e.getLocalizedMessage(), e);
@@ -70,11 +70,11 @@ public class UserPayOrderQueueHandler {
         }
     }
 
-    public void pushData2Queue(SettleOrderVo data, long expireTime) {
-        DelayedTask<SettleOrderVo> settleOrderVoDelayedTask = new DelayedTask<>();
+    public void pushData2Queue(BizPayOrder data, long expireTime) {
+        DelayedTask<BizPayOrder> settleOrderVoDelayedTask = new DelayedTask<>();
         settleOrderVoDelayedTask.setData(data);
         settleOrderVoDelayedTask.setStartTime(data.getCreateTime().getTime());
-        settleOrderVoDelayedTask.setDelayTime(TimeUnit.MILLISECONDS.convert(expireTime,TimeUnit.SECONDS));
+        settleOrderVoDelayedTask.setDelayTime(TimeUnit.MILLISECONDS.convert(expireTime, TimeUnit.SECONDS));
         payOrderQueue.offer(settleOrderVoDelayedTask);
     }
 

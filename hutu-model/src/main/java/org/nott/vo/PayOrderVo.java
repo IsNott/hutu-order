@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,10 +13,12 @@ import java.util.Date;
  */
 @ApiModel("支付订单完成Vo")
 @Data
-public class PayOrderVo {
+public class PayOrderVo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("结算号-商家叫号")
-    private String settleNum;
+    private String orderNo;
 
     @ApiModelProperty("内部订单id")
     private Long payOrderId;

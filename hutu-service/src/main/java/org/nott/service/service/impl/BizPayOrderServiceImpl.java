@@ -3,6 +3,7 @@ package org.nott.service.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.nott.common.config.BusinessConfig;
 import org.nott.common.exception.HutuBizException;
 import org.nott.common.redis.RedisUtils;
@@ -15,18 +16,27 @@ import org.nott.enums.OrderStatusEnum;
 import org.nott.enums.PickTypeEnum;
 import org.nott.model.BizItem;
 import org.nott.model.BizPayOrder;
+import org.nott.model.BizShopInfo;
 import org.nott.service.delayed.handler.UserPayOrderQueueHandler;
 import org.nott.service.mapper.BizPayOrderMapper;
 import org.nott.service.service.IBizItemService;
 import org.nott.service.service.IBizPayOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.nott.service.service.IBizShopInfoService;
+import org.nott.service.service.IBizUserPackageService;
+import org.nott.vo.PayOrderVo;
 import org.nott.vo.SettleOrderVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +48,7 @@ import java.util.stream.Collectors;
  * @since 2024-05-24
  */
 @Service
+@Slf4j
 public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPayOrder> implements IBizPayOrderService {
 
     @Resource
@@ -52,6 +63,27 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     private SequenceUtils sequenceUtils;
     @Resource
     private RedisUtils redisUtils;
+    @Resource
+    private IBizShopInfoService bizShopInfoService;
+
+    @PostConstruct
+    public void pushUnFinishOrder2Queue() {
+        LambdaQueryWrapper<BizPayOrder> wrapper = new LambdaQueryWrapper<>();
+        wrapper
+                .isNotNull(BizPayOrder::getUserId)
+                .notIn(BizPayOrder::getOrderStatus, Arrays.asList(OrderStatusEnum.EXPIRE.getVal(),
+                OrderStatusEnum.FAILED.getVal(), OrderStatusEnum.PAYED.getVal(), OrderStatusEnum.REFUND.getVal()))
+                .like(BizPayOrder::getCreateTime, HutuUtils.FORMAT.DATE.format(new Date()));
+
+        List<BizPayOrder> unPayOrders = this.list(wrapper);
+        if (HutuUtils.isNotEmpty(unPayOrders)) {
+            unPayOrders.forEach(order -> {
+                userPayOrderQueueHandler.pushData2Queue(order, businessConfig.getOrderExpire());
+                redisUtils.hset(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + order.getUserId(), order.getId() + "", JSONObject.toJSONString(order));
+            });
+            log.info("投入了{}个当日未完成订单到监听队列", unPayOrders.size());
+        }
+    }
 
     @Override
     public String countPurchases() {
@@ -67,19 +99,24 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     }
 
     @Override
+    @Transactional
     public SettleOrderVo doUserSettle(UserSettleOrderDTO dto) {
         BigDecimal pointDiscount = new BigDecimal("0.00");
         BigDecimal couponDisCount = new BigDecimal("0.00");
-        // TODO 检验积分
+        Future<Boolean> removePointTaskResult = null;
+        Future<Boolean> removeCouponTaskResult = null;
+        // TODO 检验 移除积分
         if (dto.isUsePoint()) {
 
         }
-        // TODO 检验优惠券
+        // TODO 检验 移除优惠券
         if (dto.isUseCoupon()) {
 
         }
+
         // 确认需支付金额
-        BigDecimal originalAmount = checkAndReturnTotalAmount(dto.getItems());
+        List<OrderItemDTO> items = dto.getItems();
+        BigDecimal originalAmount = checkAndReturnTotalAmount(items);
         BigDecimal totalAmount = originalAmount.subtract(pointDiscount).subtract(couponDisCount);
         if (totalAmount.compareTo(new BigDecimal("0.00")) <= 0) {
             throw new HutuBizException("优惠券+积分减免的总金额不能大于原价");
@@ -87,7 +124,33 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         dto.setOriginAmount(originalAmount);
         dto.setTotalAmount(totalAmount);
         // 创建内部订单
-        return this.createOrder(dto);
+        SettleOrderVo vo = this.createOrder(dto);
+//        try {
+//            if(!removePointTaskResult.get() || removeCouponTaskResult.get()){
+//
+//            }
+//        } catch (Exception e) {
+//            log.error(e.getLocalizedMessage(),e);
+//            throw new HutuBizException("积分/优惠券使用失败");
+//        }
+        // 购物车内容
+//        HutuThreadPoolExecutor.threadPool.submit(()->{
+//            List<Long> ids = items.stream().map(OrderItemDTO::getItemId).collect(Collectors.toList());
+//            bizUserPackageService.removeBatchByIds(ids);
+//        });
+        return vo;
+    }
+
+    @Override
+    public PayOrderVo queryPayOrderById(Long id) {
+        //TODO 实际上这里应该加上支付成功状态的查询条件
+        BizPayOrder payOrder = this.getById(id);
+        HutuUtils.requireNotNull(payOrder, "根据id没有找到对应订单");
+        PayOrderVo vo = HutuUtils.transToObject(payOrder, PayOrderVo.class);
+        BizShopInfo shopInfo = bizShopInfoService.getById(vo.getShopId());
+        vo.setPayOrderId(id);
+        vo.setShopName(shopInfo.getShopName());
+        return vo;
     }
 
     private BigDecimal checkAndReturnTotalAmount(List<OrderItemDTO> itemsByOrder) {
@@ -111,6 +174,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     private SettleOrderVo createOrder(UserSettleOrderDTO dto) {
         Integer pickType = dto.getPickType();
         BizPayOrder order = new BizPayOrder();
+        long id = StpUtil.getLoginIdAsLong();
         HutuUtils.copyProperties(dto, order);
         PickTypeEnum pickTypeEnum = PickTypeEnum.getByVal(pickType);
         String prefix = "";
@@ -131,10 +195,11 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         String nextOrderNo = sequenceUtils.nextSeq(prefix);
         order.setOrderNo(nextOrderNo);
         order.setOrderStatus(OrderStatusEnum.INIT.getVal());
+        order.setUserId(id);
         this.save(order);
 
         Date currentDate = new Date();
-        long id = StpUtil.getLoginIdAsLong();
+
         SettleOrderVo vo = HutuUtils.transToObject(dto, SettleOrderVo.class);
         vo.setOrderNo(nextOrderNo);
         vo.setOrderId(order.getId());
@@ -143,10 +208,10 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         vo.setUserId(id);
 
         HutuThreadPoolExecutor.threadPool.submit(() -> {
-            userPayOrderQueueHandler.pushData2Queue(vo, businessConfig.getOrderExpire());
-            redisUtils.set(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + id, JSONObject.toJSONString(vo));
+            userPayOrderQueueHandler.pushData2Queue(order, businessConfig.getOrderExpire());
+            redisUtils.hset(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + id, order.getId() + "", JSONObject.toJSONString(order));
+            log.info("订单[{}]进入监听队列",order.getId());
         });
-
         return vo;
     }
 }
