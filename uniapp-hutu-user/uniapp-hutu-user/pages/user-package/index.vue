@@ -171,6 +171,7 @@
 					if (res.data) {
 						this.packageNum = res.data.length
 						this.packageList = res.data
+						console.log('this.packageList: ',this.packageList);
 					}
 				})
 				// }

@@ -1,6 +1,7 @@
 package org.nott.service.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ import org.nott.service.service.IBizPayOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.service.service.IBizShopInfoService;
 import org.nott.service.service.IBizUserPackageService;
+import org.nott.vo.OrderItemVo;
 import org.nott.vo.PayOrderVo;
 import org.nott.vo.SettleOrderVo;
 import org.springframework.stereotype.Service;
@@ -133,9 +135,9 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
 //            log.error(e.getLocalizedMessage(),e);
 //            throw new HutuBizException("积分/优惠券使用失败");
 //        }
-        // 购物车内容
+        // 移除购物车内容
 //        HutuThreadPoolExecutor.threadPool.submit(()->{
-//            List<Long> ids = items.stream().map(OrderItemDTO::getItemId).collect(Collectors.toList());
+//            List<Long> ids = items.stream().map(OrderItemDTO::getId).collect(Collectors.toList());
 //            bizUserPackageService.removeBatchByIds(ids);
 //        });
         return vo;
@@ -149,6 +151,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         PayOrderVo vo = HutuUtils.transToObject(payOrder, PayOrderVo.class);
         BizShopInfo shopInfo = bizShopInfoService.getById(vo.getShopId());
         vo.setPayOrderId(id);
+        vo.setShopAddress(shopInfo.getAddress());
         vo.setShopName(shopInfo.getShopName());
         return vo;
     }
