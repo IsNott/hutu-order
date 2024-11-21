@@ -22,6 +22,7 @@
 			<view class="pay-info-title">
 				<text>订单信息</text>
 			</view>
+			<divide />
 			<view class="pay-info-row">
 				<text class="pay-info">
 					实付：
@@ -80,8 +81,20 @@
 					{{orderVo.shopAddress}}
 				</text>
 			</view>
+			<view class="btn-group">
+				<button size="mini" type="default" @click="handleClick('/pages/home/index')">
+					返回首页
+				</button>
+				<button size="mini" type="primary" @click="handleClick('/pages/order/index')">
+					再来一单
+				</button>
+			</view>
 		</view>
+
 		<view class="bottom">
+			<view class="pay-info-title">
+				<text>商品列表</text>
+			</view>
 			<uni-list v-if="orderVo.itemInfo">
 				<uni-list-item v-for="item in orderVo.itemInfo" :border="false" :title="item.itemName"
 					:note="handleSubContent(item)" :thumb="handleImgUrl(item.itemImageUrls)" thumb-size="lg"
@@ -159,10 +172,15 @@
 		queryOrderById
 	} from '@/api/settled'
 	import {
-		handleImageUrl
+		handleImageUrl,
+		commonNavigate
 	} from '@/utils/CommonUtils'
+	import Divide from '@/component/Divide.vue'
 	export default {
 		name: 'Settled',
+		components: {
+			Divide
+		},
 		data() {
 			return {
 				orderId: '',
@@ -173,9 +191,6 @@
 		},
 		onLoad: function(opt) {
 			this.orderId = opt.orderId
-			// this.queryOrderById()
-		},
-		created() {
 			this.queryOrderById()
 		},
 		methods: {
@@ -200,9 +215,11 @@
 			handleAmountDiff() {
 				const order = this.orderVo
 				return order.originAmount - order.totalAmount
+			},
+			handleClick(url){
+				commonNavigate(url)
 			}
-		},
-		computed: {}
+		}
 	}
 </script>
 
@@ -267,5 +284,13 @@
 
 	.pay-info-context {
 		margin: 0px 20px;
+	}
+
+	.btn-group button {
+		margin: 10px;
+	}
+
+	.btn-group {
+		justify-content: space-between;
 	}
 </style>
