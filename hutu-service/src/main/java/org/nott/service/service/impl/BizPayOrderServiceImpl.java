@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.nott.common.config.BusinessConfig;
 import org.nott.common.exception.HutuBizException;
 import org.nott.common.redis.RedisUtils;
@@ -24,7 +25,6 @@ import org.nott.service.service.IBizItemService;
 import org.nott.service.service.IBizPayOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.service.service.IBizShopInfoService;
-import org.nott.service.service.IBizUserPackageService;
 import org.nott.vo.OrderItemVo;
 import org.nott.vo.PayOrderVo;
 import org.nott.vo.SettleOrderVo;
@@ -37,7 +37,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
@@ -148,11 +147,16 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         //TODO 实际上这里应该加上支付成功状态的查询条件
         BizPayOrder payOrder = this.getById(id);
         HutuUtils.requireNotNull(payOrder, "根据id没有找到对应订单");
+        String itemInfo = payOrder.getItemInfo();
         PayOrderVo vo = HutuUtils.transToObject(payOrder, PayOrderVo.class);
         BizShopInfo shopInfo = bizShopInfoService.getById(vo.getShopId());
         vo.setPayOrderId(id);
         vo.setShopAddress(shopInfo.getAddress());
         vo.setShopName(shopInfo.getShopName());
+        if(StringUtils.isNotEmpty(itemInfo)){
+            List<OrderItemVo> orderItemVos = JSONArray.parseArray(itemInfo, OrderItemVo.class);
+            vo.setItemInfo(orderItemVos);
+        }
         return vo;
     }
 

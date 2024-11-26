@@ -80,5 +80,10 @@ public class BizItem implements Serializable {
     @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
 
+    /**
+     * 预计制作时长，单位：秒
+     */
+    private Long expectMakeTime;
+
 
 }

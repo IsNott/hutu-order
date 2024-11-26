@@ -19,7 +19,7 @@
 						</view>
 
 						<view class="bottom">
-							<text class="item-amout">${{item.actuallyAmount}}</text>
+							<text class="item-amout">￥{{item.actuallyAmount}}</text>
 							<uni-icons type="plusempty" size="22"></uni-icons>
 						</view>
 					</view>

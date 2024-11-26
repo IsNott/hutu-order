@@ -23,70 +23,61 @@
 				<text>订单信息</text>
 			</view>
 			<divide />
-			<view class="pay-info-row">
-				<text class="pay-info">
-					实付：
-				</text>
-				<text class="pay-info-context">
-					￥{{orderVo.totalAmount}}
-				</text>
-			</view>
-			<view class="pay-info-row">
-				<text class="pay-info">
-					原价：
-				</text>
-				<text class="pay-info-context">
-					￥{{orderVo.originAmount}}
-				</text>
-			</view>
-			<view v-if="handleAmountDiff() > 0" class="pay-info-row">
-				<text class="pay-info">
-					减免：
-				</text>
-				<text class="pay-info-context" style="text-decoration: line-through">
-					￥{{handleAmountDiff()}}
-				</text>
-			</view>
-			<view class="pay-info-row">
-				<text class="pay-info">
-					流水号：
-				</text>
-				<text class="pay-info-context">
-					{{orderVo.payOrderId}}
-				</text>
-			</view>
-			<view class="pay-info-row">
-				<text class="pay-info">
-					支付时间：
-				</text>
-				<text class="pay-info-context">
-					{{orderVo.settleTime}}
-				</text>
-			</view>
-			<view class="pay-info-row">
-				<text class="pay-info">
-					订单门店：
-				</text>
-				<text class="pay-info-context">
-					<uni-icons type="phone-filled" size="16" style="margin-right: 6px;" />
-					{{orderVo.shopName}}
-				</text>
-			</view>
-			<view class="pay-info-row">
-				<text class="pay-info">
-					门店地址：
-				</text>
-				<text class="pay-info-context">
-					<uni-icons type="location" size="16" style="margin-right: 6px;" />
-					{{orderVo.shopAddress}}
-				</text>
+			<view class="order-text-info">
+				<view class="middle-left">
+					<text class="pay-info">
+						实付：
+					</text><text class="pay-info">
+						原价：
+					</text>
+					<text class="pay-info">
+						减免：
+					</text>
+					<text class="pay-info">
+						流水号：
+					</text>
+					<text v-if="orderVo.settleTime" class="pay-info">
+						支付时间：
+					</text>
+					<text class="pay-info">
+						订单门店：
+					</text>
+					<text class="pay-info">
+						门店地址：
+					</text>
+				</view>
+				<view class="middle-right">
+					<text class="pay-info">
+						￥{{orderVo.totalAmount}}
+					</text>
+					<text class="pay-info">
+						￥{{orderVo.originAmount}}
+					</text>
+					<text class="pay-info" style="text-decoration: line-through">
+						￥{{handleAmountDiff()}}
+					</text>
+					<text class="pay-info">
+						{{orderVo.payOrderId}}
+					</text>
+					<text v-if="orderVo.settleTime" class="pay-info">
+						{{orderVo.settleTime}}
+					</text>
+					<text class="pay-info">
+						<uni-icons type="phone-filled" size="16" style="margin-right: 6px;" />
+						{{orderVo.shopName}}
+					</text>
+					<text class="pay-info">
+						<uni-icons type="location" size="16" style="margin-right: 6px;" />
+						{{orderVo.shopAddress}}
+					</text>
+				</view>
 			</view>
 			<view class="btn-group">
-				<button size="mini" type="default" @click="handleClick('/pages/home/index')">
-					返回首页
-				</button>
 				<button size="mini" type="primary" @click="handleClick('/pages/order/index')">
 					再来一单
+				</button>
+				<button size="mini" type="default" @click="handleClick('/pages/home/index')">
+					返回首页
 				</button>
 			</view>
 		</view>
@@ -96,7 +87,7 @@
 				<text>商品列表</text>
 			</view>
 			<uni-list v-if="orderVo.itemInfo">
-				<uni-list-item v-for="item in orderVo.itemInfo" :border="false" :title="item.itemName"
+				<uni-list-item :key="item.itemId" v-for="item in orderVo.itemInfo" :border="false" :title="item.itemName"
 					:note="handleSubContent(item)" :thumb="handleImgUrl(item.itemImageUrls)" thumb-size="lg"
 					:rightText="handleAmount(item)" />
 			</uni-list>
@@ -216,7 +207,7 @@
 				const order = this.orderVo
 				return order.originAmount - order.totalAmount
 			},
-			handleClick(url){
+			handleClick(url) {
 				commonNavigate(url)
 			}
 		}
@@ -267,8 +258,26 @@
 		margin: 30px 0px;
 	}
 
+	.order-text-info{
+		display: flex;
+		font-size: 16px;
+		margin-top: 6px;
+	}
+	
+	.pay-info{
+		display: block;
+		padding: 4px;
+	}
+
+	.middle-left {
+		width: 35%;
+	}
+
+	.middle-right {
+		width: 65%;
+	}
+
 	.pay-info-title {
-		/* margin: 0px 6px; */
 		padding: 10px;
 		font-size: 20px;
 		font-weight: 600;
@@ -276,6 +285,7 @@
 
 	.pay-info-row {
 		margin: 8px 0px;
+		text-align: justify;
 	}
 
 	.pay-info {
@@ -287,10 +297,15 @@
 	}
 
 	.btn-group button {
-		margin: 10px;
+		width: 40%;
+		margin: auto;
+		margin: 20px 40px;
+		font-size: 14px;
 	}
 
 	.btn-group {
+		display: flex;
+		flex-direction: row;
 		justify-content: space-between;
 	}
 </style>

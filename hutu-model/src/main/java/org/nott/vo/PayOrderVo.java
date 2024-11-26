@@ -46,4 +46,7 @@ public class PayOrderVo implements Serializable {
 
     @ApiModelProperty("实付")
     private BigDecimal totalAmount;
+
+    @ApiModelProperty("本单餐品总等待时间")
+    private Long waitTime;
 }
