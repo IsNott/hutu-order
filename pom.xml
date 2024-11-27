@@ -18,6 +18,7 @@
         <module>hutu-security</module>
         <module>hutu-service</module>
         <module>hutu-webSocket</module>
+        <module>hutu-feign</module>
     </modules>
 
     <properties>
@@ -88,6 +89,19 @@
                 <version>33.3.0-jre</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>2.2.10.RELEASE</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-ribbon -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+                <version>2.2.10.RELEASE</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
