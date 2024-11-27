@@ -29,6 +29,10 @@ export function queryUserPackage(){
 	return request('/bizUserPackage/query','POST')
 }
 
+export function bizUserPackageNum(){
+	return request('/bizUserPackage/num', 'GET')
+}
+
 export function addPackage(param){
 	return request('/bizUserPackage/addItem','POST',param)
 }

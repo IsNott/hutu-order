@@ -59,7 +59,7 @@
 	}
 
 	.item-info {
-		font-size: 22px;
+		font-size: 24px;
 		font-weight: 600;
 		padding-top: 16px;
 		padding-left: 16px;
@@ -71,15 +71,15 @@
 	}
 	
 	.tag-group text{
-		margin-right: 4px;
-		border-radius: 8%;
-		font-size: 12px;
+		margin-right: 10px;
+		border-radius: 4%;
+		font-size: 16px;
 		padding: 2px;
 		border: 1px black solid;
 	}
 	
 	.item-desc {
-		font-size: 12px;
+		font-size: 18px;
 		color: #bcbcbc;
 		padding-left: 16px;
 		padding-top: 8px;

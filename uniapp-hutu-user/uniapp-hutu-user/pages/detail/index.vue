@@ -1,9 +1,9 @@
 <template>
 	<scroll-view class="body">
 		<view class="header">
-			<swiper class="swiper" circular :indicator-dots="indicatorDots" autoplay="true">
+			<swiper class="swiper" :circular="true" :indicator-dots="false" :autoplay="true">
 				<swiper-item :key="index" v-for="(img,index) in previewUrls">
-					<image :src="img" mode="aspectFit" class="img" />
+					<image :src="img ? img : require('@/static/image/not-image.png')" mode="scaleToFill" class="img" />
 				</swiper-item>
 			</swiper>
 		</view>
@@ -40,7 +40,9 @@
 	import {
 		addPackage
 	} from '@/api/order'
-	import { handleImageUrl } from '../../utils/CommonUtils'
+	import {
+		handleImageUrlArray
+	} from '@/utils/CommonUtils'
 	import ItemInfo from './component/ItemInfo.vue'
 	import SkuItemInfo from './component/SkuItemInfo.vue'
 	import GoodsFooter from './component/GoodsFooter.vue'
@@ -57,7 +59,6 @@
 				mode: 'default',
 				dotsStyles: {},
 				swiperDotIndex: 0,
-				indicatorDots: true,
 				sku: emptySku,
 				activeIndex: null,
 				currentNum: 1,
@@ -67,21 +68,19 @@
 			}
 		},
 		onLoad: function(option) {
-			const item = JSON.parse(decodeURIComponent(option.item));
-			const skuList = JSON.parse(decodeURIComponent(option.skuList));
-			this.item = item;
-			console.log(item)
-			this.skuList = skuList;
+			const item = JSON.parse(decodeURIComponent(option.item))
+			const skuList = JSON.parse(decodeURIComponent(option.skuList))
+			this.item = item
+			this.skuList = skuList
 		},
 		methods: {
 			changeColor(index, item) {
-				console.log(index)
-				this.activeIndex = index;
+				this.activeIndex = index
 			},
 			handleChooseItem(num) {
-				let result = this.currentNum + num;
-				if (result >= 0) {
-					this.currentNum = result;
+				let result = this.currentNum + num
+				if (result >= 1) {
+					this.currentNum = result
 				}
 			},
 			handleAddPackage() {
@@ -94,35 +93,35 @@
 				})
 			},
 			handleItemSelect(param) {
-				let selected = this.selectSkuList.find(r => r.catalogId === param.catalogId);
+				let selected = this.selectSkuList.find(r => r.catalogId === param.catalogId)
 				if (selected) {
-					selected.selectItemId = param.selectItemId;
+					selected.selectItemId = param.selectItemId
 				} else {
-					this.selectSkuList.push(param);
+					this.selectSkuList.push(param)
 				}
-				console.log(this.selectSkuList);
+				console.log(this.selectSkuList)
 			}
 		},
 		computed: {
 			tagArray() {
 				var array = []
-				const itemTag = this.item.itemTag;
+				const itemTag = this.item.itemTag
 				if (itemTag) {
-					array = itemTag.split(",");
+					array = itemTag.split(",")
 				}
 				return array;
 			},
 			specialTag() {
 				var array = []
-				const itemTag = this.item.special;
+				const itemTag = this.item.special
 				if (itemTag) {
-					array = itemTag.split(",");
+					array = itemTag.split(",")
 				}
 				return array;
 			},
-			previewUrls(){
-				var str = handleImageUrl(this.item.itemImgeUrls)
-				return str
+			previewUrls() {
+				var urls = handleImageUrlArray(this.item.itemImgeUrls)
+				return urls
 			}
 		}
 	}
@@ -133,12 +132,27 @@
 		background-color: white;
 	}
 
+	.swiper-item {
+		display: block;
+		line-height: 300upx;
+		text-align: center;
+	}
+
 	.img {
-		width: 300px;
-		height: 300px;
+		width: 100%;
+		height: 300upx;
 	}
 
 	.price {
 		display: inline;
+	}
+
+	.header {
+		height: 100%;
+		margin: 0 0upx;
+	}
+
+	.swiper {
+		height: 300upx;
 	}
 </style>

@@ -74,7 +74,7 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
     public UserLoginInfoVo register(UserRegisterDTO dto) {
         String code = dto.getCode();
         String openId = redisUtils.get(code, String.class);
-        ExternalBaseUserInfo info = HutuUtils.transToVo(dto, ExternalBaseUserInfo.class);
+        ExternalBaseUserInfo info = HutuUtils.transToObject(dto, ExternalBaseUserInfo.class);
         info.setOpenId(openId);
         return registerUser(info);
     }
@@ -85,7 +85,7 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         LambdaQueryWrapper<BizUser> wrapper = new LambdaQueryWrapper<BizUser>().eq(BizUser::getPhone,dto.getPhone());
         BizUser bizUser = this.getOne(wrapper);
         if(HutuUtils.isEmpty(bizUser)){
-            ExternalBaseUserInfo userRegisterDTO = HutuUtils.transToVo(dto, ExternalBaseUserInfo.class);
+            ExternalBaseUserInfo userRegisterDTO = HutuUtils.transToObject(dto, ExternalBaseUserInfo.class);
             return this.registerUser(userRegisterDTO);
         }
         return login(bizUser);
@@ -110,7 +110,7 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         }
         this.updateById(user);
 
-        UserLoginInfoVo vo = HutuUtils.transToVo(dto, UserLoginInfoVo.class);
+        UserLoginInfoVo vo = HutuUtils.transToObject(dto, UserLoginInfoVo.class);
         vo.setToken(StpUtil.getTokenValue());
         vo.setAlreadyRegister(true);
         vo.setUsername(nickName);

@@ -1,7 +1,7 @@
 <template>
 	<view class="item-card">
 		<view class="left-info">
-			<image src="@/static/item/coffee.png"/>
+			<image :src="imageUrl" mode="aspectFit" />
 		</view>
 		<view class="right-info">
 			<view class="item-name-amount">
@@ -10,15 +10,18 @@
 			</view>
 			<view class="item-content">{{item.skuItemContents}}</view>
 			<view class="item-piece-box">
-				<uni-icons @click="handlerIconClick(-1)" class="item-piece-left" type="minus" size="22"/>
+				<uni-icons @click="handleIconClick(-1)" class="item-piece-left" type="minus" size="22" />
 				<text class="item-piece-value">{{item.itemPiece}}</text>
-				<uni-icons @click="handlerIconClick(1)" class="item-piece-right" type="plus" size="22"/>
+				<uni-icons @click="handleIconClick(1)" class="item-piece-right" type="plus" size="22" />
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		handleImageUrl
+	} from '@/utils/CommonUtils'
 	const empty = {
 		id: '',
 		userId: '',
@@ -26,33 +29,38 @@
 		itemPiece: 0,
 		skuItemContents: '',
 		singleActuallyAmount: 0.00,
-		itemSkeletonUrl: '',
+		itemImageUrls: '',
 		itemName: ''
 	}
-	export default{
-		name:'ItemCard',
-		props:{
-			item:{
+	export default {
+		name: 'ItemCard',
+		props: {
+			item: {
 				type: Object,
 				default: empty
 			}
 		},
-		methods:{
-			handlerIconClick(num){
-				this.$emit('iconClick',this.item.id,num);
+		methods: {
+			handleIconClick(num) {
+				this.$emit('iconClick', this.item.id, num)
+			}
+		},
+		computed: {
+			imageUrl() {
+				return handleImageUrl(this.item.itemImageUrls)
 			}
 		}
 	}
 </script>
 
 <style scoped>
-	.item-card{
+	.item-card {
 		display: flex;
 		background-color: white;
 		flex-direction: row;
 	}
-	
-	.left-info{
+
+	.left-info {
 		padding: 14px 0px;
 		padding-left: 14px;
 		width: 20%;
@@ -60,44 +68,44 @@
 		display: flex;
 		flex-direction: row;
 	}
-	
-	.right-info{
+
+	.right-info {
 		width: 70%;
 		padding: 14px 0px;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 	}
-	
-	.item-content{
+
+	.item-content {
 		margin-top: 6px;
 		font-size: 12px;
 		color: gray
 	}
-	
-	.item-name-amount{
+
+	.item-name-amount {
 		font-size: 16px;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 	}
-	
-	.item-name{
+
+	.item-name {
 		font-weight: bold;
 	}
-	
-	.item-amuont{
+
+	.item-amuont {
 		color: #2979FF;
 	}
-	
-	
-	.left-info image{
+
+
+	.left-info image {
 		border-radius: 4%;
 		width: 60px;
 		height: 60px;
 	}
-	
-	.item-piece-box{
+
+	.item-piece-box {
 		background-color: #f8f8f8;
 		border-radius: 8px;
 		padding: 0px 2px;
@@ -107,16 +115,16 @@
 		flex-direction: row;
 		justify-content: space-between;
 	}
-	
-	.item-piece-left{
+
+	.item-piece-left {
 		margin-right: 10px;
 	}
-	
-	.item-piece-right{
+
+	.item-piece-right {
 		margin-left: 10px;
 	}
-	
-	.item-piece-value{
+
+	.item-piece-value {
 		font-size: 18px;
 	}
 </style>

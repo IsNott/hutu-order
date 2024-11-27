@@ -1,0 +1,15 @@
+ws:
+  port: 2999
+  path: /ws
+  boss-group: 2
+  worker-group: 20
+  heart-beat-msg: ping
+  heart-beat-resp: pong
+  show-idle-msg: false
+
+spring:
+  application:
+    name: Hutu-WebSocket
+
+server:
+  port: 8888

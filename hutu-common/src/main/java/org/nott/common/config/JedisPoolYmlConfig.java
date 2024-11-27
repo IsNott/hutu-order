@@ -19,4 +19,6 @@ public class JedisPoolYmlConfig {
 
     private Integer maxActive;
 
+    private Long TimeOut;
+
 }

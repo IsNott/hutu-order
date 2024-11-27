@@ -13,14 +13,13 @@
 							<text v-for="(tag,index) in splitTag(item.itemTag)" v-if="item.itemTag" :key="index">
 								{{tag}}
 							</text>
-							<text class="item-special" v-for="(s,index) in splitTag(item.special)" :key="index + key"
-								v-if="item.special">
+							<text class="item-special" v-for="(s,index) in splitTag(item.special)" :key="key" v-if="item.special">
 								{{s}}
 							</text>
 						</view>
 
 						<view class="bottom">
-							<text class="item-amout">${{item.actuallyAmount}}</text>
+							<text class="item-amout">￥{{item.actuallyAmount}}</text>
 							<uni-icons type="plusempty" size="22"></uni-icons>
 						</view>
 					</view>
@@ -31,7 +30,9 @@
 </template>
 
 <script>
-	import { handleImageUrlArray } from '../../../utils/CommonUtils'
+	import {
+		handleImageUrl
+	} from '@/utils/CommonUtils'
 	const empty = {
 		itemId: '',
 		itemName: '',
@@ -66,7 +67,7 @@
 		},
 		computed: {
 			previewUrl() {
-				return handleImageUrlArray(this.item.itemImgeUrls)
+				return handleImageUrl(this.item.itemImgeUrls)
 			}
 		}
 	}

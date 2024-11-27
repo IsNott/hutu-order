@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,7 +39,12 @@ public class BizPayOrder implements Serializable {
     /**
      * 总金额
      */
-    private String totalAmount;
+    private BigDecimal totalAmount;
+
+    /**
+     * 原金额
+     */
+    private BigDecimal originAmount;
 
     /**
      * 菜品信息
@@ -81,6 +87,11 @@ public class BizPayOrder implements Serializable {
     private String refundNotifyMsg;
 
     /**
+     * 订单备注
+     */
+    private String remark;
+
+    /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
@@ -91,6 +102,21 @@ public class BizPayOrder implements Serializable {
      */
     @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
+
+    /**
+     * 支付时间
+     */
+    private Date settleTime;
+
+    /**
+     * 店铺id
+     */
+    private Long shopId;
+
+    /**
+     * 用户id
+     */
+    private Long userId;
 
 
 }

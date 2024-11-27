@@ -2,8 +2,10 @@ package org.nott.service.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import org.nott.common.utils.HutuUtils;
 import org.nott.dto.UserPackageAddDTO;
 import org.nott.dto.UserPackageQueryDTO;
+import org.nott.dto.UserPackageUpDateDTO;
 import org.nott.model.BizUserPackage;
 import org.nott.vo.UserPackageVo;
 import org.nott.service.mapper.BizUserPackageMapper;
@@ -59,5 +61,21 @@ public class BizUserPackageServiceImpl extends ServiceImpl<BizUserPackageMapper,
     public void cancelAddPackage() {
         long userId = StpUtil.getLoginIdAsLong();
         bizUserPackageMapper.removeByUserId(userId);
+    }
+
+    @Override
+    public Long queryPackageNumByUserId() {
+        long userId = StpUtil.getLoginIdAsLong();
+        LambdaUpdateWrapper<BizUserPackage> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(BizUserPackage::getUserId,userId);
+        long count = this.count(wrapper);
+        return count;
+    }
+
+    @Override
+    public UserPackageVo updateContext(UserPackageUpDateDTO dto) {
+        BizUserPackage bizUserPackage = HutuUtils.transToObject(dto, BizUserPackage.class);
+        this.updateById(bizUserPackage);
+        return HutuUtils.transToObject(dto, UserPackageVo.class);
     }
 }

@@ -16,8 +16,7 @@
 					:key="item.itemId" :item="item" />
 			</scroll-view>
 		</view>
-		<uni-fab :v-if="packageList.length > 0" :pattern="pattern" horizontal="right" vertical="bottom" :pop-menu="false"
-			@fabClick="handleTransPackage" />
+		<shop-package :key="key" v-if="packageNum > 0" @shopPackageClick="handleTransPackage" :num="packageNum" />
 	</scroll-view>
 </template>
 
@@ -26,10 +25,11 @@
 		listByShopCatalogId,
 		listByShop,
 		findSkuByItemId,
-		queryUserPackage
+		bizUserPackageNum
 	} from '@/api/order.js'
 	import {
-		getStoreUserInfo
+		getStoreUserInfo,
+		commonNavigate
 	} from '@/utils/CommonUtils'
 	import {
 		shopList
@@ -38,13 +38,15 @@
 	import MenuCatalogPanel from './component/MenuCatalogPanel.vue'
 	import ProductCard from './component/ProductCard.vue'
 	import OrderSkeleton from '../skeleton/OrderSkeleton.vue'
+	import ShopPackage from '@/component/ShopPackage.vue'
 	export default {
 		name: 'Order',
 		components: {
 			ShopInfoCard,
 			MenuCatalogPanel,
 			ProductCard,
-			OrderSkeleton
+			OrderSkeleton,
+			ShopPackage
 		},
 		data() {
 			return {
@@ -62,34 +64,31 @@
 				pattern: {
 					icon: 'cart'
 				},
-				packageList: [],
+				packageNum: 0,
 				key: new Date().getTime().toString()
 			}
 		},
-		onLoad() {
-			this.queryPackage();
-		},
+		onLoad() {},
 		onShow() {
 			const vm = this;
 			vm.showLoading = true;
 			this.queryCurrentMerchant();
 			setTimeout(() => {
+				this.queryPackageNum();
 				vm.showLoading = false;
 			}, 300)
 		},
 		watch: {
 			currentMerchant(o, n) {
 				if (n !== o) {
-					this.queryMenuCatalog();
+					this.queryMenuCatalog()
 				}
 			}
 		},
 		methods: {
 			// 当前门店卡片点击事件
 			handlerSearchMerchant() {
-				uni.switchTab({
-					url: '/pages/shop/index'
-				})
+				commonNavigate('/pages/shop/index')
 			},
 			// 门店id查询菜单
 			queryMenuCatalog() {
@@ -115,40 +114,29 @@
 			handlerItemSku(id) {
 				const userInfo = getStoreUserInfo();
 				if (!userInfo) {
-					uni.navigateTo({
-						url: '/pages/authority/index'
-					})
+					commonNavigate('/pages/authority/index')
 				} else {
-					// this.hasLogin = true;
 					this.currentItem = this.currentItemList.find(r => r.itemId === id);
-					console.log('currentItem', this.currentItem);
 					findSkuByItemId(this.currentItem.itemId).then(res => {
 						this.currentSkuList = res.data
 						const currentSkuList = encodeURIComponent(JSON.stringify(res.data))
 						const item = encodeURIComponent(JSON.stringify(this.currentItem))
-						uni.navigateTo({
-							url: '/pages/detail/index?skuList=' + currentSkuList + '&item=' + item
-						})
-
+						commonNavigate('/pages/detail/index?skuList=' + currentSkuList + '&item=' + item)
 					})
 				}
 			},
-			queryPackage() {
+			queryPackageNum() {
 				// if (this.hasLogin) {
-				queryUserPackage().then(res => {
+				bizUserPackageNum().then(res => {
 					if (res.data) {
-						this.packageNum = res.data.length
-						this.packageList = res.data
+						this.packageNum = res.data
 					}
 				})
 				// }
 			},
-			doPay(item) {
-				console.log('pay', item)
-			},
 			// 查询当前门店
 			queryCurrentMerchant() {
-				const val = uni.getStorageSync('current_shop');
+				const val = uni.getStorageSync('current_shop')
 				if (val) {
 					this.currentMerchant = val;
 				} else {
@@ -159,9 +147,7 @@
 						confirmText: '是',
 						success: (res) => {
 							if (res.confirm) {
-								uni.switchTab({
-									url: '/pages/shop/index'
-								})
+								commonNavigate('/pages/shop/index')
 							}
 							if (res.cancel) {
 								shopList().then(res => {
@@ -177,10 +163,7 @@
 			},
 			// 点击购物车图标跳转购物袋页面
 			handleTransPackage() {
-				console.log('pages/orders:packageList:', this.packageList)
-				uni.navigateTo({
-					url: '/pages/user-package/index?packageList=' + encodeURIComponent(JSON.stringify(this.packageList))
-				})
+				commonNavigate('/pages/user-package/index')
 			}
 		},
 		computed: {

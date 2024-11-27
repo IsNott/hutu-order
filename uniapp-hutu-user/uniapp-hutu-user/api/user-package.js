@@ -9,3 +9,15 @@ export function pay(param) {
 export function getPayWay(param) {
 	return request('/bizPayWay/list', 'POST', param)
 }
+
+export function updateContext(param){
+	return request('/bizUserPackage/updateContext', 'POST', param)
+}
+
+export function removeItemById(id){
+	return request('/bizUserPackage/removeItemById/' + id, 'PUT')
+}
+
+export function orderSettle(param){
+		return request('/bizPayOrder/settle', 'POST', param)
+}

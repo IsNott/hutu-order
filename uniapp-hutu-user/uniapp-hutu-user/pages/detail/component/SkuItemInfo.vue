@@ -76,6 +76,7 @@
 	.grid-item{
 		text-align: center;
 		margin: 12px 0px;
+		font-size: 18px;
 		/* padding: 12px 0px; */
 		border-radius: 10px;
 	}

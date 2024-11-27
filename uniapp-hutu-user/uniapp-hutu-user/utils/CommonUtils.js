@@ -50,7 +50,6 @@ export function getCurrentPlatform(){
 }
 
 export function handleImageUrl(urlStr){
-	console.log(urlStr)
 	if(urlStr == undefined){
 		return ''
 	}
@@ -63,16 +62,30 @@ export function handleImageUrl(urlStr){
 	return url == '' ? require('@/static/image/not-image.png') : url
 }
 
+export function commonNavigate(url){
+	uni.navigateTo({
+		url: url,
+		fail(res) {
+			uni.switchTab({
+				url: url,
+			})
+		}
+	})
+}
+
 export function handleImageUrlArray(urlStr){
-	console.log(urlStr)
 	if(urlStr == undefined){
 		return ''
 	}
-	var url = ''
+	var url = []
 	if (urlStr.includes(',')) {
 		url = urlStr.split(',')
 	} else {
-		url = urlStr
+		url.push(urlStr)
 	}
-	return url == '' ? require('@/static/image/not-image.png') : url
+	return url
+}
+
+export function getShopInfo(){
+	return uni.getStorageSync('current_shop')
 }

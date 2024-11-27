@@ -1,7 +1,31 @@
 server:
   port: 10001
 
+# 业务配置
+business:
+  # 堂食订单前缀
+  prefix-eat-in: 'H'
+  # 外带订单前缀
+  prefix-take-out: 'T'
+  # 订单超时时间(秒)
+  order-expire: 300
+  # 每日订单号长度
+  order-length: 3
+  # 订单超时检查类型
+  check-type: delayedQueue
+
 spring:
+  redis:
+    host: localhost
+    password:
+    database: 0
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        time-out: 3000
   mvc:
     throw-exception-if-no-handler-found: true
   resources:
@@ -46,6 +70,7 @@ logging:
   level:
     org.nott.web.mapper: debug
 
+# 支付宝支付信息
 alipay:
   appId:
   privateKey:
@@ -53,11 +78,13 @@ alipay:
   signType: RSA2
   notifyUrl:
 
+# 微信小程序信息
 wechat:
   app:
     appId:
     appSecret:
 
+# 微信支付信息
 weixinpay:
   mchId:
   appId:
@@ -66,6 +93,7 @@ weixinpay:
   privateKeyPath:
   merchantSerialNumber:
 
+# 内部支付包名
 payment:
   package:
     name: org.nott.payment

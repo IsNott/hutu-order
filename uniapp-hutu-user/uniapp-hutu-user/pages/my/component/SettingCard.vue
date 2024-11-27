@@ -58,7 +58,7 @@
 	
 	.setting-card {
 		/* float: left; */
-		border-radius: 4%;
+		border-radius: 20px;
 	}
 	
 	.icon{

@@ -3,7 +3,6 @@ package org.nott.service.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.nott.common.utils.HutuUtils;
-import org.nott.enums.CouponConditionTypeEnum;
 import org.nott.enums.YesOrNoEnum;
 import org.nott.model.BizCoupon;
 import org.nott.model.BizCouponCondition;
@@ -11,12 +10,10 @@ import org.nott.service.mapper.BizCouponMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.service.service.IBizCouponConditionService;
 import org.nott.service.service.IBizCouponService;
-import org.nott.service.service.IBizUserCouponRelationService;
 import org.nott.vo.UserCouponVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -62,7 +59,7 @@ public class BizCouponServiceImpl extends ServiceImpl<BizCouponMapper, BizCoupon
             Long conditionId = coupon.getConditionId();
             if (conditionMap.containsKey(conditionId)) {
                 BizCouponCondition bizCouponCondition = conditionMap.get(conditionId);
-                UserCouponVo vo = HutuUtils.transToVo(coupon, UserCouponVo.class);
+                UserCouponVo vo = HutuUtils.transToObject(coupon, UserCouponVo.class);
                 vo.setCondition(bizCouponCondition);
                 vos.add(vo);
             }

@@ -69,25 +69,24 @@ public class CacheAspect {
         }
         if (HutuUtils.isNotEmpty(redisResult)) {
             return ResponseEntity.successData(redisResult);
-        } else {
-            try {
-                methodResult =(ResponseEntity<?>) point.proceed();
-            } catch (Throwable e) {
-                throw new RuntimeException(e);
-            }
-            Object data = methodResult.getData();
-            Type[] genericInterfaces = data.getClass().getGenericInterfaces();
-            Type type = Arrays.stream(genericInterfaces)
-                    .filter(r -> Serializable.class == r)
-                    .findAny().orElse(null);
-            HutuUtils.requireNotNull(type,"使用缓存的方法返回值必须实现Serializable接口");
-            if(hasArg){
-                redisUtils.hset(method.getName(), elValue, data, annotation.expire());
-            } else {
-                redisUtils.set(method.getName(),data, annotation.expire());
-            }
-            return methodResult;
         }
+        try {
+            methodResult = (ResponseEntity<?>) point.proceed();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+        Object data = methodResult.getData();
+        Type[] genericInterfaces = data.getClass().getGenericInterfaces();
+        Type type = Arrays.stream(genericInterfaces)
+                .filter(r -> Serializable.class == r)
+                .findAny().orElse(null);
+        HutuUtils.requireNotNull(type, "使用缓存的方法返回值必须实现Serializable接口");
+        if (hasArg) {
+            redisUtils.hset(method.getName(), elValue, data, annotation.expire());
+        } else {
+            redisUtils.set(method.getName(), data, annotation.expire());
+        }
+        return methodResult;
     }
 
 }

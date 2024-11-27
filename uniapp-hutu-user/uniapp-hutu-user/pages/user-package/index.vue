@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="page">
 		<scroll-view class="boby">
 			<uni-section :title="currentShopInfo.shopName" type="square" titleFontSize="16px"
 				:subTitle="currentShopInfo.address">
@@ -16,37 +16,47 @@
 					</button>
 				</view>
 			</view>
-			<item-card v-if="packageList.length > 0" v-for="item in packageList" :key="item.id" :item="item"
-				@iconClick="handlerIconClick"></item-card>
+			<item-card v-for="item in packageList" :key="item.id" :item="item" @iconClick="handleIconClick" />
 		</scroll-view>
 		<view class="footer">
 			<mark-tab :key="remark" title="备注" :def-value="markTabDefValue" :value="remark"
-				@click="uni.navigateTo({url: '/pages/mark/index'})" />
+				@click="commonNavigate('/pages/mark/index')" />
 			<mark-tab :key="totalOrginalAmount" title="原价" :def-value="amoutDefValue" :value="amountStr" />
 			<mark-tab :key="chooseCoupon" title="优惠券" :value="chooseCoupon" />
 			<mark-tab :key="point" title="可用积分" :value="point" />
-			<mark-tab title="支付方式" :def-value="defPaywayByCurrPlatform" <!-- #ifdef WEB -->
-				@click="handleSelectPayway"
-				<!-- #endif -->
-				:value="selectPayway.paymentName"/>
-				<view class="btn-group">
-					<button @click="handlePay" class="pay-btn">立即结算￥{{totalActuallyAmount}}</button>
-				</view>
+			<!-- #ifdef WEB -->
+			<mark-tab title="支付方式" :def-value="defPaywayByCurrPlatform" @click="handleSelectPayway"
+				:value="selectPayway.paymentName" />
+			<!-- #endif -->
+			<view class="btn-group">
+				<button @click="doOrderSettle" :disabled="settleBtnDisable"
+					class="pay-btn">立即结算￥{{totalActuallyAmount}}</button>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import ItemCard from './component/ItemCard.vue';
-	import CustCard from '@/component/CustCard.vue';
-	import MarkTab from './component/MarkTab.vue';
+	import ItemCard from './component/ItemCard.vue'
+	import CustCard from '@/component/CustCard.vue'
+	import MarkTab from './component/MarkTab.vue'
 	import {
-		getPayWay
-	} from '@/api/user-package';
+		getPayWay,
+		removeItemById,
+		updateContext
+	} from '@/api/user-package'
 	import {
+		queryUserPackage
+	} from '@/api/order.js'
+	import {
+		commonNavigate,
 		getCurrentPlatform,
-		getDateStr
-	} from '@/utils/CommonUtils';
+		getDateStr,
+		getShopInfo
+	} from '@/utils/CommonUtils'
+	import {
+		orderSettle
+	} from '@/api/user-package'
 	export default {
 		name: 'UserPackage',
 		components: {
@@ -73,59 +83,69 @@
 					type: 0,
 					name: '堂食'
 				}, {
-					type: 0,
+					type: 1,
 					name: '外带'
 				}],
-				selectedPickUpType: '',
+				selectedPickUpType: 0,
 				activeIndex: 0,
 				pickKey: getDateStr(),
 				currentShopInfo: {},
+				settleBtnDisable: false,
 				noticeTitle: '如您在点单过程中有任何问题请移步到前台咨询，如遇下单后需要更换商品请及时通知店员，谢谢！',
 			}
 		},
-		watch:{
-			packageList(o,n){
-				if(this.packageList.length = 0){
-					
-					uni.navigateTo({
-						url: '/pages/orde/index'
-					})
+		watch: {
+			packageList(o, n) {
+				if (n.length = 0) {
+					this.handleBack(true)
 				}
 			}
 		},
-		onLoad: function(option) {
-			const packageList = JSON.parse(decodeURIComponent(option.packageList))
-			this.packageList = packageList
-			
+		onBackPress(opt) {
+			this.handleBack(false)
 		},
 		created() {
-			//this.queryPayway();
-			this.getShopInfo();
-			this.assembleOtherInfo();
+			// #ifdef WEB
+			this.queryPayway()
+			// #endif
+			this.getShopInfo()
+			this.assembleOtherInfo()
+			this.queryPackage()
 		},
 		methods: {
-			handlerIconClick(id, num) {
-				const currentPackageItem = this.packageList.find(r => r.id === id);
+			handleIconClick(id, num) {
+				const currentPackageItem = this.packageList.find(r => r.id === id)
 				if (currentPackageItem) {
-					let result = currentPackageItem.itemPiece + num;
-					if (result >= 1) {
-						currentPackageItem.itemPiece = result;
-					}else if(result == 0){
-						this.packageList.splice(item => item.id = id,1)
+					let result = currentPackageItem.itemPiece + num
+					if (result == 0) {
+						this.handlerPackageItemRemove(id)
+						return;
 					}
+					this.handlePackageItemNumUpdate(currentPackageItem, result)
 				}
-				
+			},
+			handlePackageItemNumUpdate(item, newNum) {
+				var temp = item
+				temp.itemPiece = newNum
+				updateContext(temp).then(res => {
+					this.queryPackage()
+				})
+			},
+			handlerPackageItemRemove(itemId) {
+				removeItemById(itemId).then(res => {
+					this.queryPackage()
+				})
 			},
 			handlePickWay(val) {
 				this.selectedPickWay = val;
-				this.pickKey = this.selectPayway + getDateStr();
+				this.pickKey = this.selectPayway + getDateStr()
 			},
 			queryPayway() {
-				const platformName = getCurrentPlatform();
+				const platformName = getCurrentPlatform()
 				getPayWay({
 					...platformName
 				}).then(res => {
-					this.paywayList = res.data;
+					this.paywayList = res.data
 				})
 			},
 			// WEB 平台时选择支付方式
@@ -136,15 +156,52 @@
 			selectPickUpWay(index, type) {
 				if (index !== this.activeIndex) {
 					this.activeIndex = index;
-					this.selectedPickUpType = type;
+					this.selectedPickUpType = type
 				}
 			},
 			getShopInfo() {
-				this.currentShopInfo = uni.getStorageSync('current_shop');
-				console.log('pages/user-package:',this.packageList)
+				this.currentShopInfo = uni.getStorageSync('current_shop')
 			},
 			assembleOtherInfo() {
-				this.remark = uni.getStorageSync('order_remark');
+				this.remark = uni.getStorageSync('order_remark')
+			},
+			queryPackage() {
+				// if (this.hasLogin) {
+				queryUserPackage().then(res => {
+					if (res.data) {
+						this.packageNum = res.data.length
+						this.packageList = res.data
+						console.log('this.packageList: ',this.packageList);
+					}
+				})
+				// }
+			},
+			doOrderSettle() {
+				this.settleBtnDisable = true
+				const shop = getShopInfo()
+				var dto = {
+					isUseCoupon: false,
+					isUsePoint: false,
+					remark: '',
+					pickType: this.selectedPickUpType,
+					orderType: 0,
+					items: this.packageList,
+					shopId: shop.id
+				}
+				orderSettle(dto).then(res => {
+					// TODO 根据平台+用户选择的方式（Web端）拉起对应支付页面
+					// 目前只能写倒计时loading
+					const orderId = res.data.orderId
+					uni.showLoading({
+						title: '等待支付'
+					})
+					setTimeout(() => {
+						uni.hideLoading()
+						uni.navigateTo({
+							url:'/pages/settled/index?orderId=' + orderId
+						})
+					}, 2000)
+				}).finally(this.settleBtnDisable = false)
 			}
 		},
 		computed: {
@@ -155,19 +212,19 @@
 				if (packages.length > 0) {
 					for (let i = 0; i < packages.length; i++) {
 						const item = packages[i];
-						sum += parseFloat(item.singleActuallyAmount) * parseInt(item.itemPiece);
+						sum += parseFloat(item.singleActuallyAmount) * parseInt(item.itemPiece)
 					}
 				}
-				return sum;
+				return sum
 			},
 			// 原价= 件数*实际单价（不计优惠）
 			totalOrginalAmount() {
-				const packages = this.packageList;
-				let sum = 0;
+				const packages = this.packageList
+				let sum = 0
 				if (packages.length > 0) {
 					for (let i = 0; i < packages.length; i++) {
-						const item = packages[i];
-						sum += parseFloat(item.singleActuallyAmount) * parseInt(item.itemPiece);
+						const item = packages[i]
+						sum += parseFloat(item.singleActuallyAmount) * parseInt(item.itemPiece)
 					}
 				}
 				return sum;
@@ -176,12 +233,12 @@
 				return '￥' + this.totalOrginalAmount
 			},
 			defPaywayByCurrPlatform() {
-				var payName = '';
+				var payName = ''
 				if (this.paywayList.length > 0) {
-					payName = this.paywayList[0].paymentName;
-					this.selectPayway = this.paywayList[0];
+					payName = this.paywayList[0].paymentName
+					this.selectPayway = this.paywayList[0]
 				}
-				return payName;
+				return payName
 			}
 		}
 	}
@@ -230,13 +287,14 @@
 
 	.footer {
 		width: 100%;
-		position: fixed;
+		/* position: fixed; */
 		bottom: 0;
 		left: 0;
 		right: 0;
 		display: flex;
 		flex-direction: column;
 		z-index: 1;
+		background: white;
 	}
 
 	.footer view {
@@ -253,10 +311,6 @@
 		border-radius: 14px;
 		width: 100%;
 	}
-
-	/* 	.pay-lab {
-		display: flex;
-	} */
 
 	.pay-btn {
 		color: white;

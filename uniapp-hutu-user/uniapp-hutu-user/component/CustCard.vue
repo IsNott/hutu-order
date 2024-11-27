@@ -1,5 +1,6 @@
 <template>
-	<uni-card :margin='margin' :is-shadow='isShadow' shadow="3px" :style="backGroundImage" class="cust-card">
+	<uni-card :margin='margin' :is-shadow='isShadow' shadow="3px" class="cust-card" @click="handleClick">
+		<image v-if="headerImg" style="width: 100%;" :src="headerImg"></image>
 		<view class="title">
 			<text class="main">{{mainTitle}}</text>
 			<text class="sub">{{subTitle}}</text>
@@ -11,6 +12,7 @@
 </template>
 
 <script>
+	import { commonNavigate } from '../utils/CommonUtils';
 	export default {
 		name: 'CustCard',
 		props: {
@@ -34,9 +36,20 @@
 				type: String,
 				default: ''
 			},
-			backGroudImg: {
+			headerImg: {
 				type: String,
 				default: ''
+			},
+			clickUrl: {
+				type: String,
+				default: null
+			}
+		},
+		methods:{
+			handleClick(){
+				if(this.clickUrl){
+					commonNavigate(this.clickUrl)
+				}
 			}
 		},
 		computed: {
