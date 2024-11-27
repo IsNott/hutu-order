@@ -1,0 +1,12 @@
+ws:
+  port: 2999
+  path: /ws
+  boss-group: 2
+  worker-group: 20
+
+spring:
+  application:
+    name: Hutu-WebSocket
+
+server:
+  port: 8888

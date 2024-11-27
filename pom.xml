@@ -17,6 +17,7 @@
         <module>hutu-external</module>
         <module>hutu-security</module>
         <module>hutu-service</module>
+        <module>hutu-webSocket</module>
     </modules>
 
     <properties>
@@ -86,7 +87,6 @@
                 <artifactId>guava</artifactId>
                 <version>33.3.0-jre</version>
             </dependency>
-
 
         </dependencies>
 

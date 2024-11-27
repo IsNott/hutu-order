@@ -2,6 +2,7 @@ package org.nott.common.utils;
 
 import org.nott.common.config.BusinessConfig;
 import org.nott.common.redis.RedisUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import javax.annotation.Resource;
  * @date 2024-11-18
  */
 @Component
+@ConditionalOnBean(RedisUtils.class)
 public class SequenceUtils {
 
     @Resource
