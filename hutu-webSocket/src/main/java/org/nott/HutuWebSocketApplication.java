@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @Slf4j
-@SpringBootApplication(scanBasePackages = {"org.nott.ws.*", "org.nott.common.config", "org.nott.common.utils"})
+@SpringBootApplication(scanBasePackages = {"org.nott.ws","org.nott.ws.*", "org.nott.common.config", "org.nott.common.utils"})
 @EnableFeignClients(clients = BizPayOrderWsClient.class)
 public class HutuWebSocketApplication {
 

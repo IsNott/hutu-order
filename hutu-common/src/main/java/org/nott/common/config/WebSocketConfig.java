@@ -20,4 +20,10 @@ public class WebSocketConfig {
     private Integer workerGroup;
 
     private Integer bossGroup;
+
+    private String heartBeatMsg;
+
+    private String heartBeatResp;
+
+    private boolean showIdleMsg;
 }
