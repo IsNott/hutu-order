@@ -36,4 +36,7 @@ public class OrderItemDTO {
 
     @ApiModelProperty("商品单价")
     private BigDecimal singleActuallyAmount;
+
+    @ApiModelProperty("预计制作时间")
+    private Integer expectMakeTime;
 }

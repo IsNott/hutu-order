@@ -1,9 +1,8 @@
 <template>
   <div class="table">
     <div class="item" v-for="item in orders" :key="item.orderNo">
-      <i class="element-icons" style="font-size: 50px">{{
-        getPickTypeIconStr(item.pickType)
-      }}</i>
+      <i class="element-icons" v-if="item.pickType == 0" style="font-size: 50px">&#xe62f</i>
+      <i class="element-icons" v-if="item.pickType == 1" style="font-size: 50px">&#xe6cc</i>
       {{ item.orderNo }}
     </div>
   </div>
@@ -24,16 +23,7 @@ export default {
     return {}
   },
   methods: {
-    getPickTypeIconStr(pickType) {
-      switch (pickType) {
-        default:
-          return "&#xe6cc;"
-        case 0:
-          return "&#xe62f;"
-        case 1:
-          return "&#xe6cc;"
-      }
-    },
+    
   },
 }
 </script>
@@ -43,7 +33,7 @@ export default {
   margin-left: 26px;
   display: flex;
   flex-direction: row;
-  width: 60%;
+  width: 100%;
   justify-content: space-between;
   flex-wrap: wrap;
 }
