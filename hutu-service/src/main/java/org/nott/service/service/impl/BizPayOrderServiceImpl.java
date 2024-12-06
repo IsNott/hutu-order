@@ -4,7 +4,6 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.sun.jmx.remote.internal.ArrayQueue;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.nott.common.config.BusinessConfig;
@@ -26,6 +25,7 @@ import org.nott.service.service.IBizItemService;
 import org.nott.service.service.IBizPayOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.service.service.IBizShopInfoService;
+import org.nott.vo.FrontOrderVo;
 import org.nott.vo.OrderItemVo;
 import org.nott.vo.PayOrderVo;
 import org.nott.vo.SettleOrderVo;
@@ -161,6 +161,25 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         return vo;
     }
 
+    @Override
+    public PayOrderVo orderQuery(Long id) {
+        BizPayOrder payOrder = this.getById(id);
+        HutuUtils.requireNotNull(payOrder,"没有找到对应订单");
+        Long orderId = payOrder.getId();
+        PayOrderVo vo = HutuUtils.transToObject(payOrder, PayOrderVo.class);
+        vo.setPayOrderId(orderId);
+        return vo;
+    }
+
+    @Override
+    public FrontOrderVo orderFront(Long orderId) {
+        BizPayOrder payOrder = this.getById(orderId);
+        HutuUtils.requireNotNull(payOrder,"没有找到订单");
+        Date settleTime = payOrder.getSettleTime();
+        HutuUtils.requireNotNull(settleTime,"没有找到订单结算时间");
+        return bizPayOrderMapper.orderFrontQueryByOrderId(HutuUtils.FORMAT.DATETIME.format(settleTime), orderId);
+    }
+
     private BigDecimal checkAndReturnTotalAmount(List<OrderItemDTO> itemsByOrder) {
         List<Long> ids = itemsByOrder.stream().map(OrderItemDTO::getItemId).collect(Collectors.toList());
         LambdaQueryWrapper<BizItem> wp = new LambdaQueryWrapper<BizItem>()
@@ -198,12 +217,15 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
                 break;
             }
         }
-        order.setItemInfo(JSONObject.toJSONString(dto.getItems()));
+        List<OrderItemDTO> items = dto.getItems();
+        order.setItemInfo(JSONObject.toJSONString(items));
 
         String nextOrderNo = sequenceUtils.nextSeq(prefix);
         order.setOrderNo(nextOrderNo);
         order.setOrderStatus(OrderStatusEnum.INIT.getVal());
         order.setUserId(id);
+        order.setItemPiece(items.size());
+        order.setWaitTime(items.stream().mapToInt(OrderItemDTO::getExpectMakeTime).sum());
         this.save(order);
 
         Date currentDate = new Date();

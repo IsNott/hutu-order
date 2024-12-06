@@ -219,7 +219,7 @@ public class HutuUtils {
             ctx.setVariable(parameterNames[i], args[i]);
         }
         // 将注解中的SpEL表达式格式化并获取值
-        return (T) parser.parseExpression(expression).getValue(ctx);
+        return parser.parseExpression(expression).getValue(ctx,tclass);
     }
 
 }

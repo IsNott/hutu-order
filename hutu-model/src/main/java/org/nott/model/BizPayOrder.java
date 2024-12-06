@@ -52,6 +52,16 @@ public class BizPayOrder implements Serializable {
     private String itemInfo;
 
     /**
+     * 菜品统计
+     */
+    private Integer itemPiece;
+
+    /**
+     * 预计等待时间
+     */
+    private Integer waitTime;
+
+    /**
      * 支付方式id
      */
     private Long paywayId;

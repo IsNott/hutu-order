@@ -12,7 +12,8 @@ public enum OrderStatusEnum {
     PAYED(2),
     REFUND(3),
     EXPIRE(4),
-    FAILED(5);
+    FAILED(5),
+    FINISH(6);
 
     private Integer val;
 

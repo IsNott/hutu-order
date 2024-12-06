@@ -1,7 +1,9 @@
 package org.nott.service.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.nott.model.BizPayOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.nott.vo.FrontOrderVo;
 
 import java.util.List;
 
@@ -16,4 +18,6 @@ import java.util.List;
 public interface BizPayOrderMapper extends BaseMapper<BizPayOrder> {
 
     List<String> selectOrderMoney();
+
+    FrontOrderVo orderFrontQueryByOrderId(@Param("settleTime") String settleTime,@Param("orderId") Long orderId);
 }

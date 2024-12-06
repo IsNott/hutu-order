@@ -97,28 +97,24 @@ public class CacheAspect {
     public void doRedisAdd(String key, String item, Object val, long time) {
         boolean hasItemId = StringUtils.isNotEmpty(item);
         if (hasItemId) {
-            redisUtils.set(key, val, time);
-        } else {
             redisUtils.hset(key, item, val);
+        } else {
+            redisUtils.set(key, val, time);
         }
     }
 
     public Object doRedisGet(String key, String elVal) {
         boolean hasItemId = StringUtils.isNotEmpty(elVal);
-        if (hasItemId) {
-            return redisUtils.get(key);
-        } else {
-            return redisUtils.hget(key, elVal);
-        }
+        return hasItemId ? redisUtils.hget(key, elVal) : redisUtils.get(key);
     }
 
 
     public void doRedisDel(String key, String item) {
         boolean hasItemId = StringUtils.isNotEmpty(item);
         if (hasItemId) {
-            redisUtils.delByKey(key);
-        } else {
             redisUtils.hdel(key, item);
+        } else {
+            redisUtils.delByKey(key);
         }
     }
 

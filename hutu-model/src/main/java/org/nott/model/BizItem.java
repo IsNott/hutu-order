@@ -81,9 +81,9 @@ public class BizItem implements Serializable {
     private Date updateTime;
 
     /**
-     * 预计制作时长，单位：秒
+     * 预计制作时长，单位：分
      */
-    private Long expectMakeTime;
+    private Integer expectMakeTime;
 
 
 }

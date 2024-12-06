@@ -28,4 +28,6 @@ public class UserPackageVo {
     private String itemName;
     @ApiModelProperty("商品预览图片地址")
     private String itemImageUrls;
+    @ApiModelProperty("预计制作时间")
+    private Integer expectMakeTime;
 }

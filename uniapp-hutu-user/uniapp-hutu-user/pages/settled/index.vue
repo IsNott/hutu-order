@@ -13,7 +13,7 @@
 					{{orderVo.orderNo}}
 				</text>
 				<view class="queue-view">
-					商品制作中，预计还需等待5分钟
+					前面还有 {{frontOrderCount}} 单，预计还需等待 {{leftTime}} 分钟
 				</view>
 			</view>
 
@@ -96,62 +96,6 @@
 </template>
 
 <script>
-	const example = {
-		orderNo: 'H001',
-		payOrderId: '1308752057510920192',
-		settleTime: '2024-11-20 10:10:00',
-		shopId: '593630146225766400',
-		shopName: '糊涂餐馆（齐河路店）',
-		shopAddress: '上海齐河路16号',
-		originAmount: 100.00,
-		totalAmount: 99.00,
-		itemInfo: [{
-				id: 1294610900124172300,
-				itemId: 1,
-				itemName: '拿铁',
-				itemPiece: 2,
-				itemImageUrls: 'https://pic.imgdb.cn/item/67332173d29ded1a8c6801a8.jpg',
-				skuItemContents: '全糖',
-				singleActuallyAmount: 12
-			},
-			{
-				id: 1306946134232531000,
-				itemId: 2,
-				itemName: '卡布奇诺',
-				itemPiece: 2,
-				itemImageUrls: '',
-				skuItemContents: '',
-				singleActuallyAmount: 15
-			},
-			{
-				id: 1306946151630504000,
-				itemId: 5,
-				itemName: '浓缩咖啡',
-				itemPiece: 1,
-				itemImageUrls: '',
-				skuItemContents: '',
-				singleActuallyAmount: 20
-			},
-			{
-				id: 1306946981003788300,
-				itemId: 4,
-				itemName: '美式咖啡',
-				itemPiece: 1,
-				itemImageUrls: '',
-				skuItemContents: '',
-				singleActuallyAmount: 22
-			},
-			{
-				id: 1306947620819697700,
-				itemId: 3,
-				itemName: '摩卡',
-				itemPiece: 1,
-				itemImageUrls: '',
-				skuItemContents: '',
-				singleActuallyAmount: 18
-			}
-		]
-	}
 	const events = [{
 		title: '挑选商品'
 	}, {
@@ -159,8 +103,10 @@
 	}, {
 		title: '等待取餐'
 	}]
+	import dayjs from 'dayjs'
 	import {
-		queryOrderById
+		queryOrderById,
+		orderFront
 	} from '@/api/settled'
 	import {
 		handleImageUrl,
@@ -177,18 +123,40 @@
 				orderId: '',
 				orderVo: '',
 				eventList: events,
+				totalWaitTime: 0,
+				frontOrderInfo: '',
+				frontOrderCount: 0,
 				noticeMsg: '请您留意取餐号及店员当前叫到的号数，为不影响口感请及时取餐，用餐过程中有问题可咨询店员，感谢您光临糊涂餐馆！'
 			}
 		},
 		onLoad: function(opt) {
 			this.orderId = opt.orderId
 			this.queryOrderById()
+			this.queryFrontOrder()
 		},
 		methods: {
 			queryOrderById() {
 				if (this.orderId) {
 					queryOrderById(this.orderId).then(res => {
 						this.orderVo = res.data
+						if (this.orderVo && this.orderVo.waitTime) {
+							this.totalWaitTime += this.orderVo.waitTime
+						}
+					})
+				}
+			},
+			queryFrontOrder() {
+				if (this.orderId) {
+					orderFront(this.orderId).then(res => {
+						if (res.data) {
+							this.frontOrderInfo = res.data
+							if (this.frontOrderInfo.orderCount) {
+								this.frontOrderCount = this.frontOrderInfo.orderCount
+							}
+							if (this.frontOrderInfo.waitTime) {
+								this.totalWaitTime += this.frontOrderInfo.waitTime
+							}
+						}
 					})
 				}
 			},
@@ -209,6 +177,16 @@
 			},
 			handleClick(url) {
 				commonNavigate(url)
+			}
+		},
+		computed: {
+			leftTime() {
+				var settleTime = this.orderVo.settleTime
+				var dayjsTime = dayjs(settleTime, 'YYYY-MM-DD HH:mm:ss')
+				dayjsTime.add(this.totalWaitTime, 'minute')
+				// TODO diff
+				const diff = dayjsTime.diff(dayjs(), 'minute')
+				return diff >= 0 ? diff : 0
 			}
 		}
 	}
@@ -258,13 +236,13 @@
 		margin: 30px 0px;
 	}
 
-	.order-text-info{
+	.order-text-info {
 		display: flex;
 		font-size: 16px;
 		margin-top: 6px;
 	}
-	
-	.pay-info{
+
+	.pay-info {
 		display: block;
 		padding: 4px;
 	}

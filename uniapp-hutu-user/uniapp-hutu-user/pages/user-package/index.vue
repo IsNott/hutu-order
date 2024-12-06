@@ -41,9 +41,14 @@
 	import CustCard from '@/component/CustCard.vue'
 	import MarkTab from './component/MarkTab.vue'
 	import {
+		OrderStatus
+	} from '@/enums/orderStatusEnum'
+	import {
 		getPayWay,
 		removeItemById,
-		updateContext
+		updateContext,
+		orderQuery,
+		simulateNotify
 	} from '@/api/user-package'
 	import {
 		queryUserPackage
@@ -92,6 +97,8 @@
 				currentShopInfo: {},
 				settleBtnDisable: false,
 				noticeTitle: '如您在点单过程中有任何问题请移步到前台咨询，如遇下单后需要更换商品请及时通知店员，谢谢！',
+				orderId: '',
+				timeer: null
 			}
 		},
 		watch: {
@@ -171,7 +178,7 @@
 					if (res.data) {
 						this.packageNum = res.data.length
 						this.packageList = res.data
-						console.log('this.packageList: ',this.packageList);
+						console.log('this.packageList: ', this.packageList);
 					}
 				})
 				// }
@@ -191,17 +198,34 @@
 				orderSettle(dto).then(res => {
 					// TODO 根据平台+用户选择的方式（Web端）拉起对应支付页面
 					// 目前只能写倒计时loading
-					const orderId = res.data.orderId
+					this.orderId = res.data.orderId
 					uni.showLoading({
 						title: '等待支付'
 					})
-					setTimeout(() => {
-						uni.hideLoading()
-						uni.navigateTo({
-							url:'/pages/settled/index?orderId=' + orderId
-						})
-					}, 2000)
+					simulateNotify(this.orderId).then(() => {
+						this.doOrderQuery()
+					})
+					// setTimeout(() => {
+					// 	uni.hideLoading()
+					// 	uni.navigateTo({
+					// 		url:'/pages/settled/index?orderId=' + orderId
+					// 	})
+					// }, 2000)
 				}).finally(this.settleBtnDisable = false)
+			},
+			doOrderQuery() {
+				if (this.orderId) {
+					const vm = this
+					this.timeer = setInterval(() => {
+						orderQuery(vm.orderId).then(res => {
+							if (res.data.orderStatus = OrderStatus.PAYED) {
+								commonNavigate('/pages/settled/index?orderId=' + vm.orderId)
+								clearInterval(vm.timeer)
+								vm.timeer = null
+							}
+						})
+					}, 1000)
+				}
 			}
 		},
 		computed: {

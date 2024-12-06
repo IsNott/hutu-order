@@ -49,4 +49,7 @@ public class PayOrderVo implements Serializable {
 
     @ApiModelProperty("本单餐品总等待时间")
     private Long waitTime;
+
+    @ApiModelProperty("订单状态")
+    private Integer orderStatus;
 }

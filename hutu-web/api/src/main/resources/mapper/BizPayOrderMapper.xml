@@ -3,7 +3,21 @@
 <mapper namespace="org.nott.service.mapper.BizPayOrderMapper">
 
     <select id="selectOrderMoney" resultType="string">
-        select total_amount from biz_pay_order where order_status = 2
+        select total_amount
+        from biz_pay_order
+        where order_status = 2
     </select>
 
+    <select id="orderFrontQueryByOrderId" resultType="org.nott.vo.FrontOrderVo">
+        <![CDATA[
+        SELECT count(1)        as orderCount,
+               sum(item_piece) as pieceCount,
+               sum(wait_time)  as waitTime
+        FROM biz_pay_order
+        WHERE id != #{orderId}
+          AND settle_time <= #{settleTime}
+          AND TO_DAYS( settle_time ) = TO_DAYS( #{settleTime})
+          AND order_status = 2
+        ]]>
+    </select>
 </mapper>

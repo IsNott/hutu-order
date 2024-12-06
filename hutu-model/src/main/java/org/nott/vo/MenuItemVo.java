@@ -28,4 +28,6 @@ public class MenuItemVo {
 
     private String special;
 
+    private Integer expectMakeTime;
+
 }
