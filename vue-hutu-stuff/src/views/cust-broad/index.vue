@@ -161,6 +161,8 @@ export default {
       }
     },
     onWebSocketMessage(event) {
+      console.log(event)
+      
       if (event.data) {
         const message = JSON.parse(event.data)
         console.log("WebSocket Message: ", message)

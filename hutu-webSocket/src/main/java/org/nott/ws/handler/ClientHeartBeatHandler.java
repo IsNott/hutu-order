@@ -1,5 +1,6 @@
 package org.nott.ws.handler;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.nott.common.config.WebSocketConfig;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 /**
@@ -18,6 +20,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Component
+//@ChannelHandler.Sharable
 public class ClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
 
     @Resource

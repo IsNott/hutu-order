@@ -2,7 +2,7 @@ import Router from 'vue-router'
 
 export const routers = [
   {
-    path: '/cust-broad',
+    path: '/',
     meta: { title: '叫号大屏' },
     component: () => import('@/views/cust-broad/index.vue')
   }
