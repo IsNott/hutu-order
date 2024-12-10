@@ -26,4 +26,6 @@ public interface IBizPayOrderService extends IService<BizPayOrder> {
     PayOrderVo orderQuery(Long id);
 
     FrontOrderVo orderFront(Long orderId);
+
+    void simulateNotify(Long orderId);
 }

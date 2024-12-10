@@ -12,7 +12,6 @@ import org.nott.enums.HandleOrderExpireType;
 import org.nott.enums.OrderStatusEnum;
 import org.nott.model.BizPayOrder;
 import org.nott.service.service.IBizPayOrderService;
-import org.nott.vo.SettleOrderVo;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -56,6 +55,11 @@ public class UserPayOrderQueueHandler {
                 Object object = redisUtils.hget(NON_PAYMENT_ORDER_KEY_PREFIX + userId, data.getId() + "");
                 if (HutuUtils.isEmpty(object)) {
                     log.info("订单已完成，无需处理");
+                    return;
+                }
+                BizPayOrder payOrder = payOrderService.getById(data.getId());
+                if(!payOrder.getOrderStatus().equals(OrderStatusEnum.INIT.getVal())){
+                    log.info("订单已更新状态，无需处理");
                     return;
                 }
                 LambdaUpdateWrapper<BizPayOrder> wrapper = new LambdaUpdateWrapper<>();

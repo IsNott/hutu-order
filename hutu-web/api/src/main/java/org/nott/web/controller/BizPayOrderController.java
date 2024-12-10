@@ -53,12 +53,7 @@ public class BizPayOrderController {
     @ApiOperation("模拟支付成功")
     @GetMapping("simulateNotify/{orderId}")
     public ResponseEntity<?> simulateNotify(@PathVariable("orderId") Long orderId){
-        BizPayOrder payOrder = bizPayOrderService.getById(orderId);
-        payOrder.setOrderStatus(OrderStatusEnum.PAYED.getVal());
-        payOrder.setSettleTime(new Date());
-        bizPayOrderService.updateById(payOrder);
-        //TODO 删除
-        redisUtils.hdel(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + payOrder.getUserId(), payOrder.getId());
+        bizPayOrderService.simulateNotify(orderId);
         return ResponseEntity.success();
     }
 

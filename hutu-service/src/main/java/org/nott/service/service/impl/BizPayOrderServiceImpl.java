@@ -25,6 +25,7 @@ import org.nott.service.service.IBizItemService;
 import org.nott.service.service.IBizPayOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.service.service.IBizShopInfoService;
+import org.nott.service.service.IBizUserPackageService;
 import org.nott.vo.FrontOrderVo;
 import org.nott.vo.OrderItemVo;
 import org.nott.vo.PayOrderVo;
@@ -67,6 +68,8 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     private RedisUtils redisUtils;
     @Resource
     private IBizShopInfoService bizShopInfoService;
+    @Resource
+    private IBizUserPackageService bizUserPackageService;
 
     @PostConstruct
     public void pushUnFinishOrder2Queue() {
@@ -136,10 +139,10 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
 //            throw new HutuBizException("积分/优惠券使用失败");
 //        }
         // 移除购物车内容
-//        HutuThreadPoolExecutor.threadPool.submit(()->{
-//            List<Long> ids = items.stream().map(OrderItemDTO::getId).collect(Collectors.toList());
-//            bizUserPackageService.removeBatchByIds(ids);
-//        });
+        HutuThreadPoolExecutor.threadPool.submit(()->{
+            List<Long> ids = items.stream().map(OrderItemDTO::getId).collect(Collectors.toList());
+            bizUserPackageService.removeBatchByIds(ids);
+        });
         return vo;
     }
 
@@ -178,6 +181,15 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         Date settleTime = payOrder.getSettleTime();
         HutuUtils.requireNotNull(settleTime,"没有找到订单结算时间");
         return bizPayOrderMapper.orderFrontQueryByOrderId(HutuUtils.FORMAT.DATETIME.format(settleTime), orderId);
+    }
+
+    @Override
+    public void simulateNotify(Long orderId) {
+        BizPayOrder payOrder = this.getById(orderId);
+        payOrder.setOrderStatus(OrderStatusEnum.PAYED.getVal());
+        payOrder.setSettleTime(new Date());
+        this.updateById(payOrder);
+        redisUtils.hdel(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + payOrder.getUserId(), payOrder.getId() + "");
     }
 
     private BigDecimal checkAndReturnTotalAmount(List<OrderItemDTO> itemsByOrder) {
