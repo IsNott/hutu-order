@@ -89,14 +89,14 @@ function storeTokenInfo(info) {
 }
 
 function handleRequest(api, method, data, resolve, reject) {
-	uni.showLoading({
-		title: '加载中'
-	})
+	// uni.showLoading({
+	// 	title: '加载中'
+	// })
 	const token = uni.getStorageSync("token")
 	var header = {
 		'Content-Type': 'application/json'
 	}
-	if(token){
+	if (token) {
 		header.token = token
 	}
 	uni.request({
@@ -106,7 +106,7 @@ function handleRequest(api, method, data, resolve, reject) {
 		header: {
 			...header
 		},
-		timeout:TIME_OUT,
+		timeout: TIME_OUT,
 		success: (response) => {
 			const res = response.data
 			if (res.code == 401) {
@@ -115,11 +115,15 @@ function handleRequest(api, method, data, resolve, reject) {
 					position: 'top',
 					title: '请重新登录'
 				});
-				
-				uni.navigateTo({
-					url: '/pages/authority/index'
-				})
-				return reject(err)
+				var pages = getCurrentPages()
+				var page = pages[pages.length - 1]
+				if (page.route !== '/pages/authority/index') {
+					uni.navigateTo({
+						url: '/pages/authority/index'
+					})
+				}
+
+				return reject(res)
 			}
 			if (res.code != 200) {
 				console.error("Request error: ", res.message)
@@ -141,7 +145,7 @@ function handleRequest(api, method, data, resolve, reject) {
 			return reject(err);
 		},
 		complete() {
-			uni.hideLoading()
+			// uni.hideLoading()
 		}
 	});
 }

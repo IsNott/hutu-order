@@ -24,6 +24,7 @@
 			<mark-tab :key="totalOrginalAmount" title="原价" :def-value="amoutDefValue" :value="amountStr" />
 			<mark-tab :key="chooseCoupon" title="优惠券" :value="chooseCoupon" />
 			<mark-tab :key="point" title="可用积分" :value="point" />
+			<mark-tab :key="giftCard" title="礼品卡" :value="giftCard" />
 			<!-- #ifdef WEB -->
 			<mark-tab title="支付方式" :def-value="defPaywayByCurrPlatform" @click="handleSelectPayway"
 				:value="selectPayway.paymentName" />
@@ -75,6 +76,7 @@
 				remark: '',
 				point: '',
 				coupons: '',
+				giftCard: '',
 				markTabDefValue: '添加口味、糖度等备注',
 				amountDefValue: '0.00元',
 				chooseCoupon: '',
@@ -197,7 +199,6 @@
 				}
 				orderSettle(dto).then(res => {
 					// TODO 根据平台+用户选择的方式（Web端）拉起对应支付页面
-					// 目前只能写倒计时loading
 					this.orderId = res.data.orderId
 					uni.showLoading({
 						title: '等待支付'
@@ -205,12 +206,6 @@
 					simulateNotify(this.orderId).then(() => {
 						this.doOrderQuery()
 					})
-					// setTimeout(() => {
-					// 	uni.hideLoading()
-					// 	uni.navigateTo({
-					// 		url:'/pages/settled/index?orderId=' + orderId
-					// 	})
-					// }, 2000)
 				}).finally(this.settleBtnDisable = false)
 			},
 			doOrderQuery() {

@@ -27,14 +27,14 @@
 			</uni-grid-item>
 			<uni-grid-item>
 				<view class="icon">
-					<uni-icons type="cart-filled" size="24"></uni-icons>
+					<uni-icons type="cart" size="24"></uni-icons>
 					<text>
 						订单
 					</text>
 				</view>
 			</uni-grid-item>
 			<uni-grid-item>
-				<view class="icon">
+				<view class="icon" @click="handleNavigate('setting')">
 					<uni-icons type="gear" size="24"></uni-icons>
 					<text>
 						设置
@@ -47,6 +47,26 @@
 </template>
 
 <script>
+	import { commonNavigate } from '@/utils/CommonUtils'
+	export default{
+		name:'My',
+		data(){
+			return{
+				
+			}
+		},
+		methods:{
+			handleNavigate(type){
+				switch(type){
+					default : break
+					case 'setting': {
+						commonNavigate('/pages/setting/index')
+						break
+					}
+				}
+			}
+		}
+	}
 </script>
 
 <style scoped>

@@ -184,8 +184,10 @@
 				var settleTime = this.orderVo.settleTime
 				var dayjsTime = dayjs(settleTime, 'YYYY-MM-DD HH:mm:ss')
 				dayjsTime.add(this.totalWaitTime, 'minute')
+				var now = dayjs()
 				// TODO diff
-				const diff = dayjsTime.diff(dayjs(), 'minute')
+				const diff = dayjsTime.diff(now, 'minute')
+				console.log('diff',diff);
 				return diff >= 0 ? diff : 0
 			}
 		}
