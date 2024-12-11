@@ -1,5 +1,6 @@
 package org.nott.common.utils;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.nott.common.exception.HutuBizException;
@@ -220,6 +221,18 @@ public class HutuUtils {
         }
         // 将注解中的SpEL表达式格式化并获取值
         return parser.parseExpression(expression).getValue(ctx,tclass);
+    }
+
+    public static <E,T> Page<T> transPage(Page<E> sourcePage,Class<T> tClass){
+        List<E> records = sourcePage.getRecords();
+        Page<T> tPage = new Page<>();
+        if(isEmpty(records)){
+            return tPage;
+        }
+        copyProperties(sourcePage,tPage);
+        List<T> ts = transToVos(records, tClass);
+        tPage.setRecords(ts);
+        return tPage;
     }
 
 }

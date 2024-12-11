@@ -1,10 +1,12 @@
 package org.nott.web.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.common.annotation.RedisCache;
 import org.nott.common.redis.RedisUtils;
 import org.nott.common.utils.HutuUtils;
+import org.nott.dto.MyOrderQueryDTO;
 import org.nott.dto.UserSettleOrderDTO;
 import org.nott.enums.OrderStatusEnum;
 import org.nott.model.BizPayOrder;
@@ -69,6 +71,13 @@ public class BizPayOrderController {
     public ResponseEntity<?> orderFront(@PathVariable("orderId") Long orderId){
         FrontOrderVo frontOrderVo = bizPayOrderService.orderFront(orderId);
         return ResponseEntity.successData(frontOrderVo);
+    }
+
+    @ApiOperation("我的订单")
+    @GetMapping("myOrder/{page}/{size}")
+    public ResponseEntity<?> myOrder(@RequestBody MyOrderQueryDTO dto, @PathVariable("page") Integer page, @PathVariable("size") Integer size){
+        Page<PayOrderVo> payOrderVoPage = bizPayOrderService.queryMyOrder(dto,page,size);
+        return ResponseEntity.successData(payOrderVoPage);
     }
 
 }

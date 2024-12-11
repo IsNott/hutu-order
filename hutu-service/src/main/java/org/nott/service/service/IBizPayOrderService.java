@@ -1,5 +1,7 @@
 package org.nott.service.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.nott.dto.MyOrderQueryDTO;
 import org.nott.dto.UserSettleOrderDTO;
 import org.nott.model.BizPayOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -28,4 +30,6 @@ public interface IBizPayOrderService extends IService<BizPayOrder> {
     FrontOrderVo orderFront(Long orderId);
 
     void simulateNotify(Long orderId);
+
+    Page<PayOrderVo> queryMyOrder(MyOrderQueryDTO dto, Integer page, Integer size);
 }

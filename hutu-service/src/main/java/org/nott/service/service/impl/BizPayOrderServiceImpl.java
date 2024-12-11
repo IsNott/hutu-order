@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.nott.common.config.BusinessConfig;
@@ -12,6 +13,7 @@ import org.nott.common.redis.RedisUtils;
 import org.nott.common.thread.pool.HutuThreadPoolExecutor;
 import org.nott.common.utils.HutuUtils;
 import org.nott.common.utils.SequenceUtils;
+import org.nott.dto.MyOrderQueryDTO;
 import org.nott.dto.OrderItemDTO;
 import org.nott.dto.UserSettleOrderDTO;
 import org.nott.enums.OrderStatusEnum;
@@ -190,6 +192,20 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         payOrder.setSettleTime(new Date());
         this.updateById(payOrder);
         redisUtils.hdel(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + payOrder.getUserId(), payOrder.getId() + "");
+    }
+
+    @Override
+    public Page<PayOrderVo> queryMyOrder(MyOrderQueryDTO dto, Integer page, Integer size) {
+        long id = StpUtil.getLoginIdAsLong();
+        Integer status = dto.getStatus();
+        Page<BizPayOrder> payOrderVoPage = new Page<>();
+        payOrderVoPage.setSize(size);
+        payOrderVoPage.setPages(page);
+        LambdaQueryWrapper<BizPayOrder> wp = new LambdaQueryWrapper<>();
+        wp.eq(HutuUtils.isNotEmpty(status),BizPayOrder::getOrderStatus,status);
+        wp.eq(BizPayOrder::getUserId,id);
+        Page<BizPayOrder> orderPage = this.page(payOrderVoPage, wp);
+        return HutuUtils.transPage(orderPage,PayOrderVo.class);
     }
 
     private BigDecimal checkAndReturnTotalAmount(List<OrderItemDTO> itemsByOrder) {
