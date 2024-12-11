@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -28,10 +29,7 @@ import org.nott.service.service.IBizPayOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.service.service.IBizShopInfoService;
 import org.nott.service.service.IBizUserPackageService;
-import org.nott.vo.FrontOrderVo;
-import org.nott.vo.OrderItemVo;
-import org.nott.vo.PayOrderVo;
-import org.nott.vo.SettleOrderVo;
+import org.nott.vo.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -195,17 +193,17 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     }
 
     @Override
-    public Page<PayOrderVo> queryMyOrder(MyOrderQueryDTO dto, Integer page, Integer size) {
+    public Page<MyPayOrderVo> queryMyOrder(MyOrderQueryDTO dto, Integer page, Integer size) {
         long id = StpUtil.getLoginIdAsLong();
         Integer status = dto.getStatus();
-        Page<BizPayOrder> payOrderVoPage = new Page<>();
-        payOrderVoPage.setSize(size);
-        payOrderVoPage.setPages(page);
-        LambdaQueryWrapper<BizPayOrder> wp = new LambdaQueryWrapper<>();
-        wp.eq(HutuUtils.isNotEmpty(status),BizPayOrder::getOrderStatus,status);
-        wp.eq(BizPayOrder::getUserId,id);
-        Page<BizPayOrder> orderPage = this.page(payOrderVoPage, wp);
-        return HutuUtils.transPage(orderPage,PayOrderVo.class);
+        Page<MyPayOrderVo> queryOrderPageByUserId = bizPayOrderMapper.queryOrderPageByUserId(new Page<>(page, size), id, status);
+        if (queryOrderPageByUserId != null && HutuUtils.isNotEmpty(queryOrderPageByUserId.getRecords())) {
+            for (MyPayOrderVo vo : queryOrderPageByUserId.getRecords()) {
+                if (HutuUtils.isEmpty(vo.getItemInfo())) continue;
+                vo.setItems(JSONArray.parseArray(vo.getItemInfo(), OrderItemVo.class));
+            }
+        }
+        return queryOrderPageByUserId;
     }
 
     private BigDecimal checkAndReturnTotalAmount(List<OrderItemDTO> itemsByOrder) {

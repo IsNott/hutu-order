@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import org.nott.common.exception.HutuBizException;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.core.DefaultParameterNameDiscoverer;
-import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.Assert;
@@ -223,7 +222,7 @@ public class HutuUtils {
         return parser.parseExpression(expression).getValue(ctx,tclass);
     }
 
-    public static <E,T> Page<T> transPage(Page<E> sourcePage,Class<T> tClass){
+    public static <E,T> Page<T> transVOPage(Page<E> sourcePage, Class<T> tClass){
         List<E> records = sourcePage.getRecords();
         Page<T> tPage = new Page<>();
         if(isEmpty(records)){

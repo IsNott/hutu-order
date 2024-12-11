@@ -13,6 +13,7 @@ import org.nott.model.BizPayOrder;
 import org.nott.service.delayed.handler.UserPayOrderQueueHandler;
 import org.nott.service.service.IBizPayOrderService;
 import org.nott.vo.FrontOrderVo;
+import org.nott.vo.MyPayOrderVo;
 import org.nott.vo.PayOrderVo;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,9 +75,9 @@ public class BizPayOrderController {
     }
 
     @ApiOperation("我的订单")
-    @GetMapping("myOrder/{page}/{size}")
+    @PostMapping("myOrder/{page}/{size}")
     public ResponseEntity<?> myOrder(@RequestBody MyOrderQueryDTO dto, @PathVariable("page") Integer page, @PathVariable("size") Integer size){
-        Page<PayOrderVo> payOrderVoPage = bizPayOrderService.queryMyOrder(dto,page,size);
+        Page<MyPayOrderVo> payOrderVoPage = bizPayOrderService.queryMyOrder(dto,page,size);
         return ResponseEntity.successData(payOrderVoPage);
     }
 

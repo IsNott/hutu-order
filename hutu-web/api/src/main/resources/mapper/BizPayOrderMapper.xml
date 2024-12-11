@@ -20,4 +20,19 @@
           AND order_status = 2
         ]]>
     </select>
+
+    <select id="queryOrderPageByUserId" resultType="org.nott.vo.MyPayOrderVo">
+        SELECT
+            t1.*,
+            t2.address,
+            t2.shop_name
+        FROM
+            biz_pay_order t1
+                LEFT JOIN biz_shop_info t2 ON t1.shop_id = t2.id
+        WHERE
+            user_id = #{id}
+        <if test="status != null and status != ''">
+            and order_status = #{status}
+        </if>
+    </select>
 </mapper>

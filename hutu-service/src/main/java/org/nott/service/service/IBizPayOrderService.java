@@ -6,6 +6,7 @@ import org.nott.dto.UserSettleOrderDTO;
 import org.nott.model.BizPayOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.nott.vo.FrontOrderVo;
+import org.nott.vo.MyPayOrderVo;
 import org.nott.vo.PayOrderVo;
 import org.nott.vo.SettleOrderVo;
 
@@ -31,5 +32,5 @@ public interface IBizPayOrderService extends IService<BizPayOrder> {
 
     void simulateNotify(Long orderId);
 
-    Page<PayOrderVo> queryMyOrder(MyOrderQueryDTO dto, Integer page, Integer size);
+    Page<MyPayOrderVo> queryMyOrder(MyOrderQueryDTO dto, Integer page, Integer size);
 }
