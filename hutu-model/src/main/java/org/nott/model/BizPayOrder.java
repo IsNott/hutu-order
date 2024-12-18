@@ -128,5 +128,10 @@ public class BizPayOrder implements Serializable {
      */
     private Long userId;
 
+    /**
+     * 用户删除标识
+     */
+    private Integer userDelFlag;
+
 
 }

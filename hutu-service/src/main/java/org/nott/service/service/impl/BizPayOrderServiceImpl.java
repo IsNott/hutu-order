@@ -196,7 +196,8 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     public Page<MyPayOrderVo> queryMyOrder(MyOrderQueryDTO dto, Integer page, Integer size) {
         long id = StpUtil.getLoginIdAsLong();
         Integer status = dto.getStatus();
-        Page<MyPayOrderVo> queryOrderPageByUserId = bizPayOrderMapper.queryOrderPageByUserId(new Page<>(page, size), id, status);
+        String keyWord = dto.getKeyWord();
+        Page<MyPayOrderVo> queryOrderPageByUserId = bizPayOrderMapper.queryOrderPageByUserId(new Page<>(page, size), id, status, keyWord);
         if (queryOrderPageByUserId != null && HutuUtils.isNotEmpty(queryOrderPageByUserId.getRecords())) {
             for (MyPayOrderVo vo : queryOrderPageByUserId.getRecords()) {
                 if (HutuUtils.isEmpty(vo.getItemInfo())) continue;

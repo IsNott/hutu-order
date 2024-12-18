@@ -24,5 +24,5 @@ public interface BizPayOrderMapper extends BaseMapper<BizPayOrder> {
 
     FrontOrderVo orderFrontQueryByOrderId(@Param("settleTime") String settleTime,@Param("orderId") Long orderId);
 
-    Page<MyPayOrderVo> queryOrderPageByUserId(Page<?> page, @NotNull @Param("id") long id, @Param("status") Integer status);
+    Page<MyPayOrderVo> queryOrderPageByUserId(Page<?> page, @NotNull @Param("id") long id, @Param("status") Integer status, @Param("keyWord") String keyWord);
 }

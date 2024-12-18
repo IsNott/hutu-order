@@ -26,7 +26,7 @@
 				</view>
 			</uni-grid-item>
 			<uni-grid-item>
-				<view class="icon">
+				<view class="icon" @click="handleNavigate('order')">
 					<uni-icons type="cart" size="24"></uni-icons>
 					<text>
 						订单
@@ -61,6 +61,10 @@
 					default : break
 					case 'setting': {
 						commonNavigate('/pages/setting/index')
+						break
+					}
+					case 'order': {
+						commonNavigate('/pages/my-order/index')
 						break
 					}
 				}

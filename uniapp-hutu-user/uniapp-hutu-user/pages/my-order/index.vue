@@ -1,33 +1,30 @@
 <template>
 	<view class="boby">
 		<view class="header">
-			<uni-search-bar class="uni-mt-10" radius="5" placeholder="搜索订单信息" clearButton="auto" cancelButton="none"
-				@confirm="keyWord" />
+			<uni-search-bar class="uni-mt-10" radius="5" @confirm="queryOrder()" v-model="keyWord" placeholder="搜索订单信息" clearButton="auto"
+				cancelButton="none" />
 			<view class="state-bar">
 				<view v-for="(state,index) in status" :key="state" @click="currentIndex = index"
 					:class="{'bar-tabs-active':currentIndex == index}">
-					{{state}}
+					{{state.label}}
 				</view>
 			</view>
 		</view>
-		<view class="list">
-			<view class="order-card">
+		<view class="list" v-if="orderList.length > 0" :key="listKey">
+			<view v-for="order in orderList" :key="order.id" class="order-card">
 				<view class="title">
-					<view class="shop-info" @click="handleShopClick(example.shopName)">
-						{{example.shopName}} >
+					<view class="shop-info" @click="handleShopClick(order.shopName)">
+						{{order.shopName}} >
 					</view>
 					<view class="right">
-						<uni-icons type="more-filled" size="24"></uni-icons>
+						<text>{{getOrderStatusVal(order.orderStatus)}}</text>
 					</view>
 				</view>
 
 				<view class="order-info">
 					<scroll-view class="imgs-scroll" :scroll-x="true" :show-scrollbar="false">
 						<view class="img-view">
-							<!-- <view v-for="img in getImgs(example)">
-								<image mode="aspectFit" :src="img" class="img" />
-							</view> -->
-							<view v-for="item in example.items" :key="item.id">
+							<view v-for="item in order.items" :key="item.id">
 								<view class="item-view" v-if="item.itemImageUrls && item.itemName">
 									<image mode="aspectFill" :src="item.itemImageUrls" class="img" />
 									<view class="desc">
@@ -38,165 +35,87 @@
 						</view>
 					</scroll-view>
 					<view class="order-amount">
-						<view>共 <text style=" font-size: 14px;">{{example.items.length}}</text> 件</view>
-						<view><text style="font-weight: 600; font-size: 20px;">￥{{example.totalAmount}}</text></view>
+						<view>共 <text style=" font-size: 14px;">{{order.items.length}}</text> 件</view>
+						<view><text style="font-weight: 600; font-size: 20px;">￥{{order.totalAmount}}</text></view>
 					</view>
 				</view>
 				<view class="bottom">
 					<view class="extra">
-						下单时间：{{example.createTime}}
+						<view>下单时间：{{order.createTime}}</view>
+						<view>就餐方式：{{getPickTypeVal(order.pickType)}}</view>
 					</view>
 					<view class="btn-group">
-
-						<view class="left">
-							<!-- <view>更多</view> -->
+						<view class="left" style="text-align: center;">
+							<uni-icons type="more-filled" size="24" />
 						</view>
 						<view class="right">
-							<button v-if="example.orderStatus == 0" class="child-btn" type="default" size="mini"
+							<button v-if="order.orderStatus == 0" class="child-btn" type="default" size="mini"
 								style="color: #3030ff;border:1px solid #3030ff;">去支付</button>
-							<button v-if="example.orderStatus == 6" class="child-btn" size="mini"
+							<button v-if="order.orderStatus == 0" class="child-btn" type="default" size="mini"
+								style="color: #3030ff;border:1px solid #3030ff;">取消</button>
+							<button v-if="order.orderStatus == 6" class="child-btn" size="mini"
 								style="color: #000000;border:1px solid #000000;">去评价</button>
-							<button v-if="example.orderStatus == 2" class="child-btn" size="mini"
+							<button v-if="order.orderStatus == 2" class="child-btn" size="mini"
 								style="color: black;border:1px solid black;">申请退款</button>
-							<button v-if="example.orderStatus == 2 || example.orderStatus == 6" class="child-btn"
+							<button v-if="order.orderStatus == 2 || order.orderStatus == 6" class="child-btn"
 								style="color: #3030ff;border:1px solid #3030ff;" size="mini">再来一单</button>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<view class="no-info" v-else>
+			<view>暂无更多信息，先去挑选商品吧</view>
+		</view>
 	</view>
 </template>
 
 <script>
-	const btns = [{
-		text: '去支付',
-		type: 'default',
-		size: 'mini',
-		class: 'child-btn'
-	}, {
-		text: '去评价',
-		type: 'primary',
-		size: 'mini',
-		class: 'child-btn'
-	}, {
-		text: '申请退款',
-		type: 'default',
-		size: 'mini',
-		class: 'child-btn'
-	}, {
-		text: '再来一单',
-		type: 'default',
-		size: 'mini',
-		class: 'child-btn'
-	}]
-	const order = {
-		"id": "1308471084399460352",
-		"orderType": 0,
-		"pickType": 0,
-		"totalAmount": 114.00,
-		"originAmount": 114.00,
-		"itemInfo": "[{\"itemId\": 1, \"itemPiece\": 2, \"skuItemContents\": \"全糖\"}, {\"itemId\": 2, \"itemPiece\": 2, \"skuItemContents\": \"\"}, {\"itemId\": 5, \"itemPiece\": 1, \"skuItemContents\": \"\"}, {\"itemId\": 4, \"itemPiece\": 1, \"skuItemContents\": \"\"}, {\"itemId\": 3, \"itemPiece\": 1, \"skuItemContents\": \"\"}]",
-		"itemPiece": "",
-		"waitTime": "",
-		"paywayId": "",
-		"outTradeNo": "",
-		"refundOutTradeNo": "",
-		"orderNo": "H027",
-		"orderStatus": 2,
-		"payNotifyMsg": "",
-		"refundNotifyMsg": "",
-		"remark": "",
-		"createTime": "2024-11-19 16:36:57",
-		"updateTime": "",
-		"settleTime": "",
-		"shopId": "593630146225766400",
-		"userId": "1275384651644403712",
-		"address": "上海市齐河路28弄31号303室",
-		"shopName": "糊涂餐馆（齐河路店）",
-		"items": [{
-				"id": "1",
-				"itemId": "1",
-				"itemImageUrls": "",
-				"itemName": "拿铁",
-				"skuItemContents": "全糖",
-				"itemPiece": 2,
-				"singleActuallyAmount": "",
-				"expectMakeTime": ""
-			},
-			{
-				"id": "2",
-				"itemId": "2",
-				"itemImageUrls": "https://pic.imgdb.cn/item/67332173d29ded1a8c6801a8.jpg",
-				"itemName": "拿铁",
-				"skuItemContents": "",
-				"itemPiece": 2,
-				"singleActuallyAmount": "",
-				"expectMakeTime": ""
-			},
-			{
-				"id": "3",
-				"itemId": "5",
-				"itemImageUrls": "https://pic.imgdb.cn/item/67332173d29ded1a8c6801a8.jpg",
-				"itemName": "拿铁",
-				"skuItemContents": "",
-				"itemPiece": 1,
-				"singleActuallyAmount": "",
-				"expectMakeTime": ""
-			},
-			{
-				"id": "4",
-				"itemId": "4",
-				"itemImageUrls": "https://pic.imgdb.cn/item/67332173d29ded1a8c6801a8.jpg",
-				"itemName": "拿铁",
-				"skuItemContents": "",
-				"itemPiece": 1,
-				"singleActuallyAmount": "",
-				"expectMakeTime": ""
-			},
-			{
-				"id": "5",
-				"itemId": "3",
-				"itemImageUrls": "https://pic.imgdb.cn/item/67332173d29ded1a8c6801a8.jpg",
-				"itemName": "拿铁",
-				"skuItemContents": "",
-				"itemPiece": 1,
-				"singleActuallyAmount": "",
-				"expectMakeTime": ""
-			},
-			{
-				"id": "6",
-				"itemId": "3",
-				"itemImageUrls": "https://pic.imgdb.cn/item/67332173d29ded1a8c6801a8.jpg",
-				"itemName": "拿铁",
-				"skuItemContents": "",
-				"itemPiece": 1,
-				"singleActuallyAmount": "",
-				"expectMakeTime": ""
-			},
-			{
-				"id": "7",
-				"itemId": "3",
-				"itemImageUrls": "https://pic.imgdb.cn/item/67332173d29ded1a8c6801a8.jpg",
-				"itemName": "拿铁",
-				"skuItemContents": "",
-				"itemPiece": 1,
-				"singleActuallyAmount": "",
-				"expectMakeTime": ""
-			}
-		]
-	}
+	import {
+		getPickType,
+		getOrderStatus
+	} from '@/utils/CommonUtils'
+	import {
+		queryMyOrder
+	} from '@/api/my-order'
 	export default {
 		name: 'MyOrder',
 		data() {
 			return {
 				keyWord: '',
-				status: [
-					'全部', '待付款', '已支付', '已退款', '已完成'
+				listKey: new Date().getTime(),
+				status: [{
+						label: '全部',
+						val: undefined
+					},
+					{
+						label: '待付款',
+						val: 0
+					},
+					{
+						label: '已支付',
+						val: 2
+					},
+					{
+						label: '已退款',
+						val: 5
+					},
+					{
+						label: '已完成',
+						val: 6
+					},
 				],
-				example: order,
+				orderList: [],
 				currentIndex: 0
 			}
+		},
+		watch: {
+			currentIndex(n, o) {
+				this.queryOrder()
+			}
+		},
+		created() {
+			this.queryOrder()
 		},
 		methods: {
 			getImgs(order) {
@@ -212,10 +131,25 @@
 			},
 			handleShopClick(shopName) {
 				console.log('You click ' + shopName);
+			},
+			getPickTypeVal(val) {
+				return getPickType(val)
+			},
+			getOrderStatusVal(val) {
+				return getOrderStatus(val)
+			},
+			queryOrder() {
+				const param = {
+					status: this.getStatus,
+					keyWord: this.keyWord
+				}
+				queryMyOrder(param, 1, 30).then(res => this.orderList = res.data.records)
 			}
 		},
 		computed: {
-
+			getStatus() {
+				return this.status[this.currentIndex].val
+			}
 		}
 	}
 </script>
@@ -277,8 +211,8 @@
 		border-radius: 10px;
 		overflow: hidden;
 	}
-	
-	.desc{
+
+	.desc {
 		text-align: center;
 		font-size: 12px;
 		color: gray;
@@ -289,6 +223,7 @@
 		padding: 20px;
 		margin: 0px 24px;
 		border: 1px solid #c7c9ce;
+		margin-bottom: 20px;
 		/* background-color: #d6d6d6; */
 	}
 
@@ -333,9 +268,16 @@
 		border-radius: 24px;
 		font-size: 12px;
 	}
-	
-	.item-view{
+
+	.item-view {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.no-info {
+		text-align: center;
+		color: gray;
+		font-size: 18px;
+		margin: 30px 0px;
 	}
 </style>

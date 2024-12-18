@@ -22,6 +22,27 @@ export default function getWeekName(day) {
 	}
 }
 
+export function getPickType(val){
+	switch(val){
+		default: ''
+		case 0 : return '堂食'
+		case 1 : return '自取'
+	}
+}
+
+export function getOrderStatus(val){
+	switch(val){
+		default: ''
+		case 0 : return '待支付'
+		case 1 : return '支付中'
+		case 2 : return '已支付'
+		case 3 : return '失败'
+		case 4 : return '已过期'
+		case 5 : return '已退款'
+		case 6 : return '已完成'
+	}
+}
+
 export function getStoreUserInfo() {
 	return uni.getStorageSync('user_info')
 }
