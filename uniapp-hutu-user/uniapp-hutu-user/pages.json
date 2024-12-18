@@ -71,10 +71,15 @@
 			}
 		},
 		{
-			"path" : "component/Divide",
-			"style" : 
-			{
-				"navigationBarTitleText" : ""
+			"path": "component/Divide",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/my-order/index",
+			"style": {
+				"navigationBarTitleText": "我的订单"
 			}
 		}
 	],
