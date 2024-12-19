@@ -89,9 +89,6 @@ function storeTokenInfo(info) {
 }
 
 function handleRequest(api, method, data, resolve, reject) {
-	// uni.showLoading({
-	// 	title: '加载中'
-	// })
 	const token = uni.getStorageSync("token")
 	var header = {
 		'Content-Type': 'application/json'
@@ -108,7 +105,25 @@ function handleRequest(api, method, data, resolve, reject) {
 		},
 		timeout: TIME_OUT,
 		success: (response) => {
+			if(response.statusCode != 200){
+				console.error("Request error: ", response)
+				uni.showToast({
+					icon: 'error',
+					position: 'top',
+					title: '请求失败'
+				})
+				return reject(res)
+			}
 			const res = response.data
+			if(!res.code){
+				console.error("Request error: ", res)
+				uni.showToast({
+					icon: 'error',
+					position: 'top',
+					title: '请求失败'
+				})
+				return reject(res)
+			}
 			if (res.code == 401) {
 				uni.showToast({
 					icon: 'error',

@@ -12,8 +12,11 @@
 				<text class="order-no">
 					{{orderVo.orderNo}}
 				</text>
-				<view class="queue-view">
+				<view class="queue-view" v-if="orderVo.orderStatus == 2">
 					前面还有 {{frontOrderCount}} 单，预计还需等待 {{leftTime}} 分钟
+				</view>
+				<view class="queue-view" v-else>
+					订单已完成
 				</view>
 			</view>
 
@@ -146,7 +149,7 @@
 				}
 			},
 			queryFrontOrder() {
-				if (this.orderId) {
+				if (this.orderId && this.orderVo.orderStatus == 2) {
 					orderFront(this.orderId).then(res => {
 						if (res.data) {
 							this.frontOrderInfo = res.data

@@ -47,4 +47,11 @@ public class BizShopInfoController {
         return ResponseEntity.successData(vos);
     }
 
+    @ApiOperation("根据id查询门店")
+    @GetMapping("getById/{id}")
+    public ResponseEntity<?> getById(@PathVariable("id") Long id){
+        ShopInfoVo vo = bizShopInfoService.getShopById(id);
+        return ResponseEntity.successData(vo);
+    }
+
 }

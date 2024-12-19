@@ -33,4 +33,6 @@ public interface IBizPayOrderService extends IService<BizPayOrder> {
     void simulateNotify(Long orderId);
 
     Page<MyPayOrderVo> queryMyOrder(MyOrderQueryDTO dto, Integer page, Integer size);
+
+    void deleteOrder(Long orderId);
 }

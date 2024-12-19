@@ -19,6 +19,7 @@ import org.nott.dto.OrderItemDTO;
 import org.nott.dto.UserSettleOrderDTO;
 import org.nott.enums.OrderStatusEnum;
 import org.nott.enums.PickTypeEnum;
+import org.nott.enums.YesOrNoEnum;
 import org.nott.model.BizItem;
 import org.nott.model.BizPayOrder;
 import org.nott.model.BizShopInfo;
@@ -205,6 +206,14 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
             }
         }
         return queryOrderPageByUserId;
+    }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        BizPayOrder payOrder = this.getById(orderId);
+        HutuUtils.requireNotNull(payOrder,"没有找到对应订单");
+        payOrder.setUserDelFlag(YesOrNoEnum.YES.getValue());
+        this.updateById(payOrder);
     }
 
     private BigDecimal checkAndReturnTotalAmount(List<OrderItemDTO> itemsByOrder) {

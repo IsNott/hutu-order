@@ -64,4 +64,12 @@ public class BizShopInfoServiceImpl extends ServiceImpl<BizShopInfoMapper, BizSh
         }
         return shopInfoVos;
     }
+
+    @Override
+    public ShopInfoVo getShopById(Long id) {
+        BizShopInfo shopInfo = this.getById(id);
+        HutuUtils.requireNotNull(shopInfo, "门店不存在");
+        ShopInfoVo vo = this.infoTranVoAndSetOpenStat(shopInfo);
+        return vo;
+    }
 }

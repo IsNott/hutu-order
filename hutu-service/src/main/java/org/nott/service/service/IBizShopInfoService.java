@@ -21,4 +21,6 @@ public interface IBizShopInfoService extends IService<BizShopInfo> {
     ShopInfoVo getDefaultShop();
 
     List<ShopInfoVo> searchShopByKeyWord(String keyWord);
+
+    ShopInfoVo getShopById(Long id);
 }

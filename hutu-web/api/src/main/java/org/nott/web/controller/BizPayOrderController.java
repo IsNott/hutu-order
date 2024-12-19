@@ -47,7 +47,7 @@ public class BizPayOrderController {
 
     @ApiOperation("查询订单")
     @GetMapping("queryById/{id}")
-    @RedisCache(key = "queryById",item = "#id",expire = 180)
+//    @RedisCache(key = "queryById",item = "#id",expire = 180)
     public ResponseEntity<?> queryById(@PathVariable("id") Long id){
         PayOrderVo vo = bizPayOrderService.queryPayOrderById(id);
         return ResponseEntity.successData(vo);
@@ -79,6 +79,13 @@ public class BizPayOrderController {
     public ResponseEntity<?> myOrder(@RequestBody MyOrderQueryDTO dto, @PathVariable("page") Integer page, @PathVariable("size") Integer size){
         Page<MyPayOrderVo> payOrderVoPage = bizPayOrderService.queryMyOrder(dto,page,size);
         return ResponseEntity.successData(payOrderVoPage);
+    }
+
+    @ApiOperation("删除订单-用户")
+    @PutMapping("deleteOrder/{orderId}")
+    public ResponseEntity<?> deleteOrder(@PathVariable("orderId") Long orderId){
+        bizPayOrderService.deleteOrder(orderId);
+        return ResponseEntity.success();
     }
 
 }

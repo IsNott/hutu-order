@@ -13,7 +13,7 @@
 		<view class="list" v-if="orderList.length > 0" :key="listKey">
 			<view v-for="order in orderList" :key="order.id" class="order-card">
 				<view class="title">
-					<view class="shop-info" @click="handleShopClick(order.shopName)">
+					<view class="shop-info" @click="handleShopClick(order.shopId)">
 						{{order.shopName}} >
 					</view>
 					<view class="right">
@@ -21,7 +21,7 @@
 					</view>
 				</view>
 
-				<view class="order-info">
+				<view class="order-info"  @click="handleOrderCardClick(order.id)">
 					<scroll-view class="imgs-scroll" :scroll-x="true" :show-scrollbar="false">
 						<view class="img-view">
 							<view v-for="item in order.items" :key="item.id">
@@ -54,11 +54,11 @@
 							<button v-if="order.orderStatus == 0" class="child-btn" type="default" size="mini"
 								style="color: #3030ff;border:1px solid #3030ff;">取消</button>
 							<button v-if="order.orderStatus == 6" class="child-btn" size="mini"
-								style="color: #000000;border:1px solid #000000;">去评价</button>
-							<button v-if="order.orderStatus == 2" class="child-btn" size="mini"
+								style="color: #000000;border:1px solid #000000;" @click="handleCommentClick(order.id)">去评价</button>
+							<button v-if="order.orderStatus == 2 && showRefund" class="child-btn" size="mini"
 								style="color: black;border:1px solid black;">申请退款</button>
 							<button v-if="order.orderStatus == 2 || order.orderStatus == 6" class="child-btn"
-								style="color: #3030ff;border:1px solid #3030ff;" size="mini">再来一单</button>
+								style="color: #3030ff;border:1px solid #3030ff;" size="mini" @click="handleMoreOrderClick(order.shopId)">再来一单</button>
 						</view>
 					</view>
 				</view>
@@ -73,10 +73,11 @@
 <script>
 	import {
 		getPickType,
-		getOrderStatus
+		getOrderStatus,
+		commonNavigate
 	} from '@/utils/CommonUtils'
 	import {
-		queryMyOrder
+		queryMyOrder,queryShopInfoById
 	} from '@/api/my-order'
 	export default {
 		name: 'MyOrder',
@@ -106,7 +107,8 @@
 					},
 				],
 				orderList: [],
-				currentIndex: 0
+				currentIndex: 0,
+				showRefund: false
 			}
 		},
 		watch: {
@@ -118,6 +120,9 @@
 			this.queryOrder()
 		},
 		methods: {
+			handleOrderCardClick(orderId){
+				commonNavigate('/pages/settled/index?orderId=' + orderId)
+			},
 			getImgs(order) {
 				var array = []
 				if (order && order.items && order.items.length > 0) {
@@ -129,8 +134,14 @@
 				}
 				return array
 			},
-			handleShopClick(shopName) {
-				console.log('You click ' + shopName);
+			handleShopClick(shopId) {
+				this.handleMoreOrderClick(shopId)
+			},
+			handleCommentClick(orderId){
+				uni.showToast({
+					icon: 'success',
+					title: '开发中'
+				})
 			},
 			getPickTypeVal(val) {
 				return getPickType(val)
@@ -144,6 +155,20 @@
 					keyWord: this.keyWord
 				}
 				queryMyOrder(param, 1, 30).then(res => this.orderList = res.data.records)
+			},
+			handleMoreOrderClick(shopId){
+				queryShopInfoById(shopId).then(res =>{
+					const shopInfo = res.data
+					uni.setStorage({
+						data: shopInfo,
+						key: 'current_shop',
+						success:() => {
+							uni.switchTab({
+								url: '/pages/order/index'
+							})
+						}
+					})
+				})
 			}
 		},
 		computed: {
