@@ -1,14 +1,14 @@
 package org.nott.ws.api;
 
+import com.alibaba.fastjson.JSONObject;
+import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 import org.nott.common.ResponseEntity;
 import org.nott.feign.BizPayOrderWsClient;
-import org.nott.ws.WebSocketServer;
 import org.nott.ws.handler.OrderServerHandler;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 
 /**
  * @author Nott
@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 public class BizPayOrderWsApi implements BizPayOrderWsClient {
 
     @PostMapping("sendMessage2Shop/{shopId}")
-    public ResponseEntity<?> sendMessage2Shop(@PathVariable("shopId") Long shopId, @RequestBody Object message) {
+    public ResponseEntity<?> sendMessage2Shop(@PathVariable("shopId") Long shopId, @RequestBody JSONObject message) {
         // 客户端下单完成 -> 发送到叫号大屏
         String shopIdStr = shopId + "";
         if (!OrderServerHandler.SHOP_CHANNEL_MAP.containsKey(shopIdStr)) {
@@ -32,8 +32,10 @@ public class BizPayOrderWsApi implements BizPayOrderWsClient {
             log.error("WebSocket分组:[{}]，无连接客户端", shopId);
             return ResponseEntity.failure();
         }
-        channels.writeAndFlush(message);
-        log.info("成功发送信息到门店[{}]下的客户端", shopIdStr);
+        for (Channel channel : channels) {
+            log.info("发送信息到门店[{}]下的客户端", shopIdStr);
+            channel.writeAndFlush(new TextWebSocketFrame(message.toJSONString()));
+        }
         return ResponseEntity.success();
     }
 }

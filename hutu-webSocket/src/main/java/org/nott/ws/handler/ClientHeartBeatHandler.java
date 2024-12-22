@@ -1,9 +1,6 @@
 package org.nott.ws.handler;
 
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -20,7 +17,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Component
-//@ChannelHandler.Sharable
+@ChannelHandler.Sharable
 public class ClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
 
     @Resource
@@ -36,7 +33,8 @@ public class ClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
         String text = tf.text();
         if(webSocketConfig.getHeartBeatMsg().equals(text)){
             channelHandlerContext.writeAndFlush(new TextWebSocketFrame("pong"));
-            log.info("客户端[{}]心跳包",channelHandlerContext.channel().id().asShortText());
+            Channel channel = channelHandlerContext.channel();
+            log.info("接收客户端[{}][{}]心跳包", channel.id().asShortText(),channel.remoteAddress());
             return;
         }
         super.channelRead(channelHandlerContext,tf);
@@ -50,6 +48,11 @@ public class ClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
             IdleState state = event.state();
             log.info("Client: [{}], Idle state: [{}]", ctx.channel().remoteAddress(), state);
         }
-        super.userEventTriggered(ctx, evt);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        cause.printStackTrace();
+        ctx.close();
     }
 }

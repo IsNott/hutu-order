@@ -1,9 +1,10 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const path = require('path');
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -16,11 +17,12 @@ async function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      
+
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true
     }
   })
 
@@ -79,3 +81,33 @@ if (isDevelopment) {
     })
   }
 }
+
+ipcMain.on('print-request', (event, printData) => {
+  const win = new BrowserWindow({
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false, // 禁用 contextIsolation
+      enableRemoteModule: true,
+    }
+  });
+  const filePath = path.join(__dirname, '../src/static/print-template/print-order.html');
+  win.loadFile(filePath).catch(err => {
+    console.error('Failed to load file:', err);
+  });
+  win.webContents.once('did-finish-load', () => {
+    win.webContents.print({
+      silent: true,
+      margins: {
+        marginType: 'none'
+      },
+      pageSize: {
+        width: printData.width || 800000,
+        height: printData.height || 580000
+      }
+    }, (success, errorType) => {
+      if (!success) console.log(errorType);
+      win.close();
+    })
+  })
+})

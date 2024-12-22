@@ -116,6 +116,7 @@ const empty4Ready = [
   },
 ]
 import OrderNoTable from "./componet/OrderNoTable.vue"
+const { ipcRenderer } = require('electron');
 export default {
   name: "OrderBroad",
   components: { OrderNoTable },
@@ -131,6 +132,7 @@ export default {
       readys: empty4Ready,
       total: [],
       tips: "为不影响口感，请您及时取餐，您可打开小程序查看当前是否制作完成",
+      ipcRenderer: ipcRenderer,
     }
   },
   created() {
@@ -161,12 +163,33 @@ export default {
       }
     },
     onWebSocketMessage(event) {
-      console.log(event)
+      console.log(event);
       
       if (event.data) {
-        const message = JSON.parse(event.data)
-        console.log("WebSocket Message: ", message)
+        if(event.data === 'pong'){
+          return
+        }
+        const data = JSON.parse(event.data)
+        const type = data.type
+        console.log(type);
+        
+        switch(type){
+          default:
+            break
+          case 'in':
+            this.handlePrint()
+            break
+          case 'READY':
+            break
+          case 'TOTAL':
+            break
+        }
+        
       }
+    },
+    handlePrint() {
+      const data = {}
+      ipcRenderer.send('print-request', data)
     },
     onWebSocketClose() {
       console.log("WebSocket connection is closed")

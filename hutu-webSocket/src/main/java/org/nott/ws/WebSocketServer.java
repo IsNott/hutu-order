@@ -30,6 +30,10 @@ public class WebSocketServer {
 
     @PostConstruct
     public void run() {
+        new Thread(this::doRun).start();
+    }
+
+    public void doRun() {
         log.info("Starting to run websocket server...");
         Integer port = webSocketConfig.getPort();
         Integer bossGroupThread = webSocketConfig.getBossGroup();

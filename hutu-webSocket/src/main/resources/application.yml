@@ -11,5 +11,10 @@ spring:
   application:
     name: Hutu-WebSocket
 
+logging:
+  config: classpath:logback-dev.xml
+  level:
+    org.nott.ws: debug
+
 server:
-  port: 8888
+  port: 8889

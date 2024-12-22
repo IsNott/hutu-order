@@ -27,6 +27,9 @@ application-dev.yml
 node_modules/
 dist/
 
+dist_*/
+dist_*/**
+
 uniapp-hutu-user/uniapp-hutu-user/unpackage/
 uniapp-hutu-user/uniapp-hutu-user/unpackage/*
 uniapp-hutu-user/uniapp-hutu-user/unpackage/**
