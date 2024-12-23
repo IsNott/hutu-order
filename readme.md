@@ -22,9 +22,11 @@ Sa-token、Spring Security、Redis、Mybatis-plus、AspectJ、Feign<br>
 已开发
 - 微信小程序登录
 
-将开发
+开发中
 - 叫号大屏
 - 小票打印
+
+将开发
 - 语言播报
 - 同城跑腿
 
