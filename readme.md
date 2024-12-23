@@ -1,14 +1,24 @@
 # 前序
 糊涂点餐，一个基于uniapp+vue2+springboot2+mybatis-plus的点餐系统，适用于小型餐饮店、咖啡饮品店等业务场景。
+
+## 在线预览
+
+待部署。
+
 ## 项目文档
+
 待更新。
+
 ## 技术选型
+
 商家后台管理端使用vue.js 2.x<br>
 小程序端使用uni-app，方便后续可同步部署到支付宝、微信小程序、H5、app端<br>
 服务端使用的框架技术：SpringBoot2.x、Vue2.x、Netty4.x<br>
 Sa-token、Spring Security、Redis、Mybatis-plus、AspectJ、Feign<br>
 项目中使用的协议：Http、WebSocket
+
 ## 对接系统
+
 已开发
 - 微信小程序登录
 
@@ -17,7 +27,9 @@ Sa-token、Spring Security、Redis、Mybatis-plus、AspectJ、Feign<br>
 - 小票打印
 - 语言播报
 - 同城跑腿
+
 ## 系统模块
+
 ```
 ├─db # 数据库脚本（mysql）
 ├─hutu-web # REST API模块（api+管理）
@@ -33,12 +45,15 @@ Sa-token、Spring Security、Redis、Mybatis-plus、AspectJ、Feign<br>
 ├─vue-hutu-stuff # 商家叫号屏
 ```
 ## 系统截图
+
 待更新
 
 ## 运行项目
+
 待更新
 
 ## 开发规范
+
 对象模型
 
 |对象| 作用              |是否强制|命名|
