@@ -1,9 +1,19 @@
 <p align="center">
   <h2 align="center">糊涂点餐</h2>
   <p align="center">
-    糊涂点餐，一款基于uniapp+vue2+springboot2+mybatis-plus的点餐系统，适用于小型餐饮店、咖啡饮品店等业务场景。
+    <img src="https://img.shields.io/badge/Spring Boot-2.2.0RELEASE-blue"/>
+    <img src="https://img.shields.io/badge/Spring Security-yellow"/>
+    <img src="https://img.shields.io/badge/Vue 2.0-green"/>
+    <img src="https://img.shields.io/badge/Uni APP-gree"/>
+    <img src="https://img.shields.io/badge/SaToken-orange"/>
+    <img src="https://img.shields.io/badge/Mybatis Plus-red"/>
+    <img src="https://img.shields.io/badge/Netty-black"/>
+    <img src="https://img.shields.io/badge/Eletron-blue"/>
+  </p>
+  <p align="center">
+    〽️糊涂点餐，一款基于uniapp+vue2+springboot2+mybatis-plus的点餐系统，适用于小型餐饮店、咖啡饮品店等业务场景。
+    用于创建覆盖多端的点餐系统，包括小程序、web端，覆盖叫号屏、打印和外卖等多种业务场景。
     <br/>
-    致力于创建覆盖多端的点餐系统，包括小程序、web端。囊括叫号屏、打印和外卖等多种业务场景。
     <br/>
     <a href="https://github.com/shaojintian/Best_README_template">商业合作</a>
     ·
@@ -119,7 +129,7 @@ Gitee: [糊涂](https://gitee.com/isnott) &ensp;
 假如您有交流项目经验的想法或想要交流对于项目的意见建议，请扫描下图二维码加作者微信，备注：`点餐系统`，看到消息我会拉您进入交流群，
 期待与您的交流。
 
-<img src="./doc/images/qr.jpg">
+<img style="width: 200px;" src="./doc/images/qr.jpg">
 
 
 
