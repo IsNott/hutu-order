@@ -30,9 +30,10 @@ spring:
     port: 6379
     jedis:
       pool:
-        max-idle: 8
-        min-idle: 0
         max-active: 8
+        max-idle: 30
+        min-idle: 2
+        time-out: 3000
   sa-token:
     # token名称 (同时也是cookie名称)
     token-name: token

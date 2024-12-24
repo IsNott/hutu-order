@@ -6,7 +6,7 @@
           <div class="main-title">备餐中</div>
           <div class="sub-title">PREPARING</div>
         </div>
-        <div class="desc" v-if="total.length > 0">
+        <div class="desc" v-if="preparps.length > 0">
           <div class="desc-info">
             共 {{ preparps.length }} 单 {{ orderTotalPiece }} 杯 预计等待
             {{ orderTotalTime }} 分钟
@@ -40,83 +40,9 @@
   </div>
 </template>
 <script>
-const empty = [
-  {
-    orderNo: "H001",
-    pickType: 0,
-    itemPiece: 2,
-    prepareTime: 2,
-  },
-  {
-    orderNo: "H020",
-    pickType: 0,
-    itemPiece: 2,
-    prepareTime: 2,
-  },
-  {
-    orderNo: "H002",
-    pickType: 1,
-    itemPiece: 2,
-    prepareTime: 2,
-  },
-  {
-    orderNo: "H003",
-    pickType: 0,
-    itemPiece: 1,
-    prepareTime: 2,
-  },
-  {
-    orderNo: "H004",
-    pickType: 0,
-    itemPiece: 1,
-    prepareTime: 2,
-  },
-  {
-    orderNo: "H005",
-    pickType: 0,
-    itemPiece: 1,
-    prepareTime: 2,
-  },
-  {
-    orderNo: "H006",
-    pickType: 0,
-    itemPiece: 1,
-    prepareTime: 2,
-  },
-  {
-    orderNo: "H007",
-    pickType: 0,
-    itemPiece: 1,
-    prepareTime: 2,
-  },
-  {
-    orderNo: "H008",
-    pickType: 0,
-    itemPiece: 1,
-    prepareTime: 2,
-  },
-  {
-    orderNo: "H009",
-    pickType: 0,
-    itemPiece: 1,
-    prepareTime: 2,
-  },
-  {
-    orderNo: "H010",
-    pickType: 0,
-    itemPiece: 1,
-    prepareTime: 2,
-  },
-]
-const empty4Ready = [
-  {
-    orderNo: "H020",
-    pickType: 0,
-    itemPiece: 2,
-  },
-]
 import OrderNoTable from "./componet/OrderNoTable.vue"
-const { ipcRenderer } = require('electron');
+import { OrderMessage } from "@/enums/OrderMessageEnum.js"
+const { ipcRenderer } = require("electron")
 export default {
   name: "OrderBroad",
   components: { OrderNoTable },
@@ -129,14 +55,14 @@ export default {
       hbTimeinterval: null,
       pageTitle: "叫号大屏",
       preparps: [],
-      readys: empty4Ready,
-      total: [],
-      tips: "为不影响口感，请您及时取餐，您可打开小程序查看当前是否制作完成",
+      readys: [],
+      tips: "为不影响餐品口感，请您及时取餐，您可打开小程序查看当前是否制作完成",
       ipcRenderer: ipcRenderer,
     }
   },
   created() {
     this.setupWebSocket()
+    console.log(new Date().getTime())
   },
   methods: {
     getPickTypeVal(type) {
@@ -148,7 +74,9 @@ export default {
       }
     },
     setupWebSocket() {
-      this.websocket = new WebSocket("ws://localhost:2999/order?shopId=593630146225766400") // 创建WebSocket连接
+      this.websocket = this.webSocket
+        ? this.webSocket
+        : new WebSocket("ws://localhost:2999/order?shopId=593630146225766400") // 创建WebSocket连接
       this.websocket.onopen = this.onWebSocketOpen // WebSocket连接打开时的处理函数
       this.websocket.onmessage = this.onWebSocketMessage // 收到WebSocket消息时的处理函数
       this.websocket.onclose = this.onWebSocketClose // WebSocket连接关闭时的处理函数
@@ -163,33 +91,48 @@ export default {
       }
     },
     onWebSocketMessage(event) {
-      console.log(event);
-      
       if (event.data) {
-        if(event.data === 'pong'){
+        if (event.data === "pong") {
           return
         }
-        const data = JSON.parse(event.data)
-        const type = data.type
-        console.log(type);
-        
-        switch(type){
+        console.log(event)
+        const message = JSON.parse(event.data)
+        const type = message.messageType
+        switch (type) {
           default:
             break
-          case 'in':
-            this.handlePrint()
+          case OrderMessage.IN:
+            this.push2List(message)
+            // this.handlePrint()
             break
-          case 'READY':
+          case OrderMessage.FINISH:
+            this.removeFromPreparedAndFinished(
+              this.preparps,
+              message,
+              this.readys
+            )
             break
-          case 'TOTAL':
+          case OrderMessage.TAKED:
+            this.removeFromPreparedAndFinished(this.readys, message, null)
             break
         }
-        
       }
     },
     handlePrint() {
       const data = {}
-      ipcRenderer.send('print-request', data)
+      ipcRenderer.send("print-request", data)
+    },
+    push2List(order) {
+      this.preparps.push(order)
+    },
+    removeFromPreparedAndFinished(list, order, toList) {
+      list.splice(
+        list.findIndex((item) => (item.id = order.id)),
+        1
+      )
+      if (toList) {
+        toList.push(order)
+      }
     },
     onWebSocketClose() {
       console.log("WebSocket connection is closed")
@@ -220,16 +163,16 @@ export default {
   computed: {
     orderTotalPiece() {
       var total = 0
-      this.total.forEach((item) => (total += item.itemPiece))
+      this.preparps.forEach((item) => (total += item.itemPiece))
       return total
     },
     orderTotalTime() {
       var total = 0
-      this.total.forEach((item) => (total += item.prepareTime))
+      this.preparps.forEach((item) => (total += item.waitTime))
       return total
     },
     processing() {
-      return (this.readys.length / this.total.length) * 100
+      return (this.readys.length / this.preparps.length) * 100
     },
     getPrepareOrder() {
       if (this.preparps.length > 12) {

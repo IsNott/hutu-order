@@ -1,5 +1,6 @@
 package org.nott.common.utils;
 
+import io.swagger.annotations.Scope;
 import lombok.Data;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -13,6 +14,7 @@ import java.util.Map;
  */
 @Data
 @Component
+@Scope(name = "singleton", description = "")
 public class SpringContextUtil implements ApplicationContextAware {
     /**
      * 上下文对象

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -34,8 +35,6 @@ public class BizPayOrderController {
 
     @Resource
     private IBizPayOrderService bizPayOrderService;
-    @Resource
-    private RedisUtils redisUtils;
 
     @ApiOperation("用户下单")
     @PostMapping("settle")

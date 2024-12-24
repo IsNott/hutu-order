@@ -1,11 +1,13 @@
 package org.nott.ws.handler;
 
 import io.netty.channel.*;
+import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.nott.common.config.WebSocketConfig;
+import org.nott.common.utils.HutuUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -34,7 +36,7 @@ public class ClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
         if(webSocketConfig.getHeartBeatMsg().equals(text)){
             channelHandlerContext.writeAndFlush(new TextWebSocketFrame("pong"));
             Channel channel = channelHandlerContext.channel();
-            log.info("接收客户端[{}][{}]心跳包", channel.id().asShortText(),channel.remoteAddress());
+            log.debug("接收客户端[{}][{}]心跳包", channel.id().asShortText(),channel.remoteAddress());
             return;
         }
         super.channelRead(channelHandlerContext,tf);
@@ -46,7 +48,7 @@ public class ClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
         if (evt instanceof IdleStateEvent && webSocketConfig.isShowIdleMsg()) {
             IdleStateEvent event = (IdleStateEvent) evt;
             IdleState state = event.state();
-            log.info("Client: [{}], Idle state: [{}]", ctx.channel().remoteAddress(), state);
+            log.debug("Client: [{}], Idle state: [{}]", ctx.channel().remoteAddress(), state);
         }
     }
 

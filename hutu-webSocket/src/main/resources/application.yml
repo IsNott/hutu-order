@@ -17,4 +17,4 @@ logging:
     org.nott.ws: debug
 
 server:
-  port: 8889
+  port: 8888

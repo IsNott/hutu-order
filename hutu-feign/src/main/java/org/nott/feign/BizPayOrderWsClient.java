@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 // 没有使用注册中心，使用url方式调用
-@FeignClient(value = "payOrder-ws",url = "localhost:8888/payOrder-ws")
+@FeignClient(value = "payOrder-ws", url = "http://localhost:8888", path = "/ws/payOrder/")
 public interface BizPayOrderWsClient {
 
     @PostMapping("sendMessage2Shop/{shopId}")

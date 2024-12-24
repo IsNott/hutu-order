@@ -17,3 +17,4 @@ const vue = new Vue({
   render: h => h(App),
   router
 }).$mount('#app')
+console.log(process.env);

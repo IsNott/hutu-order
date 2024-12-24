@@ -21,6 +21,7 @@ public class BizPayOrderWsApi implements BizPayOrderWsClient {
 
     @PostMapping("sendMessage2Shop/{shopId}")
     public ResponseEntity<?> sendMessage2Shop(@PathVariable("shopId") Long shopId, @RequestBody JSONObject message) {
+        log.info("WsApi -> sendMessage2Shop -> shopId:[{}], message:[{}]", shopId, message);
         // 客户端下单完成 -> 发送到叫号大屏
         String shopIdStr = shopId + "";
         if (!OrderServerHandler.SHOP_CHANNEL_MAP.containsKey(shopIdStr)) {

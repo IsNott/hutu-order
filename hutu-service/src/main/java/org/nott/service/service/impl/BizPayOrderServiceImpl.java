@@ -17,12 +17,15 @@ import org.nott.common.utils.SequenceUtils;
 import org.nott.dto.MyOrderQueryDTO;
 import org.nott.dto.OrderItemDTO;
 import org.nott.dto.UserSettleOrderDTO;
+import org.nott.enums.OrderMessageType;
 import org.nott.enums.OrderStatusEnum;
 import org.nott.enums.PickTypeEnum;
 import org.nott.enums.YesOrNoEnum;
+import org.nott.feign.BizPayOrderWsClient;
 import org.nott.model.BizItem;
 import org.nott.model.BizPayOrder;
 import org.nott.model.BizShopInfo;
+import org.nott.model.inter.OrderWsMessageInfo;
 import org.nott.service.delayed.handler.UserPayOrderQueueHandler;
 import org.nott.service.mapper.BizPayOrderMapper;
 import org.nott.service.service.IBizItemService;
@@ -31,6 +34,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.service.service.IBizShopInfoService;
 import org.nott.service.service.IBizUserPackageService;
 import org.nott.vo.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,6 +76,8 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     private IBizShopInfoService bizShopInfoService;
     @Resource
     private IBizUserPackageService bizUserPackageService;
+    @Resource
+    private BizPayOrderWsClient bizPayOrderWsClient;
 
     @PostConstruct
     public void pushUnFinishOrder2Queue() {
@@ -191,6 +198,14 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         payOrder.setSettleTime(new Date());
         this.updateById(payOrder);
         redisUtils.hdel(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + payOrder.getUserId(), payOrder.getId() + "");
+        OrderWsMessageInfo messageInfo = HutuUtils.transToObject(payOrder, OrderWsMessageInfo.class);
+        messageInfo.setMessageType(OrderMessageType.IN.getVal());
+        this.sendMessageAsync(payOrder.getShopId(), messageInfo);
+    }
+
+    @Async
+    public void sendMessageAsync(Long shopId, OrderWsMessageInfo messageInfo) {
+        bizPayOrderWsClient.sendMessage2Shop(shopId, JSONObject.parseObject(messageInfo.toJSONString()));
     }
 
     @Override
@@ -214,6 +229,17 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         HutuUtils.requireNotNull(payOrder,"没有找到对应订单");
         payOrder.setUserDelFlag(YesOrNoEnum.YES.getValue());
         this.updateById(payOrder);
+    }
+
+    @Override
+    public void finishOrder(Long orderId) {
+        BizPayOrder payOrder = this.getById(orderId);
+        HutuUtils.requireNotNull(payOrder,"没有找到对应订单");
+        payOrder.setOrderStatus(OrderStatusEnum.FINISH.getVal());
+        this.updateById(payOrder);
+        OrderWsMessageInfo messageInfo = HutuUtils.transToObject(payOrder, OrderWsMessageInfo.class);
+        messageInfo.setMessageType(OrderMessageType.FINISH.getVal());
+        this.sendMessageAsync(payOrder.getShopId(), messageInfo);
     }
 
     private BigDecimal checkAndReturnTotalAmount(List<OrderItemDTO> itemsByOrder) {

@@ -17,15 +17,16 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.nott</groupId>
-            <artifactId>hutu-common</artifactId>
+            <artifactId>hutu-model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.nott</groupId>
-            <artifactId>hutu-model</artifactId>
+            <artifactId>hutu-feign</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

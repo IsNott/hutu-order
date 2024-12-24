@@ -29,6 +29,10 @@ public class PermissionAnnotationScanner implements ApplicationListener<ContextR
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        if(SpringContextUtil.getApplicationContext() == null){
+            log.debug("ApplicationContext is null, Do PermissionAnnotationScan Failed...");
+            return;
+        }
         ApplicationContext applicationContext = SpringContextUtil.getApplicationContext();
         String[] controllerBeanNames = applicationContext.getBeanNamesForAnnotation(RestController.class);
         for (String beanName : controllerBeanNames) {

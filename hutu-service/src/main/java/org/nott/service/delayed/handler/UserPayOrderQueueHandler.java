@@ -8,6 +8,7 @@ import org.nott.common.delayed.DelayedTask;
 import org.nott.common.redis.RedisUtils;
 import org.nott.common.thread.pool.HutuThreadPoolExecutor;
 import org.nott.common.utils.HutuUtils;
+import org.nott.common.utils.SpringContextUtil;
 import org.nott.enums.HandleOrderExpireType;
 import org.nott.enums.OrderStatusEnum;
 import org.nott.model.BizPayOrder;
@@ -31,8 +32,6 @@ public class UserPayOrderQueueHandler {
 
     private final DelayQueue<DelayedTask<BizPayOrder>> payOrderQueue = new DelayQueue<>();
 
-    private final IBizPayOrderService payOrderService;
-
     public static final String NON_PAYMENT_ORDER_KEY_PREFIX = "NON-PAYMENT-ORDER:";
 
     private final BusinessConfig businessConfig;
@@ -46,6 +45,7 @@ public class UserPayOrderQueueHandler {
     }
 
     public void doOrderExpire() {
+        IBizPayOrderService payOrderService = SpringContextUtil.getBean(IBizPayOrderService.class);
         while (true) {
             try {
                 DelayedTask<BizPayOrder> delayedTask = payOrderQueue.take();

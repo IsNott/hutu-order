@@ -101,6 +101,7 @@ ipcMain.on('print-request', (event, printData) => {
       margins: {
         marginType: 'none'
       },
+      deviceName: 'XP-58',
       pageSize: {
         width: printData.width || 800000,
         height: printData.height || 580000

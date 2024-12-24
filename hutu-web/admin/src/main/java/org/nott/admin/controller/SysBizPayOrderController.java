@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.service.service.IBizPayOrderService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,6 +41,12 @@ public class SysBizPayOrderController {
         return ResponseEntity.successData(count);
     }
 
+    @ApiOperation("完成订单制作")
+    @GetMapping("/finishOrder/{orderId}")
+    public ResponseEntity<?> finishOrder(@PathVariable("orderId") Long orderId){
+        bizPayOrderService.finishOrder(orderId);
+        return ResponseEntity.success();
+    }
 
 
 }
