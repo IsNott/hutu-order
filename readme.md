@@ -5,10 +5,11 @@
     <img src="https://img.shields.io/badge/Spring Security-yellow"/>
     <img src="https://img.shields.io/badge/Vue 2.0-green"/>
     <img src="https://img.shields.io/badge/Uni APP-gree"/>
+    <img src="https://img.shields.io/badge/Eletron-blue"/>
+    <img src="https://img.shields.io/badge/Redis-red"/>
     <img src="https://img.shields.io/badge/SaToken-orange"/>
     <img src="https://img.shields.io/badge/Mybatis Plus-red"/>
     <img src="https://img.shields.io/badge/Netty-black"/>
-    <img src="https://img.shields.io/badge/Eletron-blue"/>
   </p>
   <p align="center">
     〽️糊涂点餐，一款基于uniapp+vue2+springboot2+mybatis-plus的点餐系统，适用于小型餐饮店、咖啡饮品店等业务场景。
