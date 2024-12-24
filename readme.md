@@ -15,11 +15,11 @@
     用于创建覆盖多端的点餐系统，包括小程序、web端，覆盖叫号屏、打印和外卖等多种业务场景。
     <br/>
     <br/>
-    <a href="https://github.com/shaojintian/Best_README_template">商业合作</a>
+    <a href="https://github.com/IsNott/hutu-order?tab=readme-ov-file#%E5%95%86%E4%B8%9A%E5%90%88%E4%BD%9C">商业合作</a>
     ·
-    <a href="https://github.com/shaojintian/Best_README_template/issues">加入群聊</a>
+    <a href="https://github.com/IsNott/hutu-order?tab=readme-ov-file#%E4%BA%A4%E6%B5%81%E7%BE%A4%E8%81%8A">加入群聊</a>
     ·
-    <a href="https://github.com/shaojintian/Best_README_template/issues">提个Issues</a>
+    <a href="https://github.com/IsNott/hutu-order/issues">提个Issues</a>
   </p>
 </p>
 
