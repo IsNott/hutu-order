@@ -28,6 +28,8 @@
 
 - [开发架构](#开发架构)
 - [技术选型](#技术选型)
+    - [运行环境](#运行环境)
+    - [运行项目](#运行项目)
     - [对接系统](#对接系统)
     - [文件目录](#文件目录)
 - [系统预览](#系统预览)
@@ -47,6 +49,21 @@
 `Sa-token`、`Spring Security`、`Redis`、`Mybatis-plus`、`AspectJ`、`Spring-Cloud-OpenFeign`<br>
 叫号屏使用：`Vue2.x`、`Eletron`<br>
 使用的协议：`Http`、`WebSocket`
+
+#### 运行环境
+
+| Name    | version  |
+|---------|----------|
+| JDK     | 1.8      |
+| Node.js | 16       |
+
+#### 运行项目
+
+- 小程序服务端：`hutu-web模块下的api模块`：`HutuApiApplication`
+- 管理服务端：`hutu-web模块下的admin模块`：`HutuApiApplication`
+- WebSocket：`hutu-webSocket模块`：`HutuWebSocketApplication`
+- 管理后台：`vue-hutu-admin`: `npm run serve`
+- 叫号大屏：`vue-hutu-stuff`: `npm run electron:serve`
 
 #### 对接系统
 
