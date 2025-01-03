@@ -37,4 +37,6 @@ public interface IBizPayOrderService extends IService<BizPayOrder> {
     void deleteOrder(Long orderId);
 
     void finishOrder(Long orderId);
+
+    void cancelOrder(Long orderId);
 }

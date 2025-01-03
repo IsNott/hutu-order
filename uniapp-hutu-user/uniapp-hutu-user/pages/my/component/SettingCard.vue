@@ -3,7 +3,7 @@
 		<uni-grid :column="4" :showBorder="false"  :square="false">
 			<uni-grid-item>
 				<view class="icon">
-					<uni-icons type="vip" size="24"></uni-icons>
+					<uni-icons type="vip" size="24" @click="showTips"></uni-icons>
 					<text>
 						会员卡
 					</text>
@@ -11,7 +11,7 @@
 			</uni-grid-item>
 			<uni-grid-item>
 				<view class="icon">
-					<uni-icons type="wallet" size="24"></uni-icons>
+					<uni-icons type="wallet" size="24" @click="showTips"></uni-icons>
 					<text>
 						卡券
 					</text>
@@ -19,7 +19,7 @@
 			</uni-grid-item>
 			<uni-grid-item>
 				<view class="icon">
-					<uni-icons type="gift" size="24"></uni-icons>
+					<uni-icons type="gift" size="24" @click="showTips"></uni-icons>
 					<text>
 						礼品卡
 					</text>
@@ -68,6 +68,13 @@
 						break
 					}
 				}
+			},
+			showTips(){
+				uni.showModal({
+					title: '提示',
+					content: '功能建设中...',
+					showCancel: false
+				})
 			}
 		}
 	}

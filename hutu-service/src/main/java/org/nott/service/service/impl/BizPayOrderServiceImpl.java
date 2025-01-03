@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
@@ -240,6 +241,22 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         OrderWsMessageInfo messageInfo = HutuUtils.transToObject(payOrder, OrderWsMessageInfo.class);
         messageInfo.setMessageType(OrderMessageType.FINISH.getVal());
         this.sendMessageAsync(payOrder.getShopId(), messageInfo);
+    }
+
+    @Override
+    public void cancelOrder(Long orderId) {
+        BizPayOrder payOrder = this.getById(orderId);
+        HutuUtils.requireNotNull(payOrder,"没有找到对应订单");
+        payOrder.setOrderStatus(OrderStatusEnum.EXPIRE.getVal());
+        LambdaUpdateWrapper<BizPayOrder> wp = new LambdaUpdateWrapper<BizPayOrder>()
+                .eq(BizPayOrder::getId, orderId)
+                .eq(BizPayOrder::getOrderStatus, OrderStatusEnum.INIT.getVal())
+                .set(BizPayOrder::getOrderStatus, OrderStatusEnum.EXPIRE.getVal());
+        boolean b = this.update(wp);
+        if(!b){
+            throw new HutuBizException("订单状态已经发生变化");
+        }
+        redisUtils.hdel(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + payOrder.getUserId(), payOrder.getId() + "");
     }
 
     private BigDecimal checkAndReturnTotalAmount(List<OrderItemDTO> itemsByOrder) {

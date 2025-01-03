@@ -46,13 +46,14 @@
 					</view>
 					<view class="btn-group">
 						<view class="left" style="text-align: center;">
-							<uni-icons type="more-filled" size="24" />
+							<!-- <uni-icons type="more-filled" size="24" /> -->
+							<button type="default" size="mini" class="del-btn" @click="handleOrderDelClick(order.id)">删除</button>
 						</view>
 						<view class="right">
 							<button v-if="order.orderStatus == 0" class="child-btn" type="default" size="mini"
 								style="color: #3030ff;border:1px solid #3030ff;">去支付</button>
 							<button v-if="order.orderStatus == 0" class="child-btn" type="default" size="mini"
-								style="color: #3030ff;border:1px solid #3030ff;">取消</button>
+								style="color: #3030ff;border:1px solid #3030ff;" @click="handleOrderCancelClick(order.id)">取消</button>
 							<button v-if="order.orderStatus == 6" class="child-btn" size="mini"
 								style="color: #000000;border:1px solid #000000;" @click="handleCommentClick(order.id)">去评价</button>
 							<button v-if="order.orderStatus == 2 && showRefund" class="child-btn" size="mini"
@@ -77,7 +78,7 @@
 		commonNavigate
 	} from '@/utils/CommonUtils'
 	import {
-		queryMyOrder,queryShopInfoById
+		queryMyOrder,queryShopInfoById,deleteOrder4User,cancelOrder4User
 	} from '@/api/my-order'
 	export default {
 		name: 'MyOrder',
@@ -143,6 +144,11 @@
 					title: '开发中'
 				})
 			},
+			handleOrderDelClick(orderId){
+				deleteOrder4User(orderId).then(res=>{
+					this.queryOrder()
+				})
+			},
 			getPickTypeVal(val) {
 				return getPickType(val)
 			},
@@ -169,6 +175,24 @@
 						}
 					})
 				})
+			},
+			handleOrderCancelClick(id){
+				uni.showModal({
+					title: '提示',
+					content: '订单还未完成，是否取消',
+					success: function (res) {
+						if (res.confirm) {
+							cancelOrder4User(id).then(res => {
+								if(res.code == 200){
+									uni.showToast({
+										title: '取消成功'
+									})
+									this.queryOrder()
+								}
+							})
+						}
+					}
+				});
 			}
 		},
 		computed: {
@@ -270,6 +294,7 @@
 	.extra {
 		margin: 12px 0px;
 		color: gray;
+		font-size: 14px;
 	}
 
 	.btn-group {
@@ -290,6 +315,13 @@
 
 	.child-btn {
 		margin: 0px 8px;
+		border-radius: 24px;
+		font-size: 12px;
+	}
+	
+	.del-btn{
+		color: #000000;
+		border:1px solid #000000;
 		border-radius: 24px;
 		font-size: 12px;
 	}

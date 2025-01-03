@@ -87,4 +87,11 @@ public class BizPayOrderController {
         return ResponseEntity.success();
     }
 
+    @ApiOperation("取消订单-用户")
+    @PutMapping("cancelOrder/{orderId}")
+    public ResponseEntity<?> cancelOrder(@PathVariable("orderId") Long orderId){
+        bizPayOrderService.cancelOrder(orderId);
+        return ResponseEntity.success();
+    }
+
 }
