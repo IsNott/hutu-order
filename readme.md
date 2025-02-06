@@ -16,9 +16,9 @@
     用于创建覆盖多端的点餐系统，包括小程序、web端，覆盖叫号屏、打印和外卖等多种业务场景。
     <br/>
     <br/>
-    <a href="https://github.com/IsNott/hutu-order?tab=readme-ov-file#%E5%95%86%E4%B8%9A%E5%90%88%E4%BD%9C">商业合作</a>
+<!--     <a href="https://github.com/IsNott/hutu-order?tab=readme-ov-file#%E5%95%86%E4%B8%9A%E5%90%88%E4%BD%9C">商业合作</a> -->
     ·
-    <a href="https://github.com/IsNott/hutu-order?tab=readme-ov-file#%E4%BA%A4%E6%B5%81%E7%BE%A4%E8%81%8A">加入群聊</a>
+<!--     <a href="https://github.com/IsNott/hutu-order?tab=readme-ov-file#%E4%BA%A4%E6%B5%81%E7%BE%A4%E8%81%8A">加入群聊</a> -->
     ·
     <a href="https://github.com/IsNott/hutu-order/issues">提个Issues</a>
   </p>
@@ -37,9 +37,6 @@
 - [贡献者](#贡献者)
     - [如何参与](#如何参与)
 - [版本控制](#版本控制)
-- [联系作者](#作者)
-    - [商业合作](#商业合作)
-    - [交流群聊](#交流群聊)
 
 ### 技术选型
 
@@ -112,7 +109,7 @@
 
 ### 贡献者
 
-- IsNott
+待更新
 
 #### 如何参与
 
@@ -123,7 +120,7 @@
 3. 提交您的改动 (`git commit -m 'Add some AmazingFeature'`)
 4. 推送到远程仓库 (`git push origin feature/AmazingFeature`)
 5. 提交一个 Pull Request
-6. 等待作者审核
+6. 等待审核
 7. 通过审核后，合并到主分支
 8. 恭喜您，您已经成为项目的一份子
 
@@ -134,20 +131,11 @@
 ### 作者
 
 GitHub:[IsNott](https://github.com/IsNott) &ensp;
-Gitee: [糊涂](https://gitee.com/isnott) &ensp;
 掘金:[IsNott](https://juejin.cn/user/3037330789107972)  &ensp;
-知乎:[IsNott](https://www.zhihu.com/people/zou-a-p) &ensp;
 
 ### 商业合作
 
-如您有小程序开发、个性化定制、销售分发此项目的需求，请扫描下图二维码加我微信咨询，本人会尽快回复您的消息。
-
-### 交流群聊
-
-假如您有交流项目经验的想法或想要交流对于项目的意见建议，请扫描下图二维码加作者微信，备注：`点餐系统`，看到消息我会拉您进入交流群，
-期待与您的交流。
-
-<img style="width: 200px;" src="./doc/images/qr.jpg">
+待更新
 
 
 
