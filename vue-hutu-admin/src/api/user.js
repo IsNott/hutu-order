@@ -11,7 +11,7 @@ export function login(data) {
 export function getInfo() {
   return request({
     url: '/sys/user/userInfo',
-    method: 'post',
+    method: 'post'
   })
 }
 

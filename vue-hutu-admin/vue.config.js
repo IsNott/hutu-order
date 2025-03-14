@@ -27,7 +27,8 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
+  // lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave: false,
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -38,12 +39,12 @@ module.exports = {
     },
     proxy: {
       '/api': {
-          target: process.env.VUE_APP_BASE_API,
-          ws: true,
-          changOrigin: true,
-          pathRewrite: {
-              '^/api': ''
-          }
+        target: process.env.VUE_APP_BASE_API,
+        ws: true,
+        changOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
       }
     }
     // before: require('./mock/mock-server.js')
@@ -98,7 +99,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()

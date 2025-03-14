@@ -8,6 +8,7 @@ import org.nott.dto.UserLoginDTO;
 import org.nott.dto.UserProfileDTO;
 import org.nott.dto.UserRegisterDTO;
 import org.nott.service.service.IBizUserService;
+import org.nott.vo.UserBalanceVo;
 import org.nott.vo.UserLoginInfoVo;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,6 +58,13 @@ public class BizUserController {
     public ResponseEntity<?> logout(){
         StpUtil.logout();
         return ResponseEntity.success();
+    }
+
+    @ApiOperation("我的余额")
+    @GetMapping("myBalance")
+    public ResponseEntity<?> myBalance(){
+        UserBalanceVo vo = bizUserService.queryMyBalance(StpUtil.getLoginIdAsLong());
+        return ResponseEntity.successData(vo);
     }
 
 }

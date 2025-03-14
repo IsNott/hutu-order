@@ -14,11 +14,11 @@
 		props: {
 			x: {
 				type: Number,
-				default: 350
+				default: uni.getSystemInfoSync().windowWidth - 88
 			},
 			y: {
 				type: Number,
-				default: 660
+				default: uni.getSystemInfoSync().windowHeight - 118
 			},
 			num: {
 				type: Number,
@@ -34,6 +34,8 @@
 			handerClick(){
 				this.$emit('shop-package-click')
 			}
+		},
+		computed:{
 		}
 	}
 </script>

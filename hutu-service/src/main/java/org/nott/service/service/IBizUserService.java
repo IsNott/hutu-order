@@ -6,6 +6,7 @@ import org.nott.dto.UserRegisterDTO;
 import org.nott.model.BizUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.nott.vo.ExternalBaseUserInfo;
+import org.nott.vo.UserBalanceVo;
 import org.nott.vo.UserLoginInfoVo;
 
 /**
@@ -31,4 +32,6 @@ public interface IBizUserService extends IService<BizUser> {
     UserLoginInfoVo loginByPhone(UserLoginDTO dto);
 
     UserLoginInfoVo updateUserInfo(UserProfileDTO dto);
+
+    UserBalanceVo queryMyBalance(long id);
 }

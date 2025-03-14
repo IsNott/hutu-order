@@ -16,7 +16,7 @@
 					:key="item.itemId" :item="item" />
 			</scroll-view>
 		</view>
-		<shop-package :key="key" v-if="packageNum > 0" @shopPackageClick="handleTransPackage" :num="packageNum" />
+		<shop-package :key="new Date().getTime().toString()" v-if="packageNum > 0" @shopPackageClick="handleTransPackage" :num="packageNum" />
 	</scroll-view>
 </template>
 
@@ -129,7 +129,7 @@
 				// if (this.hasLogin) {
 				bizUserPackageNum().then(res => {
 					if (res.data) {
-						this.packageNum = res.data
+						this.packageNum = parseInt(res.data)
 					}
 				})
 				// }
@@ -163,6 +163,7 @@
 			},
 			// 点击购物车图标跳转购物袋页面
 			handleTransPackage() {
+				console.log(1);
 				commonNavigate('/pages/user-package/index')
 			}
 		},

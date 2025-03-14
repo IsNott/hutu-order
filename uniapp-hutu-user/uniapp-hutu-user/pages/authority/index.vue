@@ -5,25 +5,28 @@
 			<view class="auth-button">
 				<button size="default" :disabled="bottonDisable" open-type="getPhoneNumber" @getphonenumber="handleUserInfo"
 					type="primary">
-					点击授权登录</button>
+					微信授权登录</button>
+					<button size="default" @click="toAccountLog"
+						type="default">
+						手机号登录</button>
 			</view>
 			<radio-group class="radio-box">
 				<radio style="vertical-align: 3px" value="1" @click="handleChange" :checked="select" />
 				我已阅读并同意
-				<text class="private">《隐私协议》\n</text>
+				<text class="private">《隐私协议》</text> 和
 				<text class="private">《用户协议》</text>
-				的内容
 			</radio-group>
 		</view>
 		<view class="footer">
 			<text v-if="false" @click="handlerClick">免登录点单</text>
+			
 		</view>
 	</view>
 </template>
 
 <script>
 	import { loginByPhoneInfo } from '@/api/wechat';
-	import { storeUserInfo } from '@/utils/CommonUtils';
+	import { storeUserInfo, commonNavigate } from '@/utils/CommonUtils';
 	export default {
 		name: 'Authority',
 		data() {
@@ -44,6 +47,9 @@
 				uni.switchTab({
 					url: '/pages/order/index'
 				});
+			},
+			toAccountLog(){
+				commonNavigate('/pages/authority/account-log/account-log')
 			},
 			handleUserInfo(info) {
 				// console.log('Wx UserInfo callBack: ', info)
@@ -89,15 +95,16 @@
 	}
 
 	.auth-button {
-		margin: 20px 0px;
-		margin-top: 60px;
+		margin: 14px 0px;
+		margin-top: 40px;
 		text-align: center;
-
+		width: 80%;
 	}
 
 	.auth-button button {
-		padding: 0px 20px;
-		border-radius: 12px;
+		padding: 0px 16px;
+		border-radius: 14px;
+		margin: 10px;
 	}
 
 	.auth-button text {

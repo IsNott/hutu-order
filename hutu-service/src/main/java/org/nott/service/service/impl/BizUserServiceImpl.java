@@ -2,6 +2,10 @@ package org.nott.service.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.digest.Md5Crypt;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.nott.common.redis.RedisUtils;
 import org.nott.common.utils.HutuUtils;
 import org.nott.dto.UserLoginDTO;
@@ -12,11 +16,13 @@ import org.nott.service.mapper.BizUserMapper;
 import org.nott.service.service.IBizUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.vo.ExternalBaseUserInfo;
+import org.nott.vo.UserBalanceVo;
 import org.nott.vo.UserLoginInfoVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -48,8 +54,10 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         user.setRegistTime(new Date());
         user.setOpenId(userInfo.getOpenId());
         user.setLastLogTime(new Date());
-        user.setUsername(userInfo.getNickName());
+        user.setUsername(StringUtils.isNotEmpty(userInfo.getNickName()) ? userInfo.getNickName() : "用户" + DigestUtils.md5Hex((new Date().getTime() + "")).substring(0, 10));
         user.setAvatarUrl(userInfo.getAvatarUrl());
+        user.setGiftBalance(BigDecimal.ZERO);
+        user.setActualBalance(BigDecimal.ZERO);
         user.setPhone(userInfo.getPhone());
         this.save(user);
         return this.login(user);
@@ -115,6 +123,17 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         vo.setAlreadyRegister(true);
         vo.setUsername(nickName);
 
+        return vo;
+    }
+
+    @Override
+    public UserBalanceVo queryMyBalance(long id) {
+        BizUser user = this.getById(id);
+        HutuUtils.requireNotNull(user, "没有找到用户");
+        UserBalanceVo vo = new UserBalanceVo();
+        vo.setActualBalance(user.getActualBalance());
+        vo.setGiftBalance(user.getGiftBalance());
+        vo.total();
         return vo;
     }
 

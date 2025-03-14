@@ -89,7 +89,12 @@
 					itemPiece: this.currentNum,
 					skuItemContents: this.selectSkuList.map(r => r.content).join(',')
 				}).then(res => {
-					uni.navigateBack();
+					uni.showToast({
+						title: '加入成功',
+						icon: 'success',
+						duration: 1500
+					})
+					// uni.navigateBack();
 				})
 			},
 			handleItemSelect(param) {

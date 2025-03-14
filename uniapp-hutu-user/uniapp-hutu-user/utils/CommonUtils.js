@@ -22,24 +22,35 @@ export default function getWeekName(day) {
 	}
 }
 
-export function getPickType(val){
-	switch(val){
-		default: ''
-		case 0 : return '堂食'
-		case 1 : return '自取'
+export function getPickType(val) {
+	switch (val) {
+		default:
+			''
+		case 0:
+			return '堂食'
+		case 1:
+			return '自取'
 	}
 }
 
-export function getOrderStatus(val){
-	switch(val){
-		default: ''
-		case 0 : return '待支付'
-		case 1 : return '支付中'
-		case 2 : return '已支付'
-		case 3 : return '失败'
-		case 4 : return '已过期'
-		case 5 : return '已退款'
-		case 6 : return '已完成'
+export function getOrderStatus(val) {
+	switch (val) {
+		default:
+			''
+		case 0:
+			return '待支付'
+		case 1:
+			return '支付中'
+		case 2:
+			return '已支付'
+		case 3:
+			return '失败'
+		case 4:
+			return '已过期'
+		case 5:
+			return '已退款'
+		case 6:
+			return '已完成'
 	}
 }
 
@@ -49,14 +60,14 @@ export function getStoreUserInfo() {
 
 export function storeUserInfo(info) {
 	uni.setStorageSync("user_info", info)
-	uni.setStorageSync('token',info.token)
+	uni.setStorageSync('token', info.token)
 }
 
 export function getDateStr() {
 	return new Date().getTime().toString();
 }
 
-export function getCurrentPlatform(){
+export function getCurrentPlatform() {
 	var str = '';
 	// #ifdef MP-WEIXIN
 	str = 'MP-WEIXIN'
@@ -70,8 +81,8 @@ export function getCurrentPlatform(){
 	return str;
 }
 
-export function handleImageUrl(urlStr){
-	if(urlStr == undefined){
+export function handleImageUrl(urlStr) {
+	if (urlStr == undefined) {
 		return ''
 	}
 	var url = ''
@@ -83,7 +94,7 @@ export function handleImageUrl(urlStr){
 	return url == '' ? require('@/static/image/not-image.png') : url
 }
 
-export function commonNavigate(url){
+export function commonNavigate(url) {
 	uni.navigateTo({
 		url: url,
 		fail(res) {
@@ -94,8 +105,8 @@ export function commonNavigate(url){
 	})
 }
 
-export function handleImageUrlArray(urlStr){
-	if(urlStr == undefined){
+export function handleImageUrlArray(urlStr) {
+	if (urlStr == undefined) {
 		return ''
 	}
 	var url = []
@@ -107,6 +118,11 @@ export function handleImageUrlArray(urlStr){
 	return url
 }
 
-export function getShopInfo(){
+export function getShopInfo() {
 	return uni.getStorageSync('current_shop')
+}
+
+export function checkPhone(val) {
+	var reg_tel = /^(13[0-9]|14[01456879]|15[0-3,5-9]|16[2567]|17[0-8]|18[0-9]|19[0-3,5-9])\d{8}$/
+	return reg_tel.test(val)
 }

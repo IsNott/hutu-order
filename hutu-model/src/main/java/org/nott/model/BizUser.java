@@ -2,6 +2,7 @@ package org.nott.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
@@ -62,6 +63,16 @@ public class BizUser implements Serializable {
      * 最后登录时间
      */
     private Date lastLogTime;
+
+    /**
+     * 实际余额
+     */
+    private BigDecimal actualBalance;
+
+    /**
+     * 赠送余额
+     */
+    private BigDecimal giftBalance;
 
 
 }

@@ -137,7 +137,6 @@ function handleRequest(api, method, data, resolve, reject) {
 						url: '/pages/authority/index'
 					})
 				}
-
 				return reject(res)
 			}
 			if (res.code != 200) {
@@ -147,6 +146,7 @@ function handleRequest(api, method, data, resolve, reject) {
 					position: 'top',
 					title: '请求失败'
 				})
+				return reject(res)
 			}
 			return resolve(res)
 		},

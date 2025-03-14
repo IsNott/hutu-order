@@ -47,6 +47,7 @@ public class RedisConfiguration{
         config.setBlockWhenExhausted(true);
         config.setTestWhileIdle(true);
         config.setTestOnBorrow(true);
+        config.setTestOnCreate(true);
         config.setTimeBetweenEvictionRunsMillis(3000);
         return config;
     }

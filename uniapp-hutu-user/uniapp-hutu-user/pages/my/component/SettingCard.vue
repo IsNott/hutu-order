@@ -34,8 +34,32 @@
 				</view>
 			</uni-grid-item>
 			<uni-grid-item>
+				<view class="icon">
+					<uni-icons type="compose" size="24"></uni-icons>
+					<text>
+						建议
+					</text>
+				</view>
+			</uni-grid-item>
+			<uni-grid-item>
+				<view class="icon">
+					<uni-icons type="shop" size="24"></uni-icons>
+					<text>
+						商城
+					</text>
+				</view>
+			</uni-grid-item>
+			<uni-grid-item>
+				<view class="icon">
+					<uni-icons type="star" size="24"></uni-icons>
+					<text>
+						积分
+					</text>
+				</view>
+			</uni-grid-item>
+			<uni-grid-item>
 				<view class="icon" @click="handleNavigate('setting')">
-					<uni-icons type="gear" size="24"></uni-icons>
+					<uni-icons type="settings" size="24"></uni-icons>
 					<text>
 						设置
 					</text>

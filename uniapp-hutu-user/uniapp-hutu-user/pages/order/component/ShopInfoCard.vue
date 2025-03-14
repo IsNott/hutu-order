@@ -1,5 +1,5 @@
 <template>
-	<uni-card margin="0px" :border='false' @click="handleClick">
+	<uni-card margin="0px" :border='false' :is-shadow="false" @click="handleClick">
 		<view class="shop-info-card">
 			<view class="header-card">
 				<text class="shop-name">

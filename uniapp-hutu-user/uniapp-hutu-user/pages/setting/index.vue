@@ -34,12 +34,13 @@
 						content: '确认退出登录？',
 						success(res) {
 							if (res.confirm) {
+								uni.removeStorageSync('user_info')
+								uni.removeStorageSync('current_shop')
 								logout().then(res => {
 									uni.showToast({
 										icon: 'success',
 										title: '退出成功'
 									})
-									uni.removeStorageSync('user_info')
 									commonNavigate('/pages/home/index')
 								}).finally(uni.hideToast())
 							}

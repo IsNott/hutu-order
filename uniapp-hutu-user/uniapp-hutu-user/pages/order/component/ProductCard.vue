@@ -20,7 +20,7 @@
 
 						<view class="bottom">
 							<text class="item-amout">￥{{item.actuallyAmount}}</text>
-							<uni-icons type="plusempty" size="22"></uni-icons>
+							<uni-icons class="add" type="plusempty" size="16"></uni-icons>
 						</view>
 					</view>
 				</view>
@@ -108,12 +108,12 @@
 		margin: 0px;
 		/* font-weight: 550; */
 		margin-right: 4px;
-		border: 1px black solid;
-		border-radius: 2px;
+		border: 1px #877d7d solid;
+		border-radius: 6px;
 	}
 
 	.item-tag .item-special {
-		color: #ff3318;
+		color: #ff2d11;
 		background-color: #FFE2E2;
 		border: none;
 	}
@@ -133,7 +133,7 @@
 		overflow: hidden;
 		/* 超出部分隐藏 */
 		-webkit-line-clamp: 2;
-		/* 限制显示的行数 */
+		margin: 6px 0px;
 	}
 
 	.bottom {
@@ -141,5 +141,11 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+	}
+	
+	.add{
+		padding: 2px;
+		/* border: 1px black solid; */
+		border-radius: 8px
 	}
 </style>
