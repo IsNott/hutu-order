@@ -86,7 +86,14 @@
 			"path" : "pages/authority/account-log/account-log",
 			"style" : 
 			{
-				"navigationBarTitleText" : ""
+				"navigationBarTitleText" : "登录"
+			}
+		},
+		{
+			"path" : "pages/my/component/Profile",
+			"style" : 
+			{
+				"navigationBarTitleText" : "个人信息"
 			}
 		}
 	],

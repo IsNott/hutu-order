@@ -1,6 +1,8 @@
 <template>
 	<scroll-view>
-		<login-card :key="refeshKey" :user-info="userInfo" @refeshPage="handleRefesh"/>
+		<login-card :key="refeshKey" 
+		:user-info="userInfo" @refeshPage="handleRefesh"/>
+		<balance-card :key="new Date().getTime()" />
 		<setting-card />
 		<cust-card class="sell-card" main-title="糊涂加盟" sub-title="查看Github">
 			<view>
@@ -22,9 +24,11 @@
 	import SettingCard from './component/SettingCard.vue';
 	import CustCard from '../../component/CustCard.vue';
 	import LoginCard from './component/LoginCard.vue';
+	import BalanceCard from './component/BalanceCard.vue';
 	export default {
 		name: 'my',
 		components: {
+			BalanceCard,
 			SettingCard,
 			CustCard,
 			LoginCard
@@ -35,7 +39,7 @@
 				name: '\xa0Hutu-Order',
 				loginAuth: false,
 				phoneAuth: false,
-				refeshKey: 0
+				refeshKey: new Date().getMilliseconds()
 			}
 		},
 		methods: {

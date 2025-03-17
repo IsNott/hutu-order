@@ -9,3 +9,7 @@ export function register(param) {
 export function updateProfile(param) {
 	return request('/bizUser/profile', 'POST', param)
 }
+
+export function myBalance() {
+	return request('/bizUser/myBalance', 'GET', )
+}

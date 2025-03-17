@@ -19,5 +19,8 @@ public class UserProfileDTO {
     private Integer gender;
 
     @ApiModelProperty("昵称")
-    private String nickName;
+    private String username;
+
+    @ApiModelProperty("手机号")
+    private String phone;
 }

@@ -14,6 +14,8 @@ public class UserLoginInfoVo {
 
     private String token;
 
+    private String phone;
+
     private String username;
 
     private String avatarUrl;

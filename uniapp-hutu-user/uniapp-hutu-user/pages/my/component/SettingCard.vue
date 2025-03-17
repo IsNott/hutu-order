@@ -113,7 +113,7 @@
 	
 	.setting-card {
 		/* float: left; */
-		border-radius: 20px;
+		/* border-radius: 20px; */
 	}
 	
 	.icon{

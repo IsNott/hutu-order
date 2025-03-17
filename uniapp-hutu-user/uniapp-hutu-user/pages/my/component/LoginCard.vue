@@ -1,14 +1,14 @@
 <template>
-	<view v-if="hasUserInfo" class="login-card" key="1">
-		<image v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" mode="aspectFit" />
-		<image v-else src="@/static/image/avatar/default.jpg" mode="aspectFit" />
+	<view v-if="hasUserInfo" class="login-card" key="1" @click="handleToProfile">
+		<image v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" mode="aspectFit"/>
+		<image v-else src="@/static/image/avatar/default.jpg" mode="aspectFit"/>
 		<view class="info">
 			<view>
-				<button v-if="userInfo.username === ''" id="infoBtn" style="background-color: #F5F5F5;" hover-class="none" open-type="getUserInfo"
+				<!-- <button v-if="userInfo.username === ''" id="infoBtn" style="background-color: #F5F5F5;" hover-class="none" open-type="getUserInfo"
 					@getuserinfo="handlerUserInfo"><text class="nick-name">
 					点击绑定微信
-				</text></button>
-				<text v-else class="nick-name">
+				</text></button> -->
+				<text class="nick-name">
 					{{userInfo.username}}
 				</text>
 			</view>
@@ -18,8 +18,8 @@
 		<image src="@/static/image/avatar/default.jpg" mode="aspectFit"></image>
 		<view class="info">
 			<view>
-				<text class="unlogin" @click="handleClick">
-					点击授权登录
+				<text class="unlogin" @click="handleToLogin">
+					点击登录
 				</text>
 			</view>
 		</view>
@@ -28,7 +28,7 @@
 
 <script>
 	import { updateProfile } from '@/api/user'
-	import { storeUserInfo } from '@/utils/CommonUtils'
+	import { storeUserInfo,commonNavigate } from '@/utils/CommonUtils'
 	const empty = {
 		token: "",
 		username: "",
@@ -48,10 +48,11 @@
 			return {}
 		},
 		methods: {
-			handleClick() {
-				uni.navigateTo({
-					url: '/pages/authority/index'
-				})
+			handleToLogin() {
+				commonNavigate('/pages/authority/index')
+			},
+			handleToProfile(){
+				commonNavigate('/pages/my/component/Profile')
 			},
 			handlerUserInfo(resp) {
 				const detail = resp.detail;
@@ -64,9 +65,6 @@
 						})
 				}
 			}
-		},
-		created() {
-
 		},
 		computed: {
 			hasUserInfo() {

@@ -104,11 +104,12 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         Serializable loginId = (Serializable) StpUtil.getLoginId();
         BizUser user = getById(loginId);
         HutuUtils.requireNotNull(user,"当前登录信息不存在");
-        String nickName = dto.getNickName();
+        String username = dto.getUsername();
         Integer gender = dto.getGender();
         String avatarUrl = dto.getAvatarUrl();
-        if(HutuUtils.isNotEmpty(nickName)){
-            user.setUsername(nickName);
+        String phone = dto.getPhone();
+        if(HutuUtils.isNotEmpty(username)){
+            user.setUsername(username);
         }
         if(HutuUtils.isNotEmpty(gender)){
             user.setGender(gender);
@@ -116,12 +117,14 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         if(HutuUtils.isNotEmpty(avatarUrl)){
             user.setAvatarUrl(avatarUrl);
         }
+        if(HutuUtils.isNotEmpty(phone)){
+            user.setPhone(phone);
+        }
         this.updateById(user);
 
         UserLoginInfoVo vo = HutuUtils.transToObject(dto, UserLoginInfoVo.class);
         vo.setToken(StpUtil.getTokenValue());
         vo.setAlreadyRegister(true);
-        vo.setUsername(nickName);
 
         return vo;
     }
