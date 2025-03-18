@@ -2,7 +2,17 @@
 	<scroll-view>
 		<view class="header">
 			<!-- <text>logo</text> -->
-			<image src="@/static/image/template-logo.png" :draggable="false" />
+			<!-- <image src="@/static/image/template-logo.png" :draggable="false" /> -->
+			<uni-swiper-dot class="uni-swiper-dot-box" @clickItem=clickItem :info="info" :current="current" mode="default"
+				:dots-styles="dotStyle" field="content">
+				<swiper class="swiper-box" @change="changeBanner" :current="swiperDotIndex">
+					<swiper-item v-for="(item, index) in info" :key="index">
+						<view class="swiper-item" :class="'swiper-item' + index">
+							<image :src="item.url" mode="aspectFit"></image>
+						</view>
+					</swiper-item>
+				</swiper>
+			</uni-swiper-dot>
 		</view>
 		<view class="body">
 			<view class="row">
@@ -48,7 +58,9 @@
 </template>
 
 <script>
-	import { commonNavigate } from '../../utils/CommonUtils';
+	import {
+		commonNavigate
+	} from '../../utils/CommonUtils';
 	import CustCard from '@/component/CustCard.vue';
 	export default {
 		name: 'home',
@@ -56,7 +68,33 @@
 			CustCard
 		},
 		data() {
-			return {}
+			return {
+				info: [{
+						colorClass: 'uni-bg-red',
+						url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/shuijiao.jpg',
+						content: '内容 A'
+					},
+					{
+						colorClass: 'uni-bg-green',
+						url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/shuijiao.jpg',
+						content: '内容 B'
+					},
+					{
+						colorClass: 'uni-bg-blue',
+						url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/shuijiao.jpg',
+						content: '内容 C'
+					}
+				],
+				current: 0,
+				swiperDotIndex: 0,
+				dotStyle: {
+					backgroundColor: 'rgba(0, 0, 0, .3)',
+					border: '1px rgba(0, 0, 0, .3) solid',
+					color: '#fff',
+					selectedBackgroundColor: 'rgba(0, 0, 0, .9)',
+					selectedBorder: '1px rgba(0, 0, 0, .9) solid'
+				}
+			}
 		},
 		methods: {
 			handlerRoute(path) {
@@ -68,15 +106,25 @@
 					content: '功能建设中...',
 					showCancel: false
 				})
+			},
+			clickItem(e) {
+				this.swiperDotIndex = e
+			},
+			changeBanner(e) {
+				this.current = e.detail.current
 			}
 		}
 	}
 </script>
 <style scoped>
 	.header {
-		padding: 20px;
+		/* padding: 20px; */
 		text-align: center;
 		background-color: white;
+	}
+	
+	.swiper-box{
+		height: 200px;
 	}
 
 	.body {

@@ -1,24 +1,21 @@
 <template>
 	<scroll-view>
 		<scroll-view class="shop-list">
-			<ww-bottom-drawerapp :key="key" :is-expand="true" :proportionShow='0.3' :dragHandleHeight="20" :proportionMiniShow="0.1">
-				<slot>
-					<view style="width: 88px;margin: auto;padding-top: 6px;padding-bottom: 6px;">
-						<text style="font-size: 22px;text-align: center;" class="title">门店列表</text>
-					</view>
-					<view class="header" v-if="false">
-						<input class="uni-input" confirm-type="search" @confirm="onConfirm" placeholder="输入关键字"/>
-					</view>
-					<view v-if="shopInfos.length > 0">
-						<shop-card @chooseShop="setCurrentShop"  v-for="shop in shopInfos" :key="shop.id" :shop-info="shop"/>
-					</view>
-					<view v-else>
-						<view style="padding: 20px;font-size: 25px;">
-							<text>没有更多信息了</text>
-						</view>
-					</view>
-				</slot>
-			</ww-bottom-drawerapp>
+			<!-- <view style="text-align: center;padding-bottom: 6px;">
+				<uni-icons type="shop" size="22"></uni-icons>
+				<text style="font-size: 20px;text-align: center;font-weight: 500;" class="title">门店列表</text>
+			</view> -->
+			<view class="header">
+				<input class="uni-input" confirm-type="search" @confirm="onConfirm" v-model="keyWord" placeholder="输入关键字搜索"/>
+			</view>
+			<view v-if="shopInfos.length > 0">
+				<shop-card @chooseShop="setCurrentShop"  v-for="shop in shopInfos" :key="shop.id" :shop-info="shop"/>
+			</view>
+			<view v-else>
+				<view style="padding: 12px;font-size: 12px;text-align: center;">
+					<text>没有找到任何信息...</text>
+				</view>
+			</view>
 		</scroll-view>
 	</scroll-view>
 </template>
@@ -67,8 +64,8 @@
 			  this.keyWord = event.target.value
 			},
 			onConfirm(e){
-				this.keyWord = e.detail.value;
-				search(this.keyWord).then(res =>{
+				search(e.detail.value).then(res =>{
+					this.keyWord = e.detail.value
 					this.key = new Date().getTime()
 					this.shopInfos = res.data
 				})
@@ -88,10 +85,22 @@
 <style scoped>
 	.header {
 		margin: 20px;
-		margin-top: 12px;
+		/* margin-bottom: 20px; */
 		padding: 10px;
 		border: 1px solid black;
 		border-radius: 6px;
 	}
-
+	
+	/* .map{
+		padding: 20px;
+		margin: auto;
+	} */
+	
+	.uni-input{
+		height: 10px;
+	}
+	
+	.shop-list{
+		padding-top: 10px;
+	}
 </style>

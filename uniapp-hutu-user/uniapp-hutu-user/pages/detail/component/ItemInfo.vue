@@ -66,23 +66,23 @@
 	}
 
 	.tag-group {
-		padding-top: 8px;
+		padding-top: 16px;
 		padding-left: 16px;
 	}
 	
 	.tag-group text{
 		margin-right: 10px;
-		border-radius: 4%;
-		font-size: 16px;
+		border-radius: 12%;
+		font-size: 14px;
 		padding: 2px;
 		border: 1px black solid;
 	}
 	
 	.item-desc {
-		font-size: 18px;
+		font-size: 16px;
 		color: #bcbcbc;
 		padding-left: 16px;
-		padding-top: 8px;
+		padding-top: 10px;
 	}
 
 	.item-desc {

@@ -126,3 +126,30 @@ export function checkPhone(val) {
 	var reg_tel = /^(13[0-9]|14[01456879]|15[0-3,5-9]|16[2567]|17[0-8]|18[0-9]|19[0-3,5-9])\d{8}$/
 	return reg_tel.test(val)
 }
+
+export function parseCssString(cssString) {
+	const styles = {};
+	const rules = cssString.split('}'); // 按规则拆分
+
+	rules.forEach(rule => {
+		if (rule.trim()) {
+			const [selector, properties] = rule.split('{');
+			const selectorName = selector.trim();
+			const styleObject = {};
+
+			if (properties) {
+				properties.split(';').forEach(property => {
+					const [key, value] = property.split(':');
+					if (key && value) {
+						const normalizedKey = key.trim().replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
+						styleObject[normalizedKey] = value.trim();
+					}
+				});
+			}
+
+			styles[selectorName] = styleObject;
+		}
+	});
+
+	return styles;
+}

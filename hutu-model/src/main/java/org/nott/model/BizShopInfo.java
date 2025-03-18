@@ -78,5 +78,18 @@ public class BizShopInfo implements Serializable {
      */
     private Integer mainShop;
 
+    /**
+     * 封面图
+     */
+    private String coverUrl;
 
+    /**
+     * 轮播图
+     */
+    private String swipeImage;
+
+    /**
+     * 页面样式
+     */
+    private String pageStyle;
 }

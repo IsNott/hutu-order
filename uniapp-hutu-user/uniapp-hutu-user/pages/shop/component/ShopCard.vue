@@ -87,6 +87,10 @@
 		text-align: left; */
 	}
 	
+	text{
+		margin-left: 2px;
+	}
+	
 	.closeCard {
 		margin: 8px 20px;
 		border: 1px solid whitesmoke;

@@ -4,14 +4,14 @@
 		:user-info="userInfo" @refeshPage="handleRefesh"/>
 		<balance-card :key="new Date().getTime()" />
 		<setting-card />
-		<cust-card class="sell-card" main-title="糊涂加盟" sub-title="查看Github">
+		<!-- <cust-card class="sell-card" main-title="糊涂加盟" sub-title="查看Github">
 			<view>
 				<text>还在为没有做过开源项目烦恼？还在为技能拓展发愁？</text>
 			</view>
 			<view>
 				<text>快来加入糊涂点餐开发团队吧!</text>
 			</view>
-		</cust-card>
+		</cust-card> -->
 		<view class="footer">
 			<text>Powered by </text>
 			<text style="font-weight: bold;color:#FF4500;">{{name}}</text>

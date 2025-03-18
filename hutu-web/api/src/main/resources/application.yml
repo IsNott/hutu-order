@@ -2,7 +2,7 @@ server:
   port: 10001
 
 web:
-  base-path: '/usr1/local',
+  base-path: '/usr1/local'
   upload-path: '/hutu-order/web/upload'
 
 # 业务配置
