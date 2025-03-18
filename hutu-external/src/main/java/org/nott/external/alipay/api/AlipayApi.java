@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.external.alipay.service.AlipayService;
 import org.nott.model.BizUser;
-import org.nott.service.service.IBizUserService;
+import org.nott.service.api.IBizUserService;
 import org.nott.vo.AlipayUserInfo;
 import org.nott.vo.UserLoginInfoVo;
 import org.springframework.web.bind.annotation.GetMapping;

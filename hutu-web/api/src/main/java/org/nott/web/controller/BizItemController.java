@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.ItemSearchDTO;
 import org.nott.model.BizItem;
-import org.nott.service.service.IBizItemService;
+import org.nott.service.api.IBizItemService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

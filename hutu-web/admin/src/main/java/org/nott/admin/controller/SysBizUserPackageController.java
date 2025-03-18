@@ -3,7 +3,7 @@ package org.nott.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.service.service.IBizUserPackageService;
+import org.nott.service.api.IBizUserPackageService;
 import org.nott.vo.UserPackageVo;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

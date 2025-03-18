@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.common.annotation.RedisCache;
-import org.nott.service.service.IBizMenuCatalogService;
+import org.nott.service.api.IBizMenuCatalogService;
 import org.nott.vo.MenuCatalogVo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

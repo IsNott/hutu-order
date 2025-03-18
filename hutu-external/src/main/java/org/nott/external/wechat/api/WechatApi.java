@@ -10,7 +10,7 @@ import org.nott.common.utils.HutuUtils;
 import org.nott.dto.MiniProgramPhoneInfoDTO;
 import org.nott.external.wechat.service.WechatService;
 import org.nott.model.BizUser;
-import org.nott.service.service.IBizUserService;
+import org.nott.service.api.IBizUserService;
 import org.nott.vo.UserLoginInfoVo;
 import org.springframework.web.bind.annotation.*;
 

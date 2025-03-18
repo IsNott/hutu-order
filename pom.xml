@@ -19,6 +19,7 @@
         <module>hutu-service</module>
         <module>hutu-webSocket</module>
         <module>hutu-feign</module>
+        <module>hutu-web/oss</module>
     </modules>
 
     <properties>

@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.nott.common.exception.PasswordNotMatchesException;
 import org.nott.common.exception.UserNotFoundException;
 import org.nott.model.SysUser;
-import org.nott.service.service.SysUserService;
+import org.nott.service.admin.SysUserService;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.AdminLoginDTO;
 import org.nott.vo.AdminTokenVo;

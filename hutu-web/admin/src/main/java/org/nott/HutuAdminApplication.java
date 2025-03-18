@@ -10,9 +10,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableAsync
 @EnableFeignClients(clients = BizPayOrderWsClient.class)
-@MapperScan("org.nott.service.mapper")
-@SpringBootApplication(scanBasePackages = {"org.nott.admin.*",
-        "org.nott.security.*", "org.nott.common.*", "org.nott.service.*"})
+@MapperScan("org.nott.service.mapper.**")
+@SpringBootApplication(scanBasePackages = {
+        "org.nott.admin.*",
+        "org.nott.security.*",
+        "org.nott.common.*",
+        "org.nott.service.**.*"})
 @Slf4j
 public class HutuAdminApplication {
     public static void main(String[] args) {

@@ -5,7 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.SkuCatalogSearchDTO;
-import org.nott.service.service.IBizSkuCatalogService;
+import org.nott.service.api.IBizSkuCatalogService;
 import org.nott.vo.SkuCatalogItemVo;
 import org.springframework.web.bind.annotation.*;
 

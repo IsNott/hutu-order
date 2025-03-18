@@ -7,7 +7,7 @@ import org.nott.common.ResponseEntity;
 import org.nott.dto.UserLoginDTO;
 import org.nott.dto.UserProfileDTO;
 import org.nott.dto.UserRegisterDTO;
-import org.nott.service.service.IBizUserService;
+import org.nott.service.api.IBizUserService;
 import org.nott.vo.UserBalanceVo;
 import org.nott.vo.UserLoginInfoVo;
 import org.springframework.web.bind.annotation.*;

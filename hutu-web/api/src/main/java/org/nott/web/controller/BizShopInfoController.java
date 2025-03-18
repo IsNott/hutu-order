@@ -3,7 +3,7 @@ package org.nott.web.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.service.service.IBizShopInfoService;
+import org.nott.service.api.IBizShopInfoService;
 import org.nott.vo.ShopInfoVo;
 import org.springframework.web.bind.annotation.*;
 

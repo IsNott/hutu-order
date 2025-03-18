@@ -1,8 +1,14 @@
 package org.nott.web.controller;
 
-import org.nott.service.service.IBizCommentService;
+import org.nott.common.ResponseEntity;
+import org.nott.feign.OssClient;
+import org.nott.service.api.IBizCommentService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.annotation.Resource;
 
 /**
@@ -18,6 +24,11 @@ import javax.annotation.Resource;
 public class BizCommentController {
 
     @Resource
-    private IBizCommentService bizCommentService;
+    OssClient ossClient;
+
+    @PostMapping("/test")
+    public ResponseEntity<?> test(@RequestBody MultipartFile file) throws Exception{
+        return ResponseEntity.successData(ossClient.upload(file, 123L));
+    }
 
 }
