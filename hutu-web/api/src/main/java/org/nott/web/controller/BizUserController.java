@@ -67,4 +67,9 @@ public class BizUserController {
         return ResponseEntity.successData(vo);
     }
 
+    @ApiOperation("是否登录")
+    @GetMapping("isLogin")
+    public ResponseEntity<?> isLogin(){
+        return ResponseEntity.successData(StpUtil.isLogin());
+    }
 }

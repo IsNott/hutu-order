@@ -23,6 +23,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class HutuOrderOssApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(HutuOrderOssApplication.class, args);
+
+        log.info("Hutu-Order-Oss started successfully");
     }
 }

@@ -1,21 +1,21 @@
 <template>
 	<view class="body">
 		<view class="avatar-box" @click="handleAvatarClick">
-			<image v-if="form.avatarUrl" :src="form.avatarUrl" mode="aspectFit"/>
+			<image v-if="form.avatarUrl" :src="baseUrl + form.avatarUrl" mode="aspectFit"/>
 			<image v-else src="@/static/image/avatar/default.jpg" mode="aspectFit"/>
 			<text>点击更换头像</text>
 		</view>
 		<view class="base-info-box">
 			<text>用户名</text>
 			<uni-easyinput placeholder="请输入用户名称" trim="all" v-model="form.username"/>
-			<text>手机号</text>
-			<uni-easyinput placeholder="请输入手机号" trim="all" v-model="form.phone" type="number"/>
 			<text>性别</text>
 			 <uni-data-select
 							:clear="false"
 			        v-model="form.gender"
 			        :localdata="gender"
 			      />
+			<text>手机号</text>
+			<uni-easyinput :disabled="true" placeholder="请输入手机号" trim="all" v-model="form.phone" type="number"/>
 		</view>
 		<view class="btn-group">
 			<button @click="handleSubmit(-1)">取消</button>
@@ -27,6 +27,7 @@
 <script>
 	import { getStoreUserInfo,storeUserInfo,checkPhone, commonNavigate } from '@/utils/CommonUtils';
 	import { updateProfile } from '@/api/user';
+	import { uploadAvatar } from '@/api/profile';
 	const empty = {
 		avatarUrl:'',
 		username:'',
@@ -57,18 +58,18 @@
 					success:(res => {
 						console.log(res);
 						if(res.tapIndex == 0){
-							console.log(0);
 							uni.previewImage({
-								urls: [this.form.avatarUrl]
+								urls: [this.baseUrl + this.form.avatarUrl]
 							})
 						}
 						if(res.tapIndex == 1){
-							console.log(1);
 							uni.chooseImage({
 								count: 1,
 								extension: ['jpg','png'],
 								success:(res => {
-									this.form.avatarUrl = res.tempFilePaths[0]
+									uploadAvatar(res.tempFilePaths[0]).then(res => {
+										this.form.avatarUrl = res.data.path
+									})
 								})
 							})
 						}

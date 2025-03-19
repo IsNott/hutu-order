@@ -30,6 +30,11 @@ public class OssController implements OssClient {
     }
 
     @Override
+    public ResponseEntity<OssFileVo> upload(MultipartFile file) throws Exception {
+        return ResponseEntity.successData(ossFileService.upload(file, null));
+    }
+
+    @Override
     public ResponseEntity<?> deleteByBizId(@PathVariable("bizId") Long bizId) {
         ossFileService.deleteByBizId(bizId);
         return ResponseEntity.success();

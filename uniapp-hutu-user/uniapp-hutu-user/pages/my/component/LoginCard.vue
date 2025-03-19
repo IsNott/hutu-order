@@ -1,6 +1,6 @@
 <template>
 	<view v-if="hasUserInfo" class="login-card" key="1" @click="handleToProfile">
-		<image v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" mode="aspectFit"/>
+		<image v-if="userInfo.avatarUrl" :src="baseUrl + userInfo.avatarUrl" mode="aspectFit"/>
 		<image v-else src="@/static/image/avatar/default.jpg" mode="aspectFit"/>
 		<view class="info">
 			<view>

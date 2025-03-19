@@ -12,10 +12,10 @@ import org.springframework.web.filter.CorsFilter;
  * @date 2024-6-12
  */
 
-@Configuration
+//@Configuration
 public class CrossConfiguration {
 
-    @Bean
+//    @Bean
     public CorsFilter corsFilter() {
         //1. 添加 CORS配置信息
         CorsConfiguration config = new CorsConfiguration();

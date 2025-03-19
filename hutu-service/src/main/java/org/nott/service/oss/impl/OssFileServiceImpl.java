@@ -46,9 +46,11 @@ public class OssFileServiceImpl extends ServiceImpl<OssFileMapper, OssFile> impl
         ossFile.setOriginName(file.getOriginalFilename());
         ossFile.setDelFlag(0);
         ossFile.setPrefix(type);
-        ossFile.setBizId(bizId);
+        if(HutuUtils.isNotEmpty(bizId)){
+            ossFile.setBizId(bizId);
+        }
         ossFile.setFileName(storeName);
-        ossFile.setPath(uploadPath + File.separator + storeName);
+        ossFile.setPath(uploadPath + storeName);
         this.save(ossFile);
         return HutuUtils.transToObject(ossFile, OssFileVo.class);
     }

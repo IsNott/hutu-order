@@ -11,5 +11,9 @@ export function updateProfile(param) {
 }
 
 export function myBalance() {
-	return request('/bizUser/myBalance', 'GET', )
+	return request('/bizUser/myBalance', 'GET')
+}
+
+export function isLogin() {
+	return request('/bizUser/isLogin', 'GET')
 }

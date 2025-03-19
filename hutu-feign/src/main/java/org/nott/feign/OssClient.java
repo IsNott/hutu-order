@@ -17,6 +17,10 @@ public interface OssClient {
     ResponseEntity<OssFileVo> upload(@RequestBody MultipartFile file, @PathVariable("bizId") Long bizId) throws Exception;
 
     @ResponseBody
+    @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<OssFileVo> upload(@RequestBody MultipartFile file) throws Exception;
+
+    @ResponseBody
     @PutMapping("/deleteByBizId/{bizId}")
     ResponseEntity<?> deleteByBizId(@PathVariable("bizId") Long bizId);
 
