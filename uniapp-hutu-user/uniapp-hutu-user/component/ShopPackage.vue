@@ -1,5 +1,5 @@
 <template>
-	<movable-area class="movable-area" @click="handerClick">
+	<movable-area class="movable-area" @touchend="handerClick">
 		<movable-view class="movable-view" :x="x" :y="y" direction="all">
 			<uni-badge v-if="num" class="uni-badge-left-margin" :text="num" absolute="rightTop" size="small">
 				<image src="@/static/image/package.png" />
@@ -9,6 +9,7 @@
 </template>
 
 <script>
+	import { commonNavigate } from '@/utils/CommonUtils';
 	export default {
 		name: 'ShopPackage',
 		props: {
@@ -32,7 +33,9 @@
 		},
 		methods: {
 			handerClick(){
-				this.$emit('shop-package-click')
+				console.log('shop-package-click');
+				// this.$emit('shop-package-click')
+				commonNavigate('/pages/user-package/index')
 			}
 		},
 		computed:{

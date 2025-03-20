@@ -5,21 +5,23 @@
 			<view class="sub-title">欢迎使用糊涂点餐</view>
 		</view>
 		<view class="log-from">
-			<uni-easyinput class="log" trim="all" type="number" v-model="phone" placeholder="手机号(未注册用户将自动注册)"/>
-			<uni-easyinput class="log" trim="all" type="number" v-model="code" placeholder="验证码">
-				<template #right>
-					<text :style="{'margin-right': '10px','color': codeGetting ? 'gray' : 'black'}" @click="getCode">
-						{{codeText}}
-					</text>
-				</template>
-			</uni-easyinput>
+			<view style="padding: 10px 0px;"><uni-easyinput class="log-input" trim="all" type="number" v-model="phone" placeholder="手机号(未注册用户将自动注册)"/></view>
+			<view style="padding: 10px 0px;">
+				<uni-easyinput class="log-input" trim="all" type="number" v-model="code" placeholder="验证码">
+					<template #right>
+						<text :style="{'margin-right': '10px','color': codeGetting ? 'gray' : 'black'}" @click="getCode">
+							{{codeText}}
+						</text>
+					</template>
+				</uni-easyinput>
+			</view>
 			<radio-group class="radio-box">
 				<radio style="vertical-align: 3px" value="1" @click="handleChange" :checked="select" />
 				我已阅读并同意
 				<text class="private">《隐私协议》</text> 和
 				<text class="private">《用户协议》</text>
 			</radio-group>
-			<button type="primary" :disabled="!select" @click="handleLogin">登录</button>
+			<button style="margin-top: 30px;" type="primary" :disabled="!select" @click="handleLogin">登录</button>
 		</view>
 		<view class="bottom">
 			<!-- #ifdef MP-WEIXIN -->
@@ -48,7 +50,11 @@
 				codeGetting: false,
 				codeText: '获取验证码',
 				codeTime: 60,
-				timer: null
+				timer: null,
+				style:{
+					paddingTop: '10px',
+					paddingBottom: '10px'
+				}
 			}
 		},
 		onUnload() {
@@ -163,9 +169,9 @@
 		transform: scale(0.77);
 	}
 	
-	.log{
+	/* .log-input{
 		padding: 10px 0px;
-	}
+	} */
 	
 	.radio-box{
 		padding: 10px 0px;

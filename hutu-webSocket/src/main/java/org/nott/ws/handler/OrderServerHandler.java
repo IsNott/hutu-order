@@ -66,7 +66,6 @@ public class OrderServerHandler extends ChannelInboundHandlerAdapter {
             } else {
                 handshaker.handshake(ctx.channel(), request);
             }
-            super.channelRead(ctx, msg);
         }
 
         if (msg instanceof TextWebSocketFrame) {
@@ -77,14 +76,11 @@ public class OrderServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("客户端连接：[{}]", ctx.channel().remoteAddress());
-//        ctx.channel().writeAndFlush(new TextWebSocketFrame("text-print"));
-        super.channelActive(ctx);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         log.info("客户端断开连接：[{}]", ctx.channel().remoteAddress());
-        super.channelInactive(ctx);
     }
 
     @Override

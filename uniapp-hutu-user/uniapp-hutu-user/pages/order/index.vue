@@ -163,8 +163,7 @@
 			},
 			// 点击购物车图标跳转购物袋页面
 			handleTransPackage() {
-				console.log(1);
-				commonNavigate('/pages/user-package/index')
+				console.log('handleTransPackage');
 			}
 		},
 		computed: {

@@ -80,6 +80,7 @@
 				markTabDefValue: '添加口味、糖度等备注',
 				amountDefValue: '0.00元',
 				chooseCoupon: '',
+				amoutDefValue: '0',
 				paywayList: [{
 					id: '123',
 					paymentName: '微信支付',
@@ -104,11 +105,11 @@
 			}
 		},
 		watch: {
-			packageList(o, n) {
-				if (n.length = 0) {
-					this.handleBack(true)
-				}
-			}
+			// packageList(o, n) {
+			// 	if (o.length != 0 && n.length == 0) {
+			// 		commonNavigate('/pages/order/index')
+			// 	}
+			// }
 		},
 		onBackPress(opt) {
 			this.handleBack(false)
@@ -178,6 +179,10 @@
 				// if (this.hasLogin) {
 				queryUserPackage().then(res => {
 					if (res.data) {
+						let size = res.data.length
+						if(size == 0){
+							commonNavigate('/pages/order/index')
+						}
 						this.packageNum = res.data.length
 						this.packageList = res.data
 						console.log('this.packageList: ', this.packageList);

@@ -39,7 +39,7 @@ public class ClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
             log.debug("接收客户端[{}][{}]心跳包", channel.id().asShortText(),channel.remoteAddress());
             return;
         }
-        super.channelRead(channelHandlerContext,tf);
+        channelHandlerContext.fireChannelRead(obj);
     }
 
     @Override
