@@ -51,5 +51,14 @@ public class UserSettleOrderDTO {
     @ApiModelProperty("原始金额")
     private BigDecimal originAmount;
 
+    @ApiModelProperty("支付方式code")
+    private String payCode;
 
+    public boolean isUseCoupon() {
+        return couponId != null;
+    }
+
+    public boolean isUsePoint() {
+        return pointCount != null && pointCount > 0;
+    }
 }

@@ -32,8 +32,6 @@ public class BizPayOrderController {
     @ApiOperation("用户下单")
     @PostMapping("settle")
     public ResponseEntity<?> settle(@RequestBody UserSettleOrderDTO userSettleOrderDTO){
-        HutuUtils.requireNotNull(userSettleOrderDTO.isUseCoupon(),userSettleOrderDTO.getCouponId(),"优惠券id为空");
-        HutuUtils.requireNotNull(userSettleOrderDTO.isUsePoint(),userSettleOrderDTO.getPointCount(),"使用积分为空");
         return ResponseEntity.successData(bizPayOrderService.doUserSettle(userSettleOrderDTO));
     }
 

@@ -47,7 +47,7 @@
 			}
 		},
 		{
-			"path": "pages/mark/index",
+			"path": "pages/user-package/mark/index",
 			"style": {
 				"navigationBarTitleText": "备注"
 			}

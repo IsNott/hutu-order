@@ -126,13 +126,11 @@
 				}
 			},
 			queryPackageNum() {
-				// if (this.hasLogin) {
 				bizUserPackageNum().then(res => {
 					if (res.data) {
 						this.packageNum = parseInt(res.data)
 					}
 				})
-				// }
 			},
 			// 查询当前门店
 			queryCurrentMerchant() {

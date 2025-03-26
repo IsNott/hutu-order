@@ -3,15 +3,16 @@ package org.nott.service.api.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.security.MD5Encoder;
+import org.nott.common.exception.HutuBizException;
 import org.nott.common.redis.RedisUtils;
 import org.nott.common.utils.HutuUtils;
 import org.nott.dto.UserLoginDTO;
 import org.nott.dto.UserProfileDTO;
 import org.nott.dto.UserRegisterDTO;
+import org.nott.enums.UserPointUseEnum;
 import org.nott.model.BizUser;
+import org.nott.service.api.IBizUserPointLogService;
 import org.nott.service.mapper.api.BizUserMapper;
 import org.nott.service.api.IBizUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -38,6 +39,12 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
 
     @Resource
     private RedisUtils redisUtils;
+
+    @Resource
+    private IBizUserPointLogService bizUserPointLogService;
+
+    @Resource
+    private BizUserMapper bizUserMapper;
 
     @Override
     public BizUser getUserByOpenId(String openId) {
@@ -156,5 +163,24 @@ public class BizUserServiceImpl extends ServiceImpl<BizUserMapper, BizUser> impl
         userLoginInfoVo.setAlreadyRegister(true);
         userLoginInfoVo.setToken(StpUtil.getTokenValue());
         return userLoginInfoVo;
+    }
+
+    @Override
+    public Long queryUsablePoint() {
+        long id = StpUtil.getLoginIdAsLong();
+        LambdaQueryWrapper<BizUser> wrapper = new LambdaQueryWrapper<BizUser>().eq(BizUser::getId, id);
+        BizUser user = this.getOne(wrapper);
+        return HutuUtils.getIfValue(user.getPoint(), 0L);
+    }
+
+    @Override
+    public void usePoint(String fee,Long originPoint, Long usePoint) {
+        long id = StpUtil.getLoginIdAsLong();
+        HutuUtils.requireTrue(originPoint >= usePoint,"原积分不足");
+        int affectRow = bizUserMapper.costPointByCas(id, originPoint, usePoint);
+        if(affectRow == 0){
+            throw new HutuBizException("原积分已被修改，请刷新页面重试");
+        }
+        bizUserPointLogService.saveLog(fee,usePoint, UserPointUseEnum.USER_Active);
     }
 }

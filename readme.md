@@ -48,18 +48,11 @@ GitHub:[IsNott](https://github.com/IsNott) &ensp;<br>
 | JDK     | 1.8      |
 | Node.js | 16       |
 
-#### 运行项目
-
-- 小程序服务端：`hutu-web模块下的api模块`：`HutuApiApplication`
-- 管理服务端：`hutu-web模块下的admin模块`：`HutuApiApplication`
-- WebSocket：`hutu-webSocket模块`：`HutuWebSocketApplication`
-- 管理后台：`vue-hutu-admin`: `npm run serve`
-
 ### 文件目录
 
 ```
 ├─db # 数据库脚本（mysql）
-├─hutu-web # REST API模块（api+管理）
+├─hutu-web # REST API模块（api+管理+文件对象存储）
 ├─hutu-webSocket # ws通信模块（Netty）
 ├─hutu-feign # 跨应用调用api（openFeign）
 ├─hutu-model # 实体
@@ -71,6 +64,14 @@ GitHub:[IsNott](https://github.com/IsNott) &ensp;<br>
 ├─vue-hutu-admin # 后台管理web端
 ├─vue-hutu-stuff # 商家叫号屏
 ```
+
+#### 运行项目
+
+- 小程序服务端：`hutu-web模块下的api模块`：`HutuApiApplication`
+- 管理服务端：`hutu-web模块下的admin模块`：`HutuApiApplication`
+- 文件对象存储：`hutu-web模块下的oss模块`：`HutuOssApplication`
+- WebSocket：`hutu-webSocket模块`：`HutuWebSocketApplication`
+- 管理后台：`vue-hutu-admin`: `npm run serve`
 
 ### 版本控制
 

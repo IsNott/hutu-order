@@ -20,11 +20,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
         "org.nott.service.oss",
         "org.nott.common.config",
         "org.nott.common.handler"})
-public class HutuOrderOssApplication {
+public class HutuOssApplication {
 
     public static void main(String[] args) {
 
-        SpringApplication.run(HutuOrderOssApplication.class, args);
+        SpringApplication.run(HutuOssApplication.class, args);
 
         log.info("Hutu-Order-Oss started successfully");
     }

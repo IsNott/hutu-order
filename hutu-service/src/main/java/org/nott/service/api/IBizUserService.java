@@ -34,4 +34,8 @@ public interface IBizUserService extends IService<BizUser> {
     UserLoginInfoVo updateUserInfo(UserProfileDTO dto);
 
     UserBalanceVo queryMyBalance(long id);
+
+    Long queryUsablePoint();
+
+    void usePoint(String fee,Long originPoint, Long usePoint);
 }

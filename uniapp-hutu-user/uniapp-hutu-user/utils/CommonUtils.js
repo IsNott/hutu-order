@@ -6,19 +6,19 @@ export default function getWeekName(day) {
 		default:
 			return ''
 		case 1:
-			return '周一';
+			return '周一'
 		case 2:
-			return '周二';
+			return '周二'
 		case 3:
-			return '周三';
+			return '周三'
 		case 4:
-			return '周四';
+			return '周四'
 		case 5:
-			return '周五';
+			return '周五'
 		case 6:
-			return '周六';
+			return '周六'
 		case 7:
-			return '周日';
+			return '周日'
 	}
 }
 
@@ -78,7 +78,7 @@ export function getCurrentPlatform() {
 	// #ifdef H5
 	str = "WEB"
 	// #endif
-	return str;
+	return str
 }
 
 export function handleImageUrl(urlStr) {
@@ -133,13 +133,13 @@ export function parseCssString(cssString) {
 
 	rules.forEach(rule => {
 		if (rule.trim()) {
-			const [selector, properties] = rule.split('{');
-			const selectorName = selector.trim();
-			const styleObject = {};
+			const [selector, properties] = rule.split('{')
+			const selectorName = selector.trim()
+			const styleObject = {}
 
 			if (properties) {
 				properties.split(';').forEach(property => {
-					const [key, value] = property.split(':');
+					const [key, value] = property.split(':')
 					if (key && value) {
 						const normalizedKey = key.trim().replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
 						styleObject[normalizedKey] = value.trim();
@@ -147,9 +147,34 @@ export function parseCssString(cssString) {
 				});
 			}
 
-			styles[selectorName] = styleObject;
+			styles[selectorName] = styleObject
 		}
 	});
 
-	return styles;
+	return styles
+}
+
+export function uuid() {
+var s = [];
+var hexDigits = "0123456789abcdef";
+for (var i = 0; i < 36; i++) {
+s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+}
+s[14] = "4"; // 代表UUID版本
+s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // 时钟序列
+s[8] = s[13] = s[18] = s[23] = "-";
+var uuid = s.join("");
+return uuid;
+}
+
+export function getKey(){
+	return new Date().getTime() + uuid()
+}
+
+export function isEmpty(val){
+	return val === undefined || val === '' || val === null
+}
+
+export function isNotEmpty(val){
+	return !isEmpty(val)
 }

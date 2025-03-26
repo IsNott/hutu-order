@@ -2,11 +2,12 @@
 // #ifndef VUE3
 import Vue from 'vue'
 import App from './App'
-
+import { isEmpty,isNotEmpty } from './utils/CommonUtils'
 Vue.config.productionTip = false
 Vue.prototype.baseUrl = 'http://localhost:10220'
 App.mpType = 'app'
-
+Vue.prototype.isEmpty = isEmpty
+Vue.prototype.isNotEmpty = isNotEmpty
 const app = new Vue({
     ...App
 })

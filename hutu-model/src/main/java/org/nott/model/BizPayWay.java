@@ -21,6 +21,10 @@ public class BizPayWay implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    /**
+     * 支付编码
+     */
+    private String payCode;
 
     /**
      * 交易地址

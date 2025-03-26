@@ -25,14 +25,12 @@ import org.nott.feign.BizPayOrderWsClient;
 import org.nott.model.BizItem;
 import org.nott.model.BizPayOrder;
 import org.nott.model.BizShopInfo;
+import org.nott.model.BizUser;
 import org.nott.model.inter.OrderWsMessageInfo;
+import org.nott.service.api.*;
 import org.nott.service.api.delayed.handler.UserPayOrderQueueHandler;
 import org.nott.service.mapper.api.BizPayOrderMapper;
-import org.nott.service.api.IBizItemService;
-import org.nott.service.api.IBizPayOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.nott.service.api.IBizShopInfoService;
-import org.nott.service.api.IBizUserPackageService;
 import org.nott.vo.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -77,6 +75,10 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     private IBizUserPackageService bizUserPackageService;
     @Resource
     private BizPayOrderWsClient bizPayOrderWsClient;
+    @Resource
+    private IBizUserService bizUserService;
+
+    private final Object lock = new Object();
 
     @PostConstruct
     public void pushUnFinishOrder2Queue() {
@@ -84,7 +86,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         wrapper
                 .isNotNull(BizPayOrder::getUserId)
                 .notIn(BizPayOrder::getOrderStatus, Arrays.asList(OrderStatusEnum.EXPIRE.getVal(),
-                OrderStatusEnum.FAILED.getVal(), OrderStatusEnum.PAYED.getVal(), OrderStatusEnum.REFUND.getVal()))
+                        OrderStatusEnum.FAILED.getVal(), OrderStatusEnum.PAYED.getVal(), OrderStatusEnum.REFUND.getVal()))
                 .like(BizPayOrder::getCreateTime, HutuUtils.FORMAT.DATE.format(new Date()));
 
         List<BizPayOrder> unPayOrders = this.list(wrapper);
@@ -115,38 +117,55 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     public SettleOrderVo doUserSettle(UserSettleOrderDTO dto) {
         BigDecimal pointDiscount = new BigDecimal("0.00");
         BigDecimal couponDisCount = new BigDecimal("0.00");
-        Future<Boolean> removePointTaskResult = null;
-        Future<Boolean> removeCouponTaskResult = null;
-        // TODO 检验 移除积分
-        if (dto.isUsePoint()) {
-
-        }
-        // TODO 检验 移除优惠券
-        if (dto.isUseCoupon()) {
-
-        }
-
-        // 确认需支付金额
+        long id = StpUtil.getLoginIdAsLong();
+        BizUser user;
+        SettleOrderVo vo;
         List<OrderItemDTO> items = dto.getItems();
-        BigDecimal originalAmount = checkAndReturnTotalAmount(items);
-        BigDecimal totalAmount = originalAmount.subtract(pointDiscount).subtract(couponDisCount);
-        if (totalAmount.compareTo(new BigDecimal("0.00")) <= 0) {
-            throw new HutuBizException("优惠券+积分减免的总金额不能大于原价");
+        synchronized (lock) {
+            boolean couponDisable = false;
+            BigDecimal originalAmount = checkAndReturnTotalAmount(items);
+            user = bizUserService.getById(id);
+            HutuUtils.requireNotNull(user, "没有找到对应用户");
+            // 检验 移除积分
+            if (dto.isUsePoint()) {
+                Long point = user.getPoint();
+                Long pointCount = dto.getPointCount();
+                if (point < pointCount) {
+                    throw new HutuBizException("积分不足");
+                }
+                BigDecimal disCountPrice = new BigDecimal(pointCount * 10L);
+                if(disCountPrice.compareTo(originalAmount) >= 0){
+                    disCountPrice = originalAmount.subtract(new BigDecimal("0.1"));
+                    couponDisable = true;
+                }
+                pointDiscount = disCountPrice;
+                Long leftPoint = point - pointCount;
+                LambdaUpdateWrapper<BizUser> wrapper = new LambdaUpdateWrapper<>();
+                wrapper.eq(BizUser::getId, id)
+                        .eq(BizUser::getPoint, point)
+                        .set(BizUser::getPoint, leftPoint);
+                boolean update = bizUserService.update(wrapper);
+                if (!update) {
+                    throw new HutuBizException("积分更新失败");
+                }
+            }
+            // TODO 检验 移除优惠券
+            if (dto.isUseCoupon() && !couponDisable) {
+
+            }
+
+            // 确认需支付金额
+            BigDecimal totalAmount = originalAmount.subtract(pointDiscount).subtract(couponDisCount);
+            if (totalAmount.compareTo(new BigDecimal("0.00")) <= 0) {
+                throw new HutuBizException("优惠券+积分减免的总金额不能大于原价");
+            }
+            dto.setOriginAmount(originalAmount);
+            dto.setTotalAmount(totalAmount);
+            // 创建内部订单
+            vo = this.createOrder(dto);
         }
-        dto.setOriginAmount(originalAmount);
-        dto.setTotalAmount(totalAmount);
-        // 创建内部订单
-        SettleOrderVo vo = this.createOrder(dto);
-//        try {
-//            if(!removePointTaskResult.get() || removeCouponTaskResult.get()){
-//
-//            }
-//        } catch (Exception e) {
-//            log.error(e.getLocalizedMessage(),e);
-//            throw new HutuBizException("积分/优惠券使用失败");
-//        }
         // 移除购物车内容
-        HutuThreadPoolExecutor.threadPool.submit(()->{
+        HutuThreadPoolExecutor.threadPool.submit(() -> {
             List<Long> ids = items.stream().map(OrderItemDTO::getId).collect(Collectors.toList());
             bizUserPackageService.removeBatchByIds(ids);
         });
@@ -164,7 +183,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         vo.setPayOrderId(id);
         vo.setShopAddress(shopInfo.getAddress());
         vo.setShopName(shopInfo.getShopName());
-        if(StringUtils.isNotEmpty(itemInfo)){
+        if (StringUtils.isNotEmpty(itemInfo)) {
             List<OrderItemVo> orderItemVos = JSONArray.parseArray(itemInfo, OrderItemVo.class);
             vo.setItemInfo(orderItemVos);
         }
@@ -174,7 +193,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     @Override
     public PayOrderVo orderQuery(Long id) {
         BizPayOrder payOrder = this.getById(id);
-        HutuUtils.requireNotNull(payOrder,"没有找到对应订单");
+        HutuUtils.requireNotNull(payOrder, "没有找到对应订单");
         Long orderId = payOrder.getId();
         PayOrderVo vo = HutuUtils.transToObject(payOrder, PayOrderVo.class);
         vo.setPayOrderId(orderId);
@@ -184,9 +203,9 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     @Override
     public FrontOrderVo orderFront(Long orderId) {
         BizPayOrder payOrder = this.getById(orderId);
-        HutuUtils.requireNotNull(payOrder,"没有找到订单");
+        HutuUtils.requireNotNull(payOrder, "没有找到订单");
         Date settleTime = payOrder.getSettleTime();
-        HutuUtils.requireNotNull(settleTime,"没有找到订单结算时间");
+        HutuUtils.requireNotNull(settleTime, "没有找到订单结算时间");
         return bizPayOrderMapper.orderFrontQueryByOrderId(HutuUtils.FORMAT.DATETIME.format(settleTime), orderId);
     }
 
@@ -195,7 +214,15 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         BizPayOrder payOrder = this.getById(orderId);
         payOrder.setOrderStatus(OrderStatusEnum.PAYED.getVal());
         payOrder.setSettleTime(new Date());
-        this.updateById(payOrder);
+        LambdaUpdateWrapper<BizPayOrder> wrapper = new LambdaUpdateWrapper<BizPayOrder>().eq(BizPayOrder::getId, orderId)
+                .eq(BizPayOrder::getOrderStatus, OrderStatusEnum.INIT.getVal())
+                .set(BizPayOrder::getOrderStatus, OrderStatusEnum.PAYED.getVal())
+                .set(BizPayOrder::getSettleTime, new Date());
+        boolean update = this.update(wrapper);
+        if(!update){
+            log.info("订单状态已经发生变化");
+            return;
+        }
         redisUtils.hdel(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + payOrder.getUserId(), payOrder.getId() + "");
         OrderWsMessageInfo messageInfo = HutuUtils.transToObject(payOrder, OrderWsMessageInfo.class);
         messageInfo.setMessageType(OrderMessageType.IN.getVal());
@@ -225,7 +252,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     @Override
     public void deleteOrder(Long orderId) {
         BizPayOrder payOrder = this.getById(orderId);
-        HutuUtils.requireNotNull(payOrder,"没有找到对应订单");
+        HutuUtils.requireNotNull(payOrder, "没有找到对应订单");
         payOrder.setUserDelFlag(YesOrNoEnum.YES.getValue());
         this.updateById(payOrder);
     }
@@ -233,7 +260,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     @Override
     public void finishOrder(Long orderId) {
         BizPayOrder payOrder = this.getById(orderId);
-        HutuUtils.requireNotNull(payOrder,"没有找到对应订单");
+        HutuUtils.requireNotNull(payOrder, "没有找到对应订单");
         payOrder.setOrderStatus(OrderStatusEnum.FINISH.getVal());
         this.updateById(payOrder);
         OrderWsMessageInfo messageInfo = HutuUtils.transToObject(payOrder, OrderWsMessageInfo.class);
@@ -244,14 +271,14 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     @Override
     public void cancelOrder(Long orderId) {
         BizPayOrder payOrder = this.getById(orderId);
-        HutuUtils.requireNotNull(payOrder,"没有找到对应订单");
+        HutuUtils.requireNotNull(payOrder, "没有找到对应订单");
         payOrder.setOrderStatus(OrderStatusEnum.EXPIRE.getVal());
         LambdaUpdateWrapper<BizPayOrder> wp = new LambdaUpdateWrapper<BizPayOrder>()
                 .eq(BizPayOrder::getId, orderId)
                 .eq(BizPayOrder::getOrderStatus, OrderStatusEnum.INIT.getVal())
                 .set(BizPayOrder::getOrderStatus, OrderStatusEnum.EXPIRE.getVal());
         boolean b = this.update(wp);
-        if(!b){
+        if (!b) {
             throw new HutuBizException("订单状态已经发生变化");
         }
         redisUtils.hdel(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + payOrder.getUserId(), payOrder.getId() + "");
@@ -303,6 +330,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         order.setUserId(id);
         order.setItemPiece(items.size());
         order.setWaitTime(items.stream().mapToInt(OrderItemDTO::getExpectMakeTime).sum());
+        order.setPayCode(dto.getPayCode());
         this.save(order);
 
         Date currentDate = new Date();
@@ -317,7 +345,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         HutuThreadPoolExecutor.threadPool.submit(() -> {
             userPayOrderQueueHandler.pushData2Queue(order, businessConfig.getOrderExpire());
             redisUtils.hset(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + id, order.getId() + "", JSONObject.toJSONString(order));
-            log.info("订单[{}]进入监听队列",order.getId());
+            log.info("订单[{}]进入监听队列", order.getId());
         });
         return vo;
     }

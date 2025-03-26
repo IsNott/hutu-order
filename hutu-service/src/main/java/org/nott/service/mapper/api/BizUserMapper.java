@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface BizUserMapper extends BaseMapper<BizUser> {
 
+    int costPointByCas(Long userId,Long originPoint, Long usePoint);
+
 }

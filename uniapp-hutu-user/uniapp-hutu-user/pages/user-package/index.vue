@@ -16,19 +16,20 @@
 					</button>
 				</view>
 			</view>
-			<item-card v-for="item in packageList" :key="item.id" :item="item" @iconClick="handleIconClick" />
+			<view class="pack-list">
+				<item-card v-for="item in packageList" :key="item.id" :item="item" @iconClick="handleIconClick" />
+			</view>
 		</scroll-view>
 		<view class="footer">
-			<mark-tab :key="remark" title="备注" :def-value="markTabDefValue" :value="remark"
-				@click="commonNavigate('/pages/mark/index')" />
-			<mark-tab :key="totalOrginalAmount" title="原价" :def-value="amoutDefValue" :value="amountStr" />
-			<mark-tab :key="chooseCoupon" title="优惠券" :value="chooseCoupon" />
-			<mark-tab :key="point" title="可用积分" :value="point" />
-			<mark-tab :key="giftCard" title="礼品卡" :value="giftCard" />
-			<!-- #ifdef WEB -->
-			<mark-tab title="支付方式" :def-value="defPaywayByCurrPlatform" @click="handleSelectPayway"
+			<mark-tab key="markTab" title="备注" :def-value="markTabDefValue" :value="remark"
+				@tabClick="handleMarkTabClick('mark')" />
+			<mark-tab :key="'amount' + key()" title="原价" :def-value="amountDefValue" :value="amountStr" />
+			<mark-tab :key="'coupon' + key()" title="优惠券" :value="chooseCoupon" v-if="false" />
+			<mark-tab :key="'point' + key()" title="积分" :value="point" :def-value="pointDef" :useRadio="pointDef != null"
+				@tabSelect="handlerSelect" />
+			<mark-tab :key="'card' + key()" title="礼品卡" :value="giftCard" v-if="false" />
+			<mark-tab key="pay" title="支付方式" :def-value="defPaywayByCurrPlatform" @tabClick="handleMarkTabClick('payway')"
 				:value="selectPayway.paymentName" />
-			<!-- #endif -->
 			<view class="btn-group">
 				<button @click="doOrderSettle" :disabled="settleBtnDisable"
 					class="pay-btn">立即结算￥{{totalActuallyAmount}}</button>
@@ -45,24 +46,40 @@
 		OrderStatus
 	} from '@/enums/orderStatusEnum'
 	import {
-		getPayWay,
 		removeItemById,
 		updateContext,
 		orderQuery,
 		simulateNotify
 	} from '@/api/user-package'
 	import {
-		queryUserPackage
+		queryUserPackage,
+		queryPayWay,
+		queryPoint
 	} from '@/api/order.js'
 	import {
 		commonNavigate,
-		getCurrentPlatform,
 		getDateStr,
 		getShopInfo
 	} from '@/utils/CommonUtils'
 	import {
 		orderSettle
 	} from '@/api/user-package'
+	const pickUpType = [{
+		type: 0,
+		name: '堂食'
+	}, {
+		type: 1,
+		name: '外带'
+	}]
+	const defPayWay = {
+		id: '123',
+		paymentName: '微信支付',
+		icon: '',
+		displayOrder: 1
+	}
+	const pointUseRate = 10
+	const minPrice = 0.1
+	const moneyUnit = '￥'
 	export default {
 		name: 'UserPackage',
 		components: {
@@ -73,27 +90,16 @@
 		data() {
 			return {
 				packageList: [],
+				pickUpTypeList: pickUpType,
 				remark: '',
 				point: '',
+				useablePoint: 0,
 				coupons: '',
 				giftCard: '',
 				markTabDefValue: '添加口味、糖度等备注',
 				amountDefValue: '0.00元',
 				chooseCoupon: '',
-				amoutDefValue: '0',
-				paywayList: [{
-					id: '123',
-					paymentName: '微信支付',
-					icon: '',
-					displayOrder: 1
-				}],
-				pickUpTypeList: [{
-					type: 0,
-					name: '堂食'
-				}, {
-					type: 1,
-					name: '外带'
-				}],
+				paywayList: [defPayWay],
 				selectedPickUpType: 0,
 				activeIndex: 0,
 				pickKey: getDateStr(),
@@ -104,25 +110,29 @@
 				timeer: null
 			}
 		},
-		watch: {
-			// packageList(o, n) {
-			// 	if (o.length != 0 && n.length == 0) {
-			// 		commonNavigate('/pages/order/index')
-			// 	}
-			// }
-		},
-		onBackPress(opt) {
-			this.handleBack(false)
-		},
+		watch: {},
+		onShow() {},
 		created() {
-			// #ifdef WEB
-			this.queryPayway()
-			// #endif
 			this.getShopInfo()
-			this.assembleOtherInfo()
 			this.queryPackage()
+			this.assembleOtherInfo()
 		},
 		methods: {
+			key() {
+				return getDateStr()
+			},
+			assembleOtherInfo() {
+				let remark = uni.getStorageSync('order-remark')
+				if (this.isNotEmpty(remark)) {
+					this.remark = remark
+				}
+				queryPayWay().then(res => this.paywayList = res.data)
+				queryPoint().then(res => {
+					if (this.isNotEmpty(res.data)) {
+						this.useablePoint = res.data
+					}
+				})
+			},
 			handleIconClick(id, num) {
 				const currentPackageItem = this.packageList.find(r => r.id === id)
 				if (currentPackageItem) {
@@ -150,17 +160,13 @@
 				this.selectedPickWay = val;
 				this.pickKey = this.selectPayway + getDateStr()
 			},
-			queryPayway() {
-				const platformName = getCurrentPlatform()
-				getPayWay({
-					...platformName
-				}).then(res => {
-					this.paywayList = res.data
-				})
-			},
-			// WEB 平台时选择支付方式
-			handleSelectPayway() {
+			handleMarkTabClick(type) {
+				switch (type) {
+					case 'mark':
+						commonNavigate('/pages/user-package/mark/index')
+					case 'payway':
 
+				}
 			},
 			// 切换就餐方式
 			selectPickUpWay(index, type) {
@@ -172,30 +178,23 @@
 			getShopInfo() {
 				this.currentShopInfo = uni.getStorageSync('current_shop')
 			},
-			assembleOtherInfo() {
-				this.remark = uni.getStorageSync('order_remark')
-			},
 			queryPackage() {
-				// if (this.hasLogin) {
 				queryUserPackage().then(res => {
 					if (res.data) {
 						let size = res.data.length
-						if(size == 0){
+						if (size == 0) {
 							commonNavigate('/pages/order/index')
 						}
 						this.packageNum = res.data.length
 						this.packageList = res.data
-						console.log('this.packageList: ', this.packageList);
 					}
 				})
-				// }
 			},
 			doOrderSettle() {
 				this.settleBtnDisable = true
 				const shop = getShopInfo()
 				var dto = {
-					isUseCoupon: false,
-					isUsePoint: false,
+					pointCount: this.point,
 					remark: '',
 					pickType: this.selectedPickUpType,
 					orderType: 0,
@@ -226,10 +225,13 @@
 						})
 					}, 1000)
 				}
+			},
+			handlerSelect(select) {
+				this.point = select ? this.actuallyUseAblePoint : 0
 			}
 		},
 		computed: {
-			// 总价= 件数*实际单价 - 优惠券 - 抵扣积分金额
+			// 总价= 件数 * 实际单价 - 优惠券 - 抵扣积分金额
 			totalActuallyAmount() {
 				const packages = this.packageList;
 				let sum = 0;
@@ -239,6 +241,15 @@
 						sum += parseFloat(item.singleActuallyAmount) * parseInt(item.itemPiece)
 					}
 				}
+				if (this.point > 0) {
+					let discount = this.point / pointUseRate
+					if (sum <= discount) {
+						sum == minPrice
+					} else {
+						sum -= discount
+					}
+				}
+				sum = Math.round(sum * 100) / 100
 				return sum
 			},
 			// 原价= 件数*实际单价（不计优惠）
@@ -254,7 +265,7 @@
 				return sum;
 			},
 			amountStr() {
-				return '￥' + this.totalOrginalAmount
+				return moneyUnit + this.totalOrginalAmount
 			},
 			defPaywayByCurrPlatform() {
 				var payName = ''
@@ -263,6 +274,25 @@
 					this.selectPayway = this.paywayList[0]
 				}
 				return payName
+			},
+			actuallyUseAblePoint() {
+				if (this.useablePoint === 0) {
+					return 0
+				} else {
+					let discount = this.useablePoint / pointUseRate
+					if (this.totalOrginalAmount <= discount) {
+						return Math.floor((this.totalOrginalAmount - minPrice) * pointUseRate)
+					} else {
+						return this.useablePoint
+					}
+				}
+			},
+			pointDef() {
+				if (this.actuallyUseAblePoint === 0) {
+					return null
+				} else {
+					return `使用${this.actuallyUseAblePoint}积分抵扣${this.actuallyUseAblePoint / pointUseRate} 元`
+				}
 			}
 		}
 	}

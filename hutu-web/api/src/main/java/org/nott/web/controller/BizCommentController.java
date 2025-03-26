@@ -23,12 +23,4 @@ import javax.annotation.Resource;
 @RequestMapping("/bizComment")
 public class BizCommentController {
 
-    @Resource
-    OssClient ossClient;
-
-    @PostMapping("/test")
-    public ResponseEntity<?> test(@RequestBody MultipartFile file) throws Exception{
-        return ResponseEntity.successData(ossClient.upload(file, 123L));
-    }
-
 }

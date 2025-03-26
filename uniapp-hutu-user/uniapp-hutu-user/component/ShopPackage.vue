@@ -27,14 +27,10 @@
 			}
 		},
 		data() {
-			return {
-
-			}
+			return {}
 		},
 		methods: {
 			handerClick(){
-				console.log('shop-package-click');
-				// this.$emit('shop-package-click')
 				commonNavigate('/pages/user-package/index')
 			}
 		},

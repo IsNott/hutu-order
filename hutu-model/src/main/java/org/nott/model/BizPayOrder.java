@@ -62,9 +62,9 @@ public class BizPayOrder implements Serializable {
     private Integer waitTime;
 
     /**
-     * 支付方式id
+     * 支付方式code
      */
-    private Long paywayId;
+    private String payCode;
 
     /**
      * 外部交易流水号

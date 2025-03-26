@@ -72,4 +72,11 @@ public class BizUserController {
     public ResponseEntity<?> isLogin(){
         return ResponseEntity.successData(StpUtil.isLogin());
     }
+
+
+    @ApiOperation("用户查询可用积分")
+    @PostMapping("/point")
+    public ResponseEntity<?> myPoint(){
+        return ResponseEntity.successData(bizUserService.queryUsablePoint());
+    }
 }

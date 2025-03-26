@@ -74,5 +74,10 @@ public class BizUser implements Serializable {
      */
     private BigDecimal giftBalance;
 
+    /**
+     * 积分
+     */
+    private Long point;
+
 
 }

@@ -31,7 +31,8 @@ public class BizPayWayServiceImpl extends ServiceImpl<BizPayWayMapper, BizPayWay
         LambdaQueryWrapper<BizPayWay> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.eq(BizPayWay::getIsUsable, 1)
-                .like(BizPayWay::getSupportPlatform,dto.getPlatformName())
+                .eq(BizPayWay::getSupportPlatform,dto.getPlatformName())
+                .or().eq(BizPayWay::getSupportPlatform,"ALL")
                 .orderByAsc(BizPayWay::getDisplayOrder);
 
         List<BizPayWay> payWays = this.list(wrapper);
