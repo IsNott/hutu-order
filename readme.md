@@ -28,6 +28,7 @@ GitHub:[IsNott](https://github.com/IsNott) &ensp;<br>
 ## 文档目录
 
 - [技术选型](#技术选型)
+    - [开发进度](#开发进度)
     - [运行环境](#运行环境)
     - [运行项目](#运行项目)
     - [文件目录](#文件目录)
@@ -40,6 +41,17 @@ GitHub:[IsNott](https://github.com/IsNott) &ensp;<br>
 叫号屏：`Vue2.x`、`Eletron`<br>
 协议：`Http`、`WebSocket`<br>
 服务端：`SpringBoot2.x`、`Vue2.x`、`Netty4.x`、`Sa-token`、`Spring Security`、`Redis`、`Mybatis-plus`、`AspectJ`、`Spring-Cloud-OpenFeign`<br>
+
+#### 开发进度
+
+已开发：<br>
+  1. Api + uniapp-hutu-user：商品展示、用户登录（微信+ 本地账号登录）、用户点餐流程（除支付）
+  2. Oss： 文件上传管理
+  3. WebSocket + vue-hutu-stuff：叫号大屏显示、小票打印
+  4. Admin + vue-hutu-admin: 基础登录，其余管理功能暂未开发
+
+待开发：Admin管理功能<br>
+待优化：用户点餐、叫号大屏显示、小票打印<br>
 
 #### 运行环境
 
