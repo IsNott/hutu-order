@@ -25,7 +25,15 @@ public interface OssClient {
     ResponseEntity<?> deleteByBizId(@PathVariable("bizId") Long bizId);
 
     @ResponseBody
+    @PutMapping("/deleteById/{id}")
+    ResponseEntity<?> deleteById(@PathVariable("id") Long id);
+
+    @ResponseBody
     @PutMapping("/getByBizId/{bizId}")
     ResponseEntity<List<OssFileVo>> getByBizId(@PathVariable("bizId") Long bizId);
+
+    @ResponseBody
+    @PutMapping("/getByBizId")
+    ResponseEntity<List<OssFileVo>> getByBizId(@RequestBody List<Long> bizId);
 
 }

@@ -3,7 +3,7 @@
 		<view class="header">
 			<swiper class="swiper" :circular="true" :indicator-dots="false" :autoplay="true">
 				<swiper-item :key="index" v-for="(img,index) in previewUrls">
-					<image :src="img ? img : require('@/static/image/not-image.png')" mode="scaleToFill" class="img" />
+					<image :src="img ? baseUrl + img : require('@/static/image/not-image.png')" mode="aspectFit" class="img"/>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -125,8 +125,7 @@
 				return array;
 			},
 			previewUrls() {
-				var urls = handleImageUrlArray(this.item.itemImgeUrls)
-				return urls
+				return this.item.itemImage
 			}
 		}
 	}
@@ -139,13 +138,13 @@
 
 	.swiper-item {
 		display: block;
-		line-height: 300upx;
 		text-align: center;
 	}
 
 	.img {
 		width: 100%;
-		height: 300upx;
+		height: 100%;
+		/* margin: 20px; */
 	}
 
 	.price {
@@ -159,5 +158,9 @@
 
 	.swiper {
 		height: 300upx;
+	}
+	
+	.context{
+		padding-bottom: 80px;
 	}
 </style>

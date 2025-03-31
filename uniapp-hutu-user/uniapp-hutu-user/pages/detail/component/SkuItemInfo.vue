@@ -89,7 +89,7 @@
 	.btn{
 		width: 80%;
 		font-size: 80%;
-		color: #b6b6b6;
+		color: black;
 		background-color: #f4f4f4;
 	}
 	

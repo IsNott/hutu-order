@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.nott.common.config.BusinessConfig;
 import org.nott.common.exception.HutuBizException;
+import org.nott.common.idWorker.SnowflakeIdWorker;
 import org.nott.common.redis.RedisUtils;
 import org.nott.common.thread.pool.HutuThreadPoolExecutor;
 import org.nott.common.utils.HutuUtils;
@@ -56,6 +58,8 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPayOrder> implements IBizPayOrderService {
+
+    public static final SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(1, 1);
 
     @Resource
     private UserPayOrderQueueHandler userPayOrderQueueHandler;
@@ -133,7 +137,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
                 if (point < pointCount) {
                     throw new HutuBizException("积分不足");
                 }
-                BigDecimal disCountPrice = new BigDecimal(pointCount * 10L);
+                BigDecimal disCountPrice = new BigDecimal(pointCount / 10L);
                 if(disCountPrice.compareTo(originalAmount) >= 0){
                     disCountPrice = originalAmount.subtract(new BigDecimal("0.1"));
                     couponDisable = true;
@@ -324,22 +328,24 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         List<OrderItemDTO> items = dto.getItems();
         order.setItemInfo(JSONObject.toJSONString(items));
 
-        String nextOrderNo = sequenceUtils.nextSeq(prefix);
-        order.setOrderNo(nextOrderNo);
+        String nextShopOrderNo = sequenceUtils.nextSeq(prefix);
+        String orderNo = snowflakeIdWorker.nextId() + "";
+        order.setShopOrderNo(nextShopOrderNo);
+        order.setOrderNo(orderNo);
         order.setOrderStatus(OrderStatusEnum.INIT.getVal());
         order.setUserId(id);
         order.setItemPiece(items.size());
         order.setWaitTime(items.stream().mapToInt(OrderItemDTO::getExpectMakeTime).sum());
-        order.setPayCode(dto.getPayCode());
         this.save(order);
 
         Date currentDate = new Date();
 
         SettleOrderVo vo = HutuUtils.transToObject(dto, SettleOrderVo.class);
-        vo.setOrderNo(nextOrderNo);
+        vo.setOrderNo(orderNo);
+        vo.setShopOrderNo(nextShopOrderNo);
         vo.setOrderId(order.getId());
         vo.setCreateTime(currentDate);
-        vo.setExpireTime(new Date(currentDate.getTime() + businessConfig.getOrderExpire()));
+        vo.setExpireTime(businessConfig.getOrderExpire());
         vo.setUserId(id);
 
         HutuThreadPoolExecutor.threadPool.submit(() -> {

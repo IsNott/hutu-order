@@ -194,7 +194,6 @@ function handleRequest(api, method, data, resolve, reject, custHeader) {
 function handleUpload(api, filePath,otherFormData, resolve, reject){
 		const token = uni.getStorageSync("token")
 		let header = {}
-		debugger
 		if (token) {
 			header.token = token
 		}
@@ -208,7 +207,7 @@ function handleUpload(api, filePath,otherFormData, resolve, reject){
 			url: BASE_URL + api,
 			header: {...header},
 			filePath: filePath,
-			name: files[0].name,
+			name: 'file',
 			timeout: TIME_OUT,
 			formData: {...otherFormData},
 			success: (response) => {

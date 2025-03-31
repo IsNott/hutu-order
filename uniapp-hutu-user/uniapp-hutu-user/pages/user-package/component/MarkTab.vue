@@ -1,7 +1,7 @@
 <template>
 	<view class="mark-info" @click="handleClick">
 		<text class="title">{{title}}</text>
-		<view style="text-align: center;" v-if="useRadio">
+		<view class="radio-tab" v-if="useRadio">
 			<radio value="r1" :checked="select" @click="handleRadioChange" />{{defValue}}</label>
 		</view>
 		<view v-else>
@@ -75,14 +75,26 @@
 		color: #b4b4b4;
 		font-size: 16px;
 		font-weight: 500;
+		display: table-cell;
 	}
 
 	.placeholder {
 		color: black;
 		font-size: 16px;
+		display: table-cell;
 	}
 	
 	.text{
 		text-align: center;
+	}
+	
+	.radio-tab{
+		align-items: center;
+		display: flex;
+	}
+	
+	radio {
+		/* font-size: 8px; */
+		transform: scale(0.66);
 	}
 </style>

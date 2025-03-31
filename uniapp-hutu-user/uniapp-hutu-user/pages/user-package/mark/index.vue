@@ -37,6 +37,8 @@
 			handleSubmit(){
 				if(this.markStr){
 					uni.setStorageSync(markKey,this.markStr)
+				}else{
+					uni.removeStorageSync(markKey)
 				}
 				commonNavigate('/pages/user-package/index')
 			},

@@ -10,7 +10,7 @@ public @interface RedisCache {
     /**
      * 缓存Key
      */
-    String key();
+    String key() default "";
 
     /**
      * 业务id，key+id存在时使用Hashset

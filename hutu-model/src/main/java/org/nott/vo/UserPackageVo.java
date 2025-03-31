@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author Nott
  * @date 2024-6-3
@@ -27,7 +29,7 @@ public class UserPackageVo {
     @ApiModelProperty("商品名称")
     private String itemName;
     @ApiModelProperty("商品预览图片地址")
-    private String itemImageUrls;
+    private List<String> itemImageUrls;
     @ApiModelProperty("预计制作时间")
     private Integer expectMakeTime;
 }

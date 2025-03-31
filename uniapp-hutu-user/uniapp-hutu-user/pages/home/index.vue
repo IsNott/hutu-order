@@ -5,10 +5,11 @@
 			<!-- <image src="@/static/image/template-logo.png" :draggable="false" /> -->
 			<uni-swiper-dot class="uni-swiper-dot-box" @clickItem=clickItem :info="info" :current="current" mode="default"
 				:dots-styles="dotStyle" field="content">
-				<swiper class="swiper-box" @change="changeBanner" :current="swiperDotIndex">
+				<swiper class="swiper-box" @change="changeBanner" :current="swiperDotIndex"
+				:autoplay='true'>
 					<swiper-item v-for="(item, index) in info" :key="index">
 						<view class="swiper-item" :class="'swiper-item' + index">
-							<image :src="item.url" mode="aspectFit"></image>
+							<image :src="baseUrl + item" mode="aspectFit"></image>
 						</view>
 					</swiper-item>
 				</swiper>
@@ -20,19 +21,19 @@
 					<image class="card-images" src="@/static/image/order.png" :draggable="false" mode="aspectFit" />
 					<text>点餐</text>
 				</view>
-				<view @click="showDevMsg" class="colum">
-					<image class="card-images" src="@/static/image/home-shop.png" :draggable="false" mode="aspectFit" />
-					<text>商城</text>
-				</view>
-			</view>
-			<view class="row">
-				<view @click="showDevMsg" class="colum">
-					<image class="card-images" src="@/static/image/point.png" :draggable="false" mode="aspectFit" />
-					<text>积分</text>
-				</view>
 				<view @click="handlerRoute('/pages/my/index')" class="colum">
 					<image class="card-images" src="@/static/image/home-my.png" :draggable="false" mode="aspectFit" />
 					<text>我的</text>
+				</view>
+			</view>
+			<view class="row">
+				<view @click="showDevMsg" class="colum" v-if="false">
+					<image class="card-images" src="@/static/image/point.png" :draggable="false" mode="aspectFit" />
+					<text>积分</text>
+				</view>
+				<view @click="showDevMsg" class="colum" v-if="false">
+					<image class="card-images" src="@/static/image/home-shop.png" :draggable="false" mode="aspectFit" />
+					<text>商城</text>
 				</view>
 			</view>
 			<cust-card main-title="庆贺新店开张" click-url="/pages/order/index">
@@ -58,6 +59,8 @@
 </template>
 
 <script>
+	const imgs = ['/hutu-order/web/upload/static/1905081578795819009.png',
+	'/hutu-order/web/upload/static/1905083114506674177.png']
 	import {
 		commonNavigate
 	} from '../../utils/CommonUtils';
@@ -69,22 +72,7 @@
 		},
 		data() {
 			return {
-				info: [{
-						colorClass: 'uni-bg-red',
-						url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/shuijiao.jpg',
-						content: '内容 A'
-					},
-					{
-						colorClass: 'uni-bg-green',
-						url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/shuijiao.jpg',
-						content: '内容 B'
-					},
-					{
-						colorClass: 'uni-bg-blue',
-						url: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/shuijiao.jpg',
-						content: '内容 C'
-					}
-				],
+				info: imgs,
 				current: 0,
 				swiperDotIndex: 0,
 				dotStyle: {

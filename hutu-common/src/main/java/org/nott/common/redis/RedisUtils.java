@@ -10,6 +10,7 @@ import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnBean(RedisTemplate.class)
 public class RedisUtils {
 
-    @Autowired
+    @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     public boolean expire(String key, long time) {

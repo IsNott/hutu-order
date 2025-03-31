@@ -22,6 +22,8 @@ public interface IOssFileService {
      */
     void deleteByBizId(Long bizId);
 
+    void deleteByBizId(List<Long> bizId);
+
     /**
      * 获取文件
      * @param bizId
@@ -29,4 +31,11 @@ public interface IOssFileService {
      */
     List<OssFileVo> getByBizId(Long bizId);
 
+    List<OssFileVo> getByBizId(List<Long> bizId);
+
+    /**
+     * 删除文件
+     * @param id
+     */
+    void deleteById(Long id);
 }

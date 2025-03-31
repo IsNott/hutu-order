@@ -52,7 +52,7 @@ public class CacheAspect {
 
         RedisCache annotation = method.getAnnotation(RedisCache.class);
         String annotationItem = annotation.item();
-        String key = annotation.key();
+        String key = HutuUtils.isNotEmpty(annotation.key()) ? annotation.key() : method.getName();
 
         // 存在参数并带有业务id值
         String elValue = HutuUtils.parseSpEl(method, args, annotationItem, String.class);

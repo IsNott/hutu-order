@@ -95,6 +95,13 @@
 			{
 				"navigationBarTitleText" : "个人信息"
 			}
+		},
+		{
+			"path" : "pages/pay/index",
+			"style" : 
+			{
+				"navigationBarTitleText" : "支付订单"
+			}
 		}
 	],
 	"globalStyle": {

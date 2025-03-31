@@ -3,6 +3,7 @@ package org.nott.web.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
+import org.nott.common.annotation.RedisCache;
 import org.nott.vo.MenuItemVo;
 import org.nott.service.api.IBizMenuService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,7 @@ public class BizMenuController {
 
     @ApiOperation(value = "门店菜单列表",tags = "根据门店+分类id查询")
     @GetMapping("listByShopCatalogId/{shopId}/{catalogId}")
+    @RedisCache(item = "#catalogId")
     public ResponseEntity<?> listByCatalogId(@PathVariable("shopId") Long shopId, @PathVariable("catalogId") String catalogId) {
         List<MenuItemVo> menuList = bizMenuService.getByShopCatalogId(shopId,catalogId);
         return ResponseEntity.successData(menuList);

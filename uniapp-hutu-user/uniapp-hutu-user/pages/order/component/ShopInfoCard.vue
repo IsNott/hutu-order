@@ -58,7 +58,7 @@
 		      if (this.currentMerchant.coverUrl) {
 		        return {
 		          ...baseStyle,
-		          background: `url(${this.currentMerchant.coverUrl}) no-repeat`
+		          background: `url(${this.baseUrl + this.currentMerchant.coverUrl}) no-repeat`
 		        };
 		      }
 		      return baseStyle;
@@ -121,7 +121,7 @@
 
 	.address,
 	.time {
-		color: grey;
+		/* color: grey; */
 	}
 
 </style>

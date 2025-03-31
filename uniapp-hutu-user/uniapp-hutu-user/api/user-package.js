@@ -6,10 +6,6 @@ export function pay(param) {
 	return request('/user-package/pay', 'POST', param)
 }
 
-export function getPayWay(param) {
-	return request('/bizPayWay/list', 'POST', param)
-}
-
 export function updateContext(param) {
 	return request('/bizUserPackage/updateContext', 'POST', param)
 }

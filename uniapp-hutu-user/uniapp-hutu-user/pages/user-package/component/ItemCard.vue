@@ -47,7 +47,11 @@
 		},
 		computed: {
 			imageUrl() {
-				return handleImageUrl(this.item.itemImageUrls)
+				if(this.item.itemImageUrls.length > 0){
+					return this.baseUrl + this.item.itemImageUrls[0]
+				}else{
+					return ''
+				}
 			}
 		}
 	}

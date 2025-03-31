@@ -58,11 +58,6 @@ public class BizItem implements Serializable {
     private String special;
 
     /**
-     * 图片地址
-     */
-    private String itemImgeUrls;
-
-    /**
      * 删除标识
      */
     @TableLogic(delval = "1",value = "0")

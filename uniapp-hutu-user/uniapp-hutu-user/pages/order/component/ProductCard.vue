@@ -67,7 +67,11 @@
 		},
 		computed: {
 			previewUrl() {
-				return handleImageUrl(this.item.itemImgeUrls)
+				if(this.item.itemImage.length > 0){
+					return this.baseUrl + this.item.itemImage[0]
+				}else{
+					return ''
+				}
 			}
 		}
 	}

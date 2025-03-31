@@ -3,7 +3,7 @@
 		<uni-list-item direction="column" v-for="(item,index) in menuCatalog" :key="item.id"
 			:clickable="true" :border="false" ref="listItems" @click="handlerCatalogClick(item.id)">
 			<template class="panel-body" v-slot:body>
-				<image class="catalog-img" :src="item.imgUrl ? item.imgUrl : require('@/static/image/not-image.png')" mode="aspectFit"></image>
+				<image class="catalog-img" :src="item.imgUrl ? baseUrl + item.imgUrl : require('@/static/image/not-image.png')" mode="aspectFit"></image>
 				<text class="catalog-name">{{ item.catalogName}}</text>
 			</template>
 		</uni-list-item>

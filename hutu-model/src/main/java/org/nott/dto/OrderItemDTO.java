@@ -21,9 +21,6 @@ public class OrderItemDTO {
     @NotNull
     private Long itemId;
 
-    @ApiModelProperty("商品图片")
-    private String itemImageUrls;
-
     @ApiModelProperty("商品名称")
     private String itemName;
 

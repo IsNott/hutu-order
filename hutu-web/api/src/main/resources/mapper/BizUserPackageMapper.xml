@@ -3,7 +3,7 @@
 <mapper namespace="org.nott.service.mapper.api.BizUserPackageMapper">
 
     <select id="selectUserPackageByUserId" resultType="org.nott.vo.UserPackageVo">
-        select t1.*, t2.actually_amount as singleActuallyAmount, t2.item_name,t2.item_imge_urls as itemImageUrls,t2.expect_make_time as expectMakeTime
+        select t1.*, t2.actually_amount as singleActuallyAmount, t2.item_name,t2.expect_make_time as expectMakeTime
         from biz_user_package t1
                  LEFT JOIN biz_item t2
                            on t1.item_id = t2.id

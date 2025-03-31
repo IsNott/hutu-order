@@ -82,6 +82,11 @@ public class BizPayOrder implements Serializable {
     private String orderNo;
 
     /**
+     * 店内用餐号
+     */
+    private String shopOrderNo;
+
+    /**
      * 0-初始化 1-进行中 2-支付 3-退单
      */
     private Integer orderStatus;

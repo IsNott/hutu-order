@@ -70,7 +70,7 @@ public class RedisConfiguration{
         return new JedisConnectionFactory(configuration, jedisClientConfiguration);
     }
 
-    @Bean("redisTemplate")
+    @Bean
     public RedisTemplate<String, Object> redisTemplate() {
         //1.创建redisTemplate模板
         RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -88,6 +88,8 @@ public class RedisConfiguration{
 //        7.设置value的转化格式和key的转换格式
         template.setValueSerializer(jackson2JsonRedisSerializer);
         template.setKeySerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(jackson2JsonRedisSerializer);
         template.afterPropertiesSet();
         return template;
     }

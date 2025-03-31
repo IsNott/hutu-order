@@ -2,6 +2,8 @@ package org.nott.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author Nott
  * @date 2024-5-24
@@ -24,7 +26,7 @@ public class MenuItemVo {
 
     private String itemTag;
 
-    private String itemImgeUrls;
+    private List<String> itemImage;
 
     private String special;
 

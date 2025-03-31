@@ -23,16 +23,16 @@
 		<view class="footer">
 			<mark-tab key="markTab" title="备注" :def-value="markTabDefValue" :value="remark"
 				@tabClick="handleMarkTabClick('mark')" />
-			<mark-tab :key="'amount' + key()" title="原价" :def-value="amountDefValue" :value="amountStr" />
-			<mark-tab :key="'coupon' + key()" title="优惠券" :value="chooseCoupon" v-if="false" />
-			<mark-tab :key="'point' + key()" title="积分" :value="point" :def-value="pointDef" :useRadio="pointDef != null"
-				@tabSelect="handlerSelect" />
+			<mark-tab :key="key.amount" title="原价" :def-value="amountDefValue" :value="amountStr" />
+			<mark-tab :key="key.pointToUse" title="可用积分" :value="useablePoint.toString()" :def-value="'0'" />
+			<mark-tab :key="key.point" title="抵扣" :value="point.toString()" :def-value="pointDef"
+				:useRadio="actuallyUseAblePoint != 0" @tabSelect="handlerSelect" v-if="actuallyUseAblePoint != 0" />
+			<mark-tab :key="key.coupon" title="优惠券" :value="chooseCoupon" v-if="false" />
 			<mark-tab :key="'card' + key()" title="礼品卡" :value="giftCard" v-if="false" />
-			<mark-tab key="pay" title="支付方式" :def-value="defPaywayByCurrPlatform" @tabClick="handleMarkTabClick('payway')"
-				:value="selectPayway.paymentName" />
 			<view class="btn-group">
-				<button @click="doOrderSettle" :disabled="settleBtnDisable"
-					class="pay-btn">立即结算￥{{totalActuallyAmount}}</button>
+				<button @click="doOrderSettle" :disabled="settleBtnDisable" class="pay-btn"
+					type="primary">￥{{totalActuallyAmount}}
+					去结算</button>
 			</view>
 		</view>
 	</view>
@@ -53,7 +53,7 @@
 	} from '@/api/user-package'
 	import {
 		queryUserPackage,
-		queryPayWay,
+		// queryPayWay,
 		queryPoint
 	} from '@/api/order.js'
 	import {
@@ -71,15 +71,20 @@
 		type: 1,
 		name: '外带'
 	}]
-	const defPayWay = {
-		id: '123',
-		paymentName: '微信支付',
-		icon: '',
-		displayOrder: 1
-	}
+	// const defPayWay = {
+	// 	id: '123',
+	// 	paymentName: '微信支付',
+	// 	icon: '',
+	// 	displayOrder: 1
+	// }
 	const pointUseRate = 10
 	const minPrice = 0.1
 	const moneyUnit = '￥'
+	const title = '如您在点单过程中有任何问题请移步到前台咨询，如遇下单后需要更换商品请及时通知店员，谢谢！'
+	const def = {
+		mark: '添加口味、糖度等备注',
+		amount: '0.00元'
+	}
 	export default {
 		name: 'UserPackage',
 		components: {
@@ -96,16 +101,16 @@
 				useablePoint: 0,
 				coupons: '',
 				giftCard: '',
-				markTabDefValue: '添加口味、糖度等备注',
-				amountDefValue: '0.00元',
+				markTabDefValue: def.mark,
+				amountDefValue: def.amount,
 				chooseCoupon: '',
-				paywayList: [defPayWay],
+				// paywayList: [defPayWay],
 				selectedPickUpType: 0,
 				activeIndex: 0,
 				pickKey: getDateStr(),
 				currentShopInfo: {},
 				settleBtnDisable: false,
-				noticeTitle: '如您在点单过程中有任何问题请移步到前台咨询，如遇下单后需要更换商品请及时通知店员，谢谢！',
+				noticeTitle: title,
 				orderId: '',
 				timeer: null
 			}
@@ -126,7 +131,7 @@
 				if (this.isNotEmpty(remark)) {
 					this.remark = remark
 				}
-				queryPayWay().then(res => this.paywayList = res.data)
+				// queryPayWay().then(res => this.paywayList = res.data)
 				queryPoint().then(res => {
 					if (this.isNotEmpty(res.data)) {
 						this.useablePoint = res.data
@@ -203,13 +208,16 @@
 				}
 				orderSettle(dto).then(res => {
 					// TODO 根据平台+用户选择的方式（Web端）拉起对应支付页面
-					this.orderId = res.data.orderId
+					// this.orderId = res.data.orderId
+					const data = res.data
 					uni.showLoading({
 						title: '等待支付'
 					})
-					simulateNotify(this.orderId).then(() => {
-						this.doOrderQuery()
-					})
+					// simulateNotify(this.orderId).then(() => {
+					// 	this.doOrderQuery()
+					// })
+					const payOrderVo = encodeURIComponent(JSON.stringify(data))
+					commonNavigate('/pages/pay/index?payOrderVo=' + payOrderVo)
 				}).finally(this.settleBtnDisable = false)
 			},
 			doOrderQuery() {
@@ -231,6 +239,14 @@
 			}
 		},
 		computed: {
+			key() {
+				return {
+					amount: 'amount' + getDateStr(),
+					coupon: 'coupon' + getDateStr(),
+					pointToUse: 'pointToUse' + getDateStr(),
+					point: 'point' + getDateStr()
+				}
+			},
 			// 总价= 件数 * 实际单价 - 优惠券 - 抵扣积分金额
 			totalActuallyAmount() {
 				const packages = this.packageList;
@@ -267,14 +283,14 @@
 			amountStr() {
 				return moneyUnit + this.totalOrginalAmount
 			},
-			defPaywayByCurrPlatform() {
-				var payName = ''
-				if (this.paywayList.length > 0) {
-					payName = this.paywayList[0].paymentName
-					this.selectPayway = this.paywayList[0]
-				}
-				return payName
-			},
+			// defPaywayByCurrPlatform() {
+			// 	var payName = ''
+			// 	if (this.paywayList.length > 0) {
+			// 		payName = this.paywayList[0].paymentName
+			// 		this.selectPayway = this.paywayList[0]
+			// 	}
+			// 	return payName
+			// },
 			actuallyUseAblePoint() {
 				if (this.useablePoint === 0) {
 					return 0
@@ -288,8 +304,8 @@
 				}
 			},
 			pointDef() {
-				if (this.actuallyUseAblePoint === 0) {
-					return null
+				if (this.actuallyUseAblePoint == 0) {
+					return '无可用积分'
 				} else {
 					return `使用${this.actuallyUseAblePoint}积分抵扣${this.actuallyUseAblePoint / pointUseRate} 元`
 				}

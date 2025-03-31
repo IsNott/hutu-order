@@ -15,6 +15,8 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,14 +59,41 @@ public class OssFileServiceImpl extends ServiceImpl<OssFileMapper, OssFile> impl
 
     @Override
     public void deleteByBizId(Long bizId) {
-        this.lambdaUpdate().eq(OssFile::getBizId, bizId).set(OssFile::getDelFlag, 1).update();
+        this.deleteByBizId(Collections.singletonList(bizId));
+    }
+
+    @Override
+    public void deleteByBizId(List<Long> bizId) {
+        this.lambdaUpdate().in(OssFile::getBizId, bizId).set(OssFile::getDelFlag, 1).update();
     }
 
     @Override
     public List<OssFileVo> getByBizId(Long bizId) {
-        List<OssFile> list = this.lambdaQuery().eq(OssFile::getBizId, bizId)
+       return getByBizId(Collections.singletonList(bizId));
+    }
+
+    @Override
+    public List<OssFileVo> getByBizId(List<Long> bizId) {
+        if(HutuUtils.isEmpty(bizId)){
+            return new ArrayList<>();
+        }
+        List<OssFile> list = this.lambdaQuery().in(OssFile::getBizId, bizId)
                 .eq(OssFile::getDelFlag, 0)
+                .orderByDesc(OssFile::getCreateTime)
                 .list();
         return HutuUtils.transToVos(list, OssFileVo.class);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        OssFile ossFile = this.getById(id);
+        HutuUtils.requireNotNull(ossFile, "文件不存在");
+        String uploadPath = webConfig.getUploadPath();
+        String basePath = webConfig.getBasePath();
+        String fullPath = basePath + uploadPath;
+        File file = new File(fullPath + ossFile.getPath());
+        file.deleteOnExit();
+        super.removeById(id);
+
     }
 }

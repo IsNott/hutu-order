@@ -2,11 +2,15 @@ package org.nott.service.api.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import org.nott.common.ResponseEntity;
+import org.nott.common.exception.HutuBizException;
 import org.nott.common.utils.HutuUtils;
+import org.nott.common.utils.SpringContextUtil;
 import org.nott.dto.UserPackageAddDTO;
-import org.nott.dto.UserPackageQueryDTO;
 import org.nott.dto.UserPackageUpDateDTO;
+import org.nott.feign.OssClient;
 import org.nott.model.BizUserPackage;
+import org.nott.vo.OssFileVo;
 import org.nott.vo.UserPackageVo;
 import org.nott.service.mapper.api.BizUserPackageMapper;
 import org.nott.service.api.IBizUserPackageService;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -38,7 +43,20 @@ public class BizUserPackageServiceImpl extends ServiceImpl<BizUserPackageMapper,
 
     @Override
     public List<UserPackageVo> queryPackageInfoByUserId(Long userId) {
-        return bizUserPackageMapper.selectUserPackageByUserId(userId);
+        List<UserPackageVo> userPackageVos = bizUserPackageMapper.selectUserPackageByUserId(userId);
+        if(HutuUtils.isNotEmpty(userPackageVos)){
+            OssClient ossClient = SpringContextUtil.getBean(OssClient.class);
+            ResponseEntity<List<OssFileVo>> ossFile = ossClient.getByBizId(userPackageVos.stream().map(UserPackageVo::getItemId).collect(Collectors.toList()));
+            if (ossFile.getCode() != 200){
+                throw new HutuBizException(ossFile.getMessage());
+            }
+            List<OssFileVo> data = ossFile.getData();
+            userPackageVos.forEach(userPackageVo -> {
+                List<OssFileVo> files = data.stream().filter(ossFileVo -> userPackageVo.getItemId().equals(ossFileVo.getBizId())).collect(Collectors.toList());
+                userPackageVo.setItemImageUrls(files.stream().map(OssFileVo::getPath).collect(Collectors.toList()));
+            });
+        }
+        return userPackageVos;
     }
 
     @Override

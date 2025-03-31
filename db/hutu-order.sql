@@ -1,21 +1,20 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 50735 (5.7.35)
- Source Host           : localhost:3306
- Source Schema         : hutu-order
-
- Target Server Type    : MySQL
- Target Server Version : 50735 (5.7.35)
- File Encoding         : 65001
-
- Date: 18/03/2025 16:27:50
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for biz_business_config
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_business_config`;
+CREATE TABLE `biz_business_config`  (
+  `id` bigint(20) NOT NULL COMMENT 'id',
+  `biz_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务key',
+  `biz_context` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '业务正文',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_business_config
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for biz_comment
@@ -33,6 +32,25 @@ CREATE TABLE `biz_comment`  (
 -- ----------------------------
 -- Records of biz_comment
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for biz_common_remark
+-- ----------------------------
+DROP TABLE IF EXISTS `biz_common_remark`;
+CREATE TABLE `biz_common_remark`  (
+  `id` bigint(20) NOT NULL COMMENT 'id',
+  `context` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内容',
+  `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '是否删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of biz_common_remark
+-- ----------------------------
+INSERT INTO `biz_common_remark` VALUES (1904105823253037056, '少冰', 0);
+INSERT INTO `biz_common_remark` VALUES (1904105823257231360, '少糖', 0);
+INSERT INTO `biz_common_remark` VALUES (1904105823257231361, '不加冰', 0);
+INSERT INTO `biz_common_remark` VALUES (1904105823257231362, '不加糖', 0);
 
 -- ----------------------------
 -- Table structure for biz_coupon
@@ -92,7 +110,6 @@ CREATE TABLE `biz_item`  (
   `special` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '特殊tag',
   `item_desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商品描述',
   `item_tag` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商品标签',
-  `item_imge_urls` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '图片地址',
   `expect_make_time` int(20) NULL DEFAULT NULL COMMENT '预计制作时长，单位：分',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
@@ -103,24 +120,21 @@ CREATE TABLE `biz_item`  (
 -- ----------------------------
 -- Records of biz_item
 -- ----------------------------
-INSERT INTO `biz_item` VALUES (1, '15.00', '12.00', '拿铁', '热', '优质咖啡豆搭配顶级牛奶', '热销,新品,新品,新品', 'https://pic.imgdb.cn/item/67332173d29ded1a8c6801a8.jpg', 2, 0, '2024-05-24 09:00:00', '2024-05-24 09:00:00');
-INSERT INTO `biz_item` VALUES (2, '18.00', '15.00', '卡布奇诺', '无糖', '意式浓缩咖啡与丝滑牛奶的完美结合', '推荐', '', 2, 0, '2024-05-24 09:15:00', '2024-05-24 09:15:00');
-INSERT INTO `biz_item` VALUES (3, '20.00', '18.00', '摩卡', NULL, '香浓巧克力、浓郁咖啡与奶泡的完美融合', '新品', '', 2, 0, '2024-05-24 09:30:00', '2024-05-24 09:30:00');
-INSERT INTO `biz_item` VALUES (4, '25.00', '22.00', '美式咖啡', NULL, '纯粹的咖啡香味', '', '', 2, 0, '2024-05-24 09:45:00', '2024-05-24 09:45:00');
-INSERT INTO `biz_item` VALUES (5, '22.00', '20.00', '浓缩咖啡', NULL, '浓郁的咖啡香味', '', '', 3, 0, '2024-05-24 10:00:00', '2024-05-24 10:00:00');
-INSERT INTO `biz_item` VALUES (6, '28.00', '25.00', '拿铁玛奇朵', NULL, '拿铁与玛奇朵的完美结合', '', '', 4, 0, '2024-05-24 10:15:00', '2024-05-24 10:15:00');
-INSERT INTO `biz_item` VALUES (7, '30.00', '28.00', '焦糖玛奇朵', NULL, '香甜焦糖与浓郁咖啡的美妙组合', '', '', 5, 0, '2024-05-24 10:30:00', '2024-05-24 10:30:00');
-INSERT INTO `biz_item` VALUES (8, '20.00', '18.00', '香草拿铁', NULL, '香草风味与顶级牛奶的完美搭配', '', '', 5, 0, '2024-05-24 10:45:00', '2024-05-24 10:45:00');
-INSERT INTO `biz_item` VALUES (9, '22.00', '20.00', '焦糖拿铁', NULL, '浓郁咖啡与香甜焦糖的绝妙组合', '', '', 3, 0, '2024-05-24 11:00:00', '2024-05-24 11:00:00');
-INSERT INTO `biz_item` VALUES (10, '25.00', '22.00', '冰美式', NULL, '清凉解渴的美式咖啡', '', '', 5, 0, '2024-05-24 11:15:00', '2024-05-24 11:15:00');
-INSERT INTO `biz_item` VALUES (11, '30.00', '28.00', '冰摩卡', NULL, '浓郁巧克力与冰冻咖啡的美妙组合', '', '', 6, 0, '2024-05-24 11:30:00', '2024-05-24 11:30:00');
-INSERT INTO `biz_item` VALUES (12, '28.00', '25.00', '冰拿铁', NULL, '清凉爽口的拿铁咖啡', '', '', 6, 0, '2024-05-24 11:45:00', '2024-05-24 11:45:00');
-INSERT INTO `biz_item` VALUES (13, '18.00', '15.00', '冰卡布奇诺', NULL, '冰冻的卡布奇诺咖啡', '', '', 5, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
-INSERT INTO `biz_item` VALUES (14, '20.00', '18.00', '香草冰拿铁', NULL, '清凉解渴的香草拿铁', '', '', 7, 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
-INSERT INTO `biz_item` VALUES (15, '22.00', '20.00', '香草冰卡布奇诺', NULL, '清凉解渴的香草卡布奇诺', '', '', 6, 0, '2024-05-24 12:30:00', '2024-05-24 12:30:00');
-INSERT INTO `biz_item` VALUES (1243600983305486336, NULL, NULL, 'cs', NULL, NULL, NULL, NULL, NULL, NULL, '2024-05-24 16:26:19', NULL);
-INSERT INTO `biz_item` VALUES (1243601159365591040, NULL, NULL, 'cs', NULL, NULL, NULL, NULL, NULL, NULL, '2024-05-24 16:27:01', NULL);
-INSERT INTO `biz_item` VALUES (1243602284198232064, NULL, NULL, 'cs', NULL, NULL, NULL, NULL, NULL, NULL, '2024-05-24 16:31:30', NULL);
+INSERT INTO `biz_item` VALUES (1905153932640911360, '15.00', '12.00', '拿铁', '热', '优质咖啡豆搭配顶级牛奶', '热销,新品,多人推荐', 2, 0, '2024-05-24 09:00:00', '2024-05-24 09:00:00');
+INSERT INTO `biz_item` VALUES (1905153932640911361, '18.00', '15.00', '卡布奇诺', '无糖', '意式浓缩咖啡与丝滑牛奶的完美结合', '推荐,经典,必点', 2, 0, '2024-05-24 09:15:00', '2024-05-24 09:15:00');
+INSERT INTO `biz_item` VALUES (1905153932640911362, '20.00', '18.00', '摩卡', '甜', '香浓巧克力、浓郁咖啡与奶泡的完美融合', '新品,浓郁,香', 2, 0, '2024-05-24 09:30:00', '2024-05-24 09:30:00');
+INSERT INTO `biz_item` VALUES (1905153932640911363, '25.00', '22.00', '美式咖啡', '打工人必备', '纯粹的咖啡香味', '冷热,多人爱点', 2, 0, '2024-05-24 09:45:00', '2024-05-24 09:45:00');
+INSERT INTO `biz_item` VALUES (1905153932640911364, '22.00', '20.00', '浓缩咖啡', 'short', '浓郁的咖啡香味', '热', 3, 0, '2024-05-24 10:00:00', '2024-05-24 10:00:00');
+INSERT INTO `biz_item` VALUES (1905153932640911366, '28.00', '25.00', '拿铁玛奇朵', NULL, '拿铁与玛奇朵的完美结合', '', 4, 0, '2024-05-24 10:15:00', '2024-05-24 10:15:00');
+INSERT INTO `biz_item` VALUES (1905153932640911367, '30.00', '28.00', '焦糖玛奇朵', NULL, '香甜焦糖与浓郁咖啡的美妙组合', '', 5, 0, '2024-05-24 10:30:00', '2024-05-24 10:30:00');
+INSERT INTO `biz_item` VALUES (1905153932640911368, '20.00', '18.00', '香草拿铁', NULL, '香草风味与顶级牛奶的完美搭配', '', 5, 0, '2024-05-24 10:45:00', '2024-05-24 10:45:00');
+INSERT INTO `biz_item` VALUES (1905153932640911369, '22.00', '20.00', '焦糖拿铁', NULL, '浓郁咖啡与香甜焦糖的绝妙组合', '', 3, 0, '2024-05-24 11:00:00', '2024-05-24 11:00:00');
+INSERT INTO `biz_item` VALUES (1905153932640911370, '25.00', '22.00', '冰美式', NULL, '清凉解渴的美式咖啡', '', 5, 0, '2024-05-24 11:15:00', '2024-05-24 11:15:00');
+INSERT INTO `biz_item` VALUES (1905153932640911371, '30.00', '28.00', '冰摩卡', NULL, '浓郁巧克力与冰冻咖啡的美妙组合', '', 6, 0, '2024-05-24 11:30:00', '2024-05-24 11:30:00');
+INSERT INTO `biz_item` VALUES (1905153932640911372, '28.00', '25.00', '冰拿铁', NULL, '清凉爽口的拿铁咖啡', '', 6, 0, '2024-05-24 11:45:00', '2024-05-24 11:45:00');
+INSERT INTO `biz_item` VALUES (1905153932640911373, '18.00', '15.00', '冰卡布奇诺', NULL, '冰冻的卡布奇诺咖啡', '', 5, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
+INSERT INTO `biz_item` VALUES (1905153932640911374, '20.00', '18.00', '香草冰拿铁', NULL, '清凉解渴的香草拿铁', '', 7, 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
+INSERT INTO `biz_item` VALUES (1905153932640911375, '22.00', '20.00', '香草冰卡布奇诺', NULL, '清凉解渴的香草卡布奇诺', '', 6, 0, '2024-05-24 12:30:00', '2024-05-24 12:30:00');
 
 -- ----------------------------
 -- Table structure for biz_item_sku_relation
@@ -140,9 +154,9 @@ CREATE TABLE `biz_item_sku_relation`  (
 INSERT INTO `biz_item_sku_relation` VALUES (585317148230942720, 11, 585315952858497025, 3);
 INSERT INTO `biz_item_sku_relation` VALUES (585317148230942721, 11, 585315952858497026, 1);
 INSERT INTO `biz_item_sku_relation` VALUES (585317148230942722, 11, 585315952858497024, 2);
-INSERT INTO `biz_item_sku_relation` VALUES (585317148230942723, 1, 585315952858497025, 3);
-INSERT INTO `biz_item_sku_relation` VALUES (585317148230942724, 1, 585315952858497026, 1);
-INSERT INTO `biz_item_sku_relation` VALUES (585317148230942725, 1, 585315952858497024, 2);
+INSERT INTO `biz_item_sku_relation` VALUES (585317148230942723, 1905153932640911360, 585315952858497025, 3);
+INSERT INTO `biz_item_sku_relation` VALUES (585317148230942724, 1905153932640911360, 585315952858497026, 1);
+INSERT INTO `biz_item_sku_relation` VALUES (585317148230942725, 1905153932640911360, 585315952858497024, 2);
 
 -- ----------------------------
 -- Table structure for biz_menu
@@ -162,21 +176,14 @@ CREATE TABLE `biz_menu`  (
 -- ----------------------------
 -- Records of biz_menu
 -- ----------------------------
-INSERT INTO `biz_menu` VALUES (1, 1, '1', 593630146225766400, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
-INSERT INTO `biz_menu` VALUES (2, 1, '2', 593630146225766400, 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
-INSERT INTO `biz_menu` VALUES (3, 2, '3', 593630146225766400, 0, '2024-05-24 12:30:00', '2024-05-24 12:30:00');
-INSERT INTO `biz_menu` VALUES (4, 2, '4', 593630146225766400, 0, '2024-05-24 12:45:00', '2024-05-24 12:45:00');
-INSERT INTO `biz_menu` VALUES (5, 3, '5', 593630146225766400, 0, '2024-05-24 13:00:00', '2024-05-24 13:00:00');
-INSERT INTO `biz_menu` VALUES (6, 3, '6', 593630146225766400, 0, '2024-05-24 13:15:00', '2024-05-24 13:15:00');
-INSERT INTO `biz_menu` VALUES (7, 4, '7', 593630146225766400, 0, '2024-05-24 13:30:00', '2024-05-24 13:30:00');
-INSERT INTO `biz_menu` VALUES (8, 4, '8', 593630146225766400, 0, '2024-05-24 13:45:00', '2024-05-24 13:45:00');
-INSERT INTO `biz_menu` VALUES (9, 5, '9', 593630146225766400, 0, '2024-05-24 14:00:00', '2024-05-24 14:00:00');
-INSERT INTO `biz_menu` VALUES (10, 5, '10', 593630146225766400, 0, '2024-05-24 14:15:00', '2024-05-24 14:15:00');
-INSERT INTO `biz_menu` VALUES (11, 1, '3', 593630146225766400, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
-INSERT INTO `biz_menu` VALUES (12, 1, '4', 593630146225766400, 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
-INSERT INTO `biz_menu` VALUES (13, 1, '5', 593630146225766400, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
-INSERT INTO `biz_menu` VALUES (14, 1, '6', 593630146225766400, 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
-INSERT INTO `biz_menu` VALUES (15, 1, '7', 593630146225766400, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
+INSERT INTO `biz_menu` VALUES (1905180724781649920, 1905169953170915328, '1905153932640911360', 593630146225766400, 0, '2024-05-24 12:00:00', '2024-05-24 12:00:00');
+INSERT INTO `biz_menu` VALUES (1905180724781649921, 1905169953170915328, '1905153932640911361', 593630146225766400, 0, '2024-05-24 12:15:00', '2024-05-24 12:15:00');
+INSERT INTO `biz_menu` VALUES (1905180724781649922, 1905169953170915329, '1905153932640911362', 593630146225766400, 0, '2024-05-24 12:30:00', '2024-05-24 12:30:00');
+INSERT INTO `biz_menu` VALUES (1905180724781649923, 1905169953170915329, '1905153932640911363', 593630146225766400, 0, '2024-05-24 12:45:00', '2024-05-24 12:45:00');
+INSERT INTO `biz_menu` VALUES (1905180724781649924, 1905169953170915330, '1905153932640911364', 593630146225766400, 0, '2024-05-24 13:00:00', '2024-05-24 13:00:00');
+INSERT INTO `biz_menu` VALUES (1905180724781649925, 1905169953170915330, '1905153932640911365', 593630146225766400, 0, '2024-05-24 13:15:00', '2024-05-24 13:15:00');
+INSERT INTO `biz_menu` VALUES (1905180724781649926, 1905169953170915331, '1905153932640911366', 593630146225766400, 0, '2024-05-24 13:30:00', '2024-05-24 13:30:00');
+INSERT INTO `biz_menu` VALUES (1905180724781649927, 1905169953170915331, '1905153932640911367', 593630146225766400, 0, '2024-05-24 13:45:00', '2024-05-24 13:45:00');
 
 -- ----------------------------
 -- Table structure for biz_menu_catalog
@@ -198,16 +205,16 @@ CREATE TABLE `biz_menu_catalog`  (
 -- ----------------------------
 -- Records of biz_menu_catalog
 -- ----------------------------
-INSERT INTO `biz_menu_catalog` VALUES (1, 593630146225766400, 'https://pic.imgdb.cn/item/67331f2cd29ded1a8c654583.jpg', '咖啡', '各种口味的咖啡', '无', 0, '2024-05-24 09:00:00', '2024-05-24 09:00:00');
-INSERT INTO `biz_menu_catalog` VALUES (2, 593630146225766400, 'https://pic.imgdb.cn/item/673320ded29ded1a8c67433c.jpg', '茶', '各种茶类饮品', '无', 0, '2024-05-24 09:15:00', '2024-05-24 09:15:00');
-INSERT INTO `biz_menu_catalog` VALUES (3, 593630146225766400, NULL, '甜点', '各种甜品', '无', 0, '2024-05-24 09:30:00', '2024-05-24 09:30:00');
-INSERT INTO `biz_menu_catalog` VALUES (4, 593630146225766400, NULL, '冰淇淋', '各种口味的冰淇淋', '无', 0, '2024-05-24 09:45:00', '2024-05-24 09:45:00');
-INSERT INTO `biz_menu_catalog` VALUES (5, 593630146225766400, NULL, '果汁', '新鲜榨取的果汁', '无', 0, '2024-05-24 10:00:00', '2024-05-24 10:00:00');
-INSERT INTO `biz_menu_catalog` VALUES (6, 593630146225766400, NULL, '饮料', '其他饮品', '无', 0, '2024-05-24 10:15:00', '2024-05-24 10:15:00');
-INSERT INTO `biz_menu_catalog` VALUES (7, 593630146225766400, NULL, '特色饮品', '店内特色饮品', '无', 0, '2024-05-24 10:30:00', '2024-05-24 10:30:00');
-INSERT INTO `biz_menu_catalog` VALUES (8, 593630146225766400, NULL, '热饮', '各种热饮', '无', 0, '2024-05-24 10:45:00', '2024-05-24 10:45:00');
-INSERT INTO `biz_menu_catalog` VALUES (9, 593630146225766400, NULL, '冷饮', '各种冷饮', '无', 0, '2024-05-24 11:00:00', '2024-05-24 11:00:00');
-INSERT INTO `biz_menu_catalog` VALUES (10, 593630146225766400, NULL, '小吃', '各种小吃', '无', 0, '2024-05-24 11:15:00', '2024-05-24 11:15:00');
+INSERT INTO `biz_menu_catalog` VALUES (1905169953170915328, 593630146225766400, '/hutu-order/web/upload/static/1905092689616166913.jpg', '咖啡', '各种口味的咖啡', '无', 0, '2024-05-24 09:00:00', '2024-05-24 09:00:00');
+INSERT INTO `biz_menu_catalog` VALUES (1905169953170915329, 593630146225766400, '/hutu-order/web/upload/static/1905092722604367874.jpg', '茶', '各种茶类饮品', '无', 0, '2024-05-24 09:15:00', '2024-05-24 09:15:00');
+INSERT INTO `biz_menu_catalog` VALUES (1905169953170915330, 593630146225766400, '/hutu-order/web/upload/static/1905092748147679234.png', '甜点', '各种甜品', '无', 0, '2024-05-24 09:30:00', '2024-05-24 09:30:00');
+INSERT INTO `biz_menu_catalog` VALUES (1905169953170915331, 593630146225766400, '/hutu-order/web/upload/static/1905093279830237186.png', '冰淇淋', '各种口味的冰淇淋', '无', 0, '2024-05-24 09:45:00', '2024-05-24 09:45:00');
+INSERT INTO `biz_menu_catalog` VALUES (1905169953170915332, 593630146225766400, '/hutu-order/web/upload/static/1905093685301993474.png', '果汁', '新鲜榨取的果汁', '无', 0, '2024-05-24 10:00:00', '2024-05-24 10:00:00');
+INSERT INTO `biz_menu_catalog` VALUES (1905169953170915333, 593630146225766400, '/hutu-order/web/upload/static/1905093824745824258.png', '饮料', '其他饮品', '无', 0, '2024-05-24 10:15:00', '2024-05-24 10:15:00');
+INSERT INTO `biz_menu_catalog` VALUES (1905169953170915334, 593630146225766400, '/hutu-order/web/upload/static/1905093993512034306.png', '特色饮品', '店内特色饮品', '无', 0, '2024-05-24 10:30:00', '2024-05-24 10:30:00');
+INSERT INTO `biz_menu_catalog` VALUES (1905169953170915335, 593630146225766400, '/hutu-order/web/upload/static/1905094183312678914.png', '热饮', '各种热饮', '无', 0, '2024-05-24 10:45:00', '2024-05-24 10:45:00');
+INSERT INTO `biz_menu_catalog` VALUES (1905169953170915336, 593630146225766400, '/hutu-order/web/upload/static/1905094318969053185.png', '冷饮', '各种冷饮', '无', 0, '2024-05-24 11:00:00', '2024-05-24 11:00:00');
+INSERT INTO `biz_menu_catalog` VALUES (1905169953170915337, 593630146225766400, '/hutu-order/web/upload/static/1905094491690491906.png', '小吃', '各种小吃', '无', 0, '2024-05-24 11:15:00', '2024-05-24 11:15:00');
 
 -- ----------------------------
 -- Table structure for biz_package
@@ -245,7 +252,7 @@ CREATE TABLE `biz_pay_order`  (
   `item_info` json NULL COMMENT '菜品信息',
   `item_piece` int(11) NULL DEFAULT NULL COMMENT '菜品统计',
   `wait_time` int(11) NULL DEFAULT NULL COMMENT '预计等待时间',
-  `payway_id` bigint(20) NULL DEFAULT NULL COMMENT '支付方式id',
+  `pay_code` bigint(20) NULL DEFAULT NULL COMMENT '支付方式code',
   `out_trade_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '外部交易流水号',
   `refund_out_trade_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '退款交易流水号',
   `order_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '订单号',
@@ -270,6 +277,7 @@ CREATE TABLE `biz_pay_order`  (
 DROP TABLE IF EXISTS `biz_pay_way`;
 CREATE TABLE `biz_pay_way`  (
   `id` bigint(20) NOT NULL,
+  `pay_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支付方式编码',
   `pay_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '交易地址',
   `refund_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '退款地址',
   `query_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '查询地址',
@@ -285,9 +293,12 @@ CREATE TABLE `biz_pay_way`  (
 -- ----------------------------
 -- Records of biz_pay_way
 -- ----------------------------
-INSERT INTO `biz_pay_way` VALUES (593698122811576324, 'http://test.com', 'http://test.com', 'http://test.com', '北京工商银行分行', 1, 0, 'icon.tex', 1, 'WEB');
-INSERT INTO `biz_pay_way` VALUES (593698122811579901, 'http://ali.pay.com', 'http://ali.pay.com', 'http://ali.pay.com', '支付宝小程序支付', 1, 0, NULL, NULL, 'MP-ALIPAY');
-INSERT INTO `biz_pay_way` VALUES (593698122811579991, 'http://weixin.pay.com', 'http://weixin.pay.com', 'http://weixin.pay.com', '微信小程序支付', 1, 0, NULL, NULL, 'MP-WEIXIN');
+INSERT INTO `biz_pay_way` VALUES (593698122811576324, 'P006', 'http://test.com', 'http://test.com', 'http://test.com', '北京工商银行分行', 3, 0, '/hutu-order/web/upload/static/1905087645869137921.png', 1, 'WEB');
+INSERT INTO `biz_pay_way` VALUES (593698122811579901, 'P005', 'http://ali.pay.com', 'http://ali.pay.com', 'http://ali.pay.com', '支付宝小程序支付', 1, 0, '/hutu-order/web/upload/static/1905087708829835265.png', 1, 'MP-ALIPAY');
+INSERT INTO `biz_pay_way` VALUES (593698122811579991, 'P004', 'http://weixin.pay.com', 'http://weixin.pay.com', 'http://weixin.pay.com', '微信小程序支付', 1, 0, '/hutu-order/web/upload/static/1905087738336763905.png', 1, 'MP-WEIXIN');
+INSERT INTO `biz_pay_way` VALUES (593698122811579992, 'P003', 'http://weixin.pay.com', 'http://weixin.pay.com', 'http://weixin.pay.com', '微信支付', 1, 0, '/hutu-order/web/upload/static/1905087738336763905.png', 1, 'WEB');
+INSERT INTO `biz_pay_way` VALUES (593698122811579993, 'P002', 'http://ali.pay.com', 'http://ali.pay.com', 'http://ali.pay.com', '支付宝支付', 2, 0, '/hutu-order/web/upload/static/1905087708829835265.png', 1, 'WEB');
+INSERT INTO `biz_pay_way` VALUES (593698122811579994, 'P001', '', '', '', '余额支付', 0, 0, '/hutu-order/web/upload/static/1905087679075442689.png', 1, 'ALL');
 
 -- ----------------------------
 -- Table structure for biz_shop_info
@@ -315,7 +326,7 @@ CREATE TABLE `biz_shop_info`  (
 -- ----------------------------
 -- Records of biz_shop_info
 -- ----------------------------
-INSERT INTO `biz_shop_info` VALUES (593630146225766400, '糊涂餐馆（齐河路店）', '上海市齐河路28弄31号303室', '13092621512', '08:00', '18:00', 0, NULL, NULL, 1, 5, 1, '@/static/image/20250318102553.png', NULL, '	.body{\r\n		padding: 20px 22px;\r\n		padding-bottom: 10px;\r\n		background-size: 100% 30%;\r\n		background-attachment: fixed;\r\n	}\r\n	.header-card {\r\n		padding: 2px;\r\n	}\r\n	\r\n	.header-card text{\r\n		display: block;\r\n	}\r\n	\r\n	.shop-name{\r\n		fontSize: 16px;\r\n		fontWeight: 600;\r\n	}\r\n	\r\n	.shop-info-card{\r\n		display: flex;\r\n		flexDirection: row;\r\n		justifyContent: space-between;\r\n		width: 100%;\r\n	}\r\n	\r\n	.right text{\r\n		fontSize: 24px;\r\n		fontWeight: 500;\r\n	}\r\n	\r\n	.address{\r\n		marginTop: 40px;\r\n	}\r\n	\r\n	.address,.time{\r\n		/* color: grey; */\r\n	}\r\n	\r\n	text{\r\n		color: white;\r\n	}');
+INSERT INTO `biz_shop_info` VALUES (593630146225766400, '糊涂餐馆（齐河路店）', '上海市齐河路28弄31号303室', '13092621512', '08:00', '18:00', 0, NULL, NULL, 1, 5, 1, '', NULL, '	.body{\r\n		padding: 20px 22px;\r\n		padding-bottom: 10px;\r\n		background-size: 100% 30%;\r\n		background-attachment: fixed;\r\n	}\r\n	.header-card {\r\n		padding: 2px;\r\n	}\r\n	\r\n	.header-card text{\r\n		display: block;\r\n	}\r\n	\r\n	.shop-name{\r\n		fontSize: 16px;\r\n		fontWeight: 600;\r\n	}\r\n	\r\n	.shop-info-card{\r\n		display: flex;\r\n		flexDirection: row;\r\n		justifyContent: space-between;\r\n		width: 100%;\r\n	}\r\n	\r\n	.right text{\r\n		fontSize: 24px;\r\n		fontWeight: 500;\r\n	}\r\n	\r\n	.address{\r\n		marginTop: 40px;\r\n	}\r\n	\r\n	.address,.time{\r\n		/* color: grey; */\r\n	}\r\n	\r\n	text{\r\n		color: white;\r\n	}');
 INSERT INTO `biz_shop_info` VALUES (593630146225766401, '糊涂餐馆（杨铭园店）', '赤岗冲红花坡杨铭园C栋', '13063855026', '09:00', '17:00', 0, NULL, NULL, 1, 5, NULL, NULL, NULL, NULL);
 INSERT INTO `biz_shop_info` VALUES (593630146225766402, '糊涂餐馆（村水云居店）', '余家湖村水云居A栋2单元404室', '13013802811', '11:00', '20:00', 0, NULL, NULL, 1, 5, NULL, NULL, NULL, NULL);
 INSERT INTO `biz_shop_info` VALUES (593630146225766403, '糊涂餐馆（中胜街店）', '中胜街54-2号392', '13092626359', '08:00', '16:00', 0, NULL, NULL, 1, 7, NULL, NULL, NULL, NULL);
@@ -354,6 +365,13 @@ CREATE TABLE `biz_sku_catalog_relation`  (
 -- Records of biz_sku_catalog_relation
 -- ----------------------------
 INSERT INTO `biz_sku_catalog_relation` VALUES (585317148230942999, 585315952858497024, 585316296787234817);
+INSERT INTO `biz_sku_catalog_relation` VALUES (585317148230943000, 585315952858497024, 585316296787234818);
+INSERT INTO `biz_sku_catalog_relation` VALUES (585317148230943001, 585315952858497024, 585316296787234819);
+INSERT INTO `biz_sku_catalog_relation` VALUES (585317148230943002, 585315952858497024, 585316296787234820);
+INSERT INTO `biz_sku_catalog_relation` VALUES (585317148230943003, 585315952858497025, 585316296787234822);
+INSERT INTO `biz_sku_catalog_relation` VALUES (585317148230943004, 585315952858497025, 585316296787234823);
+INSERT INTO `biz_sku_catalog_relation` VALUES (585317148230943007, 585315952858497026, 585316296787234825);
+INSERT INTO `biz_sku_catalog_relation` VALUES (585317148230943008, 585315952858497026, 585316296787234826);
 
 -- ----------------------------
 -- Table structure for biz_sku_item
@@ -376,8 +394,8 @@ INSERT INTO `biz_sku_item` VALUES (585316296787234818, '少糖', 0, '2024-06-03 
 INSERT INTO `biz_sku_item` VALUES (585316296787234819, '五分糖', 0, '2024-06-03 11:58:21', NULL);
 INSERT INTO `biz_sku_item` VALUES (585316296787234820, '三分糖', 0, '2024-06-03 11:58:21', NULL);
 INSERT INTO `biz_sku_item` VALUES (585316296787234821, '无糖', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234822, '堂食', 0, '2024-06-03 11:58:21', NULL);
-INSERT INTO `biz_sku_item` VALUES (585316296787234823, '打包', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234822, '多奶', 0, '2024-06-03 11:58:21', NULL);
+INSERT INTO `biz_sku_item` VALUES (585316296787234823, '少奶', 0, '2024-06-03 11:58:21', NULL);
 INSERT INTO `biz_sku_item` VALUES (585316296787234824, '常温', 0, '2024-06-03 11:58:21', NULL);
 INSERT INTO `biz_sku_item` VALUES (585316296787234825, '热', 0, '2024-06-03 11:58:21', NULL);
 INSERT INTO `biz_sku_item` VALUES (585316296787234826, '冰', 0, '2024-06-03 11:58:21', NULL);
@@ -412,13 +430,14 @@ CREATE TABLE `biz_user`  (
   `last_log_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
   `actual_balance` decimal(10, 2) NULL DEFAULT NULL COMMENT '实际余额',
   `gift_balance` decimal(10, 2) NULL DEFAULT NULL COMMENT '赠送余额',
+  `point` bigint(20) NULL DEFAULT NULL COMMENT '积分',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_user
 -- ----------------------------
-INSERT INTO `biz_user` VALUES (1350072554156457984, '测试人士', '13092626359', 1, 'blob:http://localhost:8000/dc011035-1a4f-4828-9fd9-b51f9e9416e7', NULL, 1, '2025-03-14 11:46:20', '2025-03-18 11:07:13', 288.88, 1.88);
+INSERT INTO `biz_user` VALUES (1350072554156457984, '测试人士1', '13092626359', 1, '/hutu-order/web/upload/static/1905081305499164674.jpg', NULL, 1, '2025-03-14 12:46:20', '2025-03-15 10:01:05', 288.88, 1.88, 100);
 
 -- ----------------------------
 -- Table structure for biz_user_coupon_relation
@@ -452,32 +471,7 @@ CREATE TABLE `biz_user_package`  (
 -- ----------------------------
 -- Records of biz_user_package
 -- ----------------------------
-INSERT INTO `biz_user_package` VALUES (585384179567427584, 585384223465017355, 11, 1, '三分糖');
-INSERT INTO `biz_user_package` VALUES (1341442114751299584, 1275384651644403712, 6, 1, '');
-INSERT INTO `biz_user_package` VALUES (1341442219713757184, 1275384651644403712, 1, 1, '全糖');
-INSERT INTO `biz_user_package` VALUES (1341442993155997696, 1275384651644403712, 1, 1, '全糖');
-INSERT INTO `biz_user_package` VALUES (1341443316578779136, 1275384651644403712, 1, 1, '全糖');
-INSERT INTO `biz_user_package` VALUES (1341445556953677824, 1275384651644403712, 1, 1, '全糖');
-INSERT INTO `biz_user_package` VALUES (1350056896429555712, 1350055123967016960, 1, 1, '全糖');
-INSERT INTO `biz_user_package` VALUES (1350057280212566016, 1350055123967016960, 1, 1, '全糖');
-INSERT INTO `biz_user_package` VALUES (1350059759474049024, 1350055123967016960, 1, 1, '全糖');
-INSERT INTO `biz_user_package` VALUES (1350065096973352960, 1350055123967016960, 7, 1, '');
-INSERT INTO `biz_user_package` VALUES (1351486651007762432, 1350072554156457984, 1, 1, '全糖');
-
--- ----------------------------
--- Table structure for biz_user_point
--- ----------------------------
-DROP TABLE IF EXISTS `biz_user_point`;
-CREATE TABLE `biz_user_point`  (
-  `id` bigint(20) NOT NULL COMMENT 'id',
-  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id',
-  `point` bigint(20) NULL DEFAULT NULL COMMENT '积分',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户积分表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of biz_user_point
--- ----------------------------
+INSERT INTO `biz_user_package` VALUES (1354863291515535360, 1350072554156457984, 1905153932640911360, 1, '全糖,多奶,热');
 
 -- ----------------------------
 -- Table structure for biz_user_point_log
@@ -594,7 +588,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (586394601263202304, '糊涂', 'hutu', '$2a$10$JLvCWMPh9VPM6qHY1llwcOBOmzaWxdHiI/wd07RII7z2LKyDYNqUK', '14511357607', '123', NULL, 0, '2024-06-06 11:23:18', '2024-06-17 16:37:28');
+INSERT INTO `sys_user` VALUES (586394601263202304, '糊涂', 'hutu', '$2a$10$JLvCWMPh9VPM6qHY1llwcOKk/8RjmZ74CRCNv7SC55qFbG2L.gSrS', '14511357607', '123', NULL, 0, '2024-06-06 11:23:18', '2024-06-17 16:37:28');
 
 -- ----------------------------
 -- Table structure for sys_user_role

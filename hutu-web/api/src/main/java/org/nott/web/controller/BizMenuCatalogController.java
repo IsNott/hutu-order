@@ -37,7 +37,7 @@ public class BizMenuCatalogController {
     }
 
     @GetMapping("listByShop/{shopId}")
-    @RedisCache(key = "listByShop", item = "#shopId")
+    @RedisCache(item = "#shopId")
     @ApiOperation(value = "门店分类列表", notes = "根据门店id获取菜单分类")
     public ResponseEntity<?> listByShop(@PathVariable Long shopId) {
         List<MenuCatalogVo> vos = bizMenuCatalogService.getCatalogByShopId(shopId);
