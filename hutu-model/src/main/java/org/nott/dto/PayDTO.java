@@ -17,7 +17,7 @@ public class PayDTO {
     private String payNo;
 
     @ApiModelProperty("支付订单id")
-    private String payOrderId;
+    private Long payOrderId;
 
     @ApiModelProperty("支付方式")
     private String payCode;

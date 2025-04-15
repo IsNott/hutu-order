@@ -20,8 +20,11 @@ public class PayOrderVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("结算号-商家叫号")
+    @ApiModelProperty("订单号")
     private String orderNo;
+
+    @ApiModelProperty("结算号-商家叫号")
+    private String shopOrderNo;
 
     @ApiModelProperty("内部订单id")
     private Long payOrderId;

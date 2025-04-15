@@ -2,6 +2,7 @@ package org.nott.service.api;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.nott.dto.MyOrderQueryDTO;
+import org.nott.dto.RefundDTO;
 import org.nott.dto.UserSettleOrderDTO;
 import org.nott.model.BizPayOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -26,11 +27,15 @@ public interface IBizPayOrderService extends IService<BizPayOrder> {
 
     PayOrderVo queryPayOrderById(Long id);
 
+    BizPayOrder getPayOrderById(Long id, String orderNo);
+
     PayOrderVo orderQuery(Long id);
 
     FrontOrderVo orderFront(Long orderId);
 
-    void simulateNotify(Long orderId);
+    boolean updateOrderPayStatus(Long orderId, String extra);
+
+    void doOrderPayedBusiness(BizPayOrder payOrder);
 
     Page<MyPayOrderVo> queryMyOrder(MyOrderQueryDTO dto, Integer page, Integer size);
 
@@ -39,4 +44,6 @@ public interface IBizPayOrderService extends IService<BizPayOrder> {
     void finishOrder(Long orderId);
 
     void cancelOrder(Long orderId);
+
+    void saveRefundOrder(RefundDTO refundDTO);
 }

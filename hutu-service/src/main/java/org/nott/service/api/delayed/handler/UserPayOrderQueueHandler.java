@@ -33,8 +33,6 @@ public class UserPayOrderQueueHandler {
 
     private final DelayQueue<DelayedTask<BizPayOrder>> payOrderQueue = new DelayQueue<>();
 
-    public static final String NON_PAYMENT_ORDER_KEY_PREFIX = "NON-PAYMENT-ORDER:";
-
     private final BusinessConfig businessConfig;
 
     @PostConstruct
@@ -53,7 +51,7 @@ public class UserPayOrderQueueHandler {
                 BizPayOrder data = delayedTask.getData();
                 log.info("开始处理过期订单信息，订单id：[{}]", data.getId());
                 Long userId = data.getUserId();
-                Object object = redisUtils.hget(NON_PAYMENT_ORDER_KEY_PREFIX + userId, data.getId() + "");
+                Object object = redisUtils.hget(RedisUtils.NON_PAYMENT_ORDER_KEY_PREFIX + userId, data.getId() + "");
                 if (HutuUtils.isEmpty(object)) {
                     log.info("订单已完成，无需处理");
                     return;
@@ -67,7 +65,7 @@ public class UserPayOrderQueueHandler {
                 wrapper.eq(BizPayOrder::getId, data.getId())
                         .set(BizPayOrder::getOrderStatus, OrderStatusEnum.EXPIRE.getVal());
                 payOrderService.update(wrapper);
-                redisUtils.hdel(NON_PAYMENT_ORDER_KEY_PREFIX + userId, data.getId());
+                redisUtils.removeUnPayOrderCache(userId, data.getId());
                 log.info("订单已超时，设置为过期状态...");
             } catch (InterruptedException e) {
                 log.error(e.getLocalizedMessage(), e);

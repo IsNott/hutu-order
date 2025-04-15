@@ -1,6 +1,6 @@
 import { request } from "@/request/request.js";
 import { httpGet } from "@/request/request.js";
-import { getCurrentPlatform } from "@/utils/CommonUtils";
+
 
 export function getMenuCatalog(){
 	return request('/bizMenuCatalog/list', 'POST')
@@ -36,14 +36,6 @@ export function bizUserPackageNum(){
 
 export function addPackage(param){
 	return request('/bizUserPackage/addItem','POST',param)
-}
-
-export function queryPayWay(){
-	let platform = getCurrentPlatform()
-	let param = {
-		platformName: platform
-	}
-	return request('/bizPayWay/list', 'POST', param)
 }
 
 export function queryPoint(){

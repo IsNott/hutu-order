@@ -48,7 +48,7 @@ public class LogAspect {
                     log.info("{}.{}()[方法参数]：{}", className, methodName, params);
                 }
             } catch (Exception e) {
-                log.info("{}.{}()[方法参数打印异常]：{}", className, methodName, e.getMessage());
+                log.error("{}.{}()[方法参数打印异常]：{}", className, methodName, e.getMessage());
             }
         }
         Object result = pjd.proceed();
@@ -56,7 +56,7 @@ public class LogAspect {
             String s = JSON.toJSONString(result);
             log.info("{}.{}()[方法执行结果]：{}", className, methodName, s);
         } catch (Exception e) {
-            log.info("{}.{}()[方法执行结果打印异常]：{}", className, methodName, e);
+            log.error("{}.{}()[方法执行结果打印异常]：{}", className, methodName, e.getMessage(), e);
         }
         long time = System.currentTimeMillis() - startTime;
         log.info("{}.{}()[方法执行完毕]：{}{}", className, methodName, time, " ms");

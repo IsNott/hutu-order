@@ -3,6 +3,7 @@ package org.nott.common.generate;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.fill.Column;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -13,15 +14,26 @@ import java.util.List;
  */
 
 public class MbpGenerator {
+
+    public interface INFO {
+        String URL = "localhost:3306";
+        String DB = "hutu-order";
+        String PASSWORD = "123456";
+        String USERNAME = "root";
+        String AUTHOR = "nott";
+        String PACKAGE = "org.nott";
+    }
+
     public static void main(String[] args) {
-        FastAutoGenerator.create("jdbc:mysql://localhost:3306/hutu-order?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true",
-                        "root", "123456")
+
+        FastAutoGenerator.create(String.format("jdbc:mysql://%s/%s?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true",
+                        INFO.URL, INFO.DB), INFO.USERNAME, INFO.PASSWORD)
                 // 全局配置
-                .globalConfig((scanner, builder) -> builder.author("nott"))
+                .globalConfig((scanner, builder) -> builder.author(INFO.AUTHOR))
                 // 包配置
-                .packageConfig((scanner, builder) -> builder.parent("org.nott"))
+                .packageConfig((scanner, builder) -> builder.parent(INFO.PACKAGE))
                 // 策略配置
-                .strategyConfig((scanner, builder) -> builder.addInclude(getTables("biz_user_coupon_relation"))
+                .strategyConfig((scanner, builder) -> builder.addInclude(getTables("biz_business_config"))
                         .entityBuilder()
                         .enableLombok()
                         .addTableFills(

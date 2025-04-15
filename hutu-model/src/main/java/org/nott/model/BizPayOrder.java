@@ -27,6 +27,11 @@ public class BizPayOrder implements Serializable {
     private Long id;
 
     /**
+     * 支付订单id
+     */
+    private Long payOrderId;
+
+    /**
      * 0-单点 1-套餐
      */
     private Integer orderType;
@@ -35,6 +40,11 @@ public class BizPayOrder implements Serializable {
      * 0-堂食 1-打包 2-外送
      */
     private Integer pickType;
+
+    /**
+     * 1-支付 2-退款
+     */
+    private Integer type;
 
     /**
      * 总金额
@@ -80,6 +90,11 @@ public class BizPayOrder implements Serializable {
      * 订单号
      */
     private String orderNo;
+
+    /**
+     * 退款订单号
+     */
+    private String refundOrderNo;
 
     /**
      * 店内用餐号

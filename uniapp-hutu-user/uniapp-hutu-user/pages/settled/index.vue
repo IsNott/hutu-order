@@ -10,7 +10,7 @@
 					取餐号
 				</text>
 				<text class="order-no">
-					{{orderVo.orderNo}}
+					{{orderVo.shopOrderNo}}
 				</text>
 				<view class="queue-view" v-if="orderVo.orderStatus == 2">
 					前面还有 {{frontOrderCount}} 单，预计还需等待 {{leftTime}} 分钟
@@ -184,13 +184,16 @@
 		},
 		computed: {
 			leftTime() {
+				let baseTime = 0
+				this.orderVo.itemInfo.forEach(vo => baseTime += vo.expectMakeTime)
 				var settleTime = this.orderVo.settleTime
 				var dayjsTime = dayjs(settleTime, 'YYYY-MM-DD HH:mm:ss')
 				dayjsTime.add(this.totalWaitTime, 'minute')
 				var now = dayjs()
 				// TODO diff
-				const diff = dayjsTime.diff(now, 'minute')
+				let diff = dayjsTime.diff(now, 'minute')
 				console.log('diff',diff);
+				diff += baseTime
 				return diff >= 0 ? diff : 0
 			}
 		}

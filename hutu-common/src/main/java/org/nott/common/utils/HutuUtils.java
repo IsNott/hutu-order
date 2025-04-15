@@ -15,12 +15,14 @@ import org.springframework.util.CollectionUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.beans.BeanUtils.getPropertyDescriptor;
 import static org.springframework.beans.BeanUtils.getPropertyDescriptors;
@@ -67,7 +69,14 @@ public class HutuUtils {
     }
 
     public static void requireNotNull(Object o, String message) throws HutuBizException {
-        if (o == null) {
+        if (isEmpty(o)) {
+            throw new HutuBizException(StringUtils.isNotEmpty(message) ? message : "获取信息为空，请检查");
+        }
+    }
+
+    public static void requireAndNotNull(String message, Object... o) throws HutuBizException {
+        List<Object> list = Arrays.stream(o).filter(Objects::isNull).collect(Collectors.toList());
+        if(list.size() == o.length){
             throw new HutuBizException(StringUtils.isNotEmpty(message) ? message : "获取信息为空，请检查");
         }
     }
@@ -83,7 +92,7 @@ public class HutuUtils {
     }
 
     public static void requireNull(Object o, String message) throws HutuBizException {
-        if (o == null) {
+        if (isNotEmpty(o)) {
             throw new HutuBizException(StringUtils.isNotEmpty(message) ? message : "获取信息不为空，请检查");
         }
     }

@@ -18,11 +18,9 @@ import org.nott.common.utils.HutuUtils;
 import org.nott.common.utils.SequenceUtils;
 import org.nott.dto.MyOrderQueryDTO;
 import org.nott.dto.OrderItemDTO;
+import org.nott.dto.RefundDTO;
 import org.nott.dto.UserSettleOrderDTO;
-import org.nott.enums.OrderMessageType;
-import org.nott.enums.OrderStatusEnum;
-import org.nott.enums.PickTypeEnum;
-import org.nott.enums.YesOrNoEnum;
+import org.nott.enums.*;
 import org.nott.feign.BizPayOrderWsClient;
 import org.nott.model.BizItem;
 import org.nott.model.BizPayOrder;
@@ -97,7 +95,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         if (HutuUtils.isNotEmpty(unPayOrders)) {
             unPayOrders.forEach(order -> {
                 userPayOrderQueueHandler.pushData2Queue(order, businessConfig.getOrderExpire());
-                redisUtils.hset(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + order.getUserId(), order.getId() + "", JSONObject.toJSONString(order));
+                redisUtils.hset(RedisUtils.NON_PAYMENT_ORDER_KEY_PREFIX + order.getUserId(), order.getId() + "", JSONObject.toJSONString(order));
             });
             log.info("投入了{}个当日未完成订单到监听队列", unPayOrders.size());
         }
@@ -160,7 +158,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
 
             // 确认需支付金额
             BigDecimal totalAmount = originalAmount.subtract(pointDiscount).subtract(couponDisCount);
-            if (totalAmount.compareTo(new BigDecimal("0.00")) <= 0) {
+            if (totalAmount.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new HutuBizException("优惠券+积分减免的总金额不能大于原价");
             }
             dto.setOriginAmount(originalAmount);
@@ -179,7 +177,10 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     @Override
     public PayOrderVo queryPayOrderById(Long id) {
         //TODO 实际上这里应该加上支付成功状态的查询条件
-        BizPayOrder payOrder = this.getById(id);
+        BizPayOrder payOrder = null;
+        if(HutuUtils.isNotEmpty(id)){
+            payOrder = this.getById(id);
+        }
         HutuUtils.requireNotNull(payOrder, "根据id没有找到对应订单");
         String itemInfo = payOrder.getItemInfo();
         PayOrderVo vo = HutuUtils.transToObject(payOrder, PayOrderVo.class);
@@ -192,6 +193,18 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
             vo.setItemInfo(orderItemVos);
         }
         return vo;
+    }
+
+    @Override
+    public BizPayOrder getPayOrderById(Long id, String orderNo) {
+        BizPayOrder payOrder;
+        if (HutuUtils.isNotEmpty(id)) {
+            payOrder = this.getById(id);
+        } else {
+            payOrder = this.getOne(new LambdaQueryWrapper<BizPayOrder>().eq(BizPayOrder::getOrderNo, orderNo));
+        }
+        HutuUtils.requireNotNull(payOrder, "没有找到对应订单");
+        return payOrder;
     }
 
     @Override
@@ -214,26 +227,26 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
     }
 
     @Override
-    public void simulateNotify(Long orderId) {
+    public boolean updateOrderPayStatus(Long orderId, String extra) {
         BizPayOrder payOrder = this.getById(orderId);
         payOrder.setOrderStatus(OrderStatusEnum.PAYED.getVal());
         payOrder.setSettleTime(new Date());
         LambdaUpdateWrapper<BizPayOrder> wrapper = new LambdaUpdateWrapper<BizPayOrder>().eq(BizPayOrder::getId, orderId)
                 .eq(BizPayOrder::getOrderStatus, OrderStatusEnum.INIT.getVal())
                 .set(BizPayOrder::getOrderStatus, OrderStatusEnum.PAYED.getVal())
+                .set(HutuUtils.isNotEmpty(extra), BizPayOrder::getRemark, OrderStatusEnum.PAYED.getVal())
                 .set(BizPayOrder::getSettleTime, new Date());
-        boolean update = this.update(wrapper);
-        if(!update){
-            log.info("订单状态已经发生变化");
-            return;
-        }
-        redisUtils.hdel(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + payOrder.getUserId(), payOrder.getId() + "");
+        return this.update(wrapper);
+    }
+
+    public void doOrderPayedBusiness(BizPayOrder payOrder){
+        redisUtils.removeUnPayOrderCache(payOrder.getUserId(), payOrder.getId());
         OrderWsMessageInfo messageInfo = HutuUtils.transToObject(payOrder, OrderWsMessageInfo.class);
         messageInfo.setMessageType(OrderMessageType.IN.getVal());
         this.sendMessageAsync(payOrder.getShopId(), messageInfo);
     }
 
-    @Async
+//    @Async
     public void sendMessageAsync(Long shopId, OrderWsMessageInfo messageInfo) {
         bizPayOrderWsClient.sendMessage2Shop(shopId, JSONObject.parseObject(messageInfo.toJSONString()));
     }
@@ -285,7 +298,28 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         if (!b) {
             throw new HutuBizException("订单状态已经发生变化");
         }
-        redisUtils.hdel(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + payOrder.getUserId(), payOrder.getId() + "");
+        redisUtils.removeUnPayOrderCache(payOrder.getUserId(), payOrder.getId());
+    }
+
+    @Override
+    public void saveRefundOrder(RefundDTO refundDTO) {
+        BizPayOrder payOrder = this.getPayOrderById(null, refundDTO.getPayNo());
+        if(payOrder.getTotalAmount().compareTo(refundDTO.getRefundAmount()) < 0){
+            throw new HutuBizException("退款金额大于支付金额");
+        }
+        Long userId = payOrder.getUserId();
+        String orderNo = snowflakeIdWorker.nextId() + "";
+        BizPayOrder refundOrder = new BizPayOrder();
+        refundOrder.setPayOrderId(payOrder.getId());
+        refundOrder.setOrderNo(orderNo);
+        refundOrder.setType(PayTypeEnum.REFUND.getVal());
+        refundOrder.setSettleTime(new Date());
+        refundOrder.setOrderStatus(OrderStatusEnum.INIT.getVal());
+        refundOrder.setTotalAmount(refundDTO.getRefundAmount());
+        refundOrder.setUserId(userId);
+        refundOrder.setPayCode(payOrder.getPayCode());
+        refundOrder.setShopId(payOrder.getShopId());
+        this.save(refundOrder);
     }
 
     private BigDecimal checkAndReturnTotalAmount(List<OrderItemDTO> itemsByOrder) {
@@ -336,6 +370,8 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
         order.setUserId(id);
         order.setItemPiece(items.size());
         order.setWaitTime(items.stream().mapToInt(OrderItemDTO::getExpectMakeTime).sum());
+        order.setType(PayTypeEnum.PAY.getVal());
+//        order.setPayCode(dto.getPayCode());
         this.save(order);
 
         Date currentDate = new Date();
@@ -350,7 +386,7 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
 
         HutuThreadPoolExecutor.threadPool.submit(() -> {
             userPayOrderQueueHandler.pushData2Queue(order, businessConfig.getOrderExpire());
-            redisUtils.hset(UserPayOrderQueueHandler.NON_PAYMENT_ORDER_KEY_PREFIX + id, order.getId() + "", JSONObject.toJSONString(order));
+            redisUtils.hset(RedisUtils.NON_PAYMENT_ORDER_KEY_PREFIX + id, order.getId() + "", JSONObject.toJSONString(order));
             log.info("订单[{}]进入监听队列", order.getId());
         });
         return vo;

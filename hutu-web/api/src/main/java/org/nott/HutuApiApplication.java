@@ -11,11 +11,14 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableFeignClients(clients = { BizPayOrderWsClient.class, OssClient.class })
 @MapperScan("org.nott.service.mapper.api")
-@SpringBootApplication(scanBasePackages = {"org.nott.common.*",
+@SpringBootApplication(scanBasePackages = {
+        "org.nott.common.*",
         "org.nott.external.*",
         "org.nott.web.*",
         "org.nott.service.api.*",
-        "org.nott.security.*"})
+        "org.nott.service.pay",
+        "org.nott.security.*"
+})
 @Slf4j
 @EnableAsync
 public class HutuApiApplication {
