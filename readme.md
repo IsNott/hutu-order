@@ -20,10 +20,12 @@
   </p>
 </p>
 
-## 作者
+[//]: # (## 作者)
 
-GitHub:[IsNott](https://github.com/IsNott) &ensp;<br>
-掘金:[IsNott](https://juejin.cn/user/3037330789107972)  &ensp;
+[//]: # ()
+[//]: # (GitHub:[IsNott]&#40;https://github.com/IsNott&#41; &ensp;<br>)
+
+[//]: # (掘金:[IsNott]&#40;https://juejin.cn/user/3037330789107972&#41;  &ensp;)
 
 ## 文档目录
 
