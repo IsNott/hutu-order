@@ -6,6 +6,7 @@ import org.nott.common.ResponseEntity;
 import org.nott.common.utils.HutuUtils;
 import org.nott.dto.PayDTO;
 import org.nott.dto.PayGatewayDTO;
+import org.nott.dto.RefundDTO;
 import org.nott.model.BizPayOrder;
 import org.nott.service.api.IBizPayOrderService;
 import org.nott.vo.pay.BaseResultVo;
@@ -72,13 +73,17 @@ public class PayAPI implements ApplicationListener<ContextRefreshedEvent> {
             }
             case "refund": {
                 HutuUtils.requireNotNull(payCode, "支付code不能为空");
-                bizPayOrderService.saveRefundOrder(dto.getRefundDTO());
-                resultVo = payService.doRefund(dto.getRefundDTO());
+                RefundDTO refundDTO = HutuUtils.transToObject(dto, RefundDTO.class);
+                bizPayOrderService.saveRefundOrder(refundDTO);
+                resultVo = payService.doRefund(refundDTO);
                 break;
             }
             case "pay": {
-                PayDTO payDTO = dto.getPayDTO();
-                HutuUtils.requireNotNull(payDTO, "支付参数不能为空");
+//                PayDTO payDTO = dto.getPayDTO();
+//                HutuUtils.requireNotNull(payDTO, "支付参数不能为空");
+                PayDTO payDTO = HutuUtils.transToObject(dto, PayDTO.class);
+                payDTO.setPayNo(dto.getOrderNo());
+                payDTO.setPayOrderId(payOrder.getId());
                 HutuUtils.requireAndNotNull("支付订单号和id不能同时为空", payDTO.getPayNo(), payDTO.getPayOrderId());
                 String dtoPayCode = payDTO.getPayCode();
                 HutuUtils.requireAndNotNull("没有选择支付方式", payCode, dtoPayCode);

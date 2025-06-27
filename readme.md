@@ -20,13 +20,6 @@
   </p>
 </p>
 
-[//]: # (## 作者)
-
-[//]: # ()
-[//]: # (GitHub:[IsNott]&#40;https://github.com/IsNott&#41; &ensp;<br>)
-
-[//]: # (掘金:[IsNott]&#40;https://juejin.cn/user/3037330789107972&#41;  &ensp;)
-
 ## 文档目录
 
 - [技术选型](#技术选型)
@@ -86,10 +79,6 @@
 - 文件对象存储：`hutu-web模块下的oss模块`：`HutuOssApplication`
 - WebSocket：`hutu-webSocket模块`：`HutuWebSocketApplication`
 - 管理后台：`vue-hutu-admin`: `npm run serve`
-
-### 版本控制
-
-使用Git进行版本控制，目前仅存在*master*分支。
 
 
 

@@ -48,6 +48,11 @@ spring:
     # token风格
     token-style: uuid
 
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
 interceptor:
   authorize: true
 

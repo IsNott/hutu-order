@@ -1,5 +1,6 @@
 package org.nott.service.api;
 
+import org.nott.common.config.BusinessConfig;
 import org.nott.model.BizBusinessConfig;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -28,4 +29,5 @@ public interface IBizBusinessConfigService extends IService<BizBusinessConfig> {
      */
     void deleteByBizKey(String bizKey);
 
+    BusinessConfig getRedisConfig();
 }

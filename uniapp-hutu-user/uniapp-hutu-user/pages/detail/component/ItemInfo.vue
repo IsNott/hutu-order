@@ -72,7 +72,7 @@
 	
 	.tag-group text{
 		margin-right: 10px;
-		border-radius: 12%;
+		border-radius: 4px;
 		font-size: 14px;
 		padding: 2px;
 		border: 1px black solid;

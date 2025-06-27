@@ -16,4 +16,7 @@
     </root>
 
     <logger name="org.nott" level="info"/>
+    <logger name="org.nott.web.mapper" level="debug"/>
+    <logger name="org.mybatis" level="debug" />
+    <logger name="org.apache.ibatis" level="debug" />
 </configuration>

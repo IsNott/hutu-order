@@ -13,7 +13,6 @@ import org.nott.enums.HandleOrderExpireType;
 import org.nott.enums.OrderStatusEnum;
 import org.nott.model.BizPayOrder;
 import org.nott.service.api.IBizPayOrderService;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -51,14 +50,16 @@ public class UserPayOrderQueueHandler {
                 BizPayOrder data = delayedTask.getData();
                 log.info("开始处理过期订单信息，订单id：[{}]", data.getId());
                 Long userId = data.getUserId();
-                Object object = redisUtils.hget(RedisUtils.NON_PAYMENT_ORDER_KEY_PREFIX + userId, data.getId() + "");
+                Object object = redisUtils.hget(RedisUtils.Keys.NON_PAYMENT_ORDER_KEY_PREFIX, HutuUtils.joinByColon(data.getId() + userId));
                 if (HutuUtils.isEmpty(object)) {
                     log.info("订单已完成，无需处理");
+                    redisUtils.hdel(RedisUtils.Keys.NON_PAYMENT_ORDER_KEY_PREFIX, HutuUtils.joinByColon(data.getId() + userId));
                     return;
                 }
                 BizPayOrder payOrder = payOrderService.getById(data.getId());
                 if(!payOrder.getOrderStatus().equals(OrderStatusEnum.INIT.getVal())){
                     log.info("订单已更新状态，无需处理");
+                    redisUtils.hdel(RedisUtils.Keys.NON_PAYMENT_ORDER_KEY_PREFIX, HutuUtils.joinByColon(data.getId() + userId));
                     return;
                 }
                 LambdaUpdateWrapper<BizPayOrder> wrapper = new LambdaUpdateWrapper<>();

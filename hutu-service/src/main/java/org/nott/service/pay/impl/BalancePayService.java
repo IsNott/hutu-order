@@ -53,7 +53,7 @@ public class BalancePayService implements PayService {
         IBizPayOrderService payOrderService = SpringContextUtil.getBean(IBizPayOrderService.class);
         BizPayOrder payOrder = payOrderService.getPayOrderById(payOrderId, payNo);
         if (!Objects.equals(payOrder.getOrderStatus(), OrderStatusEnum.INIT.getVal())) {
-            throw new HutuBizException("订单状态异常，无法支付");
+            throw new HutuBizException("订单已支付或过期，无法支付");
         }
         payOrderId = payOrder.getId();
         BizUser user = bizUserService.getById(userId);

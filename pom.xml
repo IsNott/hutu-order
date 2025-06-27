@@ -17,7 +17,7 @@
         <module>hutu-external</module>
         <module>hutu-security</module>
         <module>hutu-service</module>
-        <module>hutu-webSocket</module>
+        <module>hutu-web-socket</module>
         <module>hutu-feign</module>
         <module>hutu-web/oss</module>
     </modules>

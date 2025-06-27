@@ -84,20 +84,24 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
 
     @PostConstruct
     public void pushUnFinishOrder2Queue() {
-        LambdaQueryWrapper<BizPayOrder> wrapper = new LambdaQueryWrapper<>();
-        wrapper
-                .isNotNull(BizPayOrder::getUserId)
-                .notIn(BizPayOrder::getOrderStatus, Arrays.asList(OrderStatusEnum.EXPIRE.getVal(),
-                        OrderStatusEnum.FAILED.getVal(), OrderStatusEnum.PAYED.getVal(), OrderStatusEnum.REFUND.getVal()))
-                .like(BizPayOrder::getCreateTime, HutuUtils.FORMAT.DATE.format(new Date()));
+        if (HandleOrderExpireType.DELAYED_QUEUE.getName().equals(businessConfig.getCheckType())) {
+            redisUtils.delByKey(RedisUtils.Keys.NON_PAYMENT_ORDER_KEY_PREFIX);
+            LambdaQueryWrapper<BizPayOrder> wrapper = new LambdaQueryWrapper<>();
+            wrapper
+                    .isNotNull(BizPayOrder::getUserId)
+                    .notIn(BizPayOrder::getOrderStatus, Arrays.asList(OrderStatusEnum.EXPIRE.getVal(),
+                            OrderStatusEnum.FAILED.getVal(), OrderStatusEnum.PAYED.getVal(), OrderStatusEnum.REFUND.getVal()));
+//                    .like(BizPayOrder::getCreateTime, HutuUtils.FORMAT.DATE.format(new Date()));
 
-        List<BizPayOrder> unPayOrders = this.list(wrapper);
-        if (HutuUtils.isNotEmpty(unPayOrders)) {
-            unPayOrders.forEach(order -> {
-                userPayOrderQueueHandler.pushData2Queue(order, businessConfig.getOrderExpire());
-                redisUtils.hset(RedisUtils.NON_PAYMENT_ORDER_KEY_PREFIX + order.getUserId(), order.getId() + "", JSONObject.toJSONString(order));
-            });
-            log.info("投入了{}个当日未完成订单到监听队列", unPayOrders.size());
+            List<BizPayOrder> unPayOrders = this.list(wrapper);
+            if (HutuUtils.isNotEmpty(unPayOrders)) {
+                unPayOrders.forEach(order -> {
+                    userPayOrderQueueHandler.pushData2Queue(order, businessConfig.getOrderExpire());
+                    redisUtils.hset(RedisUtils.Keys.NON_PAYMENT_ORDER_KEY_PREFIX , HutuUtils.joinByColon(order.getUserId(), order.getId()), JSONObject.toJSONString(order),
+                            TimeEnum.DAY.getSeconds());
+                });
+                log.info("投入了{}个未完成订单到监听队列", unPayOrders.size());
+            }
         }
     }
 
@@ -166,10 +170,13 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
             // 创建内部订单
             vo = this.createOrder(dto);
         }
-        // 移除购物车内容
+        // 移除购物车内容（将结算参数放入redis，方便后续回滚）
         HutuThreadPoolExecutor.threadPool.submit(() -> {
             List<Long> ids = items.stream().map(OrderItemDTO::getId).collect(Collectors.toList());
             bizUserPackageService.removeBatchByIds(ids);
+            redisUtils.hset(RedisUtils.Keys.SETTLE_INFO_PREFIX,
+                    HutuUtils.joinByColon(id, vo.getOrderId()),
+                    JSONObject.toJSONString(vo));
         });
         return vo;
     }
@@ -386,7 +393,8 @@ public class BizPayOrderServiceImpl extends ServiceImpl<BizPayOrderMapper, BizPa
 
         HutuThreadPoolExecutor.threadPool.submit(() -> {
             userPayOrderQueueHandler.pushData2Queue(order, businessConfig.getOrderExpire());
-            redisUtils.hset(RedisUtils.NON_PAYMENT_ORDER_KEY_PREFIX + id, order.getId() + "", JSONObject.toJSONString(order));
+            redisUtils.hset(RedisUtils.Keys.NON_PAYMENT_ORDER_KEY_PREFIX, HutuUtils.joinByColon(order.getId() + id), JSONObject.toJSONString(order),
+                    TimeEnum.DAY.getSeconds());
             log.info("订单[{}]进入监听队列", order.getId());
         });
         return vo;

@@ -1,5 +1,6 @@
 package org.nott.common.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -197,12 +198,30 @@ public class HutuUtils {
         }
     }
 
+    /**
+     * 检查当前时间是否在指定的星期和时间范围内
+     *
+     * @param startTimeToCheck 开始时间
+     * @param endTimeToCheck   结束时间
+     * @param startDayOfWeek   开始星期
+     * @param endDayOfWeek     结束星期
+     * @return 是否在范围内
+     */
     public static boolean checkWeekDayAndTimeForNow(String startTimeToCheck, String endTimeToCheck, Integer startDayOfWeek, Integer endDayOfWeek) {
         LocalTime start = LocalTime.parse(startTimeToCheck, DateTimeFormatter.ofPattern("HH:mm:ss"));
         LocalTime end = LocalTime.parse(endTimeToCheck, DateTimeFormatter.ofPattern("HH:mm:ss"));
         return checkWeekDayAndTimeForNow(start, end, DayOfWeek.of(startDayOfWeek), DayOfWeek.of(endDayOfWeek));
     }
 
+    /**
+     * 检查当前时间是否在指定的星期和时间范围内
+     *
+     * @param startTimeToCheck 开始时间
+     * @param endTimeToCheck   结束时间
+     * @param startDayOfWeek   开始星期
+     * @param endDayOfWeek     结束星期
+     * @return 是否在范围内
+     */
     public static boolean checkWeekDayAndTimeForNow(LocalTime startTimeToCheck, LocalTime endTimeToCheck, DayOfWeek startDayOfWeek, DayOfWeek endDayOfWeek) {
         LocalDate today = LocalDate.now();
 
@@ -214,6 +233,16 @@ public class HutuUtils {
                 startTimeToCheck.isBefore(now) && endTimeToCheck.isAfter(now);
     }
 
+    /**
+     * 通过SpEL表达式解析方法参数
+     *
+     * @param method      方法对象
+     * @param args        方法参数数组
+     * @param expression  SpEL表达式
+     * @param tclass      返回值类型
+     * @param <T>         返回值类型
+     * @return 解析后的值
+     */
     public static <T> T parseSpEl(Method method, Object[] args, String expression, Class<T> tclass) {
         if(StringUtils.isEmpty(expression)){
             return null;
@@ -231,6 +260,15 @@ public class HutuUtils {
         return parser.parseExpression(expression).getValue(ctx,tclass);
     }
 
+    /**
+     * 将Page对象中的记录转换为指定类型的VO对象
+     *
+     * @param sourcePage 源Page对象
+     * @param tClass     目标VO类
+     * @param <E>        源记录类型
+     * @param <T>        目标VO类型
+     * @return 转换后的Page对象
+     */
     public static <E,T> Page<T> transVOPage(Page<E> sourcePage, Class<T> tClass){
         List<E> records = sourcePage.getRecords();
         Page<T> tPage = new Page<>();
@@ -241,6 +279,46 @@ public class HutuUtils {
         List<T> ts = transToVos(records, tClass);
         tPage.setRecords(ts);
         return tPage;
+    }
+
+    /**
+     * 将对象数组转换为逗号分隔的字符串
+     *
+     * @param obj 对象数组
+     * @return 逗号分隔的字符串
+     */
+    public static String joinByComma(Object... obj) {
+        return join(",", obj);
+    }
+
+    public static String joinByColon(Object... obj) {
+        return join(":", obj);
+    }
+
+    /**
+     * 将对象数组转换为指定分隔符的字符串
+     *
+     * @param separator 分隔符
+     * @param obj       对象数组
+     * @return 指定分隔符的字符串
+     */
+    public static String join(String separator, Object... obj) {
+        if (obj == null || obj.length == 0) {
+            return "";
+        }
+        if(Arrays.stream(obj).allMatch(o -> o instanceof Collection)){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Object o : obj) {
+            if (o != null) {
+                sb.append(JSON.toJSONString(o)).append(separator);
+            }
+        }
+        if (sb.length() > 0) {
+            sb.delete(sb.length() - separator.length(), sb.length());
+        }
+        return sb.toString();
     }
 
 }

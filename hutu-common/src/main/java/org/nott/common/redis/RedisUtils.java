@@ -30,7 +30,13 @@ public class RedisUtils {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-    public static final String NON_PAYMENT_ORDER_KEY_PREFIX = "NON-PAYMENT-ORDER:";
+    public interface Keys {
+        String NON_PAYMENT_ORDER_KEY_PREFIX = "NON-PAYMENT-ORDER";
+        String SETTLE_INFO_PREFIX = "SETTLE-INFO";
+        String BUSINESS_CONFIG_KEY = "BUSINESS_CONFIG";
+    }
+
+
 
     public boolean expire(String key, long time) {
         try {
@@ -560,6 +566,6 @@ public class RedisUtils {
     }
 
     public void removeUnPayOrderCache(Long userId, Long orderId) {
-        this.hdel(NON_PAYMENT_ORDER_KEY_PREFIX + userId, orderId + "");
+        this.hdel(Keys.NON_PAYMENT_ORDER_KEY_PREFIX , HutuUtils.joinByColon(orderId + userId));
     }
 }
