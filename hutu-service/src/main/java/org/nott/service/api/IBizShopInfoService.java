@@ -1,5 +1,7 @@
 package org.nott.service.api;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.nott.dto.SysShopPageDTO;
 import org.nott.model.BizShopInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.nott.vo.ShopInfoVo;
@@ -23,4 +25,6 @@ public interface IBizShopInfoService extends IService<BizShopInfo> {
     List<ShopInfoVo> searchShopByKeyWord(String keyWord);
 
     ShopInfoVo getShopById(Long id);
+
+    Page<ShopInfoVo> page(SysShopPageDTO dto, int page, int size);
 }

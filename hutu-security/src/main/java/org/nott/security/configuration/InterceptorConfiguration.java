@@ -19,13 +19,16 @@ public class InterceptorConfiguration {
     @Value("${interceptor.authorize}")
     private boolean needAuthorize;
 
+    @Value("${interceptor.dev-mode}")
+    private boolean devMode;
+
     @Bean
     WebMvcConfigurer createWebMvcConfigurer() {
         return new WebMvcConfigurer() {
             public void addInterceptors(InterceptorRegistry registry) {
-                registry.addInterceptor(new LoginInterceptor());
+                if(!devMode) registry.addInterceptor(new LoginInterceptor());
 
-                if(needAuthorize){
+                if(needAuthorize && !devMode){
                     registry.addInterceptor(new AuthorizationInterceptor());
                 }
             }

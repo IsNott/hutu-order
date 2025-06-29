@@ -70,7 +70,7 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotLoginException.class)
     public ResponseEntity<Void> handleNotLoginException(NotLoginException e) {
-        return ResponseEntity.failure("还未登录", 401);
+        return ResponseEntity.failure(e.getMessage(), 401);
     }
 
     @ExceptionHandler(NotPermissionException.class)

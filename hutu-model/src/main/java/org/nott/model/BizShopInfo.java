@@ -3,6 +3,8 @@ package org.nott.model;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -92,4 +94,19 @@ public class BizShopInfo implements Serializable {
      * 页面样式
      */
     private String pageStyle;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
+    /**
+     * 删除标识
+     */
+    private Integer delFlag;
 }

@@ -55,6 +55,17 @@ public class AdminLoginController {
         return ResponseEntity.successData(vo);
     }
 
+    @ApiOperation("获取登录用户信息")
+    @PostMapping("info")
+    public ResponseEntity<?> info() {
+        Long userId = StpUtil.getLoginIdAsLong();
+        SysUser user = sysUserService.getById(userId);
+        if (user == null) {
+            return ResponseEntity.failure("用户不存在");
+        }
+        return ResponseEntity.successData(user);
+    }
+
     @ApiOperation("登出")
     @PostMapping("logout")
     public ResponseEntity<?> logout(){

@@ -37,6 +37,11 @@ uniapp-hutu-user/uniapp-hutu-user/unpackage/**
 uniapp-hutu-user/uniapp-hutu-user/node_modules/
 vue-hutu-admin/tests/*
 vue-hutu-admin/tests/**
+vue-hutu-admin/package-lock.json
+vue-hutu-admin/yarn.lock
+vue-hutu-admin/selenium-debug.log
+vue-hutu-admin/**/*.log
+
 result.txt
 npm-debug.log*
 yarn-debug.log*

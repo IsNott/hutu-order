@@ -1,7 +1,9 @@
 package org.nott.service.api.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.nott.common.utils.HutuUtils;
+import org.nott.dto.SysShopPageDTO;
 import org.nott.model.BizShopInfo;
 import org.nott.service.mapper.api.BizShopInfoMapper;
 import org.nott.service.api.IBizShopInfoService;
@@ -71,5 +73,21 @@ public class BizShopInfoServiceImpl extends ServiceImpl<BizShopInfoMapper, BizSh
         HutuUtils.requireNotNull(shopInfo, "门店不存在");
         ShopInfoVo vo = this.infoTranVoAndSetOpenStat(shopInfo);
         return vo;
+    }
+
+    @Override
+    public Page<ShopInfoVo> page(SysShopPageDTO dto, int page, int size) {
+        String keyword = dto.getKeyword();
+        Integer delFlag = dto.getDelFlag();
+
+        LambdaQueryWrapper<BizShopInfo> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.like(HutuUtils.isNotEmpty(keyword), BizShopInfo::getShopName, keyword)
+               .or().like(HutuUtils.isNotEmpty(keyword), BizShopInfo::getAddress, keyword)
+               .eq(delFlag != null, BizShopInfo::getDelFlag, delFlag)
+               .orderByDesc(BizShopInfo::getCreateTime);
+
+        return HutuUtils.transVOPage(this.page(new Page<>(page, size), wrapper),
+                ShopInfoVo.class);
     }
 }
