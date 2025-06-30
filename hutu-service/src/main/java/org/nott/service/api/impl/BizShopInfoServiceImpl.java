@@ -87,7 +87,19 @@ public class BizShopInfoServiceImpl extends ServiceImpl<BizShopInfoMapper, BizSh
                .eq(delFlag != null, BizShopInfo::getDelFlag, delFlag)
                .orderByDesc(BizShopInfo::getCreateTime);
 
-        return HutuUtils.transVOPage(this.page(new Page<>(page, size), wrapper),
+        Page<ShopInfoVo> voPage = HutuUtils.transVOPage(this.page(new Page<>(page, size), wrapper),
                 ShopInfoVo.class);
+
+        if(voPage.getRecords() != null && !voPage.getRecords().isEmpty()) {
+            for (ShopInfoVo vo : voPage.getRecords()) {
+                BizShopInfo info = this.getById(vo.getId());
+                if (info != null) {
+                    vo.setOpen(HutuUtils.checkWeekDayAndTimeForNow(info.getStartBusinessTime() + ":00",
+                            info.getEndBusinessTime() + ":59", info.getWeekStartDate(), info.getWeekEndDate()));
+                }
+            }
+        }
+
+        return voPage;
     }
 }

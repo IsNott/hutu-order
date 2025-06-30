@@ -55,6 +55,7 @@ mybatis-plus:
 
 interceptor:
   authorize: true
+  dev-mode: false
 
 logging:
   config: classpath:logback-dev.xml

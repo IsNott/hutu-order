@@ -45,11 +45,7 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar'
-    ]),
-    avatarUrl() {
-      console.log(`${process.env.VUE_APP_STAIC_API}${this.avatar}`);
-      return `${process.env.VUE_APP_STAIC_API}${this.avatar}`
-    }
+    ])
   },
   methods: {
     toggleSideBar() {

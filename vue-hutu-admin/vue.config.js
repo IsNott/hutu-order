@@ -39,13 +39,13 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/api': {
+      '/hutu-admin': {
         target: process.env.VUE_APP_BASE_API,
         ws: true,
         changOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
+        // pathRewrite: {
+        //   '^/api': ''
+        // }
       },
       '/hutu-order': {
         target: process.env.VUE_APP_STAIC_API,

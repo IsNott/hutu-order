@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.SysShopPageDTO;
+import org.nott.model.BizShopInfo;
 import org.nott.service.api.IBizShopInfoService;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ import javax.annotation.Resource;
 @Api(tags = "门店信息管理接口")
 @RestController
 @RequestMapping("/sys/bizShopInfo")
-public class SysBizShopInfoController {
+public class SysBizShopInfoController extends BaseController<BizShopInfo, IBizShopInfoService> {
 
     @Resource
     private IBizShopInfoService bizShopInfoService;

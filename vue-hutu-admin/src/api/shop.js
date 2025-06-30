@@ -1,9 +1,10 @@
-import request from '@/utils/request'
+import ApiService from './ApiService';
 
-export function shopPage(params) {
-  return request({
-    url: `/sys/bizShopInfo/page/${params.page}/${params.size}`,
-    method: 'post',
-    data: params
-  })
-}
+const baseUrl = '/sys/bizShopInfo'
+const shopService = new ApiService(baseUrl)
+
+export const page = shopService.page.bind(shopService);
+export const deleteById = shopService.deleteById.bind(shopService);
+export const save = shopService.save.bind(shopService);
+export const update = shopService.update.bind(shopService);
+export const getById = shopService.getById.bind(shopService);
