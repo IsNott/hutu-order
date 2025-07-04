@@ -27,8 +27,8 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  // lintOnSave: process.env.NODE_ENV === 'development',
-  lintOnSave: false,
+  lintOnSave: process.env.NODE_ENV === 'development',
+  // lintOnSave: false,
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -39,18 +39,13 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/hutu-admin': {
-        target: process.env.VUE_APP_BASE_API,
+      '/api': {
+        target: process.env.VUE_APP_BASE_API || 'http://localhost:10220/',
         ws: true,
         changOrigin: true,
-        // pathRewrite: {
-        //   '^/api': ''
-        // }
-      },
-      '/hutu-order': {
-        target: process.env.VUE_APP_STAIC_API,
-        ws: true,
-        changOrigin: true
+        pathRewrite: {
+          '^/api': '/'
+        }
       }
     }
     // before: require('./mock/mock-server.js')

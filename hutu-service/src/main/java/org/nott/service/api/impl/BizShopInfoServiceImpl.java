@@ -8,10 +8,15 @@ import org.nott.model.BizShopInfo;
 import org.nott.service.mapper.api.BizShopInfoMapper;
 import org.nott.service.api.IBizShopInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.nott.service.oss.IOssFileService;
+import org.nott.vo.OssFileVo;
 import org.nott.vo.ShopInfoVo;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -23,6 +28,9 @@ import java.util.List;
  */
 @Service
 public class BizShopInfoServiceImpl extends ServiceImpl<BizShopInfoMapper, BizShopInfo> implements IBizShopInfoService {
+
+    @Resource
+    private IOssFileService ossFileService;
 
     @Override
     public List<ShopInfoVo> listShopInfo() {
@@ -78,26 +86,33 @@ public class BizShopInfoServiceImpl extends ServiceImpl<BizShopInfoMapper, BizSh
     @Override
     public Page<ShopInfoVo> page(SysShopPageDTO dto, int page, int size) {
         String keyword = dto.getKeyword();
-        Integer delFlag = dto.getDelFlag();
 
         LambdaQueryWrapper<BizShopInfo> wrapper = new LambdaQueryWrapper<>();
 
         wrapper.like(HutuUtils.isNotEmpty(keyword), BizShopInfo::getShopName, keyword)
                .or().like(HutuUtils.isNotEmpty(keyword), BizShopInfo::getAddress, keyword)
-               .eq(delFlag != null, BizShopInfo::getDelFlag, delFlag)
+               .eq(BizShopInfo::getDelFlag, 0)
                .orderByDesc(BizShopInfo::getCreateTime);
 
         Page<ShopInfoVo> voPage = HutuUtils.transVOPage(this.page(new Page<>(page, size), wrapper),
                 ShopInfoVo.class);
 
         if(voPage.getRecords() != null && !voPage.getRecords().isEmpty()) {
-            for (ShopInfoVo vo : voPage.getRecords()) {
+            List<ShopInfoVo> records = voPage.getRecords();
+            List<Long> ids = records.stream().map(ShopInfoVo::getId).collect(Collectors.toList());
+            List<OssFileVo> fileVos = ossFileService.getByBizId(ids);
+            for (ShopInfoVo vo : records) {
                 BizShopInfo info = this.getById(vo.getId());
-                if (info != null) {
+                if (info != null && info.getStartBusinessTime() != null && info.getEndBusinessTime() != null) {
                     vo.setOpen(HutuUtils.checkWeekDayAndTimeForNow(info.getStartBusinessTime() + ":00",
                             info.getEndBusinessTime() + ":59", info.getWeekStartDate(), info.getWeekEndDate()));
                 }
+                if (HutuUtils.isNotEmpty(fileVos)){
+                    vo.setSwipeImage(fileVos.stream().filter(fileVo -> vo.getId().equals(fileVo.getBizId()))
+                            .map(OssFileVo::getPath).collect(Collectors.toList()));
+                }
             }
+
         }
 
         return voPage;

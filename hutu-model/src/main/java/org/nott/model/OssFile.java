@@ -3,6 +3,7 @@ package org.nott.model;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -49,6 +50,11 @@ public class OssFile implements Serializable {
      * 文件后缀
      */
     private String prefix;
+
+    /**
+     * 批次索引
+     */
+    private Integer batchIndex;
 
     /**
      * 创建时间

@@ -1,5 +1,7 @@
 package org.nott.model;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -81,16 +83,6 @@ public class BizShopInfo implements Serializable {
     private Integer mainShop;
 
     /**
-     * 封面图
-     */
-    private String coverUrl;
-
-    /**
-     * 轮播图
-     */
-    private String swipeImage;
-
-    /**
      * 页面样式
      */
     private String pageStyle;
@@ -98,11 +90,13 @@ public class BizShopInfo implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
 
     /**

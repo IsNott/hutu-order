@@ -21,7 +21,9 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers['token'] = getToken()
     }
-    config.headers['Content-Type'] = 'application/json;charset=UTF-8'
+    if (!config.headers['Content-Type']) {
+      config.headers['Content-Type'] = 'application/json;charset=UTF-8'
+    }
     return config
   },
   error => {

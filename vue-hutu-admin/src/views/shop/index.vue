@@ -2,19 +2,20 @@
   <div class="app-container">
     <el-form ref="form" :model="query" :inline="true" class="query-bar">
       <el-form-item label="关键字">
-        <el-input 
-        clearable
-        v-model="query.keyword" 
-        placeholder="请输入关键字" 
-        size="small"/>
+        <el-input
+          v-model="query.keyword"
+          clearable
+          placeholder="请输入关键字"
+          size="small"
+        />
       </el-form-item>
-      <el-form-item label="删除状态">
+      <!-- <el-form-item label="删除状态">
         <el-select clearable v-model="query.delFlag" placeholder="请选择" size="small">
           <el-option label="全部" value=""></el-option>
           <el-option label="已删除" value="1"></el-option>
           <el-option label="未删除" value="0"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" size="small" @click="fetchData">查询</el-button>
         <el-button type="success" size="small" @click="editRow({})">新增门店</el-button>
@@ -33,10 +34,11 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="门店名称" width="240">
+      <el-table-column label="门店名称" align="center">
         <template slot-scope="scope">
-          <el-tag size="small" type="success" v-if="scope.row.open && scope.row.closeNow === 0">营业中</el-tag>
-          <el-tag size="small" type="info" v-else>店休</el-tag>
+          <el-tag v-if="scope.row.mainShop === 1" size="small" type="success" style="margin-right:6px">主店</el-tag>
+          <el-tag v-if="scope.row.open && scope.row.closeNow === 0" size="small" type="success">营业中</el-tag>
+          <el-tag v-else size="small" type="info">店休</el-tag>
           {{ scope.row.shopName }}
         </template>
       </el-table-column>
@@ -50,31 +52,25 @@
           {{ scope.row.phone }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="营业时间" width="110" align="center">
+      <el-table-column class-name="status-col" label="营业时间" align="center">
         <template slot-scope="scope">
           {{ scope.row.startBusinessTime }} - {{ scope.row.endBusinessTime }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="经纬度" width="200">
         <template slot-scope="scope">
-          <span>{{longitudeAndLatitude(scope.row.longitude, scope.row.latitude)}}</span>
+          <span>{{ longitudeAndLatitude(scope.row.longitude, scope.row.latitude) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="封面图" width="200">
+      <!-- <el-table-column align="center" label="封面图" width="200">
         <template slot-scope="scope">
-          <img :src="scope.row.coverUrl" alt="封面图" style="width: 100px; height: 60px; object-fit: cover;"/>
+          <img v-if="scope.row.coverUrl"
+           :src="scope.row.coverUrl" alt="封面图" style="width: 100px; height: 60px; object-fit: cover;"/>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column align="center" label="创建时间" width="180">
         <template slot-scope="scope">
           {{ scope.row.createTime }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="删除标识" width="180">
-        <template slot-scope="scope">
-          <el-tag size="small" :type="scope.row.delFlag === 1 ? 'danger' : 'success'">
-            {{ scope.row.delFlag === 1 ? '已删除' : '未删除' }}
-          </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="240">
@@ -82,14 +78,15 @@
           <el-button
             :type="scope.row.closeNow === 0 && scope.row.open ? 'info' : 'success'"
             size="mini"
-            @click="closeOrOnlineRow(scope.row, scope.row.closeNow === 0 ? 'close' : 'online')">
+            @click="closeOrOnlineRow(scope.row, scope.row.closeNow === 0 ? 'close' : 'online')"
+          >
             {{ scope.row.closeNow === 0 && scope.row.open ? '闭店' : '上线' }}
           </el-button>
           <el-button
             type="primary"
             size="mini"
             @click="editRow(scope.row)"
-          >编辑</el-button>
+          >详情</el-button>
           <el-button
             type="danger"
             size="mini"
@@ -98,13 +95,14 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination :page="page"/>
+    <pagination :page="page" />
     <shop-dialog
+      :key="key"
       :obj="row"
       :visible.sync="edit"
-      :key="key"
       @refresh="fetchData"
-      @close="row = null"/>
+      @close="row = null"
+    />
   </div>
 </template>
 <script>
@@ -114,7 +112,7 @@ import ShopDialog from './component/ShopDialog.vue'
 export default {
   name: 'Shop',
   components: {
-    Pagination,ShopDialog
+    Pagination, ShopDialog
   },
   data() {
     return {
@@ -129,10 +127,8 @@ export default {
       key: new Date().getTime() // 用于强制刷新组件
     }
   },
-  computed: { 
-  },
-  created() {
-    this.fetchData()
+  computed: {
+
   },
   watch: {
     'page.current': function(newVal, oldVal) {
@@ -145,6 +141,9 @@ export default {
         this.fetchData()
       }
     }
+  },
+  created() {
+    this.fetchData()
   },
   methods: {
     fetchData() {
@@ -160,9 +159,9 @@ export default {
       })
     },
     longitudeAndLatitude(long, lat) {
-      if(long && lat) {
+      if (long && lat) {
         return `${long}, ${lat}`
-      }else {
+      } else {
         return '未设置'
       }
     },
@@ -189,9 +188,10 @@ export default {
     editRow(row) {
       this.edit = true
       this.row = row
+      this.key = new Date().getTime() // 更新key以强制刷新组件
     },
-    closeOrOnlineRow (row,type) { 
-      if (!row.open) { 
+    closeOrOnlineRow(row, type) {
+      if (!row.open) {
         this.$message({
           type: 'warning',
           message: '门店未到营业时间，无法上线'
@@ -212,11 +212,10 @@ export default {
           })
           this.fetchData()
         })
-        
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: `已取消认${opt}`
+          message: `已取消${opt}`
         })
       })
     }
