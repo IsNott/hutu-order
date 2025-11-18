@@ -26,14 +26,14 @@ public class MbpGenerator {
 
     public static void main(String[] args) {
 
-        FastAutoGenerator.create(String.format("jdbc:mysql://%s/%s?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true",
-                        INFO.URL, INFO.DB), INFO.USERNAME, INFO.PASSWORD)
+        FastAutoGenerator.create(String.format("jdbc:mysql://%s/%s?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true",
+                        INFO.URL, INFO.DB) + "&serverTimezone=GMT%2B8", INFO.USERNAME, INFO.PASSWORD)
                 // 全局配置
                 .globalConfig((scanner, builder) -> builder.author(INFO.AUTHOR))
                 // 包配置
                 .packageConfig((scanner, builder) -> builder.parent(INFO.PACKAGE))
                 // 策略配置
-                .strategyConfig((scanner, builder) -> builder.addInclude(getTables("biz_business_config"))
+                .strategyConfig((scanner, builder) -> builder.addInclude(getTables("biz_play_image"))
                         .entityBuilder()
                         .enableLombok()
                         .addTableFills(

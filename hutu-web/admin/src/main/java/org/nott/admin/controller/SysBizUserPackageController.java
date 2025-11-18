@@ -3,7 +3,7 @@ package org.nott.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.service.api.IBizUserPackageService;
+import org.nott.service.api.BizUserPackageService;
 import org.nott.vo.UserPackageVo;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +27,7 @@ import java.util.List;
 public class SysBizUserPackageController {
 
     @Resource
-    private IBizUserPackageService bizUserPackageService;
+    private BizUserPackageService bizUserPackageService;
 
     @ApiOperation("查询用户购物袋")
     @PostMapping("/query/{userId}")

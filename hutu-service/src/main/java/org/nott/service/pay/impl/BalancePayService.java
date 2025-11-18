@@ -7,20 +7,18 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.nott.common.annotation.PayApi;
 import org.nott.common.exception.HutuBizException;
-import org.nott.common.redis.RedisUtils;
 import org.nott.common.thread.pool.HutuThreadPoolExecutor;
 import org.nott.common.utils.HutuUtils;
 import org.nott.common.utils.SpringContextUtil;
 import org.nott.dto.PayDTO;
 import org.nott.dto.RefundDTO;
 import org.nott.enums.OrderStatusEnum;
-import org.nott.feign.BizPayOrderWsClient;
 import org.nott.model.BizPayOrder;
 import org.nott.model.BizUser;
 import org.nott.model.inter.BalancePayInfo;
 import org.nott.model.inter.BalanceRefundInfo;
-import org.nott.service.api.IBizPayOrderService;
-import org.nott.service.api.IBizUserService;
+import org.nott.service.api.BizPayOrderService;
+import org.nott.service.api.BizUserService;
 import org.nott.service.pay.PayService;
 import org.nott.vo.pay.PayResultVo;
 import org.nott.vo.pay.QueryResultVo;
@@ -43,14 +41,14 @@ import java.util.Objects;
 public class BalancePayService implements PayService {
 
     @Resource
-    private IBizUserService bizUserService;
+    private BizUserService bizUserService;
 
     @Override
     public PayResultVo doPay(PayDTO payDTO) {
         Long payOrderId = payDTO.getPayOrderId();
         String payNo = payDTO.getPayNo();
         long userId = StpUtil.getLoginIdAsLong();
-        IBizPayOrderService payOrderService = SpringContextUtil.getBean(IBizPayOrderService.class);
+        BizPayOrderService payOrderService = SpringContextUtil.getBean(BizPayOrderService.class);
         BizPayOrder payOrder = payOrderService.getPayOrderById(payOrderId, payNo);
         if (!Objects.equals(payOrder.getOrderStatus(), OrderStatusEnum.INIT.getVal())) {
             throw new HutuBizException("订单已支付或过期，无法支付");
@@ -110,7 +108,7 @@ public class BalancePayService implements PayService {
     public RefundResultVo doRefund(RefundDTO refundDTO) {
         String payNo = refundDTO.getPayNo();
         boolean full = refundDTO.isFull();
-        IBizPayOrderService payOrderService = SpringContextUtil.getBean(IBizPayOrderService.class);
+        BizPayOrderService payOrderService = SpringContextUtil.getBean(BizPayOrderService.class);
         BizPayOrder payOrder = payOrderService.getPayOrderById(null, payNo);
         Integer orderStatus = payOrder.getOrderStatus();
         if (!orderStatus.equals(OrderStatusEnum.PAYED.getVal())) {

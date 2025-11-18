@@ -1,7 +1,6 @@
 package org.nott.external.wechat.service;
 
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.nott.common.exception.HutuBizException;
 import org.nott.common.http.HttpClientUtil;
@@ -11,9 +10,8 @@ import org.nott.dto.MiniProgramPhoneInfoDTO;
 import org.nott.dto.UserLoginDTO;
 import org.nott.external.wechat.config.WechatAppConfig;
 import org.nott.external.wechat.constant.WechatApiConstant;
-import org.nott.service.api.IBizUserService;
+import org.nott.service.api.BizUserService;
 import org.nott.vo.UserLoginInfoVo;
-import org.nott.vo.WechatUserInfoVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,7 +31,7 @@ public class WechatService {
     private RedisUtils redisUtils;
 
     @Resource
-    private IBizUserService bizUserService;
+    private BizUserService bizUserService;
 
     public String generateStableToken() {
         Object hget = redisUtils.hget(WechatApiConstant.redisKey.API_NAME, WechatApiConstant.redisKey.STABLE_TOKEN);

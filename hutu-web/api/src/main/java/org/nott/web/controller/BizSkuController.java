@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.vo.ItemSkuVo;
-import org.nott.service.api.IBizItemSkuRelationService;
+import org.nott.service.api.BizItemSkuRelationService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,7 @@ import java.util.List;
 public class BizSkuController {
 
     @Resource
-    private IBizItemSkuRelationService bizItemSkuRelationService;
+    private BizItemSkuRelationService bizItemSkuRelationService;
 
     @ApiOperation("根据商品id查询sku列表")
     @GetMapping("{itemId}")

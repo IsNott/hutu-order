@@ -10,7 +10,7 @@ import org.nott.common.utils.HutuUtils;
 import org.nott.dto.MiniProgramPhoneInfoDTO;
 import org.nott.external.wechat.service.WechatService;
 import org.nott.model.BizUser;
-import org.nott.service.api.IBizUserService;
+import org.nott.service.api.BizUserService;
 import org.nott.vo.UserLoginInfoVo;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/external/wechat/")
 public class WechatApi {
     @Resource
-    private IBizUserService bizUserService;
+    private BizUserService bizUserService;
     @Resource
     private RedisUtils redisUtils;
 

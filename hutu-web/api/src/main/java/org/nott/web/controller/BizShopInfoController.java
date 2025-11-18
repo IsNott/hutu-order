@@ -3,7 +3,7 @@ package org.nott.web.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.service.api.IBizShopInfoService;
+import org.nott.service.api.BizShopInfoService;
 import org.nott.vo.ShopInfoVo;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +24,7 @@ import java.util.List;
 public class BizShopInfoController {
 
     @Resource
-    private IBizShopInfoService bizShopInfoService;
+    private BizShopInfoService bizShopInfoService;
 
     @ApiOperation("查询当前营业门店列表")
     @GetMapping("list")

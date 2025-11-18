@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.external.alipay.service.AlipayService;
 import org.nott.model.BizUser;
-import org.nott.service.api.IBizUserService;
+import org.nott.service.api.BizUserService;
 import org.nott.vo.AlipayUserInfo;
 import org.nott.vo.UserLoginInfoVo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +29,7 @@ public class AlipayApi {
     @Resource
     private AlipayService alipayService;
     @Resource
-    private IBizUserService bizUserService;
+    private BizUserService bizUserService;
 
     @ApiOperation("支付宝oauth登录")
     @GetMapping("oauth/{code}")

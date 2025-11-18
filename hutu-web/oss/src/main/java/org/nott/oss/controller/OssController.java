@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.feign.OssClient;
-import org.nott.service.oss.IOssFileService;
+import org.nott.service.oss.OssFileService;
 import org.nott.vo.OssFileVo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +23,7 @@ import java.util.List;
 public class OssController implements OssClient {
 
     @Resource
-    private IOssFileService ossFileService;
+    private OssFileService ossFileService;
 
     @Override
     @ApiOperation("上传文件[附带业务ID]")

@@ -8,7 +8,7 @@ import org.nott.dto.PayDTO;
 import org.nott.dto.PayGatewayDTO;
 import org.nott.dto.RefundDTO;
 import org.nott.model.BizPayOrder;
-import org.nott.service.api.IBizPayOrderService;
+import org.nott.service.api.BizPayOrderService;
 import org.nott.vo.pay.BaseResultVo;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
@@ -35,7 +35,7 @@ public class PayAPI implements ApplicationListener<ContextRefreshedEvent> {
     public static final Map<String, PayService> payServiceMap = new ConcurrentHashMap<>(16);
 
     @Resource
-    private IBizPayOrderService bizPayOrderService;
+    private BizPayOrderService bizPayOrderService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {

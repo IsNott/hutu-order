@@ -5,7 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.SkuCatalogSearchDTO;
-import org.nott.service.api.IBizSkuCatalogService;
+import org.nott.service.api.BizSkuCatalogService;
 import org.nott.vo.SkuCatalogItemVo;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +25,7 @@ import javax.annotation.Resource;
 public class SysBizSkuController {
 
     @Resource
-    private IBizSkuCatalogService bizSkuCatalogService;
+    private BizSkuCatalogService bizSkuCatalogService;
 
     @ApiOperation("分页查询分类下的sku item")
     @PostMapping("queryBizItemRelByPage/{page}/{size}")

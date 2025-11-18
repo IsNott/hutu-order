@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.common.annotation.RedisCache;
 import org.nott.vo.MenuItemVo;
-import org.nott.service.api.IBizMenuService;
+import org.nott.service.api.BizMenuService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +26,7 @@ import java.util.List;
 public class BizMenuController {
 
     @Resource
-    private IBizMenuService bizMenuService;
+    private BizMenuService bizMenuService;
 
     @Deprecated
     @ApiOperation("菜单列表")

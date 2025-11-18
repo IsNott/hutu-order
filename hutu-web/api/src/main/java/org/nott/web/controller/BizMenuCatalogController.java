@@ -1,11 +1,10 @@
 package org.nott.web.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.common.annotation.RedisCache;
-import org.nott.service.api.IBizMenuCatalogService;
+import org.nott.service.api.BizMenuCatalogService;
 import org.nott.vo.MenuCatalogVo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +26,7 @@ import java.util.List;
 public class BizMenuCatalogController {
 
     @Resource
-    private IBizMenuCatalogService bizMenuCatalogService;
+    private BizMenuCatalogService bizMenuCatalogService;
 
     @Deprecated
     @ApiOperation(value = "分类列表")

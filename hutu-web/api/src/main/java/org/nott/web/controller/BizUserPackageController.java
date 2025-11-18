@@ -5,12 +5,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.UserPackageAddDTO;
-import org.nott.dto.UserPackageQueryDTO;
 import org.nott.dto.UserPackageUpDateDTO;
 import org.nott.vo.UserPackageVo;
-import org.nott.service.api.IBizItemService;
-import org.nott.service.api.IBizUserPackageService;
-import org.nott.service.api.IBizUserService;
+import org.nott.service.api.BizItemService;
+import org.nott.service.api.BizUserPackageService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,10 +30,10 @@ import java.util.Objects;
 public class BizUserPackageController {
 
     @Resource
-    private IBizUserPackageService bizUserPackageService;
+    private BizUserPackageService bizUserPackageService;
 
     @Resource
-    private IBizItemService bizItemService;
+    private BizItemService bizItemService;
 
     @PostMapping("/query")
     @ApiOperation("查询当前登录用户购物袋")

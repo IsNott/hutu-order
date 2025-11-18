@@ -12,7 +12,7 @@ import org.nott.common.utils.SpringContextUtil;
 import org.nott.enums.HandleOrderExpireType;
 import org.nott.enums.OrderStatusEnum;
 import org.nott.model.BizPayOrder;
-import org.nott.service.api.IBizPayOrderService;
+import org.nott.service.api.BizPayOrderService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -43,7 +43,7 @@ public class UserPayOrderQueueHandler {
     }
 
     public void doOrderExpire() {
-        IBizPayOrderService payOrderService = SpringContextUtil.getBean(IBizPayOrderService.class);
+        BizPayOrderService payOrderService = SpringContextUtil.getBean(BizPayOrderService.class);
         while (true) {
             try {
                 DelayedTask<BizPayOrder> delayedTask = payOrderQueue.take();

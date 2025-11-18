@@ -3,10 +3,9 @@ package org.nott.web.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.common.utils.HutuUtils;
 import org.nott.dto.MyOrderQueryDTO;
 import org.nott.dto.UserSettleOrderDTO;
-import org.nott.service.api.IBizPayOrderService;
+import org.nott.service.api.BizPayOrderService;
 import org.nott.vo.FrontOrderVo;
 import org.nott.vo.MyPayOrderVo;
 import org.nott.vo.PayOrderVo;
@@ -27,7 +26,7 @@ import javax.annotation.Resource;
 public class BizPayOrderController {
 
     @Resource
-    private IBizPayOrderService bizPayOrderService;
+    private BizPayOrderService bizPayOrderService;
 
     @ApiOperation("用户下单")
     @PostMapping("settle")

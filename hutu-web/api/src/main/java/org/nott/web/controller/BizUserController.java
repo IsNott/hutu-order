@@ -7,7 +7,7 @@ import org.nott.common.ResponseEntity;
 import org.nott.dto.UserLoginDTO;
 import org.nott.dto.UserProfileDTO;
 import org.nott.dto.UserRegisterDTO;
-import org.nott.service.api.IBizUserService;
+import org.nott.service.api.BizUserService;
 import org.nott.vo.UserBalanceVo;
 import org.nott.vo.UserLoginInfoVo;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,7 @@ import javax.validation.Valid;
 public class BizUserController {
 
     @Resource
-    private IBizUserService bizUserService;
+    private BizUserService bizUserService;
 
     @Deprecated
     @ApiOperation("用户注册")

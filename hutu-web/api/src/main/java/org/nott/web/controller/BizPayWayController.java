@@ -1,11 +1,10 @@
 package org.nott.web.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.PayWayQueryDTO;
-import org.nott.service.api.IBizPayWayService;
+import org.nott.service.api.BizPayWayService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +26,7 @@ import javax.annotation.Resource;
 public class BizPayWayController {
 
     @Resource
-    private IBizPayWayService bizPayWayService;
+    private BizPayWayService bizPayWayService;
 
     @ApiOperation("查询支付方式列表")
     @PostMapping("list")

@@ -3,7 +3,7 @@ package org.nott.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.service.api.IBizPayOrderService;
+import org.nott.service.api.BizPayOrderService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +26,7 @@ import javax.annotation.Resource;
 public class SysBizPayOrderController {
 
     @Resource
-    private IBizPayOrderService bizPayOrderService;
+    private BizPayOrderService bizPayOrderService;
 
     @ApiOperation("数量统计")
     @GetMapping("/count")

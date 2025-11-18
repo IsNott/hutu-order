@@ -13,11 +13,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @MapperScan("org.nott.service.mapper.api")
 @SpringBootApplication(scanBasePackages = {
         "org.nott.common.*",
-        "org.nott.external.*",
+        "org.nott.service.api",
         "org.nott.web.*",
-        "org.nott.service.api.*",
+        "org.nott.security.*",
         "org.nott.service.pay",
-        "org.nott.security.*"
+        "org.nott.external.*",
+        
 })
 @Slf4j
 @EnableAsync

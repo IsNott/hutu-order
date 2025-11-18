@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.dto.ItemSearchDTO;
 import org.nott.model.BizItem;
-import org.nott.service.api.IBizItemService;
+import org.nott.service.api.BizItemService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,7 +27,7 @@ import java.util.Set;
 public class BizItemController {
 
     @Resource
-    private IBizItemService bizItemService;
+    private BizItemService bizItemService;
 
     @ApiOperation(value = "搜索商品")
     @PostMapping("search")
