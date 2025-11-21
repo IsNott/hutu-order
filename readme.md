@@ -59,7 +59,7 @@
 
 ```
 ├─db # 数据库脚本（mysql）
-├─hutu-web # REST API模块（api+管理+文件对象存储）
+├─hutu-app # REST API模块（api+管理+文件对象存储）
 ├─hutu-webSocket # ws通信模块（Netty）
 ├─hutu-feign # 跨应用调用api（openFeign）
 ├─hutu-model # 实体
@@ -74,9 +74,9 @@
 
 #### 运行项目
 
-- 小程序服务端：`hutu-web模块下的api模块`：`HutuApiApplication`
-- 管理服务端：`hutu-web模块下的admin模块`：`HutuApiApplication`
-- 文件对象存储：`hutu-web模块下的oss模块`：`HutuOssApplication`
+- 小程序服务端：`hutu-app模块下的api模块`：`HutuApiApplication`
+- 管理服务端：`hutu-app模块下的admin模块`：`HutuApiApplication`
+- 文件对象存储：`hutu-app模块下的oss模块`：`HutuOssApplication`
 - WebSocket：`hutu-webSocket模块`：`HutuWebSocketApplication`
 - 管理后台：`vue-hutu-admin`: `npm run serve`
 

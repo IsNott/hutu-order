@@ -57,7 +57,7 @@
 
 ```
 ├─db # 数据库脚本（mysql）
-├─hutu-web # REST API模块（api+管理）
+├─hutu-app # REST API模块（api+管理）
 ├─hutu-webSocket # ws通信模块（Netty）
 ├─hutu-feign # 跨应用调用api（openFeign）
 ├─hutu-model # 实体

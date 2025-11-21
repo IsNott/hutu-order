@@ -35,7 +35,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>org.nott</groupId>
-                    <artifactId>hutu-web</artifactId>
+                    <artifactId>hutu-app</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>mysql</groupId>

@@ -11,15 +11,15 @@
     <modules>
         <module>hutu-common</module>
         <module>hutu-model</module>
-        <module>hutu-web</module>
-        <module>hutu-web/api</module>
-        <module>hutu-web/admin</module>
+        <module>hutu-app</module>
+        <module>hutu-app/api</module>
+        <module>hutu-app/admin</module>
         <module>hutu-external</module>
         <module>hutu-security</module>
         <module>hutu-service</module>
-        <module>hutu-web-socket</module>
+        <module>hutu-app-socket</module>
         <module>hutu-feign</module>
-        <module>hutu-web/oss</module>
+        <module>hutu-app/oss</module>
     </modules>
 
     <properties>
