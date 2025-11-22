@@ -67,10 +67,11 @@
 ├─hutu-common # 通用模块
 ├─hutu-security # 权限验证模块
 ├─hutu-service # 服务类模块
+```
+
 <!-- ├─uniapp-hutu-user # 用户小程序端 -->
 <!-- ├─vue-hutu-admin # 后台管理web端 -->
 <!-- ├─vue-hutu-stuff # 商家叫号屏 -->
-```
 
 #### 运行项目
 
@@ -79,6 +80,10 @@
 - 文件对象存储：`hutu-app模块下的oss模块`：`HutuOssApplication`
 - WebSocket：`hutu-webSocket模块`：`HutuWebSocketApplication`
 <!-- - 管理后台：`vue-hutu-admin`: `npm run serve` -->
+<!--
+### 相关项目
+<a href="https://github.com/IsNott/hutu-order-web">小程序用户端（重构中）</a> 
+ -->
 
 
 
