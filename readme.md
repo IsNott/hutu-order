@@ -37,6 +37,8 @@
 协议：`Http`、`WebSocket`<br>
 服务端：`SpringBoot2.x`、`Vue2.x`、`Netty4.x`、`Sa-token`、`Spring Security`、`Redis`、`Mybatis-plus`、`AspectJ`、`Spring-Cloud-OpenFeign`<br>
 
+子仓库：[小程序(重构中仅mock数据)](https://github.com/Isnott/hutu-order-web)
+
 <!-- #### 开发进度
 
 已开发：<br>
