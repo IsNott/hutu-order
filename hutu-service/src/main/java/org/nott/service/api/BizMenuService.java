@@ -9,6 +9,7 @@ import org.nott.vo.OssFileVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,10 +26,10 @@ public class BizMenuService extends ServiceImpl<BizMenuMapper, BizMenu> {
 
     @Resource
     private BizMenuMapper bizMenuMapper;
-    @Resource
-    private OssClient ossFileService;
+//    @Resource
+//    private OssClient ossFileService;
 
-     
+
     public List<MenuItemVo> getByCatalogId(String catalogId) {
         List<MenuItemVo> itemVoList = bizMenuMapper.getMenuItemListByCatalogId(catalogId);
         setImgs(itemVoList);
@@ -37,14 +38,15 @@ public class BizMenuService extends ServiceImpl<BizMenuMapper, BizMenu> {
 
     private void setImgs(List<MenuItemVo> itemVoList) {
         List<Long> ids = itemVoList.stream().map(MenuItemVo::getItemId).collect(Collectors.toList());
-        List<OssFileVo> fileVos = ossFileService.getByBizId(ids).getData();
+//        List<OssFileVo> fileVos = ossFileService.getByBizId(ids).getData();
+        List<OssFileVo> fileVos = new ArrayList<>();
         itemVoList.forEach(itemVo -> {
             List<OssFileVo> fileVoList = fileVos.stream().filter(fileVo -> fileVo.getBizId().equals(itemVo.getItemId())).collect(Collectors.toList());
             itemVo.setItemImage(fileVoList.stream().map(OssFileVo::getPath).collect(Collectors.toList()));
         });
     }
 
-     
+
     public List<MenuItemVo> getByShopCatalogId(Long shopId,String catalogId) {
         List<MenuItemVo> itemVoList = bizMenuMapper.getMenuItemListByShopCatalogId(shopId,catalogId);
         this.setImgs(itemVoList);

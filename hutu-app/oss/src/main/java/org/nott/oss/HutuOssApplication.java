@@ -2,7 +2,10 @@ package org.nott.oss;
 
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.annotation.MapperScans;
 import org.nott.feign.OssClient;
+import org.nott.service.admin.SysUserService;
+import org.nott.service.mapper.admin.SysUserMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -14,12 +17,17 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @Slf4j
 @EnableFeignClients(clients = OssClient.class)
-@MapperScan("org.nott.service.mapper.oss")
+@MapperScans(value = {
+        @MapperScan("org.nott.service.mapper.oss"),
+        @MapperScan("org.nott.service.mapper.admin")
+})
 @SpringBootApplication(scanBasePackages = {
+        "org.nott.common.*",
         "org.nott.oss",
         "org.nott.service.oss",
-        "org.nott.common.config",
-        "org.nott.common.handler"})
+        "org.nott.security.*",
+        "org.nott.common.handler"},
+        scanBasePackageClasses = { SysUserService.class, SysUserMapper.class })
 public class HutuOssApplication {
 
     public static void main(String[] args) {

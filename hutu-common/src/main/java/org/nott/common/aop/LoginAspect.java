@@ -1,6 +1,6 @@
 package org.nott.common.aop;
 
-import cn.dev33.satoken.stp.StpUtil;
+//import cn.dev33.satoken.stp.StpUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,16 +13,16 @@ import org.springframework.stereotype.Component;
  * @author Nott
  * @date 2024-10-12
  */
-@Aspect
+//@Aspect
 @Component
 public class LoginAspect {
 
     private final Logger log = LoggerFactory.getLogger(LoginAspect.class);
 
-    @Around("@annotation(org.nott.common.annotation.JustLogin)")
+//    @Around("@annotation(org.nott.common.annotation.JustLogin)")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable{
         try {
-            StpUtil.getLoginIdAsLong();
+//            StpUtil.getLoginIdAsLong();
         } catch (Exception e) {
             log.error("Method {} executed error,User dont login",pjp.getSignature().getName());
             throw e;

@@ -1,52 +1,38 @@
 package org.nott.service.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import org.nott.dto.SysUserInfoDTO;
-import org.nott.model.SysRole;
-import org.nott.service.admin.SysUserService;
-import org.nott.service.mapper.admin.SysRoleMapper;
+import org.nott.common.utils.HutuUtils;
+import org.nott.security.entity.LoginUserDetails;
+import org.nott.security.entity.UserInfo;
 import org.nott.service.mapper.admin.SysUserMapper;
 import org.nott.model.SysUser;
-import org.nott.vo.SysUserInfoVo;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Nott
  * @date 2024-6-6
  */
 @Service
-public class SysUserService extends ServiceImpl<SysUserMapper, SysUser>{
+public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> implements UserDetailsService {
 
-    @Resource
-    private SysUserMapper sysUserMapper;
-    @Resource
-    private SysRoleMapper sysRoleMapper;
-
-     
-    public SysUser findUserByName(String username) {
-        return sysUserMapper.getUserByUsername(username);
+    @Override
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysUser::getUsername, name);
+        SysUser sysUser = this.getOne(wrapper);
+        if(HutuUtils.isEmpty(sysUser)){
+            throw new UsernameNotFoundException("用户不存在");
+        }
+        UserInfo userInfo = HutuUtils.transToObject(sysUser, UserInfo.class);
+        userInfo.setUserId(sysUser.getId());
+//        userInfo.setPassword(passwordEncoder.encode(sysUser.getPassword()));
+        LoginUserDetails details = new LoginUserDetails();
+        details.setUserInfo(userInfo);
+        return details;
     }
-
-     
-    public SysUserInfoVo getUserInfoByLoginId(Object loginId) {
-        SysUser user = getById(loginId + "");
-        SysUserInfoVo vo = new SysUserInfoVo();
-        vo.setAvatar(user.getAvatarUrl());
-        vo.setName(user.getUsername());
-        vo.setIntroduction("");
-        List<SysRole> roleList = sysRoleMapper.getRoleByUserId(loginId);
-        List<String> roles = roleList.stream().map(SysRole::getRoleName).collect(Collectors.toList());
-        vo.setRoles(roles);
-        return vo;
-    }
-
-     
-    public void updateUserInfo(Object loginId, SysUserInfoDTO userInfoDTO) {
-
-    }
-
 }

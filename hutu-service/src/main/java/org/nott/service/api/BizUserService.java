@@ -1,6 +1,6 @@
 package org.nott.service.api;
 
-import cn.dev33.satoken.stp.StpUtil;
+//import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +44,7 @@ public class BizUserService extends ServiceImpl<BizUserMapper, BizUser> {
     @Resource
     private BizUserMapper bizUserMapper;
 
-     
+
     public BizUser getUserByOpenId(String openId) {
         LambdaQueryWrapper<BizUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(BizUser::getOpenId, openId);
@@ -52,7 +52,7 @@ public class BizUserService extends ServiceImpl<BizUserMapper, BizUser> {
     }
 
 
-     
+
     public UserLoginInfoVo registerUser(ExternalBaseUserInfo userInfo) {
         BizUser user = new BizUser();
         user.setLoginCount(1);
@@ -68,7 +68,7 @@ public class BizUserService extends ServiceImpl<BizUserMapper, BizUser> {
         return this.login(user);
     }
 
-     
+
     public UserLoginInfoVo loginUser(ExternalBaseUserInfo userInfo) {
         BizUser user = getUserByOpenId(userInfo.getOpenId());
         Integer loginCount = user.getLoginCount();
@@ -83,7 +83,7 @@ public class BizUserService extends ServiceImpl<BizUserMapper, BizUser> {
         return this.login(user);
     }
 
-     
+
     public UserLoginInfoVo register(UserRegisterDTO dto) {
         String code = dto.getCode();
         String openId = redisUtils.get(code, String.class);
@@ -92,7 +92,7 @@ public class BizUserService extends ServiceImpl<BizUserMapper, BizUser> {
         return registerUser(info);
     }
 
-     
+
     public UserLoginInfoVo loginByPhone(UserLoginDTO dto) {
         HutuUtils.requireNotNull(dto.getPhone(),"手机号不能为空");
         LambdaQueryWrapper<BizUser> wrapper = new LambdaQueryWrapper<BizUser>().eq(BizUser::getPhone,dto.getPhone());
@@ -104,9 +104,10 @@ public class BizUserService extends ServiceImpl<BizUserMapper, BizUser> {
         return login(bizUser);
     }
 
-     
+
     public UserLoginInfoVo updateUserInfo(UserProfileDTO dto) {
-        Serializable loginId = (Serializable) StpUtil.getLoginId();
+//        Serializable loginId = (Serializable) StpUtil.getLoginId();
+        Serializable loginId = 1L;
         BizUser user = getById(loginId);
         HutuUtils.requireNotNull(user,"当前登录信息不存在");
         String username = dto.getUsername();
@@ -128,13 +129,14 @@ public class BizUserService extends ServiceImpl<BizUserMapper, BizUser> {
         this.updateById(user);
 
         UserLoginInfoVo vo = HutuUtils.transToObject(dto, UserLoginInfoVo.class);
-        vo.setToken(StpUtil.getTokenValue());
+//        vo.setToken(StpUtil.getTokenValue());
+        vo.setToken("123");
         vo.setAlreadyRegister(true);
 
         return vo;
     }
 
-     
+
     public UserBalanceVo queryMyBalance(long id) {
         BizUser user = this.getById(id);
         HutuUtils.requireNotNull(user, "没有找到用户");
@@ -145,35 +147,39 @@ public class BizUserService extends ServiceImpl<BizUserMapper, BizUser> {
         return vo;
     }
 
-     
+
     public String login(String openId, BizUser user) {
         this.login(user);
-        return StpUtil.getTokenValue();
+//        return StpUtil.getTokenValue();
+        return "";
     }
 
     private UserLoginInfoVo login(BizUser user){
         Long userId = user.getId();
         user.setLastLogTime(new Date());
         this.updateById(user);
-        StpUtil.setLoginId(userId);
+//        StpUtil.setLoginId(userId);
         UserLoginInfoVo userLoginInfoVo = new UserLoginInfoVo();
         HutuUtils.copyProperties(user,userLoginInfoVo);
         userLoginInfoVo.setAlreadyRegister(true);
-        userLoginInfoVo.setToken(StpUtil.getTokenValue());
+//        userLoginInfoVo.setToken(StpUtil.getTokenValue());
+        userLoginInfoVo.setToken("");
         return userLoginInfoVo;
     }
 
-     
+
     public Long queryUsablePoint() {
-        long id = StpUtil.getLoginIdAsLong();
+//        long id = StpUtil.getLoginIdAsLong();
+        long id = 1L;
         LambdaQueryWrapper<BizUser> wrapper = new LambdaQueryWrapper<BizUser>().eq(BizUser::getId, id);
         BizUser user = this.getOne(wrapper);
         return HutuUtils.getIfValue(user.getPoint(), 0L);
     }
 
-     
+
     public void usePoint(String fee,Long originPoint, Long usePoint) {
-        long id = StpUtil.getLoginIdAsLong();
+//        long id = StpUtil.getLoginIdAsLong();
+        long id = 1L;
         HutuUtils.requireTrue(originPoint >= usePoint,"原积分不足");
         int affectRow = bizUserMapper.costPointByCas(id, originPoint, usePoint);
         if(affectRow == 0){

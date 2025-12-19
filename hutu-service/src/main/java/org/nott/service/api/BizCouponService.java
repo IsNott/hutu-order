@@ -1,6 +1,6 @@
 package org.nott.service.api;
 
-import cn.dev33.satoken.stp.StpUtil;
+//import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.nott.common.utils.HutuUtils;
 import org.nott.enums.YesOrNoEnum;
@@ -32,10 +32,11 @@ public class BizCouponService extends ServiceImpl<BizCouponMapper, BizCoupon> {
     @Resource
     private BizCouponConditionService bizCouponConditionService;
 
-     
+
     public List<UserCouponVo> queryAvailableCoupon() {
-        long userId = StpUtil.getLoginIdAsLong();
-        List<BizCoupon> couponList = this.findCouponsByUserId(userId);
+//        long userId = StpUtil.getLoginIdAsLong();
+        List<BizCoupon> couponList = new ArrayList<>();
+//        List<BizCoupon> couponList = this.findCouponsByUserId(userId);
         if (couponList.isEmpty()) {
             return Collections.emptyList();
         }
@@ -67,7 +68,7 @@ public class BizCouponService extends ServiceImpl<BizCouponMapper, BizCoupon> {
     }
 
 
-     
+
     public List<BizCoupon> findCouponsByUserId(Long userId) {
         return bizCouponMapper.getCouponsByUserId(userId);
     }

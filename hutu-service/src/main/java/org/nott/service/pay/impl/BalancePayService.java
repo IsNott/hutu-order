@@ -1,6 +1,6 @@
 package org.nott.service.pay.impl;
 
-import cn.dev33.satoken.stp.StpUtil;
+//import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -47,7 +47,8 @@ public class BalancePayService implements PayService {
     public PayResultVo doPay(PayDTO payDTO) {
         Long payOrderId = payDTO.getPayOrderId();
         String payNo = payDTO.getPayNo();
-        long userId = StpUtil.getLoginIdAsLong();
+//        long userId = StpUtil.getLoginIdAsLong();
+        long userId = 1L;
         BizPayOrderService payOrderService = SpringContextUtil.getBean(BizPayOrderService.class);
         BizPayOrder payOrder = payOrderService.getPayOrderById(payOrderId, payNo);
         if (!Objects.equals(payOrder.getOrderStatus(), OrderStatusEnum.INIT.getVal())) {

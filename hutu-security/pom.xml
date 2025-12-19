@@ -27,16 +27,27 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- sa-token整合redis (使用jackson序列化方式) -->
+<!--        &lt;!&ndash; sa-token整合redis (使用jackson序列化方式) &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>cn.dev33</groupId>-->
+<!--            <artifactId>sa-token-dao-redis-jackson</artifactId>-->
+<!--            <version>1.9.0</version>-->
+<!--        </dependency>-->
+
         <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-dao-redis-jackson</artifactId>
-            <version>1.9.0</version>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.nott</groupId>
             <artifactId>hutu-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.nott</groupId>
+            <artifactId>hutu-model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

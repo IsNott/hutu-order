@@ -2,6 +2,7 @@ package org.nott.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.nott.common.exception.HutuBizException;
@@ -16,6 +17,8 @@ import org.springframework.util.CollectionUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -125,6 +128,20 @@ public class HutuUtils {
             throw new HutuBizException("Trans obj to vo failed");
         }
         return s;
+    }
+
+    public static <Service, VO> VO toVO(Object source, Service service){
+        Type genericSuperclass = service.getClass().getGenericSuperclass();
+        if (genericSuperclass instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            if (actualTypeArguments.length > 0) {
+                return transToObject(source, (Class<VO>) actualTypeArguments[0]);
+            }
+        } else {
+            throw new IllegalArgumentException("Missing type parameter.");
+        }
+        throw new HutuBizException("Missing genericSuperclass to Trans VO.");
     }
 
     public static boolean isEmpty(Object o) {

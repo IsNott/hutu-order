@@ -1,6 +1,6 @@
 package org.nott.service.api;
 
-import cn.dev33.satoken.stp.StpUtil;
+//import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.nott.common.ResponseEntity;
 import org.nott.common.exception.HutuBizException;
@@ -34,13 +34,14 @@ public class BizUserPackageService extends ServiceImpl<BizUserPackageMapper, Biz
     @Resource
     private BizUserPackageMapper bizUserPackageMapper;
 
-     
+
     public List<UserPackageVo> queryPackageInfoByUserId() {
-        Long userId = Long.parseLong((String)StpUtil.getLoginId());
+//        Long userId = Long.parseLong((String)StpUtil.getLoginId());
+        Long userId = 1L;
         return this.queryPackageInfoByUserId(userId);
     }
 
-     
+
     public List<UserPackageVo> queryPackageInfoByUserId(Long userId) {
         List<UserPackageVo> userPackageVos = bizUserPackageMapper.selectUserPackageByUserId(userId);
         if(HutuUtils.isNotEmpty(userPackageVos)){
@@ -58,9 +59,10 @@ public class BizUserPackageService extends ServiceImpl<BizUserPackageMapper, Biz
         return userPackageVos;
     }
 
-     
+
     public void packageAddItem(UserPackageAddDTO dto) {
-        Long userId = Long.parseLong((String)StpUtil.getLoginId());
+//        Long userId = Long.parseLong((String)StpUtil.getLoginId());
+        Long userId = 1L;
         Long itemId = dto.getItemId();
         Integer itemPiece = dto.getItemPiece();
         String skuItemContents = dto.getSkuItemContents();
@@ -74,22 +76,24 @@ public class BizUserPackageService extends ServiceImpl<BizUserPackageMapper, Biz
         this.save(userPackage);
     }
 
-     
+
     public void cancelAddPackage() {
-        long userId = StpUtil.getLoginIdAsLong();
+//        long userId = StpUtil.getLoginIdAsLong();
+        Long userId = 1L;
         bizUserPackageMapper.removeByUserId(userId);
     }
 
-     
+
     public Long queryPackageNumByUserId() {
-        long userId = StpUtil.getLoginIdAsLong();
+//        long userId = StpUtil.getLoginIdAsLong();
+        Long userId = 1L;
         LambdaUpdateWrapper<BizUserPackage> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(BizUserPackage::getUserId,userId);
         long count = this.count(wrapper);
         return count;
     }
 
-     
+
     public UserPackageVo updateContext(UserPackageUpDateDTO dto) {
         BizUserPackage bizUserPackage = HutuUtils.transToObject(dto, BizUserPackage.class);
         this.updateById(bizUserPackage);

@@ -1,6 +1,6 @@
 package org.nott.admin.controller;
 
-import cn.dev33.satoken.stp.StpUtil;
+//import cn.dev33.satoken.stp.StpUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
@@ -37,27 +37,5 @@ public class SysUserController {
     @Resource
     private PasswordEncoder passwordEncoder;
 
-    @ApiOperation("当前登录信息")
-    @PostMapping("userInfo")
-    public ResponseEntity<?> userInfo() {
-        Object loginId = StpUtil.getLoginId();
-        SysUserInfoVo vo = sysUserService.getUserInfoByLoginId(loginId);
-        return ResponseEntity.successData(vo);
-    }
-
-    @ApiOperation("更新个人信息")
-    @JustLogin
-    @PostMapping("profile")
-    public ResponseEntity<?> profile(@RequestBody SysUserInfoDTO userInfoDTO) {
-        Object loginId = StpUtil.getLoginId();
-        SysUser sysUser = sysUserService.getById(loginId + "");
-        String encodePassword = passwordEncoder.encode(userInfoDTO.getPassword());
-        userInfoDTO.setPassword(encodePassword);
-        HutuUtils.requireNotNull(sysUser);
-        HutuUtils.copyProperties(userInfoDTO,sysUser);
-        sysUserService.updateById(sysUser);
-        StpUtil.logout();
-        return ResponseEntity.success();
-    }
 
 }

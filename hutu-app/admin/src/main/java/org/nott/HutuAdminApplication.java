@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @MapperScan("org.nott.service.mapper.**.*")
 @SpringBootApplication(scanBasePackages = {
         "org.nott.common",
-        "org.nott.service.**.*",
+        "org.nott.service.admin.*",
         "org.nott.admin.*",
         "org.nott.security.*",
         })
