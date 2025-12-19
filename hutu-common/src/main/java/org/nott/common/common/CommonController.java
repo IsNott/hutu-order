@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Nott
- * @date 2025-12-01
+ * @date 2025-12
  */
 public abstract class CommonController<VO, T, S extends ServiceImpl> {
 

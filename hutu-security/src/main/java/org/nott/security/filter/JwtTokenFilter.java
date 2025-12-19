@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 /**
  * @author Nott
- * @date 2025-12-01
+ * @date 2025-12
  */
 @Service
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -33,7 +33,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 
-    private static final String[] PERMIT_ALL_PATTERNS = {
+    public static final String[] PERMIT_ALL_PATTERNS = {
             "/auth/login",
             "/auth/logout",
             "/public/**",
@@ -43,7 +43,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
-            "/webjars/**"
+            "/webjars/**",
+            "/doc.html",
+            "/favicon.ico"
     };
 
     private final JwtTokenServiceImpl jwtTokenService;
@@ -53,33 +55,45 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        // 使用这个方法而不是在 doFilterInternal 中判断，更加规范
+        String requestURI = request.getRequestURI();
+
+        // 先判断是否启用 security
+        if (!load) {
+            return true;
+        }
+
+        // 判断是否是放行路径
+        return Arrays.stream(PERMIT_ALL_PATTERNS)
+                .anyMatch(pattern -> pathMatcher.match(pattern, requestURI));
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
 
-        String requestURI = request.getRequestURI();
-        boolean shouldSkip = Arrays.stream(PERMIT_ALL_PATTERNS)
-                .anyMatch(pattern -> pathMatcher.match(pattern, requestURI));
+        try {
+            LoginUserDetails loginUser = jwtTokenService.getLoginUser(request);
 
-        if (shouldSkip || !load) {
-            chain.doFilter(request, response);
-            return;
+            // 校验token是否正确
+            if (loginUser != null) {
+                jwtTokenService.refreshToken(loginUser);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                // 转发给下一个过滤器
+                chain.doFilter(request, response);
+            } else {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write("{\"code\":401,\"message\":\"Unauthorized\",\"data\":null}");
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"code\":401,\"message\":\"Authentication failed: " + e.getMessage() + "\",\"data\":null}");
         }
-
-        LoginUserDetails loginUser = jwtTokenService.getLoginUser(request);
-
-        //  校验token是否正确
-        if (loginUser != null) {
-            jwtTokenService.refreshToken(loginUser);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
-            // 为details属性赋值
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            // 将认证信息存储在 SecurityContextHolder 中
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            //  转发给下一个过滤器
-            chain.doFilter(request, response);
-            return;
-        }
-        throw new BadCredentialsException("Unauthorized");
     }
 }

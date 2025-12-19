@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,15 +31,31 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private boolean load;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(
+                "/doc.html",
+                "/webjars/**",
+                "/v2/api-docs",
+                "/v2/api-docs-ext",
+                "/v3/api-docs",
+                "/v3/api-docs/**",
+                "/swagger-resources/**",
+                "/swagger-ui.html",
+                "/swagger-ui/**",
+                "/favicon.ico"
+        );
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().cacheControl();
 
-        if(load){
+        if (load) {
             http.csrf().disable()
                     .exceptionHandling()
                     .authenticationEntryPoint(
@@ -48,25 +65,15 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                     .authorizeRequests()
                     .antMatchers(
-                            "/auth/login",
-                            "/auth/logout",
-                            "/public/**",
-                            "/swagger-ui.html",
-                            "/swagger-ui/**",
-                            "/swagger-resources/**",
-                            "/v2/api-docs",
-                            "/v3/api-docs",
-                            "/v3/api-docs/**",
-                            "/webjars/**"
+                            JwtTokenFilter.PERMIT_ALL_PATTERNS
                     )
                     .permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .httpBasic().disable();
 
-            // 添加 JWT 过滤器
             http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        }else {
+        } else {
             http.csrf().disable()
                     .authorizeRequests()
                     .anyRequest().permitAll()

@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author nott
- * @since 2025-12-01
+ * @since 2025-12
  */
 public interface SysShopInfoMapper extends BaseMapper<SysShopInfo> {
 

@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 
 /**
  * @author Nott
- * @date 2025-12-01
+ * @date 2025-12
  */
 public abstract class Request<DTO> {
 

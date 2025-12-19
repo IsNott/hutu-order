@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 * 门店信息表前端控制器
 *
 * @author nott
-* @date 2025-12-01
+* @date 2025-12
 * @version 1.0
 * @description auto generated
 */

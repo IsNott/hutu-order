@@ -11,7 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author Nott
@@ -19,6 +22,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> implements UserDetailsService {
+
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
@@ -30,7 +36,6 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> implemen
         }
         UserInfo userInfo = HutuUtils.transToObject(sysUser, UserInfo.class);
         userInfo.setUserId(sysUser.getId());
-//        userInfo.setPassword(passwordEncoder.encode(sysUser.getPassword()));
         LoginUserDetails details = new LoginUserDetails();
         details.setUserInfo(userInfo);
         return details;
