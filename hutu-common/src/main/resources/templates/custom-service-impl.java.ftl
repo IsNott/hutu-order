@@ -1,7 +1,8 @@
 package ${package.Service}.${typeName};
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import ${package.Entity}.${entity};
 import ${package.Service}.mapper.${typeName}.${entity}Mapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -17,7 +18,7 @@ import ${commonPackage}.utils.HutuUtils;
 public class ${entity}Service extends ServiceImpl<${entity}Mapper, ${entity}>  {
 
     public IPage<${entity}Vo> queryPage(Integer page, Integer size, ${entity}DTO dto) {
-        LambdaQueryWrapper<SysShopInfo> wrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<${entity}> wrapper = new LambdaQueryWrapper<>();
         IPage<${entity}Vo> voPage = this.page(new Page<>(page, size), wrapper)
             .convert(item -> HutuUtils.transToObject(item, ${entity}Vo.class));
             return voPage;

@@ -53,6 +53,6 @@ public class SysShopInfoVo {
 
     private Date updateTime;
 
-    private Integer delFlag;
+    private Boolean delFlag;
 
 }

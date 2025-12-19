@@ -28,6 +28,7 @@
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <spring-boot.version>2.2.10.RELEASE</spring-boot.version>
         <mybatis-plus-generator.version>3.5.2</mybatis-plus-generator.version>
+        <mybatis-plus-join.version>1.5.5</mybatis-plus-join.version>
         <aspectj.version>1.9.21</aspectj.version>
         <lombok.version>1.18.30</lombok.version>
         <velocity.version>2.3</velocity.version>
@@ -51,6 +52,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.yulichang</groupId>
+                <artifactId>mybatis-plus-join-boot-starter</artifactId>
+                <version>${mybatis-plus-join.version}</version>
             </dependency>
 
             <dependency>

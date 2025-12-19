@@ -27,6 +27,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
         "org.nott.service.oss",
         "org.nott.security.*",
         "org.nott.common.handler"},
+        // 使用后台的auth鉴权
         scanBasePackageClasses = { SysUserService.class, SysUserMapper.class })
 public class HutuOssApplication {
 

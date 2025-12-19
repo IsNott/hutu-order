@@ -53,6 +53,6 @@ public class SysShopInfoDTO {
 
     private Date updateTime;
 
-    private Integer delFlag;
+    private Boolean delFlag;
 
 }

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.fill.Column;
@@ -39,14 +40,14 @@ public class MbpGenerator {
     public interface INFO {
         String URL = "localhost:3306";
         String DB = "hutu-order";
-        String PASSWORD = "123456";
+        String PASSWORD = "888888";
         String USERNAME = "root";
         String AUTHOR = "nott";
         String PACKAGE = "org.nott";
     }
 
     public static void main(String[] args) {
-        doGenerate(TYPE.ADMIN.value, "biz_shop_info");
+        doGenerate(TYPE.ADMIN.value, "biz_sku_catalog");
     }
 
     public static void doGenerate(String type, String table) {
@@ -58,7 +59,11 @@ public class MbpGenerator {
         FastAutoGenerator.create(String.format("jdbc:mysql://%s/%s?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true",
                         INFO.URL, INFO.DB) + "&serverTimezone=GMT%2B8", INFO.USERNAME, INFO.PASSWORD)
                 // 全局配置
-                .globalConfig((scanner, builder) -> builder.author(INFO.AUTHOR).disableOpenDir())
+                .globalConfig((scanner, builder) ->
+                        builder.author(INFO.AUTHOR)
+                                .dateType(DateType.ONLY_DATE)
+                                .commentDate("yyyy")
+                                .disableOpenDir())
                 // 包配置
                 .packageConfig((scanner, builder) -> {
                     Map<OutputFile, String> pathInfo = new HashMap<>();
@@ -67,16 +72,17 @@ public class MbpGenerator {
                     if ("api".equals(type)) {
                         pathInfo.put(OutputFile.controller, dir + "/hutu-app/" + type + "/src/main/java/org/nott/web/controller");
                     } else {
-                        pathInfo.put(OutputFile.controller, dir + "/hutu-app/" + type + "/src/main/java/org/nott" + type + "/controller");
+                        pathInfo.put(OutputFile.controller, dir + "/hutu-app/" + type + "/src/main/java/org/nott/" + type + "/controller");
                     }
+                    pathInfo.put(OutputFile.xml, dir + "/hutu-service/src/main/resources/mapper/");
                     pathInfo.put(OutputFile.entity, dir + "/hutu-model/src/main/java/org/nott/model/");
                     pathInfo.put(OutputFile.other, dir + "/hutu-model/src/main/java/org/nott/");
                     builder.parent(INFO.PACKAGE)
                             .entity("model")
                             .mapper("service.mapper." + type)
                             .serviceImpl("service." + type)
-                            .controller("api".equals(type) ? "web.controller" : type + ".controller");
-//                            .pathInfo(pathInfo);
+                            .controller("api".equals(type) ? "web.controller" : type + ".controller")
+                            .pathInfo(pathInfo);
                 })
                 // 策略配置
                 .strategyConfig((scanner, builder) -> builder.addInclude(getTables(table))
@@ -107,10 +113,6 @@ public class MbpGenerator {
                 .injectionConfig(builder -> {
                     // 自定义配置
                     Map<String, Object> customMap = new HashMap<>();
-//                    customMap.put("commonControllerPath", "org.nott.common.common.CommonController");
-//                    customMap.put("superControllerClass", "CommonController");
-//                    customMap.put("baseEntityPath", "com.example.common.entity.BaseEntity");
-//                    customMap.put("baseMapperPath", "com.example.common.mapper.BaseMapper");
                     customMap.put("commonPackage", "org.nott.common");
                     customMap.put("dtoPackage", "org.nott.dto");
                     customMap.put("voPackage", "org.nott.vo");
@@ -142,6 +144,7 @@ public class MbpGenerator {
                     // 使用自定义模板
                     builder.controller("/templates/custom-controller.java");
                     builder.serviceImpl("/templates/custom-service-impl.java");
+                    builder.mapper("/templates/custom-mapper.java");
                     builder.disable(TemplateType.SERVICE);
                 })
                 .templateEngine(new FreemarkerTemplateEngine())

@@ -16,7 +16,6 @@ import javax.annotation.Resource;
 * ${table.comment!}前端控制器
 *
 * @author ${author}
-* @date ${date}
 * @version 1.0
 * @description auto generated
 */

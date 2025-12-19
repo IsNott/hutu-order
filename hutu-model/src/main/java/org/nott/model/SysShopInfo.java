@@ -32,6 +32,14 @@ public class SysShopInfo implements Serializable {
      */
     private String shopName;
 
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
     /**
      * 地址
      */
@@ -89,7 +97,7 @@ public class SysShopInfo implements Serializable {
     private LocalDateTime updateTime;
 
     @TableLogic
-    private Integer delFlag;
+    private Boolean delFlag;
 
 
 }
