@@ -47,7 +47,7 @@ public class MbpGenerator {
     }
 
     public static void main(String[] args) {
-        doGenerate(TYPE.ADMIN.value, "biz_sku_catalog");
+        doGenerate(TYPE.ADMIN.value, "biz_menu_catalog");
     }
 
     public static void doGenerate(String type, String table) {
@@ -86,8 +86,8 @@ public class MbpGenerator {
                 })
                 // 策略配置
                 .strategyConfig((scanner, builder) -> builder.addInclude(getTables(table))
-                        .serviceBuilder().formatServiceImplFileName("%sService").formatServiceFileName("").fileOverride()
-                        .entityBuilder().formatFileName(entityName).fileOverride()
+                        .serviceBuilder().formatServiceImplFileName("%sService").formatServiceFileName("")
+                        .entityBuilder().formatFileName(entityName)
                         .nameConvert(new INameConvert() {
                             @Override
                             public String entityNameConvert(TableInfo tableInfo) {
@@ -107,8 +107,8 @@ public class MbpGenerator {
                         )
                         .logicDeleteColumnName("del_flag")
                         .logicDeletePropertyName("delFlag")
-                        .mapperBuilder().fileOverride().formatMapperFileName(entityName + "Mapper").formatXmlFileName(entityName + "Mapper")
-                        .controllerBuilder().fileOverride().enableRestStyle().formatFileName(entityName + "Controller")
+                        .mapperBuilder().formatMapperFileName(entityName + "Mapper").formatXmlFileName(entityName + "Mapper")
+                        .controllerBuilder().enableRestStyle().formatFileName(entityName + "Controller")
                         .build())
                 .injectionConfig(builder -> {
                     // 自定义配置
