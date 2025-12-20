@@ -8,8 +8,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.nott.common.utils.HutuUtils;
 import org.nott.dto.SysShopInfoDTO;
 import org.nott.model.SysShopInfo;
+import org.nott.request.SysShopInfoRequest;
 import org.nott.service.mapper.admin.SysShopInfoMapper;
 import org.nott.vo.SysShopInfoVo;
+import org.nott.vo.SysSkuCatalogVo;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -32,5 +34,12 @@ public class SysShopInfoService extends ServiceImpl<SysShopInfoMapper, SysShopIn
         IPage<SysShopInfoVo> voPage = this.page(new Page<>(page, size), wrapper)
                 .convert(item -> HutuUtils.transToObject(item, SysShopInfoVo.class));
         return voPage;
+    }
+
+    public SysShopInfoVo save(SysShopInfoRequest req) {
+        SysShopInfo entity = HutuUtils.transToObject(req, SysShopInfo.class);
+        entity.setDelFlag(false);
+        this.save(entity);
+        return HutuUtils.transToObject(entity, SysShopInfoVo.class);
     }
 }

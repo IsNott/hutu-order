@@ -7,6 +7,7 @@ import org.nott.common.utils.HutuUtils;
 import org.nott.request.SysShopInfoRequest;
 import org.nott.service.admin.SysShopInfoService;
 import org.nott.vo.SysShopInfoVo;
+import org.nott.vo.SysSkuCatalogVo;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import org.nott.model.SysShopInfo;
@@ -35,18 +36,25 @@ import javax.annotation.Resource;
         return ResponseEntity.successData(result);
     }
 
+    @ApiOperation("新增")
+    @PostMapping("/add")
+    public ResponseEntity<SysShopInfoVo> add(@RequestBody SysShopInfoRequest req) {
+        SysShopInfoVo vo = service.save(req);
+        return ResponseEntity.successData(vo);
+    }
+
     @ApiOperation("详情")
-    @PostMapping("/details/{id}")
+    @GetMapping("/details/{id}")
     public ResponseEntity<SysShopInfoVo> details(@PathVariable("id") Long id) {
-        SysShopInfoVo vo = HutuUtils.toVO(service.getById(id), SysShopInfoVo.class);
+        SysShopInfoVo vo = HutuUtils.transToObject(service.getById(id), SysShopInfoVo.class);
         return ResponseEntity.successData(vo);
     }
 
     @ApiOperation("更新")
     @PutMapping("/update/{id}")
-    public ResponseEntity<SysShopInfoVo> details(@PathVariable("id") Long id, @RequestBody SysShopInfo entity) {
+    public ResponseEntity<SysShopInfoVo> update(@PathVariable("id") Long id, @RequestBody SysShopInfo entity) {
         service.updateById(entity);
-        return ResponseEntity.successData(HutuUtils.toVO(entity, SysShopInfoVo.class));
+        return ResponseEntity.successData(HutuUtils.transToObject(entity, SysShopInfoVo.class));
     }
 
     @ApiOperation("删除")
