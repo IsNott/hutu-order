@@ -130,20 +130,6 @@ public class HutuUtils {
         return s;
     }
 
-    public static <Service, VO> VO toVO(Object source, Service service){
-        Type genericSuperclass = service.getClass().getGenericSuperclass();
-        if (genericSuperclass instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
-            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-            if (actualTypeArguments.length > 0) {
-                return transToObject(source, (Class<VO>) actualTypeArguments[0]);
-            }
-        } else {
-            throw new IllegalArgumentException("Missing type parameter.");
-        }
-        throw new HutuBizException("Missing genericSuperclass to Trans VO.");
-    }
-
     public static boolean isEmpty(Object o) {
         if (o instanceof String) {
             return StringUtils.isEmpty((String) o);

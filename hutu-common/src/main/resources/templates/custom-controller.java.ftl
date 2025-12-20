@@ -40,18 +40,25 @@ import javax.annotation.Resource;
         return ResponseEntity.successData(result);
     }
 
+    @ApiOperation("新增")
+    @PostMapping("/add")
+    public ResponseEntity<${entity}Vo> add(@RequestBody ${entity}Request req) {
+        ${entity}Vo vo = service.save(req.toDTO());
+        return ResponseEntity.successData(vo);
+    }
+
     @ApiOperation("详情")
-    @PostMapping("/details/{id}")
+    @GetMapping("/details/{id}")
     public ResponseEntity<${entity}Vo> details(@PathVariable("id") Long id) {
-        ${entity}Vo vo = HutuUtils.toVO(service.getById(id), ${entity}Vo.class);
+        ${entity}Vo vo = HutuUtils.transToObject(service.getById(id), ${entity}Vo.class);
         return ResponseEntity.successData(vo);
     }
 
     @ApiOperation("更新")
     @PutMapping("/update/{id}")
-    public ResponseEntity<${entity}Vo> details(@PathVariable("id") Long id, @RequestBody ${entity} entity) {
-        service.updateById(entity);
-        return ResponseEntity.successData(HutuUtils.toVO(entity, ${entity}Vo.class));
+    public ResponseEntity<${entity}Vo> details(@PathVariable("id") Long id, @RequestBody ${entity}Request req) {
+        ${entity}Vo vo = service.update(req.toDTO());
+        return ResponseEntity.successData(vo);
     }
 
     @ApiOperation("删除")

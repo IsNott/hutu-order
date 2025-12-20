@@ -23,4 +23,23 @@ public class ${entity}Service extends ServiceImpl<${entity}Mapper, ${entity}>  {
             .convert(item -> HutuUtils.transToObject(item, ${entity}Vo.class));
             return voPage;
     }
+
+
+    public ${entity}Vo save(${entity}DTO dto) {
+        ${entity} entity = HutuUtils.transToObject(dto, ${entity}.class);
+        entity.setDelFlag(false);
+        this.save(entity);
+        return HutuUtils.transToObject(entity, ${entity}Vo.class);
+    }
+
+    public ${entity}Vo update(${entity}DTO dto) {
+        Long id = dto.getId();
+        ${entity} entity = this.getById(id);
+        if(HutuUtils.isEmpty(entity)){
+            throw new HutuBizException("Entity not found.");
+        }
+        HutuUtils.copyProperties(dto, entity);
+        this.updateById(entity);
+        return HutuUtils.transToObject(entity, ${entity}Vo.class);
+    }
 }
