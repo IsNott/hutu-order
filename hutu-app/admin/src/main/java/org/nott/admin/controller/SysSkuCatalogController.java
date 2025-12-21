@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.common.utils.HutuUtils;
+import org.nott.model.SysShopInfo;
+import org.nott.request.SysShopInfoRequest;
 import org.nott.request.SysSkuCatalogRequest;
+import org.nott.vo.SysShopInfoVo;
 import org.nott.vo.SysSkuCatalogVo;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
@@ -33,18 +36,25 @@ import javax.annotation.Resource;
         return ResponseEntity.successData(result);
     }
 
+    @ApiOperation("新增")
+    @PostMapping("/add")
+    public ResponseEntity<SysSkuCatalogVo> add(@RequestBody SysSkuCatalogRequest req) {
+        SysSkuCatalogVo vo = service.save(req.toDTO());
+        return ResponseEntity.successData(vo);
+    }
+
     @ApiOperation("详情")
-    @PostMapping("/details/{id}")
+    @GetMapping("/details/{id}")
     public ResponseEntity<SysSkuCatalogVo> details(@PathVariable("id") Long id) {
-        SysSkuCatalogVo vo = HutuUtils.toVO(service.getById(id), SysSkuCatalogVo.class);
+        SysSkuCatalogVo vo = HutuUtils.transToObject(service.getById(id), SysSkuCatalogVo.class);
         return ResponseEntity.successData(vo);
     }
 
     @ApiOperation("更新")
     @PutMapping("/update/{id}")
-    public ResponseEntity<SysSkuCatalogVo> details(@PathVariable("id") Long id, @RequestBody SysSkuCatalog entity) {
-        service.updateById(entity);
-        return ResponseEntity.successData(HutuUtils.toVO(entity, SysSkuCatalogVo.class));
+    public ResponseEntity<SysSkuCatalogVo> details(@PathVariable("id") Long id, @RequestBody SysSkuCatalogRequest req) {
+        SysSkuCatalogVo vo = service.update(req.toDTO());
+        return ResponseEntity.successData(vo);
     }
 
     @ApiOperation("删除")
