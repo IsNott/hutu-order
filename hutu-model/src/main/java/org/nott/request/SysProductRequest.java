@@ -5,11 +5,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import org.nott.dto.SysProductDTO;
+import org.nott.vo.OssFileVo;
 
 import java.util.*;
 
 /**
-* 商品表 DTO
+* 商品表 Request
 */
 @Data
 @ApiModel(value = "SysProductRequest", description = "商品表访问参数")
@@ -26,8 +27,8 @@ public class SysProductRequest extends Request<SysProductDTO> {
     @ApiModelProperty(value = "商品名称")
     private String itemName;
 
-    @ApiModelProperty(value = "排序")
-    private Integer showIndex;
+//    @ApiModelProperty(value = "排序")
+//    private Integer showIndex;
 
     @ApiModelProperty(value = "商品描述")
     private String itemDescription;
@@ -43,5 +44,8 @@ public class SysProductRequest extends Request<SysProductDTO> {
 
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
+
+    @ApiModelProperty(value = "文件列表")
+    private List<OssFileVo> images;
 
 }

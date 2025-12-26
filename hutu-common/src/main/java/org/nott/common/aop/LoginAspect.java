@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
  */
 //@Aspect
 @Component
+@Deprecated
 public class LoginAspect {
 
     private final Logger log = LoggerFactory.getLogger(LoginAspect.class);

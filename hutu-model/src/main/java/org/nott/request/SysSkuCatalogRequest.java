@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
-* sku分类表 DTO
+* sku分类表 Request
 */
 @Data
 @ApiModel(value = "SysSkuCatalogRequest", description = "sku分类表访问参数")

@@ -120,6 +120,12 @@ public class JwtTokenServiceImpl {
         return null;
     }
 
+    public String getReqOriginToken(HttpServletRequest request) {
+        //获取未解码的token
+        String token = request.getHeader(TOKEN_HEADER);
+        return token;
+    }
+
 
     /**
      * 获取token的key

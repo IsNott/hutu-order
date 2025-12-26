@@ -2,7 +2,9 @@ package org.nott.model;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -43,12 +45,17 @@ public class OssFile implements Serializable {
     /**
      * 访问路径
      */
-    private String path;
+    private String url;
 
     /**
      * 文件后缀
      */
     private String prefix;
+
+    /**
+     * 排序
+     */
+    private Integer sortOrder;
 
     /**
      * 创建时间
@@ -65,6 +72,7 @@ public class OssFile implements Serializable {
     /**
      * 删除标识
      */
-    private Integer delFlag;
+    @TableLogic
+    private Boolean delFlag;
 
 }

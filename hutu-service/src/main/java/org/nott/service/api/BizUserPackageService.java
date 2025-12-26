@@ -53,7 +53,7 @@ public class BizUserPackageService extends ServiceImpl<BizUserPackageMapper, Biz
             List<OssFileVo> data = ossFile.getData();
             userPackageVos.forEach(userPackageVo -> {
                 List<OssFileVo> files = data.stream().filter(ossFileVo -> userPackageVo.getItemId().equals(ossFileVo.getBizId())).collect(Collectors.toList());
-                userPackageVo.setItemImageUrls(files.stream().map(OssFileVo::getPath).collect(Collectors.toList()));
+                userPackageVo.setItemImageUrls(files.stream().map(OssFileVo::getUrl).collect(Collectors.toList()));
             });
         }
         return userPackageVos;

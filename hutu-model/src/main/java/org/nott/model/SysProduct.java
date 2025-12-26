@@ -44,7 +44,7 @@ public class SysProduct implements Serializable {
     /**
      * 排序
      */
-    private Integer showIndex;
+//    private Integer showIndex;
 
     /**
      * 商品描述

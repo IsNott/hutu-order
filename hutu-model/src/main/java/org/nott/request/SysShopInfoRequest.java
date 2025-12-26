@@ -10,7 +10,7 @@ import java.util.Date;
 import org.nott.dto.SysShopInfoDTO;
 
 /**
-* 门店信息表 DTO
+* 门店信息表 Request
 */
 @Data
 @ApiModel(value = "SysShopInfoRequest", description = "门店信息表访问参数")

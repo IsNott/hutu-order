@@ -23,6 +23,7 @@ import java.util.Date;
  */
 @Slf4j
 @Service
+@Deprecated
 public class UploadService {
 
     public void upload(MultipartFile file, String path) throws Exception {

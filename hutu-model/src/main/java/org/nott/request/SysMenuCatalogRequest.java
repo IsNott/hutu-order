@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
-* 门店菜单分类表 DTO
+* 门店菜单分类表 Request
 */
 @Data
 @ApiModel(value = "SysMenuCatalogRequest", description = "门店菜单分类表访问参数")

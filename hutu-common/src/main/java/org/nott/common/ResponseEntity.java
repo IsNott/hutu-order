@@ -57,4 +57,8 @@ public class ResponseEntity<T> {
     public static <Void> ResponseEntity<Void> failure() {
         return new ResponseEntity<Void>("失败", -1);
     }
+
+    public boolean isSuccess() {
+        return this.code != null && this.code.equals(200);
+    }
 }

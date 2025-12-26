@@ -13,7 +13,10 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -56,6 +59,10 @@ public class HutuUtils {
 
     public static void requireFalse(boolean condition) throws HutuBizException {
         requireTrue(!condition, null);
+    }
+
+    public static HttpServletRequest getCurrentRequest() {
+        return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
     }
 
     public static void requireTrue(boolean condition, @Nullable String msg) throws HutuBizException {
@@ -322,6 +329,18 @@ public class HutuUtils {
             sb.delete(sb.length() - separator.length(), sb.length());
         }
         return sb.toString();
+    }
+
+    public static <DTO> List<DTO> transRequestsToDTOs(List<? extends Object> requestList, Class<DTO> dtoClass) {
+        if (isEmpty(requestList)) {
+            return new ArrayList<>();
+        }
+        List<DTO> dtoList = new ArrayList<>();
+        for (Object request : requestList) {
+            DTO dto = transToObject(request, dtoClass);
+            dtoList.add(dto);
+        }
+        return dtoList;
     }
 
 }

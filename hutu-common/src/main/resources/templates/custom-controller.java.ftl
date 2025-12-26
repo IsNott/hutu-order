@@ -56,7 +56,7 @@ import javax.annotation.Resource;
 
     @ApiOperation("更新")
     @PutMapping("/update/{id}")
-    public ResponseEntity<${entity}Vo> details(@PathVariable("id") Long id, @RequestBody ${entity}Request req) {
+    public ResponseEntity<${entity}Vo> update(@PathVariable("id") Long id, @RequestBody ${entity}Request req) {
         ${entity}Vo vo = service.update(req.toDTO());
         return ResponseEntity.successData(vo);
     }

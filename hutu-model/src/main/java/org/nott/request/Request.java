@@ -4,6 +4,7 @@ import org.nott.common.utils.HutuUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * @author Nott

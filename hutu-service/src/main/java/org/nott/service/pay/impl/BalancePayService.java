@@ -37,7 +37,6 @@ import java.util.Objects;
 @Slf4j
 @Service
 @PayApi("P001")
-@Transactional(rollbackFor = Exception.class)
 public class BalancePayService implements PayService {
 
     @Resource

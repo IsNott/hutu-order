@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
-* ${table.comment!} DTO
+* ${table.comment!} VO
 */
 @Data
 <#if useSwagger>

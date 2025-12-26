@@ -3,7 +3,10 @@ package org.nott.oss.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
+import org.nott.common.utils.HutuUtils;
+import org.nott.dto.OssFileDTO;
 import org.nott.feign.OssClient;
+import org.nott.request.OssFileRequest;
 import org.nott.service.oss.OssFileService;
 import org.nott.vo.OssFileVo;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +30,13 @@ public class OssController implements OssClient {
 
     @Override
     @ApiOperation("上传文件[附带业务ID]")
-    public ResponseEntity<OssFileVo> upload(@RequestBody MultipartFile file, @PathVariable("bizId") Long bizId) throws Exception {
+    public ResponseEntity<OssFileVo> upload(@RequestParam MultipartFile file, @PathVariable("bizId") Long bizId) throws Exception {
         return ResponseEntity.successData(ossFileService.upload(file, bizId));
     }
 
     @Override
     @ApiOperation("上传文件")
-    public ResponseEntity<OssFileVo> upload(MultipartFile file) throws Exception {
+    public ResponseEntity<OssFileVo> upload(@RequestParam MultipartFile file) throws Exception {
         return ResponseEntity.successData(ossFileService.upload(file, null));
     }
 
@@ -59,7 +62,14 @@ public class OssController implements OssClient {
 
     @Override
     @ApiOperation("获取文件[根据业务ID列表]")
-    public ResponseEntity<List<OssFileVo>> getByBizId(List<Long> bizId) {
+    public ResponseEntity<List<OssFileVo>> getByBizId(@RequestBody List<Long> bizId) {
         return ResponseEntity.successData(ossFileService.getByBizId(bizId));
+    }
+
+    @Override
+    @ApiOperation("设置业务ID")
+    public ResponseEntity<Void> relateOssFile(@RequestBody List<OssFileRequest> fileRequests,@PathVariable Long bizId) {
+        ossFileService.relateFile(HutuUtils.transRequestsToDTOs(fileRequests, OssFileDTO.class), bizId);
+        return ResponseEntity.success();
     }
 }

@@ -8,7 +8,7 @@ import java.io.Serializable;
     import java.util.Date;
 
 /**
-* 门店信息表 DTO
+* 门店信息表 VO
 */
 @Data
 @ApiModel(value = "SysShopInfoVo", description = "门店信息表页面对象")

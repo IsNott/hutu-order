@@ -42,7 +42,7 @@ public class BizMenuService extends ServiceImpl<BizMenuMapper, BizMenu> {
         List<OssFileVo> fileVos = new ArrayList<>();
         itemVoList.forEach(itemVo -> {
             List<OssFileVo> fileVoList = fileVos.stream().filter(fileVo -> fileVo.getBizId().equals(itemVo.getItemId())).collect(Collectors.toList());
-            itemVo.setItemImage(fileVoList.stream().map(OssFileVo::getPath).collect(Collectors.toList()));
+            itemVo.setItemImage(fileVoList.stream().map(OssFileVo::getUrl).collect(Collectors.toList()));
         });
     }
 

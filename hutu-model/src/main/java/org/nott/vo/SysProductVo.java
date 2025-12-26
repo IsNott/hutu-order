@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
-* 商品表 DTO
+* 商品表 VO
 */
 @Data
 @ApiModel(value = "SysProductVo", description = "商品表页面对象")
@@ -25,8 +25,11 @@ public class SysProductVo {
     @ApiModelProperty(value = "商品名称")
     private String itemName;
 
-    @ApiModelProperty(value = "排序")
-    private Integer showIndex;
+//    @ApiModelProperty(value = "排序")
+//    private Integer showIndex;
+
+    @ApiModelProperty(value = "图片列表")
+    private List<OssFileVo> images;
 
     @ApiModelProperty(value = "商品描述")
     private String itemDescription;

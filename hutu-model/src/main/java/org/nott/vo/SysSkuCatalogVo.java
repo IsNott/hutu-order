@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
-* sku分类表 DTO
+* sku分类表 VO
 */
 @Data
 @ApiModel(value = "SysSkuCatalogVo", description = "sku分类表页面对象")

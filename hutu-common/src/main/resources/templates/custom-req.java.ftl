@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
-* ${table.comment!} DTO
+* ${table.comment!} Request
 */
 @Data
 <#if useSwagger>

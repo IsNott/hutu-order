@@ -22,6 +22,9 @@ public class SysMenuCatalogVo {
     @ApiModelProperty(value = "关联门店id")
     private Long shopId;
 
+    @ApiModelProperty(value = "门店名称")
+    private String shopName;
+
     @ApiModelProperty(value = "排序")
     private Integer showIndex;
 

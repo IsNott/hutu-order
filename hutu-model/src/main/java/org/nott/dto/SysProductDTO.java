@@ -3,7 +3,9 @@ package org.nott.dto;
     import io.swagger.annotations.ApiModel;
     import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import java.io.Serializable;
+    import org.nott.request.OssFileRequest;
+
+    import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -25,8 +27,8 @@ public class SysProductDTO {
     @ApiModelProperty(value = "商品名称")
     private String itemName;
 
-    @ApiModelProperty(value = "排序")
-    private Integer showIndex;
+//    @ApiModelProperty(value = "排序")
+//    private Integer showIndex;
 
     @ApiModelProperty(value = "商品描述")
     private String itemDescription;
@@ -42,5 +44,8 @@ public class SysProductDTO {
 
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
+
+    @ApiModelProperty(value = "文件列表")
+    private List<OssFileRequest> images;
 
 }

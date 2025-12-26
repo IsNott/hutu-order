@@ -118,7 +118,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
     }
 
 
-    @Transactional
+
     public SettleOrderVo doUserSettle(UserSettleOrderDTO dto) {
         BigDecimal pointDiscount = new BigDecimal("0.00");
         BigDecimal couponDisCount = new BigDecimal("0.00");

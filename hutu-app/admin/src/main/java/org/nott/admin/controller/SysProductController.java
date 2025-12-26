@@ -3,13 +3,13 @@ package org.nott.admin.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.common.utils.HutuUtils;
 import org.nott.request.SysProductRequest;
 import org.nott.vo.SysProductVo;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import org.nott.service.admin.SysProductService;
 import javax.annotation.Resource;
+
 /**
 * 商品表前端控制器
 *
@@ -42,8 +42,7 @@ import javax.annotation.Resource;
     @ApiOperation("详情")
     @GetMapping("/details/{id}")
     public ResponseEntity<SysProductVo> details(@PathVariable("id") Long id) {
-        SysProductVo vo = HutuUtils.transToObject(service.getById(id), SysProductVo.class);
-        return ResponseEntity.successData(vo);
+        return ResponseEntity.successData(service.details(id));
     }
 
     @ApiOperation("更新")
