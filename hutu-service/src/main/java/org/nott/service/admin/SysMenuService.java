@@ -34,9 +34,11 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu>  {
 
     public IPage<SysMenuTreeNodeVo> treeNodePage(Integer page, Integer size, SysMenuDTO dto) {
         Long parentId = dto.getParentId();
+        Integer type = dto.getType();
         MPJLambdaWrapper<SysMenu> wrapper = new MPJLambdaWrapper<SysMenu>()
             .selectAll(SysMenu.class)
             .eq(SysMenu::getParentId, parentId)
+            .eq(HutuUtils.isNotEmpty(type), SysMenu::getType, type)
             .orderByAsc(SysMenu::getSort);
         Page<SysMenuTreeNodeVo> nodeVoPage = sysMenuMapper.selectJoinPage(new Page<>(page, size), SysMenuTreeNodeVo.class, wrapper);
         if(HutuUtils.isEmpty(nodeVoPage) || HutuUtils.isEmpty(nodeVoPage.getRecords())){
@@ -45,21 +47,23 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu>  {
         List<SysMenuTreeNodeVo> records = nodeVoPage.getRecords();
         for (SysMenuTreeNodeVo record : records) {
             // 递归查询子节点
-            setChildNodes(record);
+            setChildNodes(record, dto);
         }
         return nodeVoPage;
     }
 
-    private void setChildNodes(SysMenuTreeNodeVo record) {
+    private void setChildNodes(SysMenuTreeNodeVo record, SysMenuDTO dto) {
         Long id = record.getId();
+        Integer type = dto.getType();
         MPJLambdaWrapper<SysMenu> wrapper = new MPJLambdaWrapper<SysMenu>()
             .selectAll(SysMenu.class)
             .eq(SysMenu::getParentId, id)
+            .eq(HutuUtils.isNotEmpty(type), SysMenu::getType, type)
             .orderByDesc(SysMenu::getCreateTime);
         List<SysMenuTreeNodeVo> childNodes = sysMenuMapper.selectJoinList(SysMenuTreeNodeVo.class, wrapper);
         if(HutuUtils.isNotEmpty(childNodes)){
             for (SysMenuTreeNodeVo childNode : childNodes) {
-                setChildNodes(childNode);
+                setChildNodes(childNode, dto);
             }
             record.setChildren(childNodes);
         }
@@ -82,5 +86,37 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu>  {
         HutuUtils.copyProperties(dto, entity);
         this.updateById(entity);
         return HutuUtils.transToObject(entity, SysMenuVo.class);
+    }
+
+    public void deleteNode(Long id) {
+        SysMenu entity = this.getById(id);
+        if(HutuUtils.isEmpty(entity)){
+            throw new HutuBizException("Entity not found.");
+        }
+        SysMenuTreeNodeVo sysMenuTreeNodeVo = HutuUtils.transToObject(entity, SysMenuTreeNodeVo.class);
+        this.setChildNodes(sysMenuTreeNodeVo, new SysMenuDTO());
+        // 递归删除
+        deleteRecursively(sysMenuTreeNodeVo);
+    }
+
+    private void deleteRecursively(SysMenuTreeNodeVo sysMenuTreeNodeVo) {
+        List<SysMenuTreeNodeVo> children = sysMenuTreeNodeVo.getChildren();
+        if(HutuUtils.isNotEmpty(children)){
+            for (SysMenuTreeNodeVo child : children) {
+                deleteRecursively(child);
+            }
+        }
+        this.removeById(sysMenuTreeNodeVo.getId());
+    }
+
+    public void updateParent(List<Long> ids, Long newParentId) {
+        for (Long id : ids) {
+            SysMenu entity = this.getById(id);
+            if(HutuUtils.isEmpty(entity)){
+                throw new HutuBizException("Entity not found for id: " + id);
+            }
+            entity.setParentId(newParentId);
+            this.updateById(entity);
+        }
     }
 }

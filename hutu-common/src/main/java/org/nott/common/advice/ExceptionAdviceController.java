@@ -5,6 +5,7 @@ package org.nott.common.advice;
 import lombok.extern.slf4j.Slf4j;
 import org.nott.common.ResponseEntity;
 import org.nott.common.exception.*;
+import org.nott.common.utils.HutuUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -79,7 +80,7 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Void> handleRuntimeException(RuntimeException e) {
         log.error("捕获到运行时异常：{}", e.getMessage(), e);
-        return ResponseEntity.failure("系统错误", 500);
+        return ResponseEntity.failure(HutuUtils.isNotEmpty(e.getMessage()) ? e.getMessage() : "系统错误", 500);
     }
 
 

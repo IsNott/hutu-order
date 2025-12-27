@@ -12,6 +12,8 @@ import io.swagger.annotations.Api;
 import org.nott.model.SysMenu;
 import org.nott.service.admin.SysMenuService;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
 * 系统菜单表前端控制器
 *
@@ -65,7 +67,14 @@ import javax.annotation.Resource;
     @ApiOperation("删除")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-        service.removeById(id);
+        service.deleteNode(id);
+        return ResponseEntity.success();
+    }
+
+    @ApiOperation("批量更新父级id")
+    @PutMapping("/updateParent/{newParentId}")
+    public ResponseEntity<Void> updateParent(@RequestBody List<Long> ids, @PathVariable("newParentId") Long newParentId) {
+        service.updateParent(ids, newParentId);
         return ResponseEntity.success();
     }
 
