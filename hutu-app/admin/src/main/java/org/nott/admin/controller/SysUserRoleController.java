@@ -11,6 +11,8 @@ import io.swagger.annotations.Api;
 import org.nott.model.SysUserRole;
 import org.nott.service.admin.SysUserRoleService;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
 * 系统用户-角色关系表前端控制器
 *
@@ -38,6 +40,13 @@ import javax.annotation.Resource;
     public ResponseEntity<SysUserRoleVo> add(@RequestBody SysUserRoleRequest req) {
         SysUserRoleVo vo = service.save(req.toDTO());
         return ResponseEntity.successData(vo);
+    }
+
+    @ApiOperation("设置用户")
+    @PostMapping("/setRoleUsers/{roleId}")
+    public ResponseEntity<Void> setRoleUsers(@PathVariable("roleId") Long roleId, @RequestBody List<Long> userIds) {
+        service.setRoleUsers(roleId, userIds);
+        return ResponseEntity.success();
     }
 
     @ApiOperation("详情")

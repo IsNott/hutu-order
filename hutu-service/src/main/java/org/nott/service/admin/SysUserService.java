@@ -8,10 +8,14 @@ import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.nott.common.exception.HutuBizException;
 import org.nott.common.utils.HutuUtils;
 import org.nott.dto.SysUserDTO;
+import org.nott.model.SysRole;
+import org.nott.model.SysUserRole;
 import org.nott.security.entity.LoginUserDetails;
 import org.nott.security.entity.UserInfo;
+import org.nott.service.mapper.admin.SysRoleMapper;
 import org.nott.service.mapper.admin.SysUserMapper;
 import org.nott.model.SysUser;
+import org.nott.vo.SysRoleVo;
 import org.nott.vo.SysUserVo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Nott
@@ -34,12 +40,25 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> implemen
 
     @Resource
     private SysUserMapper sysUserMapper;
+    @Resource
+    private SysRoleMapper sysRoleMapper;
 
     public IPage<SysUserVo> queryPage(Integer page, Integer size, SysUserDTO dto) {
         MPJLambdaWrapper<SysUser> wrapper = new MPJLambdaWrapper<SysUser>()
                 .selectAll(SysUser.class)
                 .orderByDesc(SysUser::getCreateTime);
-        return sysUserMapper.selectJoinPage(new Page<>(page, size), SysUserVo.class, wrapper);
+        Page<SysUserVo> sysUserVoPage = sysUserMapper.selectJoinPage(new Page<>(page, size), SysUserVo.class, wrapper);
+        if(HutuUtils.isNotEmpty(sysUserVoPage.getRecords())){
+            for (SysUserVo record : sysUserVoPage.getRecords()) {
+                MPJLambdaWrapper<SysRole> roleWrapper = new MPJLambdaWrapper<SysRole>()
+                        .selectAll(SysRole.class)
+                        .innerJoin(SysUserRole.class,  SysUserRole::getRoleId,SysRole::getId)
+                        .eq(SysUserRole::getUserId, record.getId());
+                List<SysRoleVo> roles = sysRoleMapper.selectJoinList(SysRoleVo.class, roleWrapper);
+                record.setRoles(roles.stream().distinct().collect(Collectors.toList()));
+            }
+        }
+        return sysUserVoPage;
     }
 
 

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.nott.model.SysRole;
+import org.nott.model.SysRoleMenu;
 import org.nott.service.mapper.admin.SysRoleMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import org.nott.vo.SysRoleVo;
 import org.nott.common.utils.HutuUtils;
 import org.nott.common.exception.HutuBizException;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
 * 系统角色表 Service
 */

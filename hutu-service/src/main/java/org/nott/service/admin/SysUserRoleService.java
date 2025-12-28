@@ -13,6 +13,8 @@ import org.nott.vo.SysUserRoleVo;
 import org.nott.common.utils.HutuUtils;
 import org.nott.common.exception.HutuBizException;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
 * 系统用户-角色关系表 Service
 */
@@ -46,5 +48,20 @@ public class SysUserRoleService extends ServiceImpl<SysUserRoleMapper, SysUserRo
         HutuUtils.copyProperties(dto, entity);
         this.updateById(entity);
         return HutuUtils.transToObject(entity, SysUserRoleVo.class);
+    }
+
+    public void setRoleUsers(Long roleId, List<Long> userIds) {
+        LambdaQueryWrapper<SysUserRole> wrapper = new LambdaQueryWrapper<SysUserRole>()
+            .eq(SysUserRole::getRoleId, roleId);
+        this.remove(wrapper);
+        if(HutuUtils.isNotEmpty(userIds)){
+            for (Long userId : userIds) {
+                SysUserRole entity = new SysUserRole();
+                entity.setRoleId(roleId);
+                entity.setUserId(userId);
+                entity.setDelFlag(false);
+                this.save(entity);
+            }
+        }
     }
 }

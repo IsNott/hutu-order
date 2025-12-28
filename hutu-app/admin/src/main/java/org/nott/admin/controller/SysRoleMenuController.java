@@ -11,6 +11,8 @@ import io.swagger.annotations.Api;
 import org.nott.model.SysRoleMenu;
 import org.nott.service.admin.SysRoleMenuService;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
 * 角色-菜单权限表前端控制器
 *
@@ -33,11 +35,24 @@ import javax.annotation.Resource;
         return ResponseEntity.successData(result);
     }
 
+    @ApiOperation("根据角色id查找权限列表")
+    @GetMapping("/queryByRoleId/{roleId}")
+    public ResponseEntity<List<SysRoleMenuVo>> queryByRoleId(@PathVariable("roleId") Long roleId) {
+        return ResponseEntity.successData(service.getListByRoleId(roleId));
+    }
+
     @ApiOperation("新增")
     @PostMapping("/add")
     public ResponseEntity<SysRoleMenuVo> add(@RequestBody SysRoleMenuRequest req) {
         SysRoleMenuVo vo = service.save(req.toDTO());
         return ResponseEntity.successData(vo);
+    }
+
+    @ApiOperation("设置权限")
+    @PostMapping("/setRoleMenus/{roleId}")
+    public ResponseEntity<Void> setRoleMenus(@PathVariable("roleId") Long roleId, @RequestBody List<Long> menuIds) {
+        service.setRoleMenus(roleId, menuIds);
+        return ResponseEntity.success();
     }
 
     @ApiOperation("详情")

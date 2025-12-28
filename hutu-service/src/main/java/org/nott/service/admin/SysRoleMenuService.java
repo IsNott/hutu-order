@@ -13,6 +13,8 @@ import org.nott.vo.SysRoleMenuVo;
 import org.nott.common.utils.HutuUtils;
 import org.nott.common.exception.HutuBizException;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
 * 角色-菜单权限表 Service
 */
@@ -46,5 +48,28 @@ public class SysRoleMenuService extends ServiceImpl<SysRoleMenuMapper, SysRoleMe
         HutuUtils.copyProperties(dto, entity);
         this.updateById(entity);
         return HutuUtils.transToObject(entity, SysRoleMenuVo.class);
+    }
+
+    public List<SysRoleMenuVo> getListByRoleId(Long roleId) {
+        LambdaQueryWrapper<SysRoleMenu> wrapper = new LambdaQueryWrapper<SysRoleMenu>()
+            .eq(SysRoleMenu::getRoleId, roleId)
+            .eq(SysRoleMenu::getDelFlag, false);
+        List<SysRoleMenu> list = this.list(wrapper);
+        return HutuUtils.transToVos(list, SysRoleMenuVo.class);
+    }
+
+    public void setRoleMenus(Long roleId, List<Long> menuIds) {
+        LambdaQueryWrapper<SysRoleMenu> wrapper = new LambdaQueryWrapper<SysRoleMenu>()
+            .eq(SysRoleMenu::getRoleId, roleId);
+        this.remove(wrapper);
+        if(HutuUtils.isNotEmpty(menuIds)){
+            for (Long menuId : menuIds) {
+                SysRoleMenu entity = new SysRoleMenu();
+                entity.setRoleId(roleId);
+                entity.setMenuId(menuId);
+                entity.setDelFlag(false);
+                this.save(entity);
+            }
+        }
     }
 }

@@ -43,4 +43,7 @@ public class SysUserVo {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
+    @ApiModelProperty("角色列表")
+    private List<SysRoleVo> roles;
+
 }
