@@ -78,4 +78,11 @@ import java.util.List;
         return ResponseEntity.success();
     }
 
+    @ApiOperation("获取用户菜单树")
+    @GetMapping("/menu")
+    public ResponseEntity<List<SysMenuTreeNodeVo>> getUserMenuTree() {
+        List<SysMenuTreeNodeVo> menuTree = service.getUserMenuTree();
+        return ResponseEntity.successData(menuTree);
+    }
+
 }

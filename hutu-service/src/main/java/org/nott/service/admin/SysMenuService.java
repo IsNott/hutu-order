@@ -5,8 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.nott.model.SysMenu;
+import org.nott.model.SysRole;
+import org.nott.model.SysRoleMenu;
+import org.nott.model.SysUserRole;
+import org.nott.security.utils.AuthUtils;
 import org.nott.service.mapper.admin.SysMenuMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.nott.service.mapper.admin.SysRoleMapper;
+import org.nott.service.mapper.admin.SysUserRoleMapper;
 import org.nott.vo.SysMenuTreeNodeVo;
 import org.springframework.stereotype.Service;
 import org.nott.dto.SysMenuDTO;
@@ -14,7 +20,8 @@ import org.nott.vo.SysMenuVo;
 import org.nott.common.utils.HutuUtils;
 import org.nott.common.exception.HutuBizException;
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
 * 系统菜单表 Service
@@ -24,6 +31,8 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu>  {
 
     @Resource
     private SysMenuMapper sysMenuMapper;
+    @Resource
+    private SysUserRoleMapper sysUserRoleMapper;
 
     public IPage<SysMenuVo> queryPage(Integer page, Integer size, SysMenuDTO dto) {
         MPJLambdaWrapper<SysMenu> wrapper = new MPJLambdaWrapper<SysMenu>()
@@ -50,6 +59,25 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu>  {
             setChildNodes(record, dto);
         }
         return nodeVoPage;
+    }
+
+    public List<SysMenuTreeNodeVo> tree(SysMenuDTO dto) {
+        Long parentId = dto.getParentId();
+        Integer type = dto.getType();
+        MPJLambdaWrapper<SysMenu> wrapper = new MPJLambdaWrapper<SysMenu>()
+                .selectAll(SysMenu.class)
+                .eq(SysMenu::getParentId, parentId)
+                .eq(HutuUtils.isNotEmpty(type), SysMenu::getType, type)
+                .orderByAsc(SysMenu::getSort);
+        List<SysMenuTreeNodeVo> nodeVos = sysMenuMapper.selectJoinList(SysMenuTreeNodeVo.class, wrapper);
+        if(HutuUtils.isEmpty(nodeVos)){
+            return nodeVos;
+        }
+        for (SysMenuTreeNodeVo record : nodeVos) {
+            // 递归查询子节点
+            setChildNodes(record, dto);
+        }
+        return nodeVos;
     }
 
     private void setChildNodes(SysMenuTreeNodeVo record, SysMenuDTO dto) {
@@ -119,4 +147,62 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu>  {
             this.updateById(entity);
         }
     }
+
+    public List<SysMenuTreeNodeVo> getUserMenuTree() {
+        Long userId = AuthUtils.getCurrentUser().getUserId();
+        LambdaQueryWrapper<SysUserRole> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysUserRole::getUserId, userId);
+        List<SysUserRole> sysUserRoles = sysUserRoleMapper.selectList(wrapper);
+        if(HutuUtils.isEmpty(sysUserRoles)){
+            return new ArrayList<>();
+        }
+        List<Long> roleIds = sysUserRoles.stream().map(SysUserRole::getRoleId).distinct().collect(Collectors.toList());
+        MPJLambdaWrapper<SysMenu> joinWrapper = new MPJLambdaWrapper<>();
+        joinWrapper.selectAll(SysMenu.class)
+                .distinct()
+            .rightJoin(SysRoleMenu.class, SysRoleMenu::getMenuId, SysMenu::getId)
+            .in(SysRoleMenu::getRoleId, roleIds)
+            .orderByAsc(SysMenu::getSort);
+        List<SysMenu> menus = sysMenuMapper.selectJoinList(SysMenu.class, joinWrapper);
+        if(HutuUtils.isEmpty(menus)){
+            return new ArrayList<>();
+        }
+        // 组装菜单树
+        List<SysMenuTreeNodeVo> vos = new ArrayList<>();
+        // 寻找完整的树结构
+        SysMenuDTO sysMenuDTO = new SysMenuDTO();
+        sysMenuDTO.setParentId(0L);
+        List<SysMenuTreeNodeVo> tree = this.tree(sysMenuDTO);
+        // 过滤出用户拥有的菜单
+        for (SysMenuTreeNodeVo node : tree) {
+            SysMenuTreeNodeVo filteredNode = filterMenuNode(node, menus);
+            if(filteredNode != null){
+                vos.add(filteredNode);
+            }
+        }
+
+        return vos;
+    }
+
+    private SysMenuTreeNodeVo filterMenuNode(SysMenuTreeNodeVo node, List<SysMenu> menus) {
+        boolean hasMenu = menus.stream().anyMatch(menu -> menu.getId().equals(node.getId()));
+        List<SysMenuTreeNodeVo> children = node.getChildren();
+        List<SysMenuTreeNodeVo> filteredChildren = new ArrayList<>();
+        if(HutuUtils.isNotEmpty(children)){
+            for (SysMenuTreeNodeVo child : children) {
+                SysMenuTreeNodeVo filteredChild = filterMenuNode(child, menus);
+                if(filteredChild != null){
+                    filteredChildren.add(filteredChild);
+                }
+            }
+        }
+        if(hasMenu || HutuUtils.isNotEmpty(filteredChildren)) {
+            SysMenuTreeNodeVo newNode = HutuUtils.transToObject(node, SysMenuTreeNodeVo.class);
+            newNode.setChildren(filteredChildren);
+            return newNode;
+        }
+        return null;
+    }
+
+
 }
