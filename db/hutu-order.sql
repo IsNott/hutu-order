@@ -1,17 +1,15 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 50735 (5.7.35)
+ Source Server Version : 80016
  Source Host           : localhost:3306
  Source Schema         : hutu-order
 
  Target Server Type    : MySQL
- Target Server Version : 50735 (5.7.35)
+ Target Server Version : 80016
  File Encoding         : 65001
-
- Date: 26/12/2025 17:48:39
 */
 
 SET NAMES utf8mb4;
@@ -26,7 +24,7 @@ CREATE TABLE `biz_business_config`  (
   `biz_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务key',
   `biz_context` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '业务正文',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_business_config
@@ -43,7 +41,7 @@ CREATE TABLE `biz_comment`  (
   `comment_urls` json NULL COMMENT '评价图片',
   `comment_user_id` bigint(20) NULL DEFAULT NULL COMMENT '评价用户id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户评论表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户评论表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_comment
@@ -58,7 +56,7 @@ CREATE TABLE `biz_common_remark`  (
   `context` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '内容',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_common_remark
@@ -80,10 +78,10 @@ CREATE TABLE `biz_coupon`  (
   `sub_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '二级标题',
   `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建人id',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户优惠券表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户优惠券表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_coupon
@@ -97,17 +95,17 @@ DROP TABLE IF EXISTS `biz_coupon_condition`;
 CREATE TABLE `biz_coupon_condition`  (
   `id` bigint(20) NOT NULL COMMENT 'id',
   `biz_id` bigint(20) NULL DEFAULT NULL COMMENT '关联业务id',
-  `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
-  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `start_time` datetime(0) NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime(0) NULL DEFAULT NULL COMMENT '结束时间',
   `is_enable` tinyint(4) NULL DEFAULT NULL COMMENT '是否启用',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `creator_id` bigint(20) NULL DEFAULT NULL COMMENT '创建者id',
   `type` tinyint(4) NULL DEFAULT NULL COMMENT '0-时间 1-满减 2-关联业务 3-全部',
   `price_condition` decimal(10, 2) NULL DEFAULT NULL COMMENT '金额条件',
   `biz_condition` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务条件',
   `condition_expression` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '条件表达式',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优惠券规则表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优惠券规则表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_coupon_condition
@@ -128,8 +126,8 @@ CREATE TABLE `biz_item`  (
   `item_tag` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商品标签',
   `expect_make_time` int(20) NULL DEFAULT NULL COMMENT '预计制作时长，单位：分',
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统商品表' ROW_FORMAT = Dynamic;
 
@@ -166,10 +164,10 @@ CREATE TABLE `biz_item_copy1`  (
   `item_tag` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商品标签',
   `expect_make_time` int(20) NULL DEFAULT NULL COMMENT '预计制作时长，单位：分',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统商品表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统商品表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_item_copy1
@@ -200,11 +198,11 @@ CREATE TABLE `biz_item_sku_option`  (
   `option_label` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '选项名称',
   `option_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '选项code',
   `parent_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父级ID',
-  `additional_price` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '附加价格',
+  `additional_price` decimal(10, 2) NULL COMMENT '附加价格',
   `now_disabled` tinyint(1) NULL DEFAULT 0 COMMENT '目前是否禁用',
   `sort_order` int(11) NULL DEFAULT 0 COMMENT '排序',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '删除标识',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'SKU规格选项表' ROW_FORMAT = Dynamic;
@@ -223,7 +221,7 @@ CREATE TABLE `biz_item_sku_relation`  (
   `sku_catalog_id` bigint(20) NOT NULL COMMENT 'sku分类id',
   `display_order` tinyint(4) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品-sku关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品-sku关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_item_sku_relation
@@ -246,8 +244,8 @@ CREATE TABLE `biz_item_sku_spec`  (
   `multi` tinyint(1) NULL DEFAULT 0 COMMENT '是否多选（0:单选，1:多选）',
   `sort_order` int(11) NULL DEFAULT 0 COMMENT '排序',
   `required` tinyint(1) NULL DEFAULT 1 COMMENT '是否必选',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '删除标识',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_item_id`(`item_id`) USING BTREE
@@ -269,8 +267,8 @@ CREATE TABLE `biz_item_sku_stock`  (
   `price` decimal(10, 2) NOT NULL COMMENT 'SKU价格',
   `stock` int(11) NULL DEFAULT 0 COMMENT '库存',
   `status` tinyint(4) NULL DEFAULT 1 COMMENT '状态（1:正常，0:下架）',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '删除标识',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_item_sku`(`item_id`, `sku_code`) USING BTREE
@@ -290,10 +288,10 @@ CREATE TABLE `biz_menu`  (
   `item_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜品名称',
   `shop_id` bigint(20) NULL DEFAULT NULL COMMENT '门店id',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_menu
@@ -317,11 +315,11 @@ CREATE TABLE `biz_menu_catalog`  (
   `shop_id` bigint(20) NULL DEFAULT NULL COMMENT '关联门店id',
   `show_index` int(11) NULL DEFAULT NULL COMMENT '排序',
   `show_side` tinyint(1) NULL DEFAULT NULL COMMENT '点单页显示',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '删除标识',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店菜单分类表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店菜单分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_menu_catalog
@@ -369,11 +367,11 @@ CREATE TABLE `biz_package`  (
   `package_origin_amount` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '套餐原价',
   `package_actually_amount` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '套餐现价',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `expire_time` datetime NULL DEFAULT NULL COMMENT '过期时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `expire_time` datetime(0) NULL DEFAULT NULL COMMENT '过期时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户购物袋表（过时）' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户购物袋表（过时）' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_package
@@ -407,11 +405,11 @@ CREATE TABLE `biz_pay_order`  (
   `refund_notify_msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '退款业务通知信息',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '订单备注',
   `user_del_flag` tinyint(4) NULL DEFAULT 0 COMMENT '用户删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  `settle_time` datetime NULL DEFAULT NULL COMMENT '结算时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `settle_time` datetime(0) NULL DEFAULT NULL COMMENT '结算时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户订单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户订单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_pay_order
@@ -460,7 +458,7 @@ CREATE TABLE `biz_pay_way`  (
   `is_usable` tinyint(4) NULL DEFAULT NULL COMMENT '是否在用',
   `support_platform` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '支持的平台（枚举）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '支付方式表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '支付方式表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_pay_way
@@ -484,10 +482,10 @@ CREATE TABLE `biz_play_image`  (
   `navigation` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '跳转路径',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
   `mark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `available_start_time` datetime NULL DEFAULT NULL COMMENT '可用开始时间',
-  `available_end_time` datetime NULL DEFAULT NULL COMMENT '可用结束时间',
+  `available_start_time` datetime(0) NULL DEFAULT NULL COMMENT '可用开始时间',
+  `available_end_time` datetime(0) NULL DEFAULT NULL COMMENT '可用结束时间',
   `type` int(11) NULL DEFAULT NULL COMMENT '类型 0-首页轮播 1-活动轮播 2-活动卡片',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -509,10 +507,10 @@ CREATE TABLE `biz_product`  (
   `item_description` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '商品描述',
   `expect_make_time` int(20) NULL DEFAULT NULL COMMENT '预计制作时长，单位：分',
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_product
@@ -557,11 +555,11 @@ CREATE TABLE `biz_shop_info`  (
   `cover_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '封面图',
   `swipe_image` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '轮播图',
   `page_style` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '点单页面显示样式',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '删除标识',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_shop_info
@@ -586,11 +584,11 @@ CREATE TABLE `biz_sku_catalog`  (
   `shop_id` bigint(20) NULL DEFAULT NULL COMMENT '关联门店id',
   `show_index` int(11) NULL DEFAULT NULL COMMENT '排序',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '删除标识',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku分类表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_sku_catalog
@@ -608,7 +606,7 @@ CREATE TABLE `biz_sku_catalog_relation`  (
   `sku_catalog_id` bigint(20) NULL DEFAULT NULL COMMENT 'sku分类id',
   `sku_item_id` bigint(20) NULL DEFAULT NULL COMMENT 'sku小项id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku-子项关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku-子项关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_sku_catalog_relation
@@ -630,10 +628,10 @@ CREATE TABLE `biz_sku_item`  (
   `id` bigint(20) NOT NULL,
   `sku_item_content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'sku项目正文',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku子项表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku子项表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_sku_item
@@ -657,10 +655,10 @@ CREATE TABLE `biz_sku_item_copy1`  (
   `id` bigint(20) NOT NULL,
   `sku_item_content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'sku项目正文',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku子项表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku子项表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_sku_item_copy1
@@ -684,7 +682,7 @@ CREATE TABLE `biz_table_info`  (
   `id` bigint(20) NOT NULL,
   `table_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '桌面信息',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店桌台信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '门店桌台信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_table_info
@@ -702,13 +700,13 @@ CREATE TABLE `biz_user`  (
   `avatar_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像地址',
   `open_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '微信/支付宝 openid',
   `login_count` int(11) NULL DEFAULT NULL COMMENT '登录次数',
-  `regist_time` datetime NULL DEFAULT NULL COMMENT '注册时间',
-  `last_log_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
+  `regist_time` datetime(0) NULL DEFAULT NULL COMMENT '注册时间',
+  `last_log_time` datetime(0) NULL DEFAULT NULL COMMENT '最后登录时间',
   `actual_balance` decimal(10, 2) NULL DEFAULT NULL COMMENT '实际余额',
   `gift_balance` decimal(10, 2) NULL DEFAULT NULL COMMENT '赠送余额',
   `point` bigint(20) NULL DEFAULT NULL COMMENT '积分',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_user
@@ -724,7 +722,7 @@ CREATE TABLE `biz_user_coupon_relation`  (
   `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户id',
   `coupon_id` bigint(20) NULL DEFAULT NULL COMMENT '优惠券id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户-优惠券关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户-优惠券关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_user_coupon_relation
@@ -742,7 +740,7 @@ CREATE TABLE `biz_user_package`  (
   `item_piece` int(11) NULL DEFAULT NULL COMMENT '选购件数',
   `sku_item_contents` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '选购规格，以逗号分隔',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户购物袋表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户购物袋表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_user_package
@@ -760,10 +758,10 @@ CREATE TABLE `biz_user_point_log`  (
   `point` bigint(20) NULL DEFAULT NULL COMMENT '添加积分',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   `type` tinyint(4) NULL DEFAULT NULL COMMENT '使用类型 0-主动 1-系统扣除',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户积分日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户积分日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of biz_user_point_log
@@ -781,11 +779,11 @@ CREATE TABLE `oss_file`  (
   `url` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '访问路径',
   `biz_id` bigint(20) NULL DEFAULT NULL COMMENT '业务id',
   `prefix` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件后缀',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of oss_file
@@ -836,8 +834,8 @@ CREATE TABLE `sys_data_dict`  (
   `index` int(11) NULL DEFAULT NULL COMMENT '排序',
   `label` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标题',
   `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '值',
-  `create_time` datetime NULL DEFAULT NULL,
-  `update_time` datetime NULL DEFAULT NULL,
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  `update_time` datetime(0) NULL DEFAULT NULL,
   `del_flag` tinyint(4) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据字典' ROW_FORMAT = Dynamic;
@@ -864,28 +862,48 @@ CREATE TABLE `sys_menu`  (
   `type` tinyint(4) NULL DEFAULT 1 COMMENT '菜单类型（1目录 2菜单 3按钮）',
   `permission` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限标识',
   `del_flag` tinyint(1) NULL DEFAULT 0 COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_parent_id`(`parent_id`) USING BTREE,
   INDEX `idx_sort`(`sort`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES (1, 0, 'System', '/system', '', '系统管理', 'setting', 100, 1, 0, 1, NULL, 0, NULL, '2025-12-26 15:58:34');
-INSERT INTO `sys_menu` VALUES (2, 1, 'User', '/user', '@/views/user/index.vue', '用户管理', 'user', 1, 1, 0, 2, 'system:user:list', 0, NULL, '2025-12-26 15:58:37');
-INSERT INTO `sys_menu` VALUES (3, 1, 'Role', '/role', '@/views/role/index.vue', '角色管理', 'team', 2, 1, 0, 2, 'system:role:list', 0, NULL, '2025-12-26 15:58:38');
-INSERT INTO `sys_menu` VALUES (4, 1, 'RoleMenu', '/roleMenu', '@/views/role-menu/index.vue', '权限管理', 'safety-certificate', 3, 1, 0, 2, 'system:roleMenu:list', 0, NULL, '2025-12-26 15:58:38');
-INSERT INTO `sys_menu` VALUES (5, 0, 'Store', '/store', '@/views/store/index.vue', '门店管理', 'shop', 90, 1, 0, 2, 'store:list', 0, NULL, '2025-12-26 15:58:39');
-INSERT INTO `sys_menu` VALUES (6, 0, 'Goods', '/goods', '@/views/goods/index.vue', '商品管理', 'gift', 80, 1, 0, 2, 'goods:list', 0, NULL, '2025-12-26 15:58:39');
-INSERT INTO `sys_menu` VALUES (7, 0, 'Orders', '/orders', '@/views/orders/index.vue', '订单管理', 'solution', 70, 1, 0, 2, 'orders:list', 0, NULL, '2025-12-26 15:58:40');
-INSERT INTO `sys_menu` VALUES (8, 0, 'Sku', '/sku', '@/views/sku/index.vue', 'SKU管理', 'appstore', 1, 1, 1, 2, 'goods:sku:list', 0, NULL, '2025-12-26 17:35:35');
-INSERT INTO `sys_menu` VALUES (9, 0, 'Catalog', '/catalog', '@/views/catalog/index.vue', '分类管理', 'cluster', 2, 1, 1, 2, 'goods:catalog:list', 0, NULL, NULL);
-INSERT INTO `sys_menu` VALUES (10, 0, 'PlayImage', '/playImage', '@/views/play-image/index.vue', '轮播图管理', 'picture', 60, 1, 0, 2, 'content:playimage:list', 0, NULL, '2025-12-26 15:58:40');
-INSERT INTO `sys_menu` VALUES (11, 0, 'Dict', '/dict', '@/views/data-dict/index.vue', '字典管理', 'book', 50, 1, 0, 2, 'system:dict:list', 0, NULL, '2025-12-26 15:58:41');
-INSERT INTO `sys_menu` VALUES (12, 0, 'Home', '/', '@/views/home/index.vue', '首页', 'home', 110, 1, 1, 2, NULL, 0, NULL, NULL);
+INSERT INTO `sys_menu` VALUES (2, 1, 'User', '/user', '/user/index', '用户管理', 'user', 1, 1, 0, 2, 'system:user:list', 0, NULL, '2025-12-26 15:58:37');
+INSERT INTO `sys_menu` VALUES (3, 1, 'Role', '/role', '/role/index', '角色管理', 'Avatar', 2, 1, 0, 2, 'system:role:list', 0, NULL, '2025-12-26 15:58:38');
+INSERT INTO `sys_menu` VALUES (4, 1, 'Menu', '/menu', '/menu/index', '菜单管理', 'Operation', 3, 1, 0, 2, 'system:roleMenu:list', 0, NULL, '2025-12-26 15:58:38');
+INSERT INTO `sys_menu` VALUES (5, 0, 'Store', '/store', '/store/index', '门店管理', 'Box', 90, 1, 0, 2, 'store:list', 0, NULL, '2025-12-26 15:58:39');
+INSERT INTO `sys_menu` VALUES (6, 0, 'Goods', '/goods', '/goods/index', '商品管理', 'DishDot', 80, 1, 0, 2, 'goods:list', 0, NULL, '2025-12-26 15:58:39');
+INSERT INTO `sys_menu` VALUES (7, 0, 'Orders', '/orders', '/orders/index', '订单管理', 'Handbag', 70, 1, 0, 2, 'orders:list', 0, NULL, '2025-12-26 15:58:40');
+INSERT INTO `sys_menu` VALUES (9, 0, 'Catalog', '/catalog', '/catalog/index', '分类管理', 'FolderOpened', 2, 1, 1, 2, 'goods:catalog:list', 0, NULL, '2026-01-01 01:54:48');
+INSERT INTO `sys_menu` VALUES (10, 0, 'PlayImage', '/playImage', '/play-image/index', '轮播图管理', 'picture', 60, 1, 0, 2, 'content:playimage:list', 0, NULL, '2025-12-26 15:58:40');
+INSERT INTO `sys_menu` VALUES (11, 0, 'Dict', '/dict', '/data-dict/index', '字典管理', 'Tickets', 50, 1, 0, 2, 'system:dict:list', 0, NULL, '2025-12-26 15:58:41');
+INSERT INTO `sys_menu` VALUES (12, 0, 'Home', '/home', '/home/index', '首页', 'House', 1, 1, 1, 2, NULL, 0, NULL, '2026-01-01 01:55:17');
+
+-- ----------------------------
+-- Table structure for sys_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_permission`;
+CREATE TABLE `sys_permission`  (
+  `id` bigint(20) NOT NULL,
+  `menu_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单路径',
+  `request_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问地址',
+  `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
+  `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限名称',
+  `del_flag` tinyint(4) NULL DEFAULT NULL COMMENT '删除标识',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_permission
+-- ----------------------------
+INSERT INTO `sys_permission` VALUES (586722256965603329, NULL, '/sys/admin/test', NULL, 'admin.test', 0, '2024-06-07 09:05:15', NULL);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -895,11 +913,11 @@ CREATE TABLE `sys_role`  (
   `id` bigint(20) NOT NULL,
   `role` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色值',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统角色表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
@@ -912,21 +930,49 @@ INSERT INTO `sys_role` VALUES (1453764639178358784, 'user', '操作员', '2025-1
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL,
   `role_id` bigint(20) NOT NULL COMMENT '角色ID',
   `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
   `del_flag` tinyint(1) NULL DEFAULT 0 COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_role_menu`(`role_id`, `menu_id`) USING BTREE,
   INDEX `idx_role_id`(`role_id`) USING BTREE,
   INDEX `idx_menu_id`(`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色-菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色-菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
+INSERT INTO `sys_role_menu` VALUES (97, 586717827931574273, 6, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (98, 586717827931574273, 1, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (99, 586717827931574273, 2, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (100, 586717827931574273, 3, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (101, 586717827931574273, 4, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (102, 586717827931574273, 5, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (103, 586717827931574273, 7, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (104, 586717827931574273, 8, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (105, 586717827931574273, 9, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (106, 586717827931574273, 10, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (107, 586717827931574273, 11, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (108, 586717827931574273, 12, 0, '2025-12-28 17:02:00', NULL);
+INSERT INTO `sys_role_menu` VALUES (109, 586717827931574273, 13, 0, '2025-12-28 17:02:00', NULL);
+
+-- ----------------------------
+-- Table structure for sys_role_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_permission`;
+CREATE TABLE `sys_role_permission`  (
+  `id` bigint(20) NOT NULL,
+  `role_id` bigint(20) NULL DEFAULT NULL COMMENT '角色id',
+  `permission_id` bigint(20) NULL DEFAULT NULL COMMENT '权限id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统角色-权限关系表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_role_permission
+-- ----------------------------
+INSERT INTO `sys_role_permission` VALUES (586723677232435202, 586717827931574273, 586722256965603329);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -941,10 +987,10 @@ CREATE TABLE `sys_user`  (
   `avatar_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '头像',
   `is_lock` tinyint(1) NULL DEFAULT NULL COMMENT '是否冻结',
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
@@ -961,14 +1007,18 @@ CREATE TABLE `sys_user_role`  (
   `user_id` bigint(20) NULL DEFAULT NULL COMMENT '系统用户id',
   `role_id` bigint(20) NULL DEFAULT NULL COMMENT '角色id',
   `del_flag` tinyint(1) NULL DEFAULT NULL COMMENT '删除标识',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户-角色关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统用户-角色关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES (588553637135912965, 586394601263202304, 586717827931574273, 0, NULL, NULL);
+INSERT INTO `sys_user_role` VALUES (1454639044515332096, 586394601263202304, 586717827931574273, 1, '2025-12-28 00:56:14', NULL);
+INSERT INTO `sys_user_role` VALUES (1454639287495557120, 1453775980547014656, 586717827931574273, 1, '2025-12-28 00:57:12', NULL);
+INSERT INTO `sys_user_role` VALUES (1454840868484677632, 1453775980547014656, 586717827931574273, 1, '2025-12-28 14:18:13', NULL);
+INSERT INTO `sys_user_role` VALUES (1454840893839245312, 1453775980547014656, 586717827931574273, 0, '2025-12-28 14:18:19', NULL);
+INSERT INTO `sys_user_role` VALUES (1454840893843439616, 586394601263202304, 586717827931574273, 0, '2025-12-28 14:18:19', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
