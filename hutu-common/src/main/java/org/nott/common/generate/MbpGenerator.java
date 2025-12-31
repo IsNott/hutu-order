@@ -53,9 +53,9 @@ public class MbpGenerator {
     }
 
     public static void main(String[] args) {
-        List<String> tables = Arrays.asList("sys_menu", "sys_role_menu", "sys_user_role");
+        List<String> tables = Arrays.asList("sys_data_dict");
         doGenerateBackend(TYPE.ADMIN.value, tables);
-//        doGenerateFrontend(tables);
+        doGenerateFrontend(tables);
     }
 
     public static void doGenerateFrontend( List<String> tables) {

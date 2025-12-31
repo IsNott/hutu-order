@@ -23,20 +23,46 @@ public class BizPayOrderWsApi implements BizPayOrderWsClient {
     public ResponseEntity<?> sendMessage2Shop(@PathVariable("shopId") Long shopId, @RequestBody JSONObject message) {
         log.info("WsApi -> sendMessage2Shop -> shopId:[{}], message:[{}]", shopId, message);
         // 客户端下单完成 -> 发送到叫号大屏
+        checkAndSend(shopId, message);
+        return ResponseEntity.success();
+    }
+
+    private static void checkAndSend(Long shopId, JSONObject message) {
         String shopIdStr = shopId + "";
         if (!OrderServerHandler.SHOP_CHANNEL_MAP.containsKey(shopIdStr)) {
             log.error("未知的WebSocket分组:[{}]", shopId);
-            return ResponseEntity.failure();
+            return;
         }
         ChannelGroup channels = OrderServerHandler.SHOP_CHANNEL_MAP.get(shopIdStr);
         if (channels.isEmpty()) {
             log.error("WebSocket分组:[{}]，无连接客户端", shopId);
-            return ResponseEntity.failure();
+            return;
         }
         for (Channel channel : channels) {
             log.info("发送信息到门店[{}]下的客户端", shopIdStr);
             channel.writeAndFlush(new TextWebSocketFrame(message.toJSONString()));
         }
+    }
+
+    @GetMapping("finishOrder/{shopId}/{shopOrderNO}")
+    public ResponseEntity<?> finishOrder(@PathVariable("shopId") Long shopId, @PathVariable("shopOrderNO") String shopOrderNO) {
+        log.info("WsApi -> finishOrder -> shopId:[{}], shopOrderNo:[{}]", shopId, shopOrderNO);
+        JSONObject message = new JSONObject();
+        message.put("action", "finish_order");
+        message.put("shopOrderNo", shopOrderNO);
+        checkAndSend(shopId, message);
         return ResponseEntity.success();
     }
+
+    @GetMapping("takeOrder/{shopId}/{shopOrderNO}")
+    public ResponseEntity<?> takeOrder(@PathVariable("shopId") Long shopId, @PathVariable("shopOrderNO") String shopOrderNO) {
+        log.info("WsApi -> takeOrder -> shopId:[{}], shopOrderNo:[{}]", shopId, shopOrderNO);
+        JSONObject message = new JSONObject();
+        message.put("action", "take_order");
+        message.put("shopOrderNo", shopOrderNO);
+        checkAndSend(shopId, message);
+        return ResponseEntity.success();
+    }
+
+
 }

@@ -34,6 +34,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     public static final String[] PERMIT_ALL_PATTERNS = {
+            "/access/**",
             "/auth/login",
             "/auth/logout",
             "/public/**",
