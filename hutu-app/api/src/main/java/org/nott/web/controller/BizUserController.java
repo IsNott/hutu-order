@@ -1,6 +1,6 @@
 package org.nott.web.controller;
 
-import cn.dev33.satoken.stp.StpUtil;
+//import cn.dev33.satoken.stp.StpUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
@@ -56,21 +56,25 @@ public class BizUserController {
     @ApiOperation("登出")
     @GetMapping("logout")
     public ResponseEntity<?> logout(){
-        StpUtil.logout();
+//        StpUtil.logout();
         return ResponseEntity.success();
     }
 
     @ApiOperation("我的余额")
     @GetMapping("myBalance")
     public ResponseEntity<?> myBalance(){
-        UserBalanceVo vo = bizUserService.queryMyBalance(StpUtil.getLoginIdAsLong());
+//        UserBalanceVo vo = bizUserService.queryMyBalance(StpUtil.getLoginIdAsLong());
+        UserBalanceVo vo = bizUserService.queryMyBalance(1L);
         return ResponseEntity.successData(vo);
     }
 
     @ApiOperation("是否登录")
     @GetMapping("isLogin")
+//    public ResponseEntity<?> isLogin(){
+//        return ResponseEntity.successData(StpUtil.isLogin());
+//    }
     public ResponseEntity<?> isLogin(){
-        return ResponseEntity.successData(StpUtil.isLogin());
+        return ResponseEntity.successData(true);
     }
 
 

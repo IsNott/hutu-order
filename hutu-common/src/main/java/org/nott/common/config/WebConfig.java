@@ -16,4 +16,6 @@ public class WebConfig {
     private String basePath;
 
     private String uploadPath;
+
+    private String proxySuffix;
 }

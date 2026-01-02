@@ -1,16 +1,15 @@
 package org.nott.service.mapper.admin;
 
+import com.github.yulichang.base.MPJBaseMapper;
 import org.nott.model.SysUserRole;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author nott
- * @since 2024-06-07
- */
-public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
+* <p>
+    * 系统用户-角色关系表 Mapper
+    * </p>
+*
+* @author nott
+*/
+public interface SysUserRoleMapper extends MPJBaseMapper<SysUserRole> {
 
 }

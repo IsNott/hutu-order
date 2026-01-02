@@ -1,7 +1,9 @@
 package org.nott.service.api;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.nott.common.utils.HutuUtils;
+import org.nott.dto.ShopInfoDTO;
 import org.nott.model.BizShopInfo;
 import org.nott.service.mapper.api.BizShopInfoMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -21,7 +23,13 @@ import java.util.List;
 @Service
 public class BizShopInfoService extends ServiceImpl<BizShopInfoMapper, BizShopInfo> {
 
-     
+    public Page<?> queryPage(Integer page, Integer size, ShopInfoDTO dto) {
+        LambdaQueryWrapper<BizShopInfo> wrapper = new LambdaQueryWrapper<>();
+//        wrapper.like(HutuUtils.isNotEmpty(dto.getShopName()), BizShopInfo::getShopName, dto.getShopName());
+        return null;
+    }
+
+
     public List<ShopInfoVo> listShopInfo() {
         List<BizShopInfo> shopInfos = this.list();
         ArrayList<ShopInfoVo> vos = new ArrayList<>();
@@ -41,7 +49,7 @@ public class BizShopInfoService extends ServiceImpl<BizShopInfoMapper, BizShopIn
         return vo;
     }
 
-     
+
     public ShopInfoVo getDefaultShop() {
         LambdaQueryWrapper<BizShopInfo> wrapper = new LambdaQueryWrapper<BizShopInfo>()
                 .eq(BizShopInfo::getMainShop, 1);
@@ -50,7 +58,7 @@ public class BizShopInfoService extends ServiceImpl<BizShopInfoMapper, BizShopIn
         return shopInfoVo;
     }
 
-     
+
     public List<ShopInfoVo> searchShopByKeyWord(String keyWord) {
         LambdaQueryWrapper<BizShopInfo> wp = new LambdaQueryWrapper<BizShopInfo>()
                 .like(HutuUtils.isNotEmpty(keyWord),BizShopInfo::getAddress, keyWord)
@@ -64,11 +72,12 @@ public class BizShopInfoService extends ServiceImpl<BizShopInfoMapper, BizShopIn
         return shopInfoVos;
     }
 
-     
+
     public ShopInfoVo getShopById(Long id) {
         BizShopInfo shopInfo = this.getById(id);
         HutuUtils.requireNotNull(shopInfo, "门店不存在");
         ShopInfoVo vo = this.infoTranVoAndSetOpenStat(shopInfo);
         return vo;
     }
+
 }

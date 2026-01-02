@@ -1,12 +1,11 @@
 package org.nott.common.advice;
 
-import cn.dev33.satoken.exception.NotLoginException;
-import cn.dev33.satoken.exception.NotPermissionException;
+//import cn.dev33.satoken.exception.NotLoginException;
+//import cn.dev33.satoken.exception.NotPermissionException;
 import lombok.extern.slf4j.Slf4j;
 import org.nott.common.ResponseEntity;
-import org.nott.common.exception.HutuBizException;
-import org.nott.common.exception.PasswordNotMatchesException;
-import org.nott.common.exception.UserNotFoundException;
+import org.nott.common.exception.*;
+import org.nott.common.utils.HutuUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -68,20 +67,20 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
         return ResponseEntity.failure("密码不正确", 402);
     }
 
-    @ExceptionHandler(NotLoginException.class)
-    public ResponseEntity<Void> handleNotLoginException(NotLoginException e) {
+    @ExceptionHandler(UnAuthorizedException.class)
+    public ResponseEntity<Void> handleNotLoginException(UnAuthorizedException e) {
         return ResponseEntity.failure("还未登录", 401);
     }
 
-    @ExceptionHandler(NotPermissionException.class)
-    public ResponseEntity<Void> handleNotPermissionException(NotPermissionException e) {
+    @ExceptionHandler(PermissionDeniedException.class)
+    public ResponseEntity<Void> handleNotPermissionException(PermissionDeniedException e) {
         return ResponseEntity.failure("暂无权限", 403);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Void> handleRuntimeException(RuntimeException e) {
         log.error("捕获到运行时异常：{}", e.getMessage(), e);
-        return ResponseEntity.failure("系统错误", 500);
+        return ResponseEntity.failure(HutuUtils.isNotEmpty(e.getMessage()) ? e.getMessage() : "系统错误", 500);
     }
 
 

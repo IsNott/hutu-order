@@ -3,7 +3,6 @@ package org.nott.vo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.nott.dto.OrderItemDTO;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

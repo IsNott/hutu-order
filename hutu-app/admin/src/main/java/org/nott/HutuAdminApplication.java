@@ -11,10 +11,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableAsync
 @EnableFeignClients(clients = {BizPayOrderWsClient.class, OssClient.class})
-@MapperScan("org.nott.service.mapper.**.*")
+@MapperScan("org.nott.service.mapper.admin")
 @SpringBootApplication(scanBasePackages = {
         "org.nott.common",
-        "org.nott.service.**.*",
+        "org.nott.service.admin",
         "org.nott.admin.*",
         "org.nott.security.*",
         })

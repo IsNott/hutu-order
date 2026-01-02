@@ -1,6 +1,7 @@
 package org.nott.feign;
 
 import org.nott.common.ResponseEntity;
+import org.nott.request.OssFileRequest;
 import org.nott.vo.OssFileVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -35,5 +36,9 @@ public interface OssClient {
     @ResponseBody
     @PutMapping("/getByBizId")
     ResponseEntity<List<OssFileVo>> getByBizId(@RequestBody List<Long> bizId);
+
+    @ResponseBody
+    @PostMapping("/relateOssFile/{bizId}")
+    ResponseEntity<Void> relateOssFile(@RequestBody List<OssFileRequest> ids, @PathVariable("bizId") Long bizId);
 
 }

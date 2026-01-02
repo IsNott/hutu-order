@@ -52,13 +52,13 @@ public class SysUser implements Serializable {
     private String avatarUrl;
 
 
-    private Integer isLock;
+    private Boolean isLock;
 
     /**
      * 删除标识
      */
-    @TableLogic(delval = "1",value = "0")
-    private Integer delFlag;
+    @TableLogic
+    private Boolean delFlag;
 
     /**
      * 创建时间

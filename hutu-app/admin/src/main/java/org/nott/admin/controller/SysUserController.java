@@ -1,63 +1,71 @@
 package org.nott.admin.controller;
 
-import cn.dev33.satoken.stp.StpUtil;
-import io.swagger.annotations.Api;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.common.annotation.JustLogin;
 import org.nott.common.utils.HutuUtils;
-import org.nott.dto.SysUserInfoDTO;
+import org.nott.request.SysUserRequest;
+import org.nott.vo.SysUserVo;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.Api;
 import org.nott.model.SysUser;
 import org.nott.service.admin.SysUserService;
-import org.nott.vo.SysUserInfoVo;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
-
 /**
- * <p>
- * 前端控制器
- * </p>
- *
- * @author nott
- * @since 2024-06-07
- */
-@Api("系统用户管理")
+* 系统用户表前端控制器
+*
+* @author nott
+* @version 1.0
+* @description auto generated
+*/
+@Api(value = "系统用户表管理接口", tags = "系统用户表管理")
 @RestController
-@RequestMapping("/sys/user/")
-public class SysUserController {
+@RequestMapping("/sysUser")
+    public class SysUserController {
 
     @Resource
-    private SysUserService sysUserService;
+    private SysUserService service;
 
-    @Resource
-    private PasswordEncoder passwordEncoder;
+    @ApiOperation("分页查询")
+    @PostMapping("/page/{page}/{size}")
+    public ResponseEntity<IPage<SysUserVo>> page(@PathVariable("page") Integer page, @PathVariable("size") Integer size, @RequestBody SysUserRequest req) {
+        IPage<SysUserVo> result = service.queryPage(page, size, req.toDTO());
+        return ResponseEntity.successData(result);
+    }
 
-    @ApiOperation("当前登录信息")
-    @PostMapping("userInfo")
-    public ResponseEntity<?> userInfo() {
-        Object loginId = StpUtil.getLoginId();
-        SysUserInfoVo vo = sysUserService.getUserInfoByLoginId(loginId);
+    @ApiOperation("新增")
+    @PostMapping("/add")
+    public ResponseEntity<SysUserVo> add(@RequestBody SysUserRequest req) {
+        SysUserVo vo = service.save(req.toDTO());
         return ResponseEntity.successData(vo);
     }
 
-    @ApiOperation("更新个人信息")
-    @JustLogin
-    @PostMapping("profile")
-    public ResponseEntity<?> profile(@RequestBody SysUserInfoDTO userInfoDTO) {
-        Object loginId = StpUtil.getLoginId();
-        SysUser sysUser = sysUserService.getById(loginId + "");
-        String encodePassword = passwordEncoder.encode(userInfoDTO.getPassword());
-        userInfoDTO.setPassword(encodePassword);
-        HutuUtils.requireNotNull(sysUser);
-        HutuUtils.copyProperties(userInfoDTO,sysUser);
-        sysUserService.updateById(sysUser);
-        StpUtil.logout();
+    @ApiOperation("详情")
+    @GetMapping("/details/{id}")
+    public ResponseEntity<SysUserVo> details(@PathVariable("id") Long id) {
+        SysUserVo vo = HutuUtils.transToObject(service.getById(id), SysUserVo.class);
+        return ResponseEntity.successData(vo);
+    }
+
+    @ApiOperation("更新")
+    @PutMapping("/update/{id}")
+    public ResponseEntity<SysUserVo> update(@PathVariable("id") Long id, @RequestBody SysUserRequest req) {
+        SysUserVo vo = service.update(req.toDTO());
+        return ResponseEntity.successData(vo);
+    }
+
+    @ApiOperation("删除")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+        service.removeById(id);
         return ResponseEntity.success();
+    }
+
+    @ApiOperation("重置密码")
+    @PutMapping("/resetPassword/{id}")
+    public ResponseEntity<Void> resetPassword(@PathVariable("id") Long id) {
+        String msg = service.resetPassword(id);
+        return ResponseEntity.success(msg);
     }
 
 }

@@ -24,8 +24,11 @@ public class OssFileVo {
     @ApiModelProperty("原始名称")
     private String originName;
 
+    @ApiModelProperty("排序")
+    private Integer sortOrder;
+
     @ApiModelProperty("访问路径")
-    private String path;
+    private String url;
 
     @ApiModelProperty("文件后缀")
     private String prefix;

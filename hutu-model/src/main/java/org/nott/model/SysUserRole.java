@@ -1,7 +1,11 @@
 package org.nott.model;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author nott
- * @since 2024-06-07
+ * @since 2025
  */
 @Getter
 @Setter
@@ -31,6 +35,24 @@ public class SysUserRole implements Serializable {
      * 角色id
      */
     private Long roleId;
+
+    /**
+     * 删除标识
+     */
+    @TableLogic
+    private Boolean delFlag;
+
+    /**
+     * 创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
 
 
 }

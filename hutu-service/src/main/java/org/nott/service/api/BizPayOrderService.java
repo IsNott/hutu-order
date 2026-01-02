@@ -1,6 +1,6 @@
 package org.nott.service.api;
 
-import cn.dev33.satoken.stp.StpUtil;
+//import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -104,7 +104,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         }
     }
 
-     
+
     public String countPurchases() {
         BigDecimal decimal = new BigDecimal("0.0");
         List<String> money = bizPayOrderMapper.selectOrderMoney();
@@ -117,12 +117,13 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         return decimal.toString();
     }
 
-     
-    @Transactional
+
+
     public SettleOrderVo doUserSettle(UserSettleOrderDTO dto) {
         BigDecimal pointDiscount = new BigDecimal("0.00");
         BigDecimal couponDisCount = new BigDecimal("0.00");
-        long id = StpUtil.getLoginIdAsLong();
+        long id = 1L;
+//        long id = StpUtil.getLoginIdAsLong();
         BizUser user;
         SettleOrderVo vo;
         List<OrderItemDTO> items = dto.getItems();
@@ -180,7 +181,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         return vo;
     }
 
-     
+
     public PayOrderVo queryPayOrderById(Long id) {
         //TODO 实际上这里应该加上支付成功状态的查询条件
         BizPayOrder payOrder = null;
@@ -201,7 +202,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         return vo;
     }
 
-     
+
     public BizPayOrder getPayOrderById(Long id, String orderNo) {
         BizPayOrder payOrder;
         if (HutuUtils.isNotEmpty(id)) {
@@ -213,7 +214,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         return payOrder;
     }
 
-     
+
     public PayOrderVo orderQuery(Long id) {
         BizPayOrder payOrder = this.getById(id);
         HutuUtils.requireNotNull(payOrder, "没有找到对应订单");
@@ -223,7 +224,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         return vo;
     }
 
-     
+
     public FrontOrderVo orderFront(Long orderId) {
         BizPayOrder payOrder = this.getById(orderId);
         HutuUtils.requireNotNull(payOrder, "没有找到订单");
@@ -232,7 +233,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         return bizPayOrderMapper.orderFrontQueryByOrderId(HutuUtils.FORMAT.DATETIME.format(settleTime), orderId);
     }
 
-     
+
     public boolean updateOrderPayStatus(Long orderId, String extra) {
         BizPayOrder payOrder = this.getById(orderId);
         payOrder.setOrderStatus(OrderStatusEnum.PAYED.getVal());
@@ -257,9 +258,10 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         bizPayOrderWsClient.sendMessage2Shop(shopId, JSONObject.parseObject(messageInfo.toJSONString()));
     }
 
-     
+
     public Page<MyPayOrderVo> queryMyOrder(MyOrderQueryDTO dto, Integer page, Integer size) {
-        long id = StpUtil.getLoginIdAsLong();
+//        long id = StpUtil.getLoginIdAsLong();
+        long id = 1L;
         Integer status = dto.getStatus();
         String keyWord = dto.getKeyWord();
         Page<MyPayOrderVo> queryOrderPageByUserId = bizPayOrderMapper.queryOrderPageByUserId(new Page<>(page, size), id, status, keyWord);
@@ -272,7 +274,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         return queryOrderPageByUserId;
     }
 
-     
+
     public void deleteOrder(Long orderId) {
         BizPayOrder payOrder = this.getById(orderId);
         HutuUtils.requireNotNull(payOrder, "没有找到对应订单");
@@ -280,7 +282,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         this.updateById(payOrder);
     }
 
-     
+
     public void finishOrder(Long orderId) {
         BizPayOrder payOrder = this.getById(orderId);
         HutuUtils.requireNotNull(payOrder, "没有找到对应订单");
@@ -291,7 +293,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         this.sendMessageAsync(payOrder.getShopId(), messageInfo);
     }
 
-     
+
     public void cancelOrder(Long orderId) {
         BizPayOrder payOrder = this.getById(orderId);
         HutuUtils.requireNotNull(payOrder, "没有找到对应订单");
@@ -307,7 +309,7 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
         redisUtils.removeUnPayOrderCache(payOrder.getUserId(), payOrder.getId());
     }
 
-     
+
     public void saveRefundOrder(RefundDTO refundDTO) {
         BizPayOrder payOrder = this.getPayOrderById(null, refundDTO.getPayNo());
         if(payOrder.getTotalAmount().compareTo(refundDTO.getRefundAmount()) < 0){
@@ -349,7 +351,8 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
     private SettleOrderVo createOrder(UserSettleOrderDTO dto) {
         Integer pickType = dto.getPickType();
         BizPayOrder order = new BizPayOrder();
-        long id = StpUtil.getLoginIdAsLong();
+//        long id = StpUtil.getLoginIdAsLong();
+        long id = 1L;
         HutuUtils.copyProperties(dto, order);
         PickTypeEnum pickTypeEnum = PickTypeEnum.getByVal(pickType);
         String prefix = "";
