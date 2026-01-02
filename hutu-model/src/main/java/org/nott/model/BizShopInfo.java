@@ -1,8 +1,12 @@
 package org.nott.model;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +16,7 @@ import lombok.Setter;
  * </p>
  *
  * @author nott
- * @since 2024-06-26
+ * @since 2026
  */
 @Getter
 @Setter
@@ -77,4 +81,39 @@ public class BizShopInfo implements Serializable {
      * 是否主店
      */
     private Integer mainShop;
+
+    /**
+     * 封面图
+     */
+    private String coverUrl;
+
+    /**
+     * 轮播图
+     */
+    private String swipeImage;
+
+    /**
+     * 点单页面显示样式
+     */
+    private String pageStyle;
+
+    /**
+     * 创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
+
+    /**
+     * 删除标识
+     */
+    @TableLogic
+    private Boolean delFlag;
+
+
 }

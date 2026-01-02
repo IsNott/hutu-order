@@ -22,19 +22,19 @@ public interface OssClient {
     ResponseEntity<OssFileVo> upload(@RequestBody MultipartFile file) throws Exception;
 
     @ResponseBody
-    @PutMapping("/deleteByBizId/{bizId}")
+    @DeleteMapping("/deleteByBizId/{bizId}")
     ResponseEntity<?> deleteByBizId(@PathVariable("bizId") Long bizId);
 
     @ResponseBody
-    @PutMapping("/deleteById/{id}")
+    @DeleteMapping("/deleteById/{id}")
     ResponseEntity<?> deleteById(@PathVariable("id") Long id);
 
     @ResponseBody
-    @PutMapping("/getByBizId/{bizId}")
+    @GetMapping("/getByBizId/{bizId}")
     ResponseEntity<List<OssFileVo>> getByBizId(@PathVariable("bizId") Long bizId);
 
     @ResponseBody
-    @PutMapping("/getByBizId")
+    @PostMapping("/getByBizId")
     ResponseEntity<List<OssFileVo>> getByBizId(@RequestBody List<Long> bizId);
 
     @ResponseBody

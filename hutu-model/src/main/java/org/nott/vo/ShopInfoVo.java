@@ -1,7 +1,6 @@
 package org.nott.vo;
 
 import lombok.Data;
-import org.nott.model.BizShopInfo;
 
 import java.math.BigDecimal;
 

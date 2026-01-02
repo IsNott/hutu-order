@@ -1,83 +1,77 @@
 package org.nott.service.api;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.nott.common.utils.HutuUtils;
-import org.nott.dto.ShopInfoDTO;
-import org.nott.model.BizShopInfo;
-import org.nott.service.mapper.api.BizShopInfoMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import org.nott.model.BizShopInfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.nott.request.BizShopInfoRequest;
+import org.nott.service.mapper.api.BizShopInfoMapper;
 import org.nott.vo.ShopInfoVo;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+import org.nott.dto.BizShopInfoDTO;
+import org.nott.vo.BizShopInfoVo;
+import org.nott.common.utils.HutuUtils;
+import org.nott.common.exception.HutuBizException;
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
- * <p>
- * 服务实现类
- * </p>
- *
- * @author nott
- * @since 2024-06-26
- */
+* 门店信息表 Service
+*/
 @Service
-public class BizShopInfoService extends ServiceImpl<BizShopInfoMapper, BizShopInfo> {
+public class BizShopInfoService extends ServiceImpl<BizShopInfoMapper, BizShopInfo>  {
 
-    public Page<?> queryPage(Integer page, Integer size, ShopInfoDTO dto) {
-        LambdaQueryWrapper<BizShopInfo> wrapper = new LambdaQueryWrapper<>();
-//        wrapper.like(HutuUtils.isNotEmpty(dto.getShopName()), BizShopInfo::getShopName, dto.getShopName());
-        return null;
+    @Resource
+    private BizShopInfoMapper bizShopInfoMapper;
+
+    public IPage<BizShopInfoVo> queryPage(Integer page, Integer size, BizShopInfoDTO dto) {
+        MPJLambdaWrapper<BizShopInfo> wrapper = new MPJLambdaWrapper<BizShopInfo>()
+            .selectAll(BizShopInfo.class)
+            .orderByDesc(BizShopInfo::getCreateTime);
+        return bizShopInfoMapper.selectJoinPage(new Page<>(page, size), BizShopInfoVo.class, wrapper);
     }
 
 
-    public List<ShopInfoVo> listShopInfo() {
-        List<BizShopInfo> shopInfos = this.list();
-        ArrayList<ShopInfoVo> vos = new ArrayList<>();
-        for (BizShopInfo info : shopInfos) {
-            vos.add(this.infoTranVoAndSetOpenStat(info));
+    public BizShopInfoVo save(BizShopInfoDTO dto) {
+        BizShopInfo entity = HutuUtils.transToObject(dto, BizShopInfo.class);
+        entity.setDelFlag(false);
+        this.save(entity);
+        return HutuUtils.transToObject(entity, BizShopInfoVo.class);
+    }
+
+    public BizShopInfoVo update(BizShopInfoDTO dto) {
+        Long id = dto.getId();
+        BizShopInfo entity = this.getById(id);
+        if(HutuUtils.isEmpty(entity)){
+            throw new HutuBizException("Entity not found.");
         }
-        return vos;
+        HutuUtils.copyProperties(dto, entity);
+        this.updateById(entity);
+        return HutuUtils.transToObject(entity, BizShopInfoVo.class);
     }
 
-    private ShopInfoVo infoTranVoAndSetOpenStat(BizShopInfo info){
-        String startBusinessTime = info.getStartBusinessTime() + ":00";
-        String endBusinessTime = info.getEndBusinessTime() + ":59";
-        ShopInfoVo vo = new ShopInfoVo();
-        HutuUtils.copyProperties(info, vo);
-        boolean isOpen = HutuUtils.checkWeekDayAndTimeForNow(startBusinessTime, endBusinessTime, info.getWeekStartDate(), info.getWeekEndDate());
-        vo.setOpen(isOpen);
-        return vo;
-    }
-
-
-    public ShopInfoVo getDefaultShop() {
-        LambdaQueryWrapper<BizShopInfo> wrapper = new LambdaQueryWrapper<BizShopInfo>()
-                .eq(BizShopInfo::getMainShop, 1);
-        BizShopInfo mainShop = this.getOne(wrapper);
-        ShopInfoVo shopInfoVo = HutuUtils.transToObject(mainShop, ShopInfoVo.class);
-        return shopInfoVo;
-    }
-
-
-    public List<ShopInfoVo> searchShopByKeyWord(String keyWord) {
-        LambdaQueryWrapper<BizShopInfo> wp = new LambdaQueryWrapper<BizShopInfo>()
-                .like(HutuUtils.isNotEmpty(keyWord),BizShopInfo::getAddress, keyWord)
-                .or(HutuUtils.isNotEmpty(keyWord))
-                .like(HutuUtils.isNotEmpty(keyWord),BizShopInfo::getShopName, keyWord);
-        List<BizShopInfo> infos = this.list(wp);
-        List<ShopInfoVo> shopInfoVos = new ArrayList<>();
-        if(HutuUtils.isNotEmpty(infos)){
-            infos.forEach(info -> shopInfoVos.add(this.infoTranVoAndSetOpenStat(info)));
+    public List<ShopInfoVo> businessShops(BizShopInfoRequest request) {
+        String shopName = request.getShopName();
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (day == 0){
+            day = 7;
         }
-        return shopInfoVos;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        MPJLambdaWrapper<BizShopInfo> wrapper = new MPJLambdaWrapper<BizShopInfo>()
+            .selectAll(BizShopInfo.class)
+            .like(HutuUtils.isNotEmpty(shopName), BizShopInfo::getShopName, shopName)
+                .apply("TIME(CONCAT(start_business_time, ':00')) <= {0}", simpleDateFormat.format(date))
+                .apply("TIME(CONCAT(end_business_time, ':00')) >= {0}", simpleDateFormat.format(date))
+                .ne(BizShopInfo::getCloseNow, 1)
+            .orderByDesc(BizShopInfo::getCreateTime);
+        List<BizShopInfo> bizShopInfos = bizShopInfoMapper.selectList(wrapper);
+        return HutuUtils.transToVos(bizShopInfos, ShopInfoVo.class);
     }
-
-
-    public ShopInfoVo getShopById(Long id) {
-        BizShopInfo shopInfo = this.getById(id);
-        HutuUtils.requireNotNull(shopInfo, "门店不存在");
-        ShopInfoVo vo = this.infoTranVoAndSetOpenStat(shopInfo);
-        return vo;
-    }
-
 }

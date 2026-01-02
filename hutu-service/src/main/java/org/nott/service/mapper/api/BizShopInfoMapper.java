@@ -1,16 +1,15 @@
 package org.nott.service.mapper.api;
 
+import com.github.yulichang.base.MPJBaseMapper;
 import org.nott.model.BizShopInfo;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author nott
- * @since 2024-06-26
- */
-public interface BizShopInfoMapper extends BaseMapper<BizShopInfo> {
+* <p>
+    * 门店信息表 Mapper
+    * </p>
+*
+* @author nott
+*/
+public interface BizShopInfoMapper extends MPJBaseMapper<BizShopInfo> {
 
 }

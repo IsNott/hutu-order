@@ -53,9 +53,9 @@ public class MbpGenerator {
     }
 
     public static void main(String[] args) {
-        List<String> tables = Arrays.asList("sys_data_dict");
-        doGenerateBackend(TYPE.ADMIN.value, tables);
-        doGenerateFrontend(tables);
+        List<String> tables = Arrays.asList("biz_shop_info");
+        doGenerateBackend(TYPE.API.value, tables);
+//        doGenerateFrontend(tables);
     }
 
     public static void doGenerateFrontend( List<String> tables) {
@@ -104,8 +104,8 @@ public class MbpGenerator {
                             .entity("model")
                             .mapper("service.mapper." + type)
                             .serviceImpl("service." + type)
-                            .controller("api".equals(type) ? "web.controller" : type + ".controller")
-                            .pathInfo(pathInfo);
+                            .controller("api".equals(type) ? "web.controller" : type + ".controller");
+//                            .pathInfo(pathInfo);
                 })
                 // 策略配置
                 .strategyConfig((scanner, builder) -> builder.addInclude(getTables(table))
