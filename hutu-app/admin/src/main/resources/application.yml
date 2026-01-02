@@ -40,12 +40,15 @@ security:
     secret: hutu-admin-2023
     expire: 86400
     header: Token
-    redis-key-prefix: hutu-login_token_key-token
+    redis-key-prefix: token_key-token
     token-prefix: Bearer
 
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
 
 logging:
   config: classpath:logback-dev.xml

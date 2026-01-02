@@ -1,34 +1,30 @@
 server:
   port: 10001
 
-web:
-  base-path: '/usr1/local'
-  upload-path: '/hutu-order/web/upload'
-
-# 业务配置
 business:
-  # 堂食订单前缀
   prefix-eat-in: 'H'
-  # 外带订单前缀
   prefix-take-out: 'T'
-  # 订单超时时间(秒)
   order-expire: 300
-  # 每日订单号长度
   order-length: 3
-  # 订单超时检查类型
+  seq-length: 16
   check-type: delayedQueue
+
+order:
+  queue-length:
+    prepare: 12
+
 
 spring:
   redis:
     host: localhost
     password:
-    database: 0
+    database: 3
     port: 6379
     jedis:
       pool:
         max-active: 8
-        max-idle: 8
-        min-idle: 0
+        max-idle: 30
+        min-idle: 2
         time-out: 3000
   mvc:
     throw-exception-if-no-handler-found: true
@@ -42,7 +38,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/hutu-order?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
     username: root
-    password: 888888
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
@@ -60,24 +56,19 @@ mybatis-plus:
 
 logging:
   config: classpath:logback-dev.xml
-  level:
-    org.nott.web.mapper: debug
+#  level:
+#    org.nott.web.mapper: debug
 
-# 支付宝支付信息
 alipay:
   appId:
   privateKey:
   publicKey:
   signType: RSA2
   notifyUrl:
-
-# 微信小程序信息
-wechat:
   app:
     appId:
     appSecret:
 
-# 微信支付信息
 weixinpay:
   mchId:
   appId:
@@ -86,7 +77,11 @@ weixinpay:
   privateKeyPath:
   merchantSerialNumber:
 
-# 内部支付包名
+wechat:
+  app:
+    appId:
+    appSecret:
+
 payment:
   package:
     name: org.nott.payment

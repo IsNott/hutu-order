@@ -2,13 +2,18 @@ server:
   port: 9901
 
 web:
-  base-path: '/usr1/local'
+  base-path: '{your-path}'
   upload-path: '/hutu-order/web/upload/static/'
+  proxy-suffix: '/static/'
 
 logging:
   config: classpath:logback-dev.xml
   level:
     org.nott.web.mapper: debug
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 spring:
   servlet:
@@ -25,10 +30,21 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+    host: localhost
+    database: 1
+    password:
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 30
+        min-idle: 2
+        time-out: 3000
   datasource:
     url: jdbc:mysql://localhost:3306/hutu-order?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
     username: root
-    password: 123456
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
@@ -36,10 +52,11 @@ spring:
       maximum-pool-size: 20
       idle-timeout: 10000
       connection-test-query: select 1
+
 security:
   jwt:
     secret: hutu-admin-2023
     expire: 86400
     header: Token
-    redis-key-prefix: hutu-login_token_key-token
+    redis-key-prefix: token_key-token
     token-prefix: Bearer
