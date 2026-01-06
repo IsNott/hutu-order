@@ -22,8 +22,14 @@ import javax.annotation.Resource;
 <#if useSwagger>
 @Api(value = "${table.comment!}<#if typeName == "admin">管理</#if>接口", tags = "${table.comment!}<#if typeName == "admin">管理</#if>")
 </#if>
+
 @RestController
+<#if typeName == "admin">
 @RequestMapping("/${entity?uncap_first}")
+</#if>
+<#if typeName == "api">
+@RequestMapping("/access/${entity?uncap_first}")
+</#if>
 <#if commonControllerPath??>
     public class ${table.controllerName} extends ${superControllerClass}<${entity}Vo, ${entity}, ${entity}Service> {
 <#else>
@@ -32,7 +38,7 @@ import javax.annotation.Resource;
 
     @Resource
     private ${entity}Service service;
-
+<#if typeName == "admin">
     @ApiOperation("分页查询")
     @PostMapping("/page/{page}/{size}")
     public ResponseEntity<IPage<${entity}Vo>> page(@PathVariable("page") Integer page, @PathVariable("size") Integer size, @RequestBody ${entity}Request req) {
@@ -67,5 +73,5 @@ import javax.annotation.Resource;
         service.removeById(id);
         return ResponseEntity.success();
     }
-
+</#if>
 }

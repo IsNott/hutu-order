@@ -21,7 +21,7 @@ public class ${entity}Service extends ServiceImpl<${entity}Mapper, ${entity}>  {
 
     @Resource
     private ${entity}Mapper ${entity?uncap_first}Mapper;
-
+<#if typeName == "admin">
     public IPage<${entity}Vo> queryPage(Integer page, Integer size, ${entity}DTO dto) {
         MPJLambdaWrapper<${entity}> wrapper = new MPJLambdaWrapper<${entity}>()
             .selectAll(${entity}.class)
@@ -47,4 +47,5 @@ public class ${entity}Service extends ServiceImpl<${entity}Mapper, ${entity}>  {
         this.updateById(entity);
         return HutuUtils.transToObject(entity, ${entity}Vo.class);
     }
+</#if>
 }
