@@ -20,7 +20,10 @@ public class SysSlideShowItemDTO {
     private String attachUrl;
 
     @ApiModelProperty(value = "轮播图id")
-    private Integer slideShowId;
+    private Long slideShowId;
+
+    @ApiModelProperty(value = "排序")
+    private Integer sortOrder;
 
     @ApiModelProperty(value = "跳转路径")
     private String navigateUrl;

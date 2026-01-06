@@ -6,12 +6,14 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author nott
@@ -25,6 +27,11 @@ public class SysSlideShow implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+
+    /**
+     * 分类名称
+     */
+    private String name;
 
     /**
      * 备注

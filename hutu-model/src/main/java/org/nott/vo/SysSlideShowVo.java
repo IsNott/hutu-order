@@ -16,6 +16,9 @@ public class SysSlideShowVo {
 
     private Long id;
 
+    @ApiModelProperty(value = "分类名称")
+    private String name;
+
     @ApiModelProperty(value = "备注")
     private String mark;
 
@@ -36,5 +39,8 @@ public class SysSlideShowVo {
 
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
+
+    @ApiModelProperty(value = "轮播图关联内容集合")
+    private List<SysSlideShowItemVo> slideShowItems;
 
 }

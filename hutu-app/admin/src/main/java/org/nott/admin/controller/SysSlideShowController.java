@@ -11,6 +11,8 @@ import io.swagger.annotations.Api;
 import org.nott.model.SysSlideShow;
 import org.nott.service.admin.SysSlideShowService;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
 * 前端控制器
 *
@@ -18,7 +20,7 @@ import javax.annotation.Resource;
 * @version 1.0
 * @description auto generated
 */
-@Api(value = "管理接口", tags = "管理")
+@Api(value = "轮播图管理接口", tags = "轮播图管理")
 @RestController
 @RequestMapping("/sysSlideShow")
     public class SysSlideShowController {
@@ -33,6 +35,13 @@ import javax.annotation.Resource;
         return ResponseEntity.successData(result);
     }
 
+    @ApiOperation("列表查询")
+    @PostMapping("/queryAll")
+    public ResponseEntity<List<SysSlideShowVo>> list(@RequestBody SysSlideShowRequest req) {
+        List<SysSlideShowVo> result = service.queryList(req.toDTO());
+        return ResponseEntity.successData(result);
+    }
+
     @ApiOperation("新增")
     @PostMapping("/add")
     public ResponseEntity<SysSlideShowVo> add(@RequestBody SysSlideShowRequest req) {
@@ -43,7 +52,7 @@ import javax.annotation.Resource;
     @ApiOperation("详情")
     @GetMapping("/details/{id}")
     public ResponseEntity<SysSlideShowVo> details(@PathVariable("id") Long id) {
-        SysSlideShowVo vo = HutuUtils.transToObject(service.getById(id), SysSlideShowVo.class);
+        SysSlideShowVo vo = service.details(id);
         return ResponseEntity.successData(vo);
     }
 

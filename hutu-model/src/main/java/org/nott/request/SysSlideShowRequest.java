@@ -17,6 +17,9 @@ public class SysSlideShowRequest extends Request<SysSlideShowDTO> {
 
     private Long id;
 
+    @ApiModelProperty(value = "分类名称")
+    private String name;
+
     @ApiModelProperty(value = "备注")
     private String mark;
 
@@ -38,4 +41,19 @@ public class SysSlideShowRequest extends Request<SysSlideShowDTO> {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
+    @ApiModelProperty(value = "轮播图关联内容集合")
+    private List<SysSlideShowItemRequest> slideShowItems;
+
+    @Override
+    public SysSlideShowDTO toDTO() {
+        SysSlideShowDTO dto = super.toDTO();
+        if (this.slideShowItems != null) {
+            List dtoItems = new ArrayList<>();
+            for (SysSlideShowItemRequest itemRequest : this.slideShowItems) {
+                dtoItems.add(itemRequest.toDTO());
+            }
+            dto.setSlideShowItems(dtoItems);
+        }
+        return dto;
+    }
 }

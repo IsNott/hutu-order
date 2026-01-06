@@ -3,7 +3,9 @@ package org.nott.dto;
     import io.swagger.annotations.ApiModel;
     import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import java.io.Serializable;
+    import org.nott.request.SysSlideShowItemRequest;
+
+    import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -15,6 +17,9 @@ import java.util.*;
 public class SysSlideShowDTO {
 
     private Long id;
+
+    @ApiModelProperty(value = "分类名称")
+    private String name;
 
     @ApiModelProperty(value = "备注")
     private String mark;
@@ -36,5 +41,8 @@ public class SysSlideShowDTO {
 
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
+
+    @ApiModelProperty(value = "轮播图关联内容集合")
+    private List<SysSlideShowItemDTO> slideShowItems;
 
 }

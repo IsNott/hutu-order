@@ -1,19 +1,18 @@
-package org.nott.request;
+package org.nott.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+    import io.swagger.annotations.ApiModel;
+    import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.io.Serializable;
-import org.nott.dto.SysSlideShowItemDTO;
 import java.math.BigDecimal;
 import java.util.*;
 
 /**
-* 轮播图关联内容 Request
+* 轮播图关联内容 VO
 */
 @Data
-@ApiModel(value = "SysSlideShowItemRequest", description = "轮播图关联内容访问参数")
-public class SysSlideShowItemRequest extends Request<SysSlideShowItemDTO> {
+@ApiModel(value = "SysSlideShowItemVo", description = "轮播图关联内容页面对象")
+public class SysSlideShowItemVo {
 
     private Long id;
 
@@ -21,7 +20,10 @@ public class SysSlideShowItemRequest extends Request<SysSlideShowItemDTO> {
     private String attachUrl;
 
     @ApiModelProperty(value = "轮播图id")
-    private Integer slideShowId;
+    private Long slideShowId;
+
+    @ApiModelProperty(value = "排序")
+    private Integer sortOrder;
 
     @ApiModelProperty(value = "跳转路径")
     private String navigateUrl;

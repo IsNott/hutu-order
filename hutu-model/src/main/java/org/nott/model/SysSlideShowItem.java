@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,9 +34,14 @@ public class SysSlideShowItem implements Serializable {
     private String attachUrl;
 
     /**
+     * 排序
+     */
+    private Integer sortOrder;
+
+    /**
      * 轮播图id
      */
-    private Integer slideShowId;
+    private Long slideShowId;
 
     /**
      * 跳转路径
