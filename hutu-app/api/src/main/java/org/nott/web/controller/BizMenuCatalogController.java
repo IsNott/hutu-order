@@ -1,46 +1,34 @@
 package org.nott.web.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.common.annotation.RedisCache;
+import org.nott.vo.BizMenuCatalogVo;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.Api;
 import org.nott.service.api.BizMenuCatalogService;
-import org.nott.vo.MenuCatalogVo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 菜单分类控制层
- *
- * @author nott
- * @since 2024-05-24
- */
-@Api(tags = "菜单分类")
+* 门店菜单分类表前端控制器
+*
+* @author nott
+* @version 1.0
+* @description auto generated
+*/
+@Api(value = "门店菜单分类表接口", tags = "门店菜单分类表")
+
 @RestController
-@RequestMapping("/bizMenuCatalog")
-public class BizMenuCatalogController {
+@RequestMapping("/access/bizMenuCatalog")
+    public class BizMenuCatalogController {
 
     @Resource
-    private BizMenuCatalogService bizMenuCatalogService;
+    private BizMenuCatalogService service;
 
-    @Deprecated
-    @ApiOperation(value = "分类列表")
-    @GetMapping("/list")
-    public ResponseEntity<?> menuList() {
-        return ResponseEntity.successData(bizMenuCatalogService.list());
+    @ApiOperation("获取门店菜单分类")
+    @GetMapping("/listByShop/{shopId}")
+    public ResponseEntity<List<BizMenuCatalogVo>> listByShopId(@PathVariable("shopId") Long shopId) {
+        List<BizMenuCatalogVo> menus = service.listByShopId(shopId);
+        return ResponseEntity.successData(menus);
     }
-
-    @GetMapping("listByShop/{shopId}")
-    @RedisCache(item = "#shopId")
-    @ApiOperation(value = "门店分类列表", notes = "根据门店id获取菜单分类")
-    public ResponseEntity<?> listByShop(@PathVariable Long shopId) {
-        List<MenuCatalogVo> vos = bizMenuCatalogService.getCatalogByShopId(shopId);
-        return ResponseEntity.successData(vos);
-    }
-
 }

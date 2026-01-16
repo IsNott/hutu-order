@@ -53,7 +53,7 @@ public class MbpGenerator {
     }
 
     public static void main(String[] args) {
-        List<String> tables = Arrays.asList("biz_shop_info");
+        List<String> tables = Arrays.asList("biz_product");
         doGenerateBackend(TYPE.API.value, tables);
 //        doGenerateFrontend(tables);
     }
@@ -104,8 +104,8 @@ public class MbpGenerator {
                             .entity("model")
                             .mapper("service.mapper." + type)
                             .serviceImpl("service." + type)
-                            .controller("api".equals(type) ? "web.controller" : type + ".controller");
-//                            .pathInfo(pathInfo);
+                            .controller("api".equals(type) ? "web.controller" : type + ".controller")
+                            .pathInfo(pathInfo);
                 })
                 // 策略配置
                 .strategyConfig((scanner, builder) -> builder.addInclude(getTables(table))
@@ -256,6 +256,14 @@ public class MbpGenerator {
     private static String formatTableNameToEntityName(String table, String type) {
         if (table.startsWith("biz_") && "admin".equals(type)) {
             String name = table.replaceFirst("biz_", "sys_");
+            return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name);
+        }
+        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, table);
+    }
+
+    private static String formatActuallyEntityName(String table, String type) {
+        if (table.startsWith("biz_") || table.startsWith("sys_")) {
+            String name = table.replaceFirst("biz_", "").replaceFirst("sys_", "");
             return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name);
         }
         return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, table);

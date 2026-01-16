@@ -1,47 +1,34 @@
 package org.nott.web.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.common.annotation.RedisCache;
-import org.nott.vo.MenuItemVo;
+import org.nott.vo.BizMenuVo;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.Api;
 import org.nott.service.api.BizMenuService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 菜单控制层
- *
- * @author nott
- * @since 2024-05-24
- */
-@Api(tags = "菜单")
+* 门店菜单表前端控制器
+*
+* @author nott
+* @version 1.0
+* @description auto generated
+*/
+@Api(value = "门店菜单表接口", tags = "门店菜单表")
+
 @RestController
-@RequestMapping("/bizMenu")
-public class BizMenuController {
+@RequestMapping("/access/bizMenu")
+    public class BizMenuController {
 
     @Resource
-    private BizMenuService bizMenuService;
+    private BizMenuService service;
 
-    @Deprecated
-    @ApiOperation("菜单列表")
-    @GetMapping("listByCatalogId/{catalogId}")
-    public ResponseEntity<?> listByCatalogId(@PathVariable("catalogId") String catalogId) {
-        List<MenuItemVo> menuList = bizMenuService.getByCatalogId(catalogId);
-        return ResponseEntity.successData(menuList);
+    @ApiOperation("获取门店菜单")
+    @GetMapping("/listByShopId/{shopId}")
+    public ResponseEntity<List<BizMenuVo>> listByShopId(@PathVariable("shopId") Long shopId) {
+        List<BizMenuVo> menus = service.listByShopId(shopId);
+        return ResponseEntity.successData(menus);
     }
-
-    @ApiOperation(value = "门店菜单列表",tags = "根据门店+分类id查询")
-    @GetMapping("listByShopCatalogId/{shopId}/{catalogId}")
-    @RedisCache(item = "#catalogId")
-    public ResponseEntity<?> listByCatalogId(@PathVariable("shopId") Long shopId, @PathVariable("catalogId") String catalogId) {
-        List<MenuItemVo> menuList = bizMenuService.getByShopCatalogId(shopId,catalogId);
-        return ResponseEntity.successData(menuList);
-    }
-
 }

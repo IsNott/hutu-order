@@ -21,7 +21,6 @@ import org.nott.dto.RefundDTO;
 import org.nott.dto.UserSettleOrderDTO;
 import org.nott.enums.*;
 import org.nott.feign.BizPayOrderWsClient;
-import org.nott.model.BizItem;
 import org.nott.model.BizPayOrder;
 import org.nott.model.BizShopInfo;
 import org.nott.model.BizUser;
@@ -58,8 +57,8 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
     private UserPayOrderQueueHandler userPayOrderQueueHandler;
     @Resource
     private BizPayOrderMapper bizPayOrderMapper;
-    @Resource
-    private BizItemService bizItemService;
+//    @Resource
+//    private BizItemService bizItemService;
     @Resource
     private BusinessConfig businessConfig;
     @Resource
@@ -328,18 +327,18 @@ public class BizPayOrderService extends ServiceImpl<BizPayOrderMapper, BizPayOrd
 
     private BigDecimal checkAndReturnTotalAmount(List<OrderItemDTO> itemsByOrder) {
         List<Long> ids = itemsByOrder.stream().map(OrderItemDTO::getItemId).collect(Collectors.toList());
-        LambdaQueryWrapper<BizItem> wp = new LambdaQueryWrapper<BizItem>()
-                .in(BizItem::getId, ids);
+//        LambdaQueryWrapper<BizItem> wp = new LambdaQueryWrapper<BizItem>()
+//                .in(BizItem::getId, ids);
         BigDecimal originalAmount = new BigDecimal("0.00");
-        List<BizItem> itemInDb = bizItemService.list(wp);
-        for (OrderItemDTO orderItemDTO : itemsByOrder) {
-            Integer dtoItemPiece = orderItemDTO.getItemPiece();
-            BizItem bizItem = itemInDb.stream().filter(item -> item.getId().equals(orderItemDTO.getItemId())).findAny().orElse(null);
-            HutuUtils.requireNotNull(bizItem, "没有找到对应的商品");
-            BigDecimal itemAmount = new BigDecimal(bizItem.getActuallyAmount());
-            BigDecimal totalAmount4Item = itemAmount.multiply(BigDecimal.valueOf(dtoItemPiece));
-            originalAmount = originalAmount.add(totalAmount4Item);
-        }
+//        List<BizItem> itemInDb = bizItemService.list(wp);
+//        for (OrderItemDTO orderItemDTO : itemsByOrder) {
+//            Integer dtoItemPiece = orderItemDTO.getItemPiece();
+//            BizItem bizItem = itemInDb.stream().filter(item -> item.getId().equals(orderItemDTO.getItemId())).findAny().orElse(null);
+//            HutuUtils.requireNotNull(bizItem, "没有找到对应的商品");
+//            BigDecimal itemAmount = new BigDecimal(bizItem.getActuallyAmount());
+//            BigDecimal totalAmount4Item = itemAmount.multiply(BigDecimal.valueOf(dtoItemPiece));
+//            originalAmount = originalAmount.add(totalAmount4Item);
+//        }
 
         return originalAmount;
     }

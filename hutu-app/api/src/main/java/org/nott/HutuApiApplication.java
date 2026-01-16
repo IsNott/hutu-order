@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableFeignClients(clients = { BizPayOrderWsClient.class, OssAccessClient.class })
-@MapperScan("org.nott.service.mapper.api")
+@MapperScan("org.nott.service.mapper")
 @SpringBootApplication(scanBasePackages = {
         "org.nott.common.*",
         "org.nott.service.api",
@@ -18,11 +18,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
         "org.nott.security.*",
         "org.nott.service.pay",
         "org.nott.external.*",
-        
+
 })
 @Slf4j
 @EnableAsync
-public class HutuApiApplication {
+public class    HutuApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(HutuApiApplication.class,args);

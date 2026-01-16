@@ -46,6 +46,12 @@ public class SysSlideShowService extends ServiceImpl<SysSlideShowMapper, SysSlid
 
 
     public SysSlideShowVo save(SysSlideShowDTO dto) {
+        Integer type = dto.getType();
+        LambdaQueryWrapper<SysSlideShow> wrapper = new LambdaQueryWrapper<SysSlideShow>().eq(SysSlideShow::getType, type).last("limit 1");
+        SysSlideShow exist = this.getOne(wrapper);
+        if(HutuUtils.isNotEmpty(exist)){
+            throw new HutuBizException("已存在相同类型的轮播图。");
+        }
         SysSlideShow entity = HutuUtils.transToObject(dto, SysSlideShow.class);
         entity.setDelFlag(false);
         this.save(entity);

@@ -15,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author nott
- * @since 2024-05-24
+ * @since 2026
  */
 @Getter
 @Setter
@@ -27,35 +27,24 @@ public class BizMenuCatalog implements Serializable {
     private Long id;
 
     /**
-     * 门店id
+     * 菜单分类名称
+     */
+    private String menuCatalogName;
+
+    /**
+     * 关联门店id
      */
     private Long shopId;
 
     /**
-     * 分类名称
+     * 排序
      */
-    private String catalogName;
+    private Integer showIndex;
 
     /**
-     * 分类描述
+     * 点单页显示
      */
-    private String catalogDesc;
-
-    /**
-     * 备注
-     */
-    private String mark;
-
-    /**
-     * 预览图
-     */
-    private String imgUrl;
-
-    /**
-     * 删除标识
-     */
-    @TableLogic(delval = "1",value = "0")
-    private Integer delFlag;
+    private Boolean showSide;
 
     /**
      * 创建时间
@@ -66,8 +55,14 @@ public class BizMenuCatalog implements Serializable {
     /**
      * 更新时间
      */
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
+    /**
+     * 删除标识
+     */
+    @TableLogic
+    private Boolean delFlag;
 
 
 }

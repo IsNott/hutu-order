@@ -7,7 +7,6 @@ import org.nott.common.ResponseEntity;
 import org.nott.dto.UserPackageAddDTO;
 import org.nott.dto.UserPackageUpDateDTO;
 import org.nott.vo.UserPackageVo;
-import org.nott.service.api.BizItemService;
 import org.nott.service.api.BizUserPackageService;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +31,8 @@ public class BizUserPackageController {
     @Resource
     private BizUserPackageService bizUserPackageService;
 
-    @Resource
-    private BizItemService bizItemService;
+//    @Resource
+//    private BizItemService bizItemService;
 
     @PostMapping("/query")
     @ApiOperation("查询当前登录用户购物袋")
@@ -52,7 +51,7 @@ public class BizUserPackageController {
     @PostMapping("addItem")
     @ApiOperation("添加商品")
     public ResponseEntity<?> addItem(@RequestBody @Valid UserPackageAddDTO dto){
-        Objects.requireNonNull(bizItemService.getById(dto.getItemId()),"itemId有误");
+//        Objects.requireNonNull(bizItemService.getById(dto.getItemId()),"itemId有误");
         bizUserPackageService.packageAddItem(dto);
         return ResponseEntity.success();
     }

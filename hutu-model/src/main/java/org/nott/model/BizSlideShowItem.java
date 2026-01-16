@@ -11,7 +11,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 门店菜单表
+ * 
  * </p>
  *
  * @author nott
@@ -19,36 +19,27 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("biz_menu")
-public class BizMenu implements Serializable {
+@TableName("biz_slide_show_item")
+public class BizSlideShowItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * id
-     */
     private Long id;
 
     /**
-     * 菜单分类id
+     * 图片地址
      */
-    private Long menuCatalogId;
+    private String attachUrl;
 
-    /**
-     * 菜品名称
-     */
-    private String itemId;
+    private Integer sortOrder;
 
-    /**
-     * 门店id
-     */
-    private Long shopId;
+    private Long slideShowId;
 
-    /**
-     * 删除标识
-     */
-    @TableLogic
-    private Integer delFlag;
+    private String navigateUrl;
+
+    private Boolean outside;
+
+    private Boolean richText;
 
     /**
      * 创建时间
@@ -61,6 +52,12 @@ public class BizMenu implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
+    /**
+     * 删除标识
+     */
+    @TableLogic
+    private Boolean delFlag;
 
 
 }

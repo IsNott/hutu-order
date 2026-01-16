@@ -7,12 +7,15 @@ import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.nott.model.BizSlideShow;
 import org.nott.service.mapper.api.BizSlideShowMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.nott.vo.BizSlideShowItemVo;
 import org.springframework.stereotype.Service;
 import org.nott.dto.BizSlideShowDTO;
 import org.nott.vo.BizSlideShowVo;
 import org.nott.common.utils.HutuUtils;
 import org.nott.common.exception.HutuBizException;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
 *  Service
 */

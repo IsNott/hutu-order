@@ -1,15 +1,15 @@
 package org.nott.service.mapper.api;
 
 import com.github.yulichang.base.MPJBaseMapper;
-import org.nott.model.BizMenu;
+import org.nott.model.BizProduct;
 
 /**
 * <p>
-    * 门店菜单表 Mapper
+    * 商品表 Mapper
     * </p>
 *
 * @author nott
 */
-public interface BizMenuMapper extends MPJBaseMapper<BizMenu> {
+public interface BizProductMapper extends MPJBaseMapper<BizProduct> {
 
 }

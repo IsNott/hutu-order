@@ -6,36 +6,35 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
-
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 系统商品表
+ * 商品表
  * </p>
  *
  * @author nott
- * @since 2024-05-24
+ * @since 2026
  */
 @Getter
 @Setter
-@TableName("biz_item")
-public class BizItem implements Serializable {
+@TableName("biz_product")
+public class BizProduct implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
     /**
-     * 原始价格
+     * 商品封面
      */
-    private String originAmount;
+    private String coverUrl;
 
     /**
-     * 现价
+     * 价格
      */
-    private String actuallyAmount;
+    private String itemPrice;
 
     /**
      * 商品名称
@@ -43,25 +42,25 @@ public class BizItem implements Serializable {
     private String itemName;
 
     /**
+     * 排序
+     */
+    private Integer showIndex;
+
+    /**
      * 商品描述
      */
-    private String itemDesc;
+    private String itemDescription;
 
     /**
-     * 商品标签
+     * 预计制作时长，单位：分
      */
-    private String itemTag;
-
-    /**
-     * 特殊tag
-     */
-    private String special;
+    private Integer expectMakeTime;
 
     /**
      * 删除标识
      */
-    @TableLogic(delval = "1",value = "0")
-    private Integer delFlag;
+    @TableLogic
+    private Boolean delFlag;
 
     /**
      * 创建时间
@@ -72,13 +71,8 @@ public class BizItem implements Serializable {
     /**
      * 更新时间
      */
-    @TableField(fill = FieldFill.UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-
-    /**
-     * 预计制作时长，单位：分
-     */
-    private Integer expectMakeTime;
 
 
 }

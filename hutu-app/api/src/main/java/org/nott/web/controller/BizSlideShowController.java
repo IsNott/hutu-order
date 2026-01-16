@@ -5,12 +5,15 @@ import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
 import org.nott.common.utils.HutuUtils;
 import org.nott.request.BizSlideShowRequest;
+import org.nott.vo.BizSlideShowItemVo;
 import org.nott.vo.BizSlideShowVo;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import org.nott.model.BizSlideShow;
 import org.nott.service.api.BizSlideShowService;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
 * 前端控制器
 *
