@@ -46,4 +46,6 @@ public class SysProductVo {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
+    @ApiModelProperty(value = "SKU规格及选项列表")
+    private List<SysItemSkuSpecVo> skuSpecs;
 }

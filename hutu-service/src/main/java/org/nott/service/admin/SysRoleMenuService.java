@@ -55,7 +55,7 @@ public class SysRoleMenuService extends ServiceImpl<SysRoleMenuMapper, SysRoleMe
             .eq(SysRoleMenu::getRoleId, roleId)
             .eq(SysRoleMenu::getDelFlag, false);
         List<SysRoleMenu> list = this.list(wrapper);
-        return HutuUtils.transToVos(list, SysRoleMenuVo.class);
+        return HutuUtils.transToList(list, SysRoleMenuVo.class);
     }
 
     public void setRoleMenus(Long roleId, List<Long> menuIds) {

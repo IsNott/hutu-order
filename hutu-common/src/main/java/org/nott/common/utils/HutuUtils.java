@@ -2,7 +2,7 @@ package org.nott.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.nott.common.exception.HutuBizException;
@@ -20,9 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -38,7 +35,7 @@ import static org.springframework.beans.BeanUtils.getPropertyDescriptors;
  * @author Nott
  * @date 2024-6-17
  */
-
+@Slf4j
 public class HutuUtils {
 
     private static final DefaultParameterNameDiscoverer defaultParameterNameDiscoverer = new DefaultParameterNameDiscoverer();
@@ -112,7 +109,7 @@ public class HutuUtils {
         copyProperties(source, target, true);
     }
 
-    public static <T, S> List<S> transToVos(List<T> objs, Class<S> sClazz) {
+    public static <T, S> List<S> transToList(List<T> objs, Class<S> sClazz) {
         List<S> sList = new ArrayList<>();
         try {
             for (T obj : objs) {
@@ -132,6 +129,7 @@ public class HutuUtils {
             s = targetClass.newInstance();
             copyProperties(source, s);
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             throw new HutuBizException("Trans obj to vo failed");
         }
         return s;
@@ -286,7 +284,7 @@ public class HutuUtils {
             return tPage;
         }
         copyProperties(sourcePage,tPage);
-        List<T> ts = transToVos(records, tClass);
+        List<T> ts = transToList(records, tClass);
         tPage.setRecords(ts);
         return tPage;
     }

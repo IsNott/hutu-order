@@ -4,6 +4,7 @@ package org.nott.dto;
     import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
     import org.nott.request.OssFileRequest;
+    import org.nott.request.SysItemSkuSpecRequest;
 
     import java.io.Serializable;
 import java.math.BigDecimal;
@@ -45,7 +46,10 @@ public class SysProductDTO {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
-    @ApiModelProperty(value = "文件列表")
+    @ApiModelProperty(value = "文件列表访问对象")
     private List<OssFileRequest> images;
+
+    @ApiModelProperty(value = "SKU")
+    private List<SysItemSkuSpecDTO> skuSpecs;
 
 }

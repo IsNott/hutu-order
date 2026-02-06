@@ -72,6 +72,6 @@ public class BizShopInfoService extends ServiceImpl<BizShopInfoMapper, BizShopIn
                 .ne(BizShopInfo::getCloseNow, 1)
             .orderByDesc(BizShopInfo::getCreateTime);
         List<BizShopInfo> bizShopInfos = bizShopInfoMapper.selectList(wrapper);
-        return HutuUtils.transToVos(bizShopInfos, ShopInfoVo.class);
+        return HutuUtils.transToList(bizShopInfos, ShopInfoVo.class);
     }
 }

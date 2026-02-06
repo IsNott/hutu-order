@@ -7,7 +7,6 @@ import org.nott.common.utils.HutuUtils;
 import org.nott.dto.OssFileDTO;
 import org.nott.model.OssFile;
 import org.nott.service.mapper.oss.OssFileMapper;
-import org.nott.service.oss.OssFileService;
 import org.nott.vo.OssFileVo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +18,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Nott
@@ -83,7 +81,7 @@ public class OssFileService extends ServiceImpl<OssFileMapper, OssFile> {
         List<OssFile> list = this.lambdaQuery().in(OssFile::getBizId, bizId)
                 .orderByAsc(OssFile::getSortOrder)
                 .list();
-        return HutuUtils.transToVos(list, OssFileVo.class);
+        return HutuUtils.transToList(list, OssFileVo.class);
     }
 
 

@@ -3,12 +3,11 @@ package org.nott.web.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
 import org.nott.common.ResponseEntity;
-import org.nott.common.utils.HutuUtils;
 import org.nott.request.BizProductRequest;
 import org.nott.vo.BizProductVo;
+import org.nott.vo.SysProductVo;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
-import org.nott.model.BizProduct;
 import org.nott.service.api.BizProductService;
 import javax.annotation.Resource;
 /**
@@ -32,5 +31,11 @@ import javax.annotation.Resource;
     public ResponseEntity<IPage<BizProductVo>> query(@RequestBody BizProductRequest request, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
         IPage<BizProductVo> voPage = service.queryPage(request.toDTO(), page ,size);
         return ResponseEntity.successData(voPage);
+    }
+
+    @ApiOperation("详情")
+    @GetMapping("/details/{id}")
+    public ResponseEntity<BizProductVo> details(@PathVariable("id") Long id) {
+        return ResponseEntity.successData(service.details(id));
     }
 }

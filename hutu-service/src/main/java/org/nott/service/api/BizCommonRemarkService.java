@@ -19,10 +19,10 @@ import java.util.List;
 @Service
 public class BizCommonRemarkService extends ServiceImpl<BizCommonRemarkMapper, BizCommonRemark> {
 
-     
+
     public List<CommonRemarkVo> queryCommonRemark(int size) {
         LambdaQueryWrapper<BizCommonRemark> wrapper = new LambdaQueryWrapper<BizCommonRemark>().eq(BizCommonRemark::getDelFlag, 0).last("limit " + size);
         List<BizCommonRemark> list = this.list(wrapper);
-        return HutuUtils.transToVos(list, CommonRemarkVo.class);
+        return HutuUtils.transToList(list, CommonRemarkVo.class);
     }
 }

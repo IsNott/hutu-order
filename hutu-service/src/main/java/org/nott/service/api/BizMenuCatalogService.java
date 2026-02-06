@@ -25,7 +25,7 @@ public class BizMenuCatalogService extends ServiceImpl<BizMenuCatalogMapper, Biz
                 .eq(BizMenuCatalog::getShopId, shopId)
                 .orderByAsc(BizMenuCatalog::getShowIndex);
         List<BizMenuCatalog> catalogList = bizMenuCatalogMapper.selectList(wrapper);
-        List<BizMenuCatalogVo> bizMenuCatalogVos = HutuUtils.transToVos(catalogList, BizMenuCatalogVo.class);
+        List<BizMenuCatalogVo> bizMenuCatalogVos = HutuUtils.transToList(catalogList, BizMenuCatalogVo.class);
         return bizMenuCatalogVos;
     }
 }

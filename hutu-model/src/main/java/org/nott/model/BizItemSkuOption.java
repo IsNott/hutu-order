@@ -7,52 +7,63 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 商品SKU规格表
+ * SKU规格选项表
  * </p>
  *
  * @author nott
- * @since 2025
+ * @since 2026
  */
 @Getter
 @Setter
-@TableName("biz_item_sku_spec")
-public class SysItemSkuSpec implements Serializable {
+@TableName("biz_item_sku_option")
+public class BizItemSkuOption implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 商品ID
+     * 规格ID
      */
-    private Long productId;
+    private Long specId;
 
     /**
-     * 规格名称
+     * 选项名称
      */
-    private String specLabel;
+    private String optionLabel;
 
     /**
-     * 是否多选（0:单选，1:多选）
+     * 选项code
      */
-    private Boolean multi;
+    private String optionCode;
+
+    /**
+     * 父级ID
+     */
+    private String parentId;
+
+    /**
+     * 附加价格
+     */
+    private BigDecimal additionalPrice;
+
+    /**
+     * 目前是否禁用
+     */
+    private Boolean nowDisabled;
 
     /**
      * 排序
      */
     private Integer sortOrder;
-
-    /**
-     * 是否必选
-     */
-    private Boolean required;
 
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;

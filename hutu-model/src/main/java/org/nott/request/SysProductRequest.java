@@ -3,10 +3,7 @@ package org.nott.request;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 import org.nott.dto.SysProductDTO;
-import org.nott.vo.OssFileVo;
-
 import java.util.*;
 
 /**
@@ -46,6 +43,22 @@ public class SysProductRequest extends Request<SysProductDTO> {
     private Date updateTime;
 
     @ApiModelProperty(value = "文件列表")
-    private List<OssFileVo> images;
+    private List<OssFileRequest> images;
 
+    @ApiModelProperty(value = "SKU")
+    private List<SysItemSkuSpecRequest> skuSpecs;
+
+//    @Override
+//    public SysProductDTO toDTO() {
+//        SysProductDTO dto = super.toDTO();
+//        if (this.skuSpecs != null) {
+//            List<SysItemSkuSpecRequest> skuSpecRequests = this.skuSpecs;
+//            List<SysItemSkuSpecDTO> skuSpecDTOs = new ArrayList<>();
+//            for (SysItemSkuSpecRequest skuSpecRequest : skuSpecRequests) {
+//                skuSpecDTOs.add(skuSpecRequest.toDTO());
+//            }
+//            dto.setSkuSpecs(skuSpecDTOs);
+//        }
+//        return dto;
+//    }
 }

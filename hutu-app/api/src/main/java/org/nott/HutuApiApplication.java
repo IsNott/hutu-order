@@ -22,7 +22,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 })
 @Slf4j
 @EnableAsync
-public class    HutuApiApplication {
+public class HutuApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(HutuApiApplication.class,args);

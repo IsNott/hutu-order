@@ -17,7 +17,7 @@ public class SysItemSkuSpecVo {
     private Long id;
 
     @ApiModelProperty(value = "商品ID")
-    private Long itemId;
+    private Long productId;
 
     @ApiModelProperty(value = "规格名称")
     private String specLabel;
@@ -37,5 +37,8 @@ public class SysItemSkuSpecVo {
 
     @ApiModelProperty(value = "删除标识")
     private Boolean delFlag;
+
+    @ApiModelProperty(value = "SKU规格选项列表")
+    private List<SysItemSkuOptionVo> skuOptionList;
 
 }

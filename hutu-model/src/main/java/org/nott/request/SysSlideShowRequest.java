@@ -44,16 +44,16 @@ public class SysSlideShowRequest extends Request<SysSlideShowDTO> {
     @ApiModelProperty(value = "轮播图关联内容集合")
     private List<SysSlideShowItemRequest> slideShowItems;
 
-    @Override
-    public SysSlideShowDTO toDTO() {
-        SysSlideShowDTO dto = super.toDTO();
-        if (this.slideShowItems != null) {
-            List dtoItems = new ArrayList<>();
-            for (SysSlideShowItemRequest itemRequest : this.slideShowItems) {
-                dtoItems.add(itemRequest.toDTO());
-            }
-            dto.setSlideShowItems(dtoItems);
-        }
-        return dto;
-    }
+//    @Override
+//    public SysSlideShowDTO toDTO() {
+//        SysSlideShowDTO dto = super.toDTO();
+//        if (this.slideShowItems != null) {
+//            List dtoItems = new ArrayList<>();
+//            for (SysSlideShowItemRequest itemRequest : this.slideShowItems) {
+//                dtoItems.add(itemRequest.toDTO());
+//            }
+//            dto.setSlideShowItems(dtoItems);
+//        }
+//        return dto;
+//    }
 }

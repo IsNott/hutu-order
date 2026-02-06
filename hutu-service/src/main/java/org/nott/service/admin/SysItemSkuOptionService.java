@@ -13,6 +13,8 @@ import org.nott.vo.SysItemSkuOptionVo;
 import org.nott.common.utils.HutuUtils;
 import org.nott.common.exception.HutuBizException;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
 * SKU规格选项表 Service
 */
@@ -46,5 +48,16 @@ public class SysItemSkuOptionService extends ServiceImpl<SysItemSkuOptionMapper,
         HutuUtils.copyProperties(dto, entity);
         this.updateById(entity);
         return HutuUtils.transToObject(entity, SysItemSkuOptionVo.class);
+    }
+
+    public void setSpecOptionRelation(List<SysItemSkuOptionDTO> skuOptionDTOS, Long specId) {
+        LambdaQueryWrapper<SysItemSkuOption> wrapper = new LambdaQueryWrapper<SysItemSkuOption>().eq(SysItemSkuOption::getSpecId, specId);
+        this.remove(wrapper);
+        if (HutuUtils.isNotEmpty(skuOptionDTOS)) {
+            for (SysItemSkuOptionDTO optionDTO : skuOptionDTOS) {
+                optionDTO.setSpecId(specId);
+                this.save(optionDTO);
+            }
+        }
     }
 }

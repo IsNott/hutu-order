@@ -4,9 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.io.Serializable;
-import org.nott.dto.SysItemSkuSpecDTO;
-import org.nott.vo.SysItemSkuOptionVo;
-
+import org.nott.dto.BizItemSkuSpecDTO;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -14,8 +12,8 @@ import java.util.*;
 * 商品SKU规格表 Request
 */
 @Data
-@ApiModel(value = "SysItemSkuSpecRequest", description = "商品SKU规格表访问参数")
-public class SysItemSkuSpecRequest extends Request<SysItemSkuSpecDTO> {
+@ApiModel(value = "BizItemSkuSpecRequest", description = "商品SKU规格表访问参数")
+public class BizItemSkuSpecRequest extends Request<BizItemSkuSpecDTO> {
 
     private Long id;
 
@@ -40,8 +38,5 @@ public class SysItemSkuSpecRequest extends Request<SysItemSkuSpecDTO> {
 
     @ApiModelProperty(value = "删除标识")
     private Boolean delFlag;
-
-    @ApiModelProperty(value = "SKU规格选项列表")
-    private List<SysItemSkuOptionRequest> skuOptionList;
 
 }

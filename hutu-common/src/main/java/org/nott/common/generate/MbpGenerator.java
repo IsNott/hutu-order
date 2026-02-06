@@ -53,7 +53,7 @@ public class MbpGenerator {
     }
 
     public static void main(String[] args) {
-        List<String> tables = Arrays.asList("biz_product");
+        List<String> tables = Arrays.asList("biz_item_sku_spec", "biz_item_sku_option");
         doGenerateBackend(TYPE.API.value, tables);
 //        doGenerateFrontend(tables);
     }

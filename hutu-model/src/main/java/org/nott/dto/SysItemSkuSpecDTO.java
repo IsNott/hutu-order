@@ -3,7 +3,9 @@ package org.nott.dto;
     import io.swagger.annotations.ApiModel;
     import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import java.io.Serializable;
+    import org.nott.request.SysItemSkuOptionRequest;
+
+    import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -37,5 +39,8 @@ public class SysItemSkuSpecDTO {
 
     @ApiModelProperty(value = "删除标识")
     private Boolean delFlag;
+
+    @ApiModelProperty(value = "SKU规格选项列表")
+    private List<SysItemSkuOptionDTO> skuOptionList;
 
 }

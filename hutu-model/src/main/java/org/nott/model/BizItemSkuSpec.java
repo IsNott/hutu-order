@@ -1,7 +1,9 @@
 package org.nott.model;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -11,50 +13,50 @@ import lombok.Setter;
 
 /**
  * <p>
- * sku分类表
+ * 商品SKU规格表
  * </p>
  *
  * @author nott
- * @since 2025-12-20
+ * @since 2026
  */
 @Getter
 @Setter
-@TableName("biz_sku_catalog")
-public class SysSkuCatalog implements Serializable {
+@TableName("biz_item_sku_spec")
+public class BizItemSkuSpec implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * sku分类名称
+     * 商品ID
      */
-    private String skuCatalogName;
+    private Long productId;
 
     /**
-     * 关联门店id
+     * 规格名称
      */
-    private Long shopId;
+    private String specLabel;
+
+    /**
+     * 是否多选（0:单选，1:多选）
+     */
+    private Boolean multi;
 
     /**
      * 排序
      */
-    private Integer showIndex;
+    private Integer sortOrder;
 
     /**
-     * 点单页显示
+     * 是否必选
      */
-    private Integer showSide;
+    private Boolean required;
 
-    /**
-     * 创建时间
-     */
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
-    /**
-     * 更新时间
-     */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 

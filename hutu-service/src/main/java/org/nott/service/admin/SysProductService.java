@@ -5,12 +5,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import org.nott.common.ResponseEntity;
+import org.nott.dto.SysItemSkuSpecDTO;
 import org.nott.dto.SysProductDTO;
 import org.nott.feign.OssClient;
 import org.nott.model.SysProduct;
 import org.nott.service.mapper.admin.SysProductMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.nott.vo.OssFileVo;
+import org.nott.vo.SysItemSkuSpecVo;
+import org.nott.vo.SysItemSkuSpecWithOptionVo;
 import org.springframework.stereotype.Service;
 import org.nott.vo.SysProductVo;
 import org.nott.common.utils.HutuUtils;
@@ -30,6 +33,8 @@ public class SysProductService extends ServiceImpl<SysProductMapper, SysProduct>
     private SysProductMapper sysProductMapper;
     @Resource
     private OssClient ossClient;
+    @Resource
+    private SysItemSkuSpecService sysItemSkuSpecService;
 
     public IPage<SysProductVo> queryPage(Integer page, Integer size, SysProductDTO dto) {
         String itemName = dto.getItemName();
@@ -55,6 +60,10 @@ public class SysProductService extends ServiceImpl<SysProductMapper, SysProduct>
                 throw new HutuBizException("Failed to associate images.");
             }
         }
+        List<SysItemSkuSpecDTO> skuSpecs = dto.getSkuSpecs();
+        if(!HutuUtils.isEmpty(skuSpecs)){
+            sysItemSkuSpecService.setProductSkuRelation(skuSpecs, entity.getId());
+        }
         return HutuUtils.transToObject(entity, SysProductVo.class);
     }
 
@@ -72,11 +81,17 @@ public class SysProductService extends ServiceImpl<SysProductMapper, SysProduct>
                 throw new HutuBizException("Failed to associate images.");
             }
         }
+        List<SysItemSkuSpecDTO> skuSpecs = dto.getSkuSpecs();
+        if(!HutuUtils.isEmpty(skuSpecs)){
+            sysItemSkuSpecService.setProductSkuRelation(skuSpecs, entity.getId());
+        }
         return HutuUtils.transToObject(entity, SysProductVo.class);
     }
 
     public SysProductVo details(Long id) {
         SysProductVo vo = HutuUtils.transToObject(this.getById(id), SysProductVo.class);
+        List<SysItemSkuSpecVo> skuSpecVos = sysItemSkuSpecService.querySkuInfoByProductId(vo.getId());
+        vo.setSkuSpecs(skuSpecVos);
         ResponseEntity<List<OssFileVo>> response = ossClient.getByBizId(vo.getId());
         if (response.isSuccess()) {
             vo.setImages(response.getData());

@@ -93,7 +93,7 @@ public class SysSlideShowService extends ServiceImpl<SysSlideShowMapper, SysSlid
         LambdaQueryWrapper<SysSlideShowItem> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(SysSlideShowItem::getSlideShowId, id);
         List<SysSlideShowItem> showItems = sysSlideShowItemMapper.selectList(queryWrapper);
-        vo.setSlideShowItems(HutuUtils.transToVos(showItems, SysSlideShowItemVo.class));
+        vo.setSlideShowItems(HutuUtils.transToList(showItems, SysSlideShowItemVo.class));
         return vo;
     }
 }

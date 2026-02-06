@@ -43,4 +43,10 @@ public class BizProductVo {
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
+    @ApiModelProperty(value = "图片列表")
+    private List<OssFileVo> images;
+
+    @ApiModelProperty(value = "SKU规格及选项列表")
+    private List<BizItemSkuSpecVo> skuSpecs;
+
 }
